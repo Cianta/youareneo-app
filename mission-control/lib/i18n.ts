@@ -572,21 +572,10 @@ const EN: Record<string, string> = {
   'Riverside Google Login aktivieren': 'Enable Riverside Google login',
   '1. GHL Google Login aktivieren': '1. Enable GHL Google login',
 
-  // ── Supabase Auth ──
-  'Supabase ist nicht konfiguriert — .env.local prüfen.': 'Supabase is not configured — check .env.local.',
-  'Bestätigungs-E-Mail gesendet — nach dem Bestätigen hier einloggen.': 'Confirmation email sent — log in here after confirming.',
-  'Firma anlegen': 'Create company',
-  'Beitreten': 'Join',
-  'Firmenname…': 'Company name…',
-  'Einladungscode…': 'Invite code…',
-  'Einladungscode': 'Invite code',
-  'Dein Name…': 'Your name…',
+  // ── FuseBase Auth ──
   'Anmelden': 'Sign in',
-  'Firma registrieren': 'Register company',
-  'Firma beitreten': 'Join company',
-  'Firmen-Login': 'Company Login',
-  'Du wirst Admin deiner Firma und erhältst einen Einladungscode für Mitarbeiter.': 'You become admin of your company and receive an invite code for employees.',
-  'Den Einladungscode bekommst du von deinem Firmen-Admin.': 'You get the invite code from your company admin.',
+  'Magic Link senden': 'Send magic link',
+  'Magic Link gesendet — Postfach prüfen.': 'Magic link sent — check your inbox.',
 
   // ── SharePicker / Boards ──
   'Alle (gesamte Firma)': 'Everyone (whole company)',

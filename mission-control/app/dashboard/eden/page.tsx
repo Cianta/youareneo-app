@@ -485,7 +485,7 @@ export default function EdenPage() {
     } catch { /* Vorschau optional */ }
   };
 
-  /** Bild-Datei hochladen: dauerhaft in Supabase Storage, Fallback DataURL. */
+  /** Bild-Datei hochladen: Cloud-Stub (FuseBase Store später), Fallback DataURL. */
   const attachImageFile = async (id: string, file: File) => {
     const cloudUrl = await uploadToStorage(file, 'eden/images');
     if (cloudUrl) { updateCard(id, { url: cloudUrl }); return; }

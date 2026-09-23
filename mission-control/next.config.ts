@@ -11,11 +11,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  experimental: {
-    // Turbopack-Dev frisst sonst unbegrenzt RAM (wiederholte OOM-Abstürze):
-    // ab diesem Limit räumt Turbopack seine Caches selbst auf.
-    turbopackMemoryLimit: 3 * 1024 * 1024 * 1024,
-  },
   async headers() {
     return [
       {

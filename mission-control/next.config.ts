@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  serverExternalPackages: ['@anthropic-ai/sdk', 'openai', '@google/generative-ai'],
+  serverExternalPackages: ['@anthropic-ai/sdk', 'openai', '@google/generative-ai', '@fusebase/fusebase-gate-sdk'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },

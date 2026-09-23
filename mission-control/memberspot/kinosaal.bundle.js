@@ -1,0 +1,1043 @@
+/* KINOSAAL · YOU ARE NEO – Paket (gebaut aus memberspot/kinosaal) */
+(function () {
+  var host = document.getElementById("ks-mount"); if (!host || host.dataset.ks) return; host.dataset.ks = "1";
+  var l = document.createElement("link"); l.rel = "stylesheet"; l.href = "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600&display=swap"; document.head.appendChild(l);
+  var st = document.createElement("style"); st.textContent = "/* KINOSAAL \u00b7 YOU ARE NEO \u2014 Stil. Zwei Welten \u00fcber CSS-Variablen: data-mode=\"lern\" | \"kino\" */\n#ks-root{\n  --night:#050B14;--deep:#0B1A2B;--cyan:#2FD3E8;--cyan2:#7FD9E8;--orange:#F2913C;--silver:#C9D5E0;--steel:#5A7184;\n  --gold:#E8B94A;--ember:#C8502A;--velvet:#3B0D14;--velvet2:#6A1622;\n  --bg:#0A1624;--panel:rgba(14,30,48,.72);--line:rgba(127,217,232,.22);--text:#DCE6EF;--muted:#8FA6B8;--accent:var(--cyan);--accent2:var(--orange);\n  --radius:18px;--stageMax:1180px;\n  position:relative;width:100%;min-height:86vh;background:var(--bg);color:var(--text);\n  font-family:Rajdhani,system-ui,-apple-system,\"Segoe UI\",sans-serif;font-size:15px;line-height:1.45;\n  border-radius:18px;overflow:clip;isolation:isolate;transition:background-color 1.2s ease,color 1.2s ease}\n#ks-root[data-mode=\"kino\"]{--bg:#020306;--panel:rgba(8,6,10,.7);--line:rgba(232,185,74,.2);--text:#EDE3D2;--muted:#9C8E7A;--accent:var(--gold);--accent2:var(--ember);--stageMax:1600px}\n#ks-root *{box-sizing:border-box}\n#ks-root:fullscreen{border-radius:0;overflow-y:auto}\n#ks-root a{color:var(--cyan2)}\n#ks-root h1,#ks-root h2,#ks-root h3{font-family:Cinzel,Georgia,serif;font-weight:400;color:#fff;margin:0;letter-spacing:.04em}\n#ks-root button{font:inherit;font-weight:500;color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;transition:border-color .2s,box-shadow .2s,background .2s,color .2s;white-space:nowrap}\n#ks-root button:hover{border-color:var(--accent);color:#fff;box-shadow:0 0 16px color-mix(in srgb,var(--accent) 35%,transparent)}\n#ks-root button.on{background:color-mix(in srgb,var(--accent) 20%,transparent);border-color:var(--accent);color:#fff}\n#ks-root button:focus-visible,#ks-root input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}\n#ks-root input,#ks-root textarea,#ks-root select{font:inherit;color:#fff;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:10px;padding:8px 11px;width:100%}\n#ks-root select option{background:#0b1a2b}\n#ks-root textarea{resize:vertical;min-height:80px}\n#ks-root label{display:block;font-size:12px;color:var(--cyan2);margin:10px 0 4px;letter-spacing:.05em}\n.ks-glass{background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:var(--radius);transition:background 1.2s,border-color 1.2s}\n.ks-hide{display:none!important}\n.ks-muted{color:var(--muted)}\n\n/* Himmel, Vorhang, Licht */\n#ks-sky{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}\n#ks-light{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity 1.5s;mix-blend-mode:screen}\n#ks-light.on{opacity:1;animation:ksBreath 10s ease-in-out infinite}\n@keyframes ksBreath{0%,100%{filter:brightness(.55)}50%{filter:brightness(1.15)}}\n.ks-curtain{position:absolute;top:0;bottom:0;width:51%;z-index:40;pointer-events:none;\n  background:repeating-linear-gradient(90deg,var(--velvet) 0 26px,var(--velvet2) 26px 44px,var(--velvet) 44px 70px);\n  box-shadow:inset 0 -80px 120px rgba(0,0,0,.7),inset 0 60px 80px rgba(0,0,0,.6);transition:transform 1s cubic-bezier(.7,0,.2,1)}\n.ks-curtain.l{left:0;transform:translateX(-101%)}\n.ks-curtain.r{right:0;transform:translateX(101%)}\n#ks-root.ks-shift .ks-curtain{transform:none}\n.ks-valance{position:absolute;left:0;right:0;top:0;height:0;z-index:41;pointer-events:none;background:linear-gradient(var(--velvet2),var(--velvet));box-shadow:0 8px 30px rgba(0,0,0,.6);transition:height 1.2s ease}\n#ks-root[data-mode=\"kino\"] .ks-valance{height:22px}\n#ks-root[data-mode=\"kino\"][data-hub=\"off\"] .ks-valance{height:0}\n\n/* Hub */\n#ks-hub{position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px;padding:10px 14px;transition:transform .6s,opacity .6s,margin .6s}\n#ks-root[data-hub=\"off\"] #ks-hub{transform:translateY(-140%);opacity:0;pointer-events:none;margin-bottom:-64px}\n.ks-brand{display:flex;flex-direction:column;line-height:1.05;margin-right:6px}\n.ks-brand b{font-family:Orbitron,sans-serif;font-weight:900;letter-spacing:.32em;font-size:15px;color:#fff}\n.ks-brand small{font-family:Cinzel,serif;font-size:11px;letter-spacing:.25em;color:var(--accent);transition:color 1.2s}\n.ks-mode{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:3px}\n#ks-root .ks-mode button{border:0;padding:6px 14px}\n.ks-search{flex:1 1 200px;min-width:160px}\n.ks-actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}\n.ks-chip{font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:.12em}\n#ks-reveal{position:absolute;top:8px;right:8px;z-index:31;opacity:.0;transition:opacity .4s}\n#ks-root[data-hub=\"off\"] #ks-reveal{opacity:.55}\n#ks-root[data-hub=\"off\"] #ks-reveal:hover{opacity:1}\n#ks-root[data-hub=\"on\"] #ks-reveal{display:none}\n\n/* B\u00fchne */\n#ks-main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;margin:0 12px 12px;align-items:start;transition:grid-template-columns .8s}\n#ks-root[data-mode=\"kino\"] #ks-main{grid-template-columns:minmax(0,1fr) 0px;gap:0;max-width:var(--stageMax);margin:10px auto 14px;padding:0 12px}\n#ks-root[data-mode=\"kino\"][data-side=\"on\"] #ks-main{grid-template-columns:minmax(0,1fr) 340px;gap:14px}\n#ks-stage{min-width:0;scroll-margin-top:96px}\n#ks-screen{position:relative;aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;border:1px solid var(--line);transition:box-shadow 1.2s,border-color 1.2s}\n#ks-root[data-mode=\"kino\"] #ks-screen{border-color:rgba(232,185,74,.25);box-shadow:0 0 0 1px rgba(0,0,0,.6),0 30px 120px -20px color-mix(in srgb,var(--glow,#E8B94A) 45%,transparent),0 0 220px -60px color-mix(in srgb,var(--glow,#E8B94A) 60%,transparent)}\n#ks-frame,#ks-frame>*{position:absolute;inset:0;width:100%;height:100%;border:0}\n#ks-frame video{object-fit:contain;background:#000}\n.ks-over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px;background:radial-gradient(circle at 50% 40%,rgba(11,26,43,.55),rgba(0,0,0,.92));z-index:3}\n.ks-over h2{font-size:clamp(20px,3vw,34px)}\n.ks-over p{max-width:560px;margin:0;color:var(--muted)}\n.ks-ring{width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--accent) var(--p,0%),rgba(255,255,255,.08) 0);display:grid;place-items:center}\n.ks-ring span{width:70px;height:70px;border-radius:50%;background:#050B14;display:grid;place-items:center;font-family:Orbitron,sans-serif;font-size:14px;color:#fff}\n#ks-controls{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;padding:8px 10px}\n#ks-seek{flex:1 1 220px;position:relative;height:22px;cursor:pointer}\n#ks-seek .bar{position:absolute;left:0;right:0;top:9px;height:4px;border-radius:4px;background:rgba(255,255,255,.1)}\n#ks-seek .buf{position:absolute;left:0;top:9px;height:4px;border-radius:4px;background:rgba(255,255,255,.22)}\n#ks-seek .pos{position:absolute;left:0;top:9px;height:4px;border-radius:4px;background:var(--accent)}\n#ks-seek .mk{position:absolute;top:3px;width:3px;height:16px;border-radius:2px;background:var(--accent2);transform:translateX(-1px)}\n#ks-time{font-family:Orbitron,sans-serif;font-size:12px;min-width:104px;text-align:center;color:var(--muted)}\n#ks-root #ks-vol{width:80px;padding:0;accent-color:var(--accent);border:0;background:none}\n#ks-root #ks-rate{width:auto;padding:6px 8px}\n#ks-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:12px 14px}\n#ks-meta h1{font-size:clamp(18px,2.2vw,26px)}\n#ks-meta .sub{color:var(--muted);font-size:13px}\n\n/* Seitenleiste */\n#ks-side{padding:10px;min-width:0;overflow:hidden;max-height:calc(100vh - 110px);display:flex;flex-direction:column;position:sticky;top:84px;transition:opacity .6s}\n#ks-root[data-mode=\"kino\"]:not([data-side=\"on\"]) #ks-side{opacity:0;pointer-events:none}\n.ks-tabs{display:flex;gap:4px;margin-bottom:8px}\n#ks-root .ks-tabs button{flex:1;padding:6px 8px;font-size:13px}\n.ks-pane{overflow-y:auto;min-height:0;flex:1}\n.ks-note{position:relative;padding:10px 12px;margin-bottom:8px;border-radius:12px;background:rgba(255,255,255,.05);border-left:3px solid var(--nc,var(--accent))}\n.ks-note.pin{background:color-mix(in srgb,var(--nc,var(--accent)) 12%,transparent)}\n.ks-note .t{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center;justify-content:space-between}\n.ks-note .body{white-space:pre-wrap;word-break:break-word;margin:4px 0}\n.ks-note img{max-width:100%;border-radius:8px;margin-top:6px;display:block;cursor:zoom-in}\n#ks-root .ks-mini{padding:3px 8px;font-size:12px}\n.ks-bm{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:10px;cursor:pointer}\n.ks-bm:hover{background:rgba(255,255,255,.06)}\n.ks-bm b{font-family:Orbitron,sans-serif;font-size:12px;color:var(--accent);min-width:56px}\n.ks-bm span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n\n/* Katalog */\n#ks-catalog{margin:0 12px 16px;padding:14px}\n#ks-root[data-mode=\"kino\"] #ks-catalog{max-width:var(--stageMax);margin:0 auto 16px}\n.ks-filters{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}\n#ks-root .ks-filters button{font-size:13px;padding:5px 11px}\n.ks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}\n#ks-root[data-mode=\"kino\"] .ks-grid{grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);grid-template-columns:none;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}\n.ks-card{position:relative;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid var(--line);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;scroll-snap-align:start}\n.ks-card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 30px -10px color-mix(in srgb,var(--accent) 45%,transparent)}\n.ks-card .th{aspect-ratio:16/9;background:linear-gradient(135deg,#0B1A2B,#1b2f45) center/cover;position:relative}\n.ks-card .badge{position:absolute;left:8px;top:8px;font-size:11px;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.6);color:var(--cyan2)}\n.ks-card .badge.ms{color:var(--orange)}\n.ks-card .prog{position:absolute;left:0;bottom:0;height:3px;background:var(--accent)}\n.ks-card .in{padding:9px 11px}\n.ks-card .in b{display:block;color:#fff;font-weight:600;line-height:1.2}\n.ks-card .in small{color:var(--muted)}\n.ks-card .fav{position:absolute;right:8px;top:6px;font-size:18px;text-shadow:0 1px 4px #000;opacity:.85}\n.ks-empty{padding:30px;text-align:center;color:var(--muted)}\n\n/* Overlays: Meditation, Fokus, Modal, Toast */\n.ks-full{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;background:radial-gradient(circle at 50% 45%,rgba(20,14,40,.85),rgba(2,3,6,.97));animation:ksFade 1.2s ease}\n@keyframes ksFade{from{opacity:0}to{opacity:1}}\n.ks-breath{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--glow,#2FD3E8) 70%,#fff 10%),color-mix(in srgb,var(--glow,#2FD3E8) 10%,transparent) 70%);box-shadow:0 0 120px color-mix(in srgb,var(--glow,#2FD3E8) 60%,transparent);animation:ksBreathe 10s ease-in-out infinite}\n@keyframes ksBreathe{0%,100%{transform:scale(.55)}40%{transform:scale(1)}50%{transform:scale(1)}}\n.ks-big{font-family:Orbitron,sans-serif;font-size:clamp(28px,6vw,54px);color:#fff;letter-spacing:.08em}\n.ks-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}\n#ks-modal{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:flex-start;justify-content:center;padding:60px 16px;background:rgba(0,0,0,.6)}\n#ks-modal .box{width:min(460px,100%);padding:20px;max-height:calc(100% - 40px);overflow:auto}\n#ks-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:2147483002;padding:10px 16px;border-radius:999px;background:rgba(5,11,20,.92);border:1px solid var(--line);transition:.35s;pointer-events:none;max-width:90%}\n#ks-toast.on{opacity:1;transform:translateX(-50%)}\n.ks-lights{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}\n#ks-root .ks-lights button{border-radius:12px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px}\n.ks-lights i{width:26px;height:26px;border-radius:50%;box-shadow:0 0 16px currentColor;background:currentColor}\n\n@media (max-width:900px){\n  #ks-main,#ks-root[data-mode=\"kino\"][data-side=\"on\"] #ks-main{grid-template-columns:1fr}\n  #ks-side{position:static;max-height:none}\n  #ks-root[data-mode=\"kino\"]:not([data-side=\"on\"]) #ks-side{display:none}\n}\n@media (max-width:560px){\n  #ks-hub{margin:8px;padding:8px}\n  .ks-brand small{display:none}\n  #ks-time{min-width:0}\n  #ks-root #ks-vol{display:none}\n  .ks-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}\n}\n@media (prefers-reduced-motion:reduce){\n  .ks-curtain,#ks-hub,#ks-main{transition:none}\n  #ks-light.on,.ks-breath{animation:none}\n}\n"; document.head.appendChild(st);
+  host.innerHTML = "<div id=\"ks-root\" data-mode=\"lern\" data-hub=\"on\" data-side=\"off\">\n  <canvas id=\"ks-sky\" aria-hidden=\"true\"></canvas>\n  <div id=\"ks-light\" aria-hidden=\"true\"></div>\n  <div class=\"ks-valance\" aria-hidden=\"true\"></div>\n  <div class=\"ks-curtain l\" aria-hidden=\"true\"></div><div class=\"ks-curtain r\" aria-hidden=\"true\"></div>\n\n  <header id=\"ks-hub\" class=\"ks-glass\">\n    <div class=\"ks-brand\"><b>KINOSAAL</b><small>YOU ARE NEO</small></div>\n    <div class=\"ks-mode\" role=\"group\" aria-label=\"Modus\">\n      <button data-mode=\"lern\" class=\"on\" title=\"Lernraum (K)\">Lernraum</button>\n      <button data-mode=\"kino\" title=\"Kinosaal (K)\">Kinosaal</button>\n    </div>\n    <input id=\"ks-q\" class=\"ks-search\" type=\"search\" placeholder=\"Filme, Kurse, Themen suchen \u2026\" aria-label=\"Suchen\">\n    <div class=\"ks-actions\">\n      <button id=\"ks-focus\" class=\"ks-chip\" title=\"Fokus-Timer 45/5\">\u23f1 Fokus</button>\n      <button id=\"ks-lightbtn\" title=\"Meditationslicht\">\u2726 Licht</button>\n      <button id=\"ks-medroom\" title=\"Pause im Meditationsraum\">\u263e Meditationsraum</button>\n      <button id=\"ks-vr\" title=\"Visual Room \u00f6ffnen\">\u25ce Visual Room</button>\n      <button id=\"ks-upload\" title=\"Eigenen Film einreichen\">\uff0b Film einreichen</button>\n      <button id=\"ks-account\">Anmelden</button>\n      <button id=\"ks-hubhide\" title=\"Hub ausblenden (H)\">\u25b4</button>\n    </div>\n  </header>\n  <button id=\"ks-reveal\" title=\"Hub zeigen (H)\">\u25be Hub</button>\n\n  <main id=\"ks-main\">\n    <section id=\"ks-stage\">\n      <div id=\"ks-screen\">\n        <div id=\"ks-frame\"></div>\n        <div id=\"ks-welcome\" class=\"ks-over\">\n          <h2>Willkommen im Kinosaal</h2>\n          <p>W\u00e4hle unten einen Film. Im <b>Lernraum</b> schreibst du mit, im <b>Kinosaal</b> taucht alles ins Dunkel. Nach jedem Film wartet eine kurze Meditation.</p>\n        </div>\n        <div id=\"ks-ms\" class=\"ks-over ks-hide\">\n          <h2 id=\"ks-ms-t\"></h2>\n          <p>Dieser Film l\u00e4uft in der Academy. Deine Notizen, Favoriten und Playlisten bleiben hier.</p>\n          <div class=\"ks-row\"><button id=\"ks-ms-go\" class=\"on\">\u25b6 Im Kurs ansehen</button><button id=\"ks-ms-note\">\u270e Notiz dazu</button></div>\n        </div>\n        <div id=\"ks-buf\" class=\"ks-over ks-hide\">\n          <div class=\"ks-ring\"><span id=\"ks-buf-p\">0 %</span></div>\n          <p id=\"ks-buf-t\">Film wird vorgeladen \u2026</p>\n          <div class=\"ks-row\"><button id=\"ks-buf-go\">Jetzt starten</button><button id=\"ks-buf-x\">Abbrechen</button></div>\n        </div>\n      </div>\n      <div id=\"ks-controls\" class=\"ks-glass\">\n        <button id=\"ks-play\" title=\"Abspielen/Pause (Leertaste)\">\u25b6</button>\n        <button id=\"ks-back\" title=\"10 s zur\u00fcck (\u2190)\">\u21ba10</button>\n        <button id=\"ks-fwd\" title=\"10 s vor (\u2192)\">10\u21bb</button>\n        <div id=\"ks-seek\" title=\"Springen\"><div class=\"bar\"></div><div class=\"buf\"></div><div class=\"pos\"></div><div id=\"ks-marks\"></div></div>\n        <span id=\"ks-time\">0:00 / 0:00</span>\n        <button id=\"ks-pre\" title=\"Vorladen bis 25 %, dann starten\">\u21e3 Vorladen</button>\n        <button id=\"ks-bm\" title=\"Lesezeichen an dieser Sekunde (B)\">\ud83d\udd16</button>\n        <button id=\"ks-shot\" title=\"Bildschirmfoto in Notizen (S)\">\ud83d\udcf7</button>\n        <select id=\"ks-rate\" title=\"Tempo\" style=\"width:auto\"><option value=\"0.75\">0,75\u00d7</option><option value=\"1\" selected>1\u00d7</option><option value=\"1.25\">1,25\u00d7</option><option value=\"1.5\">1,5\u00d7</option><option value=\"2\">2\u00d7</option></select>\n        <input id=\"ks-vol\" type=\"range\" min=\"0\" max=\"1\" step=\"0.05\" value=\"1\" aria-label=\"Lautst\u00e4rke\">\n        <button id=\"ks-sidebtn\" title=\"Notizen & Lesezeichen\">\u2630</button>\n        <button id=\"ks-fs\" title=\"Vollbild (F)\">\u26f6</button>\n      </div>\n      <div id=\"ks-meta\" class=\"ks-glass ks-hide\">\n        <div><h1 id=\"ks-title\"></h1><div class=\"sub\" id=\"ks-sub\"></div></div>\n        <div class=\"ks-row\"><button id=\"ks-fav\">\u2661 Favorit</button><button id=\"ks-wish\">\u2606 Merken</button><button id=\"ks-addpl\">\uff0b Playlist</button><label style=\"display:flex;align-items:center;gap:6px;margin:0;font-size:13px\"><input id=\"ks-aftermed\" type=\"checkbox\" style=\"width:auto\" checked> Meditation danach</label></div>\n      </div>\n    </section>\n\n    <aside id=\"ks-side\" class=\"ks-glass\">\n      <div class=\"ks-tabs\"><button data-tab=\"notes\" class=\"on\">Notizen</button><button data-tab=\"bm\">Lesezeichen</button><button data-tab=\"pl\">Playlist</button></div>\n      <div class=\"ks-pane\" data-pane=\"notes\">\n        <textarea id=\"ks-note-in\" placeholder=\"Gedanke festhalten \u2026 (N)\"></textarea>\n        <div class=\"ks-row\" style=\"justify-content:flex-start;margin:6px 0 10px\">\n          <button id=\"ks-note-add\" class=\"ks-mini on\">Speichern</button>\n          <button id=\"ks-note-img\" class=\"ks-mini\">\ud83d\uddbc Bild</button>\n          <button id=\"ks-note-time\" class=\"ks-mini on\" title=\"Zeitstempel anh\u00e4ngen\">\u23f2 mit Zeit</button>\n          <input id=\"ks-note-file\" type=\"file\" accept=\"image/*\" class=\"ks-hide\">\n        </div>\n        <div id=\"ks-notes\"></div>\n      </div>\n      <div class=\"ks-pane ks-hide\" data-pane=\"bm\"><div id=\"ks-bms\"></div></div>\n      <div class=\"ks-pane ks-hide\" data-pane=\"pl\"><div id=\"ks-pls\"></div></div>\n    </aside>\n  </main>\n\n  <section id=\"ks-catalog\" class=\"ks-glass\">\n    <h2 id=\"ks-cat-h\">Programm</h2>\n    <div class=\"ks-filters\" id=\"ks-filters\"></div>\n    <div class=\"ks-grid\" id=\"ks-grid\"></div>\n  </section>\n\n  <div id=\"ks-med\" class=\"ks-full ks-hide\" role=\"dialog\" aria-label=\"Meditation\">\n    <p class=\"ks-muted\" id=\"ks-med-k\">NACH DEM FILM</p>\n    <div class=\"ks-breath\"></div>\n    <div class=\"ks-big\" id=\"ks-med-t\">10:00</div>\n    <p id=\"ks-med-hint\">Einatmen, wenn der Kreis w\u00e4chst. Ausatmen, wenn er kleiner wird. Lass die Bilder nachklingen.</p>\n    <div class=\"ks-row\">\n      <button id=\"ks-med-snd\" class=\"on\">\u266b Klang an</button>\n      <button id=\"ks-med-room\">\u263e In den Meditationsraum</button>\n      <button id=\"ks-med-x\">Beenden</button>\n    </div>\n  </div>\n\n  <div id=\"ks-modal\" class=\"ks-hide\"><div class=\"box ks-glass\" id=\"ks-modal-box\"></div></div>\n  <div id=\"ks-toast\" role=\"status\"></div>\n</div>\n";
+})();
+(function () {
+/* ======================= KS_CONFIG =======================
+   Einstellungen, die ohne neuen Build änderbar sind, liegen in
+   Supabase-Tabelle ks_settings (lesbar über rpc ks_public_settings):
+     meditation_audio   – Adresse der Meditationsmusik (mp3)
+     meditationsraum_url, visual_room_url, standalone_url
+   ========================================================= */
+var KS_CONFIG = {
+  api: "https://emxqoahtipbmumghlixb.supabase.co",
+  apiKey: "sb_publishable_LPbsKEws5DMQLcKix0X2AQ_VtYNbO-P",
+  preloadTarget: 0.25,     // Anteil, bis zu dem „Vorladen“ puffert
+  medMinutes: 10,          // Meditation nach dem Film
+  focusWork: 45, focusBreak: 5
+};
+
+var root = document.getElementById('ks-root');
+if (!root || root.dataset.ready) return;
+root.dataset.ready = '1';
+var $ = function (id) { return document.getElementById(id); };
+var qa = function (sel, el) { return Array.prototype.slice.call((el || root).querySelectorAll(sel)); };
+var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function safeUrl(u) { return typeof u === 'string' && /^https:\/\/[^\s"<>]+$/.test(u) ? u : ''; }
+function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
+function uuid() { return crypto.randomUUID ? crypto.randomUUID() : 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function fmt(s) { s = Math.max(0, Math.floor(s || 0)); var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); }
+var toastT = 0;
+function toast(msg) { var t = $('ks-toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('on'); }, 2600); }
+
+/* ---------- Supabase: dasselbe NEO-Konto wie Visual Room & Studio ---------- */
+var sb = null, user = null;
+var sbReady = new Promise(function (res) {
+  function make() {
+    sb = window.supabase.createClient(KS_CONFIG.api, KS_CONFIG.apiKey, { auth: { persistSession: true, autoRefreshToken: true, storageKey: 'neo-auth' } });
+    sb.auth.onAuthStateChange(function (ev, session) {
+      var was = user && user.id; user = session ? session.user : null;
+      if ((user && user.id) !== was && ev !== 'INITIAL_SESSION') loadMine();
+    });
+    sb.auth.getSession().then(function (r) { user = r.data.session ? r.data.session.user : null; res(); });
+  }
+  if (window.supabase && window.supabase.createClient) return make();
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  s.onload = make; s.onerror = function () { res(); };
+  document.head.appendChild(s);
+});
+
+/* Gesamtzustand. Persönliches nur mit Anmeldung (RLS: nur eigene Zeilen). */
+var S = { videos: [], settings: {}, me: null, fav: {}, wish: {}, playlists: [], plItems: {}, bookmarks: [], notes: [], progress: {}, prefs: {} };
+var onState = [];
+function emit() { onState.forEach(function (f) { try { f(); } catch (e) { console.error(e); } }); }
+function rows(r) { return r && !r.error && r.data ? r.data : []; }
+
+function loadAll() {
+  return sbReady.then(function () {
+    if (!sb) { toast('Keine Verbindung – Kinosaal läuft eingeschränkt'); emit(); return; }
+    return Promise.all([
+      sb.from('ks_videos').select('*').order('sort').order('created_at', { ascending: false }).limit(2000),
+      sb.rpc('ks_public_settings'),
+      sb.rpc('vr_public_settings')
+    ]).then(function (r) {
+      S.videos = rows(r[0]);
+      S.settings = (r[1] && r[1].data) || {};
+      var vr = (r[2] && r[2].data) || {};
+      if (!S.settings.visual_room_url && vr.standalone_url) S.settings.visual_room_url = vr.standalone_url;
+      if (!S.videos.length && /[?&]ks-demo/.test(location.search)) S.videos = DEMO;
+      return loadMine();
+    });
+  });
+}
+
+function loadMine() {
+  var uid = user && user.id;
+  if (!sb || !uid) {
+    S.me = null; S.fav = {}; S.wish = {}; S.playlists = []; S.plItems = {}; S.bookmarks = []; S.notes = [];
+    try { S.progress = JSON.parse(store('ks_progress') || '{}'); } catch (e) { S.progress = {}; }
+    emit(); return Promise.resolve();
+  }
+  return Promise.all([
+    sb.from('ks_favorites').select('video_id,kind'),
+    sb.from('ks_playlists').select('*').order('created_at'),
+    sb.from('ks_playlist_items').select('*').order('pos'),
+    sb.from('ks_bookmarks').select('*').order('sec'),
+    sb.from('ks_notes').select('*').order('pinned', { ascending: false }).order('updated_at', { ascending: false }).limit(500),
+    sb.from('ks_progress').select('*'),
+    sb.from('ks_user_settings').select('prefs').maybeSingle(),
+    sb.from('neo_profiles').select('display_name').eq('id', uid).maybeSingle()
+  ]).then(function (r) {
+    S.fav = {}; S.wish = {};
+    rows(r[0]).forEach(function (f) { (f.kind === 'wish' ? S.wish : S.fav)[f.video_id] = 1; });
+    S.playlists = rows(r[1]);
+    S.plItems = {}; rows(r[2]).forEach(function (i) { (S.plItems[i.playlist_id] = S.plItems[i.playlist_id] || []).push(i.video_id); });
+    S.bookmarks = rows(r[3]); S.notes = rows(r[4]);
+    S.progress = {}; rows(r[5]).forEach(function (p) { S.progress[p.video_id] = p; });
+    S.prefs = (r[6] && r[6].data && r[6].data.prefs) || {};
+    var prof = r[7] && r[7].data;
+    S.me = { id: uid, email: user.email, name: (prof && prof.display_name) || (user.user_metadata && user.user_metadata.display_name) || (user.email || '').split('@')[0] };
+    if (!prof) sb.from('neo_profiles').insert({ id: uid, display_name: S.me.name }).then(function () {});
+    emit();
+  });
+}
+
+function needLogin(what) { if (S.me) return false; toast('Bitte anmelden, um ' + (what || 'das') + ' zu speichern'); openAuth(); return true; }
+function savePrefs(patch) {
+  Object.assign(S.prefs, patch);
+  store('ks_prefs', JSON.stringify(S.prefs));
+  if (S.me) sb.from('ks_user_settings').upsert({ user_id: S.me.id, prefs: S.prefs, updated_at: new Date().toISOString() }).then(function () {});
+}
+try { S.prefs = JSON.parse(store('ks_prefs') || '{}'); } catch (e) {}
+
+/* Private Bilder (Notizen/Screenshots) im Bucket ks-media, Ordner = eigene ID */
+function uploadImage(blob, ext) {
+  var path = S.me.id + '/' + uuid() + '.' + (ext || 'png');
+  return sb.storage.from('ks-media').upload(path, blob, { contentType: blob.type || 'image/png' }).then(function (r) {
+    if (r.error) throw r.error; return path;
+  });
+}
+var signed = {};
+function imageUrl(path) {
+  if (signed[path] && signed[path].until > Date.now()) return Promise.resolve(signed[path].url);
+  return sb.storage.from('ks-media').createSignedUrl(path, 3600).then(function (r) {
+    if (r.error) throw r.error; signed[path] = { url: r.data.signedUrl, until: Date.now() + 3000e3 }; return r.data.signedUrl;
+  });
+}
+
+/* ---------- Modal & Anmeldung ---------- */
+function modal(html) {
+  $('ks-modal-box').innerHTML = html + '<div class="ks-row" style="justify-content:flex-end;margin-top:14px"><button data-close>Schließen</button></div>';
+  $('ks-modal').classList.remove('ks-hide');
+  var f = $('ks-modal-box').querySelector('input,textarea,select'); if (f) f.focus();
+  return $('ks-modal-box');
+}
+function closeModal() { $('ks-modal').classList.add('ks-hide'); }
+$('ks-modal').addEventListener('click', function (e) { if (e.target.id === 'ks-modal' || e.target.hasAttribute('data-close')) closeModal(); });
+
+function authErr(m) {
+  if (/invalid login/i.test(m)) return 'E-Mail oder Passwort stimmt nicht.';
+  if (/already registered/i.test(m)) return 'Diese E-Mail hat schon ein Konto – bitte anmelden.';
+  if (/password/i.test(m)) return 'Das Passwort braucht mindestens 6 Zeichen.';
+  return m;
+}
+function openAuth() {
+  if (S.me) {
+    var b = modal('<h3>Dein NEO-Konto</h3><p class="ks-muted">Angemeldet als ' + esc(S.me.name) + ' (' + esc(S.me.email) + '). Dasselbe Konto gilt für Visual Room, Studio und Kinosaal.</p><button id="ks-out">Abmelden</button>');
+    b.querySelector('#ks-out').onclick = function () { sb.auth.signOut().then(closeModal); };
+    return;
+  }
+  var reg = false;
+  var b = modal('<h3 id="a-h">Anmelden</h3><p class="ks-muted">Ein Konto für das ganze NEO-Universum: Visual Room, Studio, Kinosaal.</p>' +
+    '<div id="a-nw" class="ks-hide"><label>Name</label><input id="a-name" autocomplete="name"></div>' +
+    '<label>E-Mail</label><input id="a-mail" type="email" autocomplete="email"><label>Passwort</label><input id="a-pw" type="password" autocomplete="current-password">' +
+    '<p id="a-msg" class="ks-muted" style="min-height:1.4em"></p>' +
+    '<div class="ks-row" style="justify-content:flex-start"><button id="a-go" class="on">Anmelden</button><button id="a-sw">Neues Konto</button><button id="a-fg">Passwort vergessen</button></div>');
+  function msg(t) { b.querySelector('#a-msg').textContent = t; }
+  b.querySelector('#a-sw').onclick = function () {
+    reg = !reg; b.querySelector('#a-nw').classList.toggle('ks-hide', !reg);
+    b.querySelector('#a-h').textContent = reg ? 'Konto anlegen' : 'Anmelden';
+    b.querySelector('#a-go').textContent = reg ? 'Konto anlegen' : 'Anmelden';
+    this.textContent = reg ? 'Ich habe ein Konto' : 'Neues Konto';
+  };
+  b.querySelector('#a-fg').onclick = function () {
+    var mail = b.querySelector('#a-mail').value.trim(); if (!mail) return msg('Bitte E-Mail eintragen.');
+    sb.auth.resetPasswordForEmail(mail, { redirectTo: location.href }).then(function () { msg('Wenn es das Konto gibt, ist ein Link unterwegs.'); });
+  };
+  b.querySelector('#a-go').onclick = function () {
+    var mail = b.querySelector('#a-mail').value.trim(), p = b.querySelector('#a-pw').value;
+    if (!mail || !p) return msg('Bitte E-Mail und Passwort eintragen.');
+    var call = reg ? sb.auth.signUp({ email: mail, password: p, options: { data: { display_name: b.querySelector('#a-name').value.trim() } } })
+                   : sb.auth.signInWithPassword({ email: mail, password: p });
+    call.then(function (r) {
+      if (r.error) return msg(authErr(r.error.message));
+      if (reg && !r.data.session) return msg('Fast geschafft: Bitte bestätige die E-Mail.');
+      closeModal(); toast('Willkommen im Kinosaal');
+    });
+  };
+}
+$('ks-account').onclick = function () { sbReady.then(openAuth); };
+onState.push(function () { $('ks-account').textContent = S.me ? '◉ ' + S.me.name : 'Anmelden'; });
+
+/* Beispielfilme nur mit ?ks-demo, solange der Katalog leer ist */
+var DEMO = [
+  { id: 'demo-1', source: 'mp4', title: 'Sintel (Blender Open Movie)', category: 'Demo', url: 'https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4', thumb: 'https://durian.blender.org/wp-content/uploads/2010/06/05.8b_comp_000272.jpg', duration_sec: 52, tags: ['demo'] },
+  { id: 'demo-2', source: 'youtube', title: 'Big Buck Bunny', category: 'Demo', url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', duration_sec: 635, tags: ['demo'] },
+  { id: 'demo-3', source: 'memberspot', title: 'Qi-Gong Level 1 – Einführung', category: 'Academy', course_name: 'Qi-Gong', deep_link: 'https://example.org', tags: ['demo'] }
+];
+
+/* ---------- Szene: Zukunft trifft Schamanismus ----------
+   Ein Canvas für beide Welten. mode 0 = Lernraum (klares Nachtblau, feines Raster),
+   mode 1 = Kinosaal (Sternendunkel, Feuerkreis, Waldsilhouette, goldenes Mandala).
+   Die Überblendung läuft über einen weichen Faktor, nicht über zwei Bilder. */
+var sky = $('ks-sky'), g = sky.getContext('2d');
+var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+var modeK = 0, modeTarget = 0, glowColor = [232, 185, 74], playing = false;
+var stars = [], threads = [], sparks = [], trees = [];
+
+function resize() {
+  var r = root.getBoundingClientRect();
+  W = Math.max(320, r.width); H = Math.max(400, Math.min(r.height, 4000));
+  sky.width = W * DPR; sky.height = H * DPR; g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  var n = Math.round(W * H / 5000);
+  stars = []; for (var i = 0; i < n; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.3 + .2, p: Math.random() * 6.28, s: .4 + Math.random() * 1.6 });
+  threads = []; for (i = 0; i < 7; i++) threads.push({ y: Math.random() * H * .7, a: 20 + Math.random() * 60, f: .002 + Math.random() * .004, sp: .1 + Math.random() * .3, ph: Math.random() * 6.28, hue: Math.random() < .5 ? 0 : 1 });
+  trees = []; var x = -20; while (x < W + 40) { trees.push({ x: x, h: 60 + Math.random() * 120, w: 26 + Math.random() * 30 }); x += 18 + Math.random() * 34; }
+}
+if (window.ResizeObserver) new ResizeObserver(resize).observe(root); else window.addEventListener('resize', resize);
+resize();
+
+function mix(a, b, k) { return a + (b - a) * k; }
+function rgba(c, a) { return 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + a + ')'; }
+
+var last = 0, t = 0;
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (document.hidden) return;
+  // Während der Film läuft genügt ein ruhiger Takt – schont Akku und Lüfter
+  var minDt = playing ? 66 : 33;
+  if (now - last < minDt) return;
+  var dt = Math.min(100, now - last); last = now; t += dt / 1000;
+  modeK += (modeTarget - modeK) * Math.min(1, dt / 500);
+  var k = modeK;
+
+  // Himmel
+  var top = [mix(10, 2, k), mix(22, 3, k), mix(36, 6, k)], bot = [mix(14, 12, k), mix(30, 5, k), mix(48, 8, k)];
+  var sg = g.createLinearGradient(0, 0, 0, H); sg.addColorStop(0, rgba(top, 1)); sg.addColorStop(1, rgba(bot, 1));
+  g.fillStyle = sg; g.fillRect(0, 0, W, H);
+
+  // Zukunft: feines Raster im Lernraum
+  if (k < .98) {
+    g.strokeStyle = 'rgba(127,217,232,' + (0.05 * (1 - k)) + ')'; g.lineWidth = 1; g.beginPath();
+    for (var gx = (t * 6) % 48; gx < W; gx += 48) { g.moveTo(gx, 0); g.lineTo(gx, H); }
+    for (var gy = 0; gy < H; gy += 48) { g.moveTo(0, gy); g.lineTo(W, gy); }
+    g.stroke();
+  }
+
+  // Sterne (im Kinosaal mehr und heller)
+  for (var i = 0; i < stars.length; i++) {
+    var s = stars[i]; if (i % 3 && k < .3) continue;
+    var tw = .5 + .5 * Math.sin(t * s.s + s.p);
+    g.fillStyle = 'rgba(255,248,235,' + ((.15 + .6 * tw) * (.35 + .65 * k)) + ')';
+    g.fillRect(s.x, s.y, s.r, s.r);
+  }
+
+  // Lichtfäden: Datenströme / Ahnenfäden
+  g.lineWidth = 1.2;
+  for (i = 0; i < threads.length; i++) {
+    var th = threads[i], c = th.hue ? [47, 211, 232] : [242, 145, 60];
+    if (k > .5) c = th.hue ? [232, 185, 74] : [200, 80, 42];
+    g.strokeStyle = rgba(c, .10 + .08 * Math.sin(t * .7 + th.ph)); g.beginPath();
+    for (var x = 0; x <= W; x += 16) { var y = th.y + Math.sin(x * th.f + t * th.sp + th.ph) * th.a; x ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.stroke();
+  }
+
+  // Goldenes Mandala hinter der Leinwand (Kinosaal)
+  if (k > .02) {
+    var cx = W / 2, cy = Math.min(H * .32, 420), R = Math.min(W, 900) * .42;
+    g.save(); g.translate(cx, cy); g.rotate(t * .02); g.strokeStyle = rgba(glowColor, .07 * k); g.lineWidth = 1;
+    for (i = 0; i < 12; i++) { g.rotate(Math.PI / 6); g.beginPath(); g.arc(R * .5, 0, R * .5, 0, Math.PI * 2); g.stroke(); }
+    g.beginPath(); g.arc(0, 0, R, 0, Math.PI * 2); g.stroke();
+    g.restore();
+  }
+
+  // Feuerkreis am Boden + Funken (Kinosaal)
+  var fy = Math.min(H, window.innerHeight + 200) - 10;
+  if (k > .02) {
+    var fg = g.createRadialGradient(W / 2, fy, 0, W / 2, fy, W * .55);
+    var flick = .8 + .2 * Math.sin(t * 7) * Math.sin(t * 3.3);
+    fg.addColorStop(0, rgba([242, 120, 40], .35 * k * flick)); fg.addColorStop(.4, rgba([200, 60, 30], .12 * k)); fg.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = fg; g.fillRect(0, fy - W * .55, W, W * .55 + 20);
+    if (!reduced && sparks.length < 70 && Math.random() < .5 * k) sparks.push({ x: W / 2 + (Math.random() - .5) * W * .3, y: fy, vx: (Math.random() - .5) * 20, vy: -30 - Math.random() * 60, l: 1 });
+  }
+  for (i = sparks.length - 1; i >= 0; i--) {
+    var p = sparks[i]; p.x += p.vx * dt / 1000 + Math.sin(t * 3 + i) * .3; p.y += p.vy * dt / 1000; p.l -= dt / 3500;
+    if (p.l <= 0) { sparks.splice(i, 1); continue; }
+    g.fillStyle = rgba([255, 180, 90], p.l * .8 * k); g.fillRect(p.x, p.y, 2, 2);
+  }
+
+  // Waldsilhouette
+  g.fillStyle = rgba([mix(8, 1, k), mix(18, 2, k), mix(28, 4, k)], .9);
+  g.beginPath(); g.moveTo(0, fy + 20);
+  for (i = 0; i < trees.length; i++) { var tr = trees[i]; g.lineTo(tr.x - tr.w / 2, fy); g.lineTo(tr.x, fy - tr.h * (.55 + .45 * k)); g.lineTo(tr.x + tr.w / 2, fy); }
+  g.lineTo(W, fy + 20); g.closePath(); g.fill();
+}
+requestAnimationFrame(frame);
+
+/* ---------- Moduswechsel: Licht dimmt, Vorhang fällt, Welt wechselt ---------- */
+var shifting = false;
+function setMode(m, instant) {
+  if (m === root.dataset.mode || shifting) return;
+  qa('.ks-mode button').forEach(function (b) { b.classList.toggle('on', b.dataset.mode === m); });
+  if (instant || reduced) { root.dataset.mode = m; modeTarget = modeK = m === 'kino' ? 1 : 0; afterMode(); return; }
+  shifting = true; root.classList.add('ks-shift');
+  setTimeout(function () {
+    root.dataset.mode = m; modeTarget = m === 'kino' ? 1 : 0; afterMode();
+    setTimeout(function () { root.classList.remove('ks-shift'); shifting = false; }, 250);
+  }, 1000);
+}
+function afterMode() {
+  var kino = root.dataset.mode === 'kino';
+  $('ks-cat-h').textContent = kino ? 'Heute im Saal' : 'Programm';
+  if (!kino) root.dataset.side = 'off';
+  savePrefs({ mode: root.dataset.mode });
+}
+qa('.ks-mode button').forEach(function (b) { b.onclick = function () { setMode(b.dataset.mode); }; });
+
+/* Hub ein-/ausblenden */
+function setHub(on) { root.dataset.hub = on ? 'on' : 'off'; }
+$('ks-hubhide').onclick = function () { setHub(false); toast('Hub ausgeblendet – H oder ▾ holt ihn zurück'); };
+$('ks-reveal').onclick = function () { setHub(true); };
+$('ks-sidebtn').onclick = function () {
+  if (root.dataset.mode === 'kino') root.dataset.side = root.dataset.side === 'on' ? 'off' : 'on';
+  else $('ks-side').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+};
+
+/* ---------- Meditationslicht ---------- */
+var LIGHTS = [
+  { id: 'feuer', name: 'Feuer', c: [242, 130, 50] },
+  { id: 'wasser', name: 'Wasser', c: [47, 211, 232] },
+  { id: 'kristall', name: 'Kristall', c: [170, 120, 255] },
+  { id: 'wald', name: 'Wald', c: [90, 200, 120] },
+  { id: 'mond', name: 'Mond', c: [210, 220, 255] },
+  { id: 'aus', name: 'Aus', c: null }
+];
+function setLight(id) {
+  var L = LIGHTS.filter(function (x) { return x.id === id; })[0] || LIGHTS[5], el = $('ks-light');
+  if (!L.c) { el.classList.remove('on'); $('ks-lightbtn').classList.remove('on'); }
+  else {
+    el.style.background = 'radial-gradient(ellipse at 50% 0%,' + rgba(L.c, .28) + ',transparent 55%),radial-gradient(ellipse at 0% 100%,' + rgba(L.c, .22) + ',transparent 50%),radial-gradient(ellipse at 100% 100%,' + rgba(L.c, .22) + ',transparent 50%)';
+    el.classList.add('on'); $('ks-lightbtn').classList.add('on');
+    glowColor = L.c; root.style.setProperty('--glow', 'rgb(' + L.c.join(',') + ')');
+  }
+  savePrefs({ light: L.id });
+}
+$('ks-lightbtn').onclick = function () {
+  var b = modal('<h3>Meditationslicht</h3><p class="ks-muted">Ein sanftes Licht, das im Atemrhythmus pulsiert (6 Atemzüge pro Minute).</p><div class="ks-lights">' +
+    LIGHTS.map(function (L) { return '<button data-l="' + L.id + '"><i style="color:' + (L.c ? 'rgb(' + L.c.join(',') + ')' : '#333') + '"></i>' + L.name + '</button>'; }).join('') + '</div>');
+  qa('[data-l]', b).forEach(function (x) { x.onclick = function () { setLight(x.dataset.l); closeModal(); }; });
+};
+
+/* ---------- Brücken zu den anderen Räumen ---------- */
+function roomUrl(v) {
+  // Relative Pfade ("/dashboard/…") gelten auf der Memberspot-Domain, auf der der Lader läuft
+  if (typeof v === 'string' && /^\/[\w\/-]+$/.test(v) && !/amazonaws\.com$|^localhost$/.test(location.hostname)) return location.origin + v;
+  return safeUrl(v);
+}
+function openRoom(key, name) {
+  var u = roomUrl(S.settings[key]);
+  if (!u) return toast(name + ' ist noch nicht verknüpft');
+  if (player && player.pause) player.pause();
+  window.open(u, '_blank', 'noopener');
+}
+$('ks-medroom').onclick = function () { openRoom('meditationsraum_url', 'Der Meditationsraum'); };
+$('ks-vr').onclick = function () { openRoom('visual_room_url', 'Der Visual Room'); };
+
+/* ---------- Player: eine Oberfläche, viele Quellen ----------
+   Jeder Adapter liefert dieselben Methoden. Alles Weitere (Vorladen, Lesezeichen,
+   Fokus-Timer, Meditation) spricht nur mit dieser Oberfläche. */
+var player = null, current = null, preloading = null;
+var frameEl = $('ks-frame');
+
+function loadScript(src, ready) {
+  return new Promise(function (res, rej) {
+    if (ready()) return res();
+    var s = document.createElement('script'); s.src = src; s.onload = function () { res(); }; s.onerror = rej; document.head.appendChild(s);
+  });
+}
+function ytId(u) { var m = String(u || '').match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/); return m ? m[1] : null; }
+function driveId(u) { var m = String(u || '').match(/(?:\/d\/|id=)([\w-]{20,})/); return m ? m[1] : null; }
+
+/* MP4 / Supabase-Speicher / beliebige direkte Datei */
+function mp4Player(v) {
+  var el = document.createElement('video'), p = { kind: 'mp4', canShot: true };
+  el.playsInline = true; el.preload = 'metadata'; el.crossOrigin = 'anonymous'; el.src = v.url;
+  el.addEventListener('error', function retry() {
+    // Ohne CORS-Freigabe lädt die Datei nur ohne crossOrigin – dann ist kein direktes Foto möglich
+    if (el.crossOrigin) { el.removeEventListener('error', retry); el.removeAttribute('crossorigin'); p.canShot = false; el.src = v.url; el.load(); if (p.want) el.play().catch(function () {}); }
+  });
+  el.addEventListener('ended', function () { onEnded(); });
+  el.addEventListener('play', function () { onPlayState(true); });
+  el.addEventListener('pause', function () { onPlayState(false); });
+  frameEl.appendChild(el);
+  p.el = el;
+  p.play = function () { p.want = true; return el.play().catch(function () {}); };
+  p.pause = function () { p.want = false; el.pause(); };
+  p.paused = function () { return el.paused; };
+  p.time = function () { return el.currentTime || 0; };
+  p.dur = function () { return isFinite(el.duration) ? el.duration : (v.duration_sec || 0); };
+  p.seek = function (s) { el.currentTime = clamp(s, 0, p.dur() || s); };
+  p.buffered = function () {
+    var d = p.dur(); if (!d || !el.buffered.length) return 0;
+    for (var i = 0; i < el.buffered.length; i++) if (el.buffered.start(i) <= el.currentTime + .5) var end = el.buffered.end(i);
+    return clamp((end || 0) / d, 0, 1);
+  };
+  p.startBuffer = function () { el.preload = 'auto'; el.load(); };
+  p.rate = function (r) { el.playbackRate = r; };
+  p.vol = function (x) { el.volume = x; el.muted = x === 0; };
+  p.shot = function () {
+    if (!p.canShot || !el.videoWidth) return null;
+    try {
+      var c = document.createElement('canvas'); c.width = el.videoWidth; c.height = el.videoHeight;
+      c.getContext('2d').drawImage(el, 0, 0);
+      return new Promise(function (res) { c.toBlob(res, 'image/jpeg', .9); });
+    } catch (e) { return null; }
+  };
+  p.destroy = function () { el.pause(); el.removeAttribute('src'); el.load(); el.remove(); };
+  return p;
+}
+
+/* YouTube über die IFrame-API (eigene Steuerleiste, kein Fremd-Chrome) */
+function ytPlayer(v) {
+  var p = { kind: 'youtube', canShot: false, _t: 0, _d: v.duration_sec || 0 }, yt = null, ready = false, queue = [];
+  var host = document.createElement('div'); frameEl.appendChild(host);
+  function when(f) { ready ? f() : queue.push(f); }
+  loadScript('https://www.youtube.com/iframe_api', function () { return window.YT && YT.Player; }).then(function () {
+    return new Promise(function (res) { if (YT.Player && YT.loaded) return res(); var o = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = function () { if (o) o(); res(); }; });
+  }).then(function () {
+    yt = new YT.Player(host, { videoId: ytId(v.url), playerVars: { rel: 0, modestbranding: 1, playsinline: 1, controls: 0, disablekb: 1, iv_load_policy: 3 },
+      events: {
+        onReady: function () { ready = true; p._d = yt.getDuration() || p._d; queue.splice(0).forEach(function (f) { f(); }); },
+        onStateChange: function (e) {
+          if (e.data === 0) onEnded();
+          onPlayState(e.data === 1);
+          if (p._onPlaying && e.data === 1) p._onPlaying();
+        }
+      } });
+  }).catch(function () { toast('YouTube lässt sich gerade nicht laden'); });
+  p.play = function () { when(function () { yt.playVideo(); }); };
+  p.pause = function () { when(function () { yt.pauseVideo(); }); };
+  p.paused = function () { return !ready || yt.getPlayerState() !== 1; };
+  p.time = function () { return ready ? yt.getCurrentTime() : 0; };
+  p.dur = function () { return ready ? (yt.getDuration() || p._d) : p._d; };
+  p.seek = function (s) { when(function () { yt.seekTo(s, true); }); };
+  p.buffered = function () { return ready ? yt.getVideoLoadedFraction() || 0 : 0; };
+  // YouTube puffert erst nach dem ersten Abspielen: kurz stumm anspielen, dann anhalten
+  p.startBuffer = function () {
+    when(function () {
+      var vol = yt.getVolume(), at = yt.getCurrentTime();
+      yt.mute(); p._onPlaying = function () { p._onPlaying = null; yt.pauseVideo(); yt.seekTo(at, true); yt.unMute(); yt.setVolume(vol); };
+      yt.playVideo();
+    });
+  };
+  p.rate = function (r) { when(function () { yt.setPlaybackRate(r); }); };
+  p.vol = function (x) { when(function () { yt.setVolume(Math.round(x * 100)); x ? yt.unMute() : yt.mute(); }); };
+  p.shot = function () { return null; };
+  p.destroy = function () { try { yt && yt.destroy(); } catch (e) {} frameEl.innerHTML = ''; };
+  return p;
+}
+
+/* Vimeo über player.js (Werte kommen asynchron, deshalb zwischengespeichert) */
+function vimeoPlayer(v) {
+  var p = { kind: 'vimeo', canShot: false, _t: 0, _d: v.duration_sec || 0, _b: 0, _paused: true }, vp = null, queue = [];
+  var host = document.createElement('div'); frameEl.appendChild(host);
+  function when(f) { vp ? f() : queue.push(f); }
+  loadScript('https://player.vimeo.com/api/player.js', function () { return window.Vimeo && Vimeo.Player; }).then(function () {
+    vp = new Vimeo.Player(host, { url: v.url, responsive: false, dnt: true, title: false, byline: false, portrait: false });
+    vp.on('timeupdate', function (d) { p._t = d.seconds; p._d = d.duration; });
+    vp.on('progress', function (d) { p._b = d.percent; });
+    vp.on('play', function () { p._paused = false; onPlayState(true); if (p._onPlaying) p._onPlaying(); });
+    vp.on('pause', function () { p._paused = true; onPlayState(false); });
+    vp.on('ended', function () { p._paused = true; onEnded(); });
+    vp.getDuration().then(function (d) { p._d = d; });
+    host.querySelector('iframe') && (host.querySelector('iframe').style.cssText = 'position:absolute;inset:0;width:100%;height:100%');
+    queue.splice(0).forEach(function (f) { f(); });
+  }).catch(function () { toast('Vimeo lässt sich gerade nicht laden'); });
+  p.play = function () { when(function () { vp.play().catch(function () {}); }); };
+  p.pause = function () { when(function () { vp.pause(); }); };
+  p.paused = function () { return p._paused; };
+  p.time = function () { return p._t; };
+  p.dur = function () { return p._d; };
+  p.seek = function (s) { p._t = s; when(function () { vp.setCurrentTime(s).catch(function () {}); }); };
+  p.buffered = function () { return p._b; };
+  p.startBuffer = function () {
+    when(function () { vp.getVolume().then(function (vol) { vp.setVolume(0); p._onPlaying = function () { p._onPlaying = null; vp.pause(); vp.setCurrentTime(p._t); vp.setVolume(vol); }; vp.play(); }); });
+  };
+  p.rate = function (r) { when(function () { vp.setPlaybackRate(r).catch(function () {}); }); };
+  p.vol = function (x) { when(function () { vp.setVolume(x); }); };
+  p.shot = function () { return null; };
+  p.destroy = function () { try { vp && vp.destroy(); } catch (e) {} frameEl.innerHTML = ''; };
+  return p;
+}
+
+/* Google Drive: nur als Vorschau-Einbettung (keine Steuerung von außen möglich) */
+function drivePlayer(v) {
+  var f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.src = 'https://drive.google.com/file/d/' + driveId(v.url) + '/preview';
+  frameEl.appendChild(f);
+  var noop = function () {};
+  return { kind: 'drive', canShot: false, limited: true, play: noop, pause: noop, paused: function () { return true; }, time: function () { return 0; }, dur: function () { return v.duration_sec || 0; },
+    seek: noop, buffered: function () { return 0; }, startBuffer: noop, rate: noop, vol: noop, shot: function () { return null; }, destroy: function () { f.remove(); } };
+}
+
+/* ---------- Film öffnen ---------- */
+function openVideo(v, opts) {
+  opts = opts || {};
+  stopPreload();
+  if (player) { saveProgress(true); player.destroy(); player = null; }
+  frameEl.innerHTML = ''; current = v; onPlayState(false);
+  $('ks-welcome').classList.add('ks-hide'); $('ks-ms').classList.add('ks-hide');
+  $('ks-meta').classList.remove('ks-hide');
+  $('ks-title').textContent = v.title;
+  $('ks-sub').textContent = [v.course_name, v.chapter_name, v.category, v.duration_sec ? fmt(v.duration_sec) : ''].filter(Boolean).join(' · ');
+  if (v.source === 'memberspot') {
+    $('ks-ms-t').textContent = v.title; $('ks-ms').classList.remove('ks-hide');
+  } else {
+    player = v.source === 'youtube' ? ytPlayer(v) : v.source === 'vimeo' ? vimeoPlayer(v) : v.source === 'drive' ? drivePlayer(v) : mp4Player(v);
+    player.rate(parseFloat($('ks-rate').value)); player.vol(parseFloat($('ks-vol').value));
+    var pr = S.progress[v.id];
+    if (pr && !pr.done && pr.sec > 15 && !opts.fromStart) { player.seek(pr.sec); toast('Weiter bei ' + fmt(pr.sec)); }
+    if (player.limited) toast('Drive-Filme laufen in der Vorschau – Vorladen & Lesezeichen gehen hier nicht');
+  }
+  qa('#ks-controls button, #ks-controls select, #ks-controls input').forEach(function (b) { b.disabled = !player || (player.limited && !/ks-(fs|sidebtn)/.test(b.id)); });
+  $('ks-shot').disabled = !player || player.limited;
+  renderMeta(); renderSide(); renderMarks();
+  store('ks_last', v.id);
+  if (opts.autoplay && player) (S.prefs.autoPreload ? preload : function () { player.play(); })();
+  if (!opts.noScroll) $('ks-stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+$('ks-ms-go').onclick = function () { if (current && safeUrl(current.deep_link)) window.open(current.deep_link, '_blank', 'noopener'); else toast('Für diesen Film fehlt noch der Kurs-Link'); };
+$('ks-ms-note').onclick = function () { $('ks-note-in').focus(); if (root.dataset.mode === 'kino') root.dataset.side = 'on'; };
+
+/* ---------- Abspielen, Zeit, Leiste ---------- */
+function onPlayState(on) { playing = on; $('ks-play').textContent = on ? '❚❚' : '▶'; if (on) focusTick(); }
+function togglePlay() { if (!player) return; player.paused() ? player.play() : player.pause(); }
+$('ks-play').onclick = togglePlay;
+$('ks-back').onclick = function () { player && player.seek(player.time() - 10); };
+$('ks-fwd').onclick = function () { player && player.seek(player.time() + 10); };
+$('ks-rate').onchange = function () { player && player.rate(parseFloat(this.value)); };
+$('ks-vol').oninput = function () { player && player.vol(parseFloat(this.value)); };
+$('ks-fs').onclick = function () {
+  var el = root.dataset.mode === 'kino' ? root : $('ks-screen');
+  document.fullscreenElement ? document.exitFullscreen() : (el.requestFullscreen ? el.requestFullscreen() : el.webkitRequestFullscreen && el.webkitRequestFullscreen());
+};
+$('ks-seek').addEventListener('click', function (e) {
+  if (!player || !player.dur()) return;
+  var r = this.getBoundingClientRect(); player.seek((e.clientX - r.left) / r.width * player.dur());
+});
+setInterval(function () {
+  if (!player) return;
+  var d = player.dur(), tm = player.time();
+  $('ks-time').textContent = fmt(tm) + ' / ' + fmt(d);
+  qa('#ks-seek .pos')[0].style.width = (d ? tm / d * 100 : 0) + '%';
+  qa('#ks-seek .buf')[0].style.width = (player.buffered() * 100) + '%';
+}, 250);
+
+/* ---------- Vorladen: erst puffern, dann ruckelfrei starten ---------- */
+function stopPreload() { if (preloading) { clearInterval(preloading.iv); preloading = null; } $('ks-buf').classList.add('ks-hide'); }
+function preload() {
+  if (!player || player.limited) return;
+  if (player.buffered() >= KS_CONFIG.preloadTarget) return player.play();
+  $('ks-buf').classList.remove('ks-hide'); player.startBuffer();
+  var best = 0, still = 0;
+  preloading = { iv: setInterval(function () {
+    var b = player.buffered(), goal = KS_CONFIG.preloadTarget, pct = Math.min(100, Math.round(b / goal * 100));
+    $('ks-buf-p').textContent = pct + ' %'; qa('#ks-buf .ks-ring')[0].style.setProperty('--p', pct + '%');
+    if (b > best + .002) { best = b; still = 0; } else still++;
+    $('ks-buf-t').textContent = still > 20 ? 'Die Quelle liefert gerade nichts nach – du kannst trotzdem starten.' : 'Film wird vorgeladen … (' + Math.round(b * 100) + ' % des Films im Speicher)';
+    if (b >= goal) { stopPreload(); player.play(); }
+  }, 250) };
+}
+$('ks-pre').onclick = preload;
+$('ks-buf-go').onclick = function () { stopPreload(); player && player.play(); };
+$('ks-buf-x').onclick = stopPreload;
+
+/* ---------- Fortschritt ---------- */
+var lastSave = 0;
+function saveProgress(force) {
+  if (!player || !current || player.limited) return;
+  var tm = player.time(), d = player.dur(); if (!tm) return;
+  if (!force && Date.now() - lastSave < 10000) return; lastSave = Date.now();
+  var row = { video_id: current.id, sec: Math.round(tm), done: d ? tm / d > .95 : false, updated_at: new Date().toISOString() };
+  S.progress[current.id] = row;
+  if (S.me && !/^demo/.test(current.id)) sb.from('ks_progress').upsert(Object.assign({ user_id: S.me.id }, row)).then(function () {});
+  else store('ks_progress', JSON.stringify(S.progress));
+}
+setInterval(function () { if (playing) saveProgress(); }, 2000);
+window.addEventListener('pagehide', function () { saveProgress(true); });
+
+function onEnded() {
+  onPlayState(false);
+  if (current) { S.progress[current.id] = Object.assign({}, S.progress[current.id], { video_id: current.id, sec: 0, done: true }); saveProgress(true); }
+  renderCatalog();
+  if ($('ks-aftermed').checked) startMeditation('film');
+}
+
+/* ---------- Lesezeichen mit einem Klick ---------- */
+function addBookmark() {
+  if (!player || !current || player.limited) return;
+  var sec = Math.round(player.time() * 10) / 10, row = { id: uuid(), video_id: current.id, sec: sec, label: 'Moment bei ' + fmt(sec), created_at: new Date().toISOString() };
+  if (!/^demo/.test(current.id)) { if (needLogin('Lesezeichen')) return; sb.from('ks_bookmarks').insert({ id: row.id, video_id: row.video_id, sec: row.sec, label: row.label }).then(function (r) { if (r.error) toast('Lesezeichen nicht gespeichert'); }); }
+  S.bookmarks.push(row); S.bookmarks.sort(function (a, b) { return a.sec - b.sec; });
+  toast('🔖 ' + row.label); renderMarks(); renderSide();
+}
+$('ks-bm').onclick = addBookmark;
+function renderMarks() {
+  var d = player && player.dur(), box = $('ks-marks');
+  box.innerHTML = !current || !d ? '' : S.bookmarks.filter(function (b) { return b.video_id === current.id; })
+    .map(function (b) { return '<div class="mk" style="left:' + (b.sec / d * 100) + '%" title="' + esc(b.label) + '"></div>'; }).join('');
+}
+setInterval(function () { if (player && player.dur() && !$('ks-marks').children.length) renderMarks(); }, 2000);
+
+/* ---------- Bildschirmfoto → Notiz ---------- */
+function grabTab() {
+  // Fallback für YouTube/Vimeo: einmal den Tab freigeben, ein Einzelbild nehmen, Freigabe sofort beenden
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) return Promise.reject(new Error('nosupport'));
+  return navigator.mediaDevices.getDisplayMedia({ video: { displaySurface: 'browser' }, audio: false, preferCurrentTab: true }).then(function (stream) {
+    var v = document.createElement('video'); v.srcObject = stream; v.muted = true;
+    return v.play().then(function () { return new Promise(function (r) { setTimeout(r, 300); }); }).then(function () {
+      var c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight; c.getContext('2d').drawImage(v, 0, 0);
+      stream.getTracks().forEach(function (t) { t.stop(); });
+      return new Promise(function (res) { c.toBlob(res, 'image/jpeg', .9); });
+    });
+  });
+}
+function screenshot() {
+  if (!player || !current) return;
+  if (needLogin('Bildschirmfotos')) return;
+  var sec = player.time(), p = player.shot();
+  (p || grabTab()).then(function (blob) {
+    if (!blob) throw new Error('leer');
+    return uploadImage(blob, 'jpg').then(function (path) { return saveNote({ body: '📷 Bild bei ' + fmt(sec), sec: sec, images: [path] }); });
+  }).then(function () { toast('📷 In deinen Notizen'); })
+    .catch(function (e) { toast(e && e.message === 'nosupport' ? 'Dieser Browser kann hier kein Bildschirmfoto machen' : 'Bildschirmfoto abgebrochen'); });
+}
+$('ks-shot').onclick = screenshot;
+
+/* ---------- Katalog: Suche, Filter, Favoriten, Merkliste, Playlisten ---------- */
+var filter = 'alle', query = '';
+function vid(id) { for (var i = 0; i < S.videos.length; i++) if (S.videos[i].id === id) return S.videos[i]; return null; }
+function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+
+function renderFilters() {
+  var cats = {}; S.videos.forEach(function (v) { if (v.category) cats[v.category] = 1; });
+  var fx = [['alle', 'Alle'], ['weiter', '▶ Weiterschauen'], ['fav', '♥ Favoriten'], ['wish', '☆ Merkliste'], ['academy', 'Academy'], ['eigen', 'Eigene Filme']]
+    .concat(S.playlists.map(function (p) { return ['pl:' + p.id, '≡ ' + p.name]; }))
+    .concat(Object.keys(cats).sort().map(function (c) { return ['cat:' + c, c]; }));
+  $('ks-filters').innerHTML = fx.map(function (f) { return '<button data-f="' + esc(f[0]) + '"' + (filter === f[0] ? ' class="on"' : '') + '>' + esc(f[1]) + '</button>'; }).join('') +
+    '<button data-newpl>＋ Neue Playlist</button>';
+  qa('[data-f]', $('ks-filters')).forEach(function (b) { b.onclick = function () { filter = b.dataset.f; renderFilters(); renderCatalog(); }; });
+  $('ks-filters').querySelector('[data-newpl]').onclick = function () { newPlaylist(); };
+}
+
+function visible() {
+  var q = norm(query).split(/\s+/).filter(Boolean), list = S.videos.slice();
+  if (filter === 'weiter') list = list.filter(function (v) { var p = S.progress[v.id]; return p && !p.done && p.sec > 15; })
+    .sort(function (a, b) { return String(S.progress[b.id].updated_at || '').localeCompare(String(S.progress[a.id].updated_at || '')); });
+  else if (filter === 'fav') list = list.filter(function (v) { return S.fav[v.id]; });
+  else if (filter === 'wish') list = list.filter(function (v) { return S.wish[v.id]; });
+  else if (filter === 'academy') list = list.filter(function (v) { return v.source === 'memberspot'; });
+  else if (filter === 'eigen') list = list.filter(function (v) { return v.source !== 'memberspot'; });
+  else if (filter.indexOf('pl:') === 0) { var ids = S.plItems[filter.slice(3)] || []; list = ids.map(vid).filter(Boolean); }
+  else if (filter.indexOf('cat:') === 0) { var c = filter.slice(4); list = list.filter(function (v) { return v.category === c; }); }
+  if (q.length) list = list.filter(function (v) {
+    var hay = norm([v.title, v.description, v.course_name, v.chapter_name, v.category, (v.tags || []).join(' ')].join(' '));
+    return q.every(function (w) { return hay.indexOf(w) >= 0; });
+  });
+  return list;
+}
+
+function renderCatalog() {
+  var list = visible(), grid = $('ks-grid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="ks-empty">' + (S.videos.length ? (filter === 'fav' || filter === 'wish' ? (S.me ? 'Hier ist noch nichts gesammelt.' : 'Melde dich an, um Favoriten und deine Merkliste zu sehen.') : 'Nichts gefunden.') : 'Der Saal wird gerade bestückt – bald laufen hier die ersten Filme.') + '</div>';
+    return;
+  }
+  grid.innerHTML = list.map(function (v) {
+    var p = S.progress[v.id], pct = p && v.duration_sec ? Math.min(100, p.sec / v.duration_sec * 100) : p && p.done ? 100 : 0;
+    var th = safeUrl(v.thumb) || (v.source === 'youtube' && ytId(v.url) ? 'https://i.ytimg.com/vi/' + ytId(v.url) + '/hqdefault.jpg' : '');
+    return '<div class="ks-card" tabindex="0" data-v="' + esc(v.id) + '"><div class="th"' + (th ? ' style="background-image:url(\'' + esc(th) + '\')"' : '') + '>' +
+      '<span class="badge' + (v.source === 'memberspot' ? ' ms">ACADEMY' : '">' + (v.duration_sec ? fmt(v.duration_sec) : 'FILM')) + '</span>' +
+      (S.fav[v.id] ? '<span class="fav">♥</span>' : S.wish[v.id] ? '<span class="fav">☆</span>' : '') +
+      (pct ? '<div class="prog" style="width:' + pct + '%"></div>' : '') + '</div>' +
+      '<div class="in"><b>' + esc(v.title) + '</b><small>' + esc(v.course_name || v.category || '') + '</small></div></div>';
+  }).join('');
+  qa('.ks-card', grid).forEach(function (c) {
+    function go() { openVideo(vid(c.dataset.v), { autoplay: true }); }
+    c.onclick = go; c.onkeydown = function (e) { if (e.key === 'Enter') go(); };
+  });
+}
+$('ks-q').addEventListener('input', function () { query = this.value; renderCatalog(); });
+
+/* Favorit / Merkliste */
+function toggleMark(kind) {
+  if (!current || needLogin(kind === 'fav' ? 'Favoriten' : 'die Merkliste')) return;
+  var set = kind === 'fav' ? S.fav : S.wish, id = current.id, on = !set[id];
+  if (on) set[id] = 1; else delete set[id];
+  var q = on ? sb.from('ks_favorites').insert({ user_id: S.me.id, video_id: id, kind: kind })
+             : sb.from('ks_favorites').delete().match({ user_id: S.me.id, video_id: id, kind: kind });
+  q.then(function (r) { if (r.error) toast('Konnte nicht speichern'); });
+  toast(on ? (kind === 'fav' ? '♥ Zu Favoriten' : '☆ Gemerkt') : 'Entfernt');
+  renderMeta(); renderCatalog();
+}
+$('ks-fav').onclick = function () { toggleMark('fav'); };
+$('ks-wish').onclick = function () { toggleMark('wish'); };
+function renderMeta() {
+  if (!current) return;
+  $('ks-fav').textContent = S.fav[current.id] ? '♥ Favorit' : '♡ Favorit'; $('ks-fav').classList.toggle('on', !!S.fav[current.id]);
+  $('ks-wish').textContent = S.wish[current.id] ? '★ Gemerkt' : '☆ Merken'; $('ks-wish').classList.toggle('on', !!S.wish[current.id]);
+}
+
+/* Playlisten */
+function newPlaylist(thenAdd) {
+  if (needLogin('Playlisten')) return;
+  var b = modal('<h3>Neue Playlist</h3><label>Name</label><input id="pl-n" maxlength="60" placeholder="z. B. Abendprogramm"><div class="ks-row" style="justify-content:flex-start;margin-top:10px"><button id="pl-ok" class="on">Anlegen</button></div>');
+  b.querySelector('#pl-ok').onclick = function () {
+    var n = b.querySelector('#pl-n').value.trim(); if (!n) return;
+    sb.from('ks_playlists').insert({ name: n }).select().single().then(function (r) {
+      if (r.error) return toast('Playlist nicht angelegt');
+      S.playlists.push(r.data); closeModal(); renderFilters();
+      if (thenAdd) addToPlaylist(r.data.id); else toast('Playlist „' + n + '“ angelegt');
+    });
+  };
+}
+function addToPlaylist(pid) {
+  var items = S.plItems[pid] = S.plItems[pid] || [];
+  if (items.indexOf(current.id) >= 0) return toast('Schon in der Playlist');
+  items.push(current.id);
+  sb.from('ks_playlist_items').insert({ playlist_id: pid, video_id: current.id, pos: items.length }).then(function (r) { if (r.error) toast('Nicht hinzugefügt'); });
+  toast('＋ In der Playlist'); renderSide();
+}
+$('ks-addpl').onclick = function () {
+  if (!current || needLogin('Playlisten')) return;
+  if (!S.playlists.length) return newPlaylist(true);
+  var b = modal('<h3>Zu Playlist hinzufügen</h3><div class="ks-row" style="justify-content:flex-start">' +
+    S.playlists.map(function (p) { return '<button data-p="' + p.id + '">' + esc(p.name) + '</button>'; }).join('') + '<button data-new>＋ Neue</button></div>');
+  qa('[data-p]', b).forEach(function (x) { x.onclick = function () { closeModal(); addToPlaylist(x.dataset.p); }; });
+  b.querySelector('[data-new]').onclick = function () { newPlaylist(true); };
+};
+function nextInPlaylist() {
+  // Läuft ein Film aus einer Playlist, geht es nach der Meditation dort weiter
+  if (!current || filter.indexOf('pl:') !== 0) return null;
+  var ids = S.plItems[filter.slice(3)] || [], i = ids.indexOf(current.id);
+  return i >= 0 && i < ids.length - 1 ? vid(ids[i + 1]) : null;
+}
+
+/* Seitenleiste: Tabs, Lesezeichen, Playlist */
+qa('.ks-tabs button').forEach(function (b) {
+  b.onclick = function () {
+    qa('.ks-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    qa('.ks-pane').forEach(function (p) { p.classList.toggle('ks-hide', p.dataset.pane !== b.dataset.tab); });
+  };
+});
+function renderSide() {
+  renderNotes();
+  var bms = current ? S.bookmarks.filter(function (b) { return b.video_id === current.id; }) : [];
+  $('ks-bms').innerHTML = bms.length ? bms.map(function (b) {
+    return '<div class="ks-bm" data-s="' + b.sec + '"><b>' + fmt(b.sec) + '</b><span>' + esc(b.label) + '</span><button class="ks-mini" data-del="' + b.id + '" title="Löschen">✕</button></div>';
+  }).join('') : '<p class="ks-muted">Drück 🔖 oder B, um dir eine Sekunde zu merken.</p>';
+  qa('.ks-bm', $('ks-bms')).forEach(function (r) {
+    r.onclick = function (e) {
+      var del = e.target.getAttribute('data-del');
+      if (del) { e.stopPropagation(); S.bookmarks = S.bookmarks.filter(function (x) { return x.id !== del; }); if (S.me) sb.from('ks_bookmarks').delete().eq('id', del).then(function () {}); renderSide(); renderMarks(); return; }
+      if (player) { player.seek(parseFloat(r.dataset.s)); player.play(); }
+    };
+  });
+  $('ks-pls').innerHTML = !S.me ? '<p class="ks-muted">Melde dich an, um Playlisten zu bauen.</p>' :
+    (S.playlists.length ? S.playlists.map(function (p) {
+      var ids = S.plItems[p.id] || [];
+      return '<div class="ks-note"><div class="t"><b style="color:#fff">' + esc(p.name) + '</b><span>' + ids.length + ' Filme</span></div>' +
+        ids.map(function (id, i) { var v = vid(id); return v ? '<div class="ks-bm" data-v="' + v.id + '"><b>' + (i + 1) + '</b><span>' + esc(v.title) + '</span></div>' : ''; }).join('') +
+        '<div class="ks-row" style="justify-content:flex-start"><button class="ks-mini" data-play="' + p.id + '">▶ Abspielen</button><button class="ks-mini" data-drop="' + p.id + '">Löschen</button></div></div>';
+    }).join('') : '<p class="ks-muted">Noch keine Playlist. Über „＋ Playlist“ unter dem Film legst du eine an.</p>');
+  qa('[data-v]', $('ks-pls')).forEach(function (r) { r.onclick = function () { openVideo(vid(r.dataset.v), { autoplay: true }); }; });
+  qa('[data-play]', $('ks-pls')).forEach(function (b) { b.onclick = function () { filter = 'pl:' + b.dataset.play; renderFilters(); renderCatalog(); var v = vid((S.plItems[b.dataset.play] || [])[0]); if (v) openVideo(v, { autoplay: true }); }; });
+  qa('[data-drop]', $('ks-pls')).forEach(function (b) {
+    b.onclick = function () {
+      if (!confirm('Playlist löschen? Die Filme selbst bleiben erhalten.')) return;
+      sb.from('ks_playlists').delete().eq('id', b.dataset.drop).then(function () {});
+      S.playlists = S.playlists.filter(function (p) { return p.id !== b.dataset.drop; }); delete S.plItems[b.dataset.drop];
+      if (filter === 'pl:' + b.dataset.drop) filter = 'alle';
+      renderFilters(); renderCatalog(); renderSide();
+    };
+  });
+}
+
+/* Film einreichen: Link zum eigenen Video in Drive (Vereinsmitglieder-Medien) */
+$('ks-upload').onclick = function () {
+  if (needLogin('Einreichungen')) return;
+  var folder = safeUrl(S.settings.upload_folder_url);
+  var b = modal('<h3>Film einreichen</h3><p class="ks-muted">Lade deinen Film in den Drive-Ordner <b>Vereinsmitglieder Medien → Videos</b>' +
+    (folder ? ' (<a href="' + esc(folder) + '" target="_blank" rel="noopener">Ordner öffnen</a>)' : '') + ' und schick uns hier den Link. Wir schauen ihn an und nehmen ihn ins Programm.</p>' +
+    '<label>Titel</label><input id="sb-t" maxlength="120"><label>Link zum Film</label><input id="sb-l" type="url" placeholder="https://drive.google.com/…"><label>Worum geht es? (optional)</label><textarea id="sb-n" maxlength="1000"></textarea>' +
+    '<div class="ks-row" style="justify-content:flex-start;margin-top:10px"><button id="sb-ok" class="on">Einreichen</button></div>');
+  b.querySelector('#sb-ok').onclick = function () {
+    var t = b.querySelector('#sb-t').value.trim(), l = b.querySelector('#sb-l').value.trim();
+    if (!t || !safeUrl(l)) return toast('Bitte Titel und einen https-Link angeben');
+    sb.from('ks_submissions').insert({ title: t, link: l, note: b.querySelector('#sb-n').value.trim() }).then(function (r) {
+      if (r.error) return toast('Einreichen hat nicht geklappt'); closeModal(); toast('Danke! Dein Film ist eingereicht.');
+    });
+  };
+};
+
+onState.push(function () { renderFilters(); renderCatalog(); renderMeta(); renderSide(); });
+
+/* ---------- Notizfenster: mitschreiben, anheften, Bilder, Bildschirmfotos ---------- */
+var NOTE_COLORS = ['#2FD3E8', '#F2913C', '#E8B94A', '#A878FF', '#5AC878'];
+var withTime = true;
+
+function saveNote(n) {
+  var row = Object.assign({ id: uuid(), video_id: current && !/^demo/.test(current.id) ? current.id : null, body: '', images: [], pinned: false, color: null }, n);
+  row.sec = n.sec != null ? Math.round(n.sec * 10) / 10 : null;
+  row.created_at = row.updated_at = new Date().toISOString();
+  S.notes.unshift(row); renderNotes();
+  return sb.from('ks_notes').insert({ id: row.id, video_id: row.video_id, sec: row.sec, body: row.body, images: row.images, pinned: row.pinned, color: row.color })
+    .then(function (r) { if (r.error) { toast('Notiz nicht gespeichert'); throw r.error; } return row; });
+}
+function patchNote(id, patch) {
+  S.notes.forEach(function (n) { if (n.id === id) Object.assign(n, patch); });
+  patch.updated_at = new Date().toISOString();
+  sb.from('ks_notes').update(patch).eq('id', id).then(function (r) { if (r.error) toast('Änderung nicht gespeichert'); });
+  renderNotes();
+}
+
+$('ks-note-time').onclick = function () { withTime = !withTime; this.classList.toggle('on', withTime); };
+$('ks-note-add').onclick = function () {
+  var t = $('ks-note-in').value.trim(); if (!t) return;
+  if (needLogin('Notizen')) return;
+  saveNote({ body: t, sec: withTime && player && !player.limited ? player.time() : null }).then(function () { $('ks-note-in').value = ''; });
+};
+$('ks-note-in').addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) $('ks-note-add').click(); });
+$('ks-note-img').onclick = function () { if (!needLogin('Bilder')) $('ks-note-file').click(); };
+$('ks-note-file').onchange = function () {
+  var f = this.files[0]; this.value = ''; if (!f) return;
+  if (f.size > 8 * 1024 * 1024) return toast('Bild ist größer als 8 MB');
+  var ext = (f.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+  toast('Bild wird hochgeladen …');
+  uploadImage(f, ext).then(function (path) {
+    return saveNote({ body: $('ks-note-in').value.trim() || '🖼 ' + f.name, sec: withTime && player && !player.limited ? player.time() : null, images: [path] });
+  }).then(function () { $('ks-note-in').value = ''; toast('Bild in deinen Notizen'); }).catch(function () { toast('Hochladen hat nicht geklappt'); });
+};
+// Bild aus der Zwischenablage direkt ins Notizfeld einfügen
+$('ks-note-in').addEventListener('paste', function (e) {
+  var it = Array.prototype.filter.call((e.clipboardData || {}).items || [], function (i) { return i.type.indexOf('image') === 0; })[0];
+  if (!it || needLogin('Bilder')) return;
+  e.preventDefault();
+  uploadImage(it.getAsFile(), 'png').then(function (path) { return saveNote({ body: $('ks-note-in').value.trim() || '🖼 Eingefügtes Bild', sec: player && !player.limited ? player.time() : null, images: [path] }); })
+    .then(function () { $('ks-note-in').value = ''; });
+});
+
+function renderNotes() {
+  var box = $('ks-notes');
+  if (!S.me) { box.innerHTML = '<p class="ks-muted">Melde dich an – dann bleiben Notizen, Bilder und Bildschirmfotos in deinem Konto, auf jedem Gerät.</p>'; return; }
+  // Angeheftete immer oben, dann die zum laufenden Film, dann der Rest
+  var cid = current && current.id;
+  var list = S.notes.slice().sort(function (a, b) {
+    var pa = (a.pinned ? 2 : 0) + (a.video_id === cid ? 1 : 0), pb = (b.pinned ? 2 : 0) + (b.video_id === cid ? 1 : 0);
+    return pb - pa || String(b.updated_at).localeCompare(String(a.updated_at));
+  }).slice(0, 80);
+  if (!list.length) { box.innerHTML = '<p class="ks-muted">Noch keine Notizen. Schreib los – mit ⏲ merkt sich jede Notiz die Filmsekunde.</p>'; return; }
+  box.innerHTML = list.map(function (n) {
+    var v = n.video_id && vid(n.video_id);
+    return '<div class="ks-note' + (n.pinned ? ' pin' : '') + '" data-id="' + n.id + '" style="--nc:' + esc(n.color || NOTE_COLORS[0]) + '">' +
+      '<div class="t"><span>' + (n.sec != null && n.video_id ? '<a href="#" data-seek="' + n.sec + '" data-v="' + n.video_id + '">⏲ ' + fmt(n.sec) + '</a> · ' : '') + esc(v && v.id !== cid ? v.title : '') + '</span>' +
+      '<span><button class="ks-mini" data-pin title="Anheften">' + (n.pinned ? '📌' : '📍') + '</button><button class="ks-mini" data-col title="Farbe">●</button><button class="ks-mini" data-edit title="Bearbeiten">✎</button><button class="ks-mini" data-del title="Löschen">✕</button></span></div>' +
+      '<div class="body">' + esc(n.body) + '</div>' +
+      (n.images || []).map(function (p) { return '<img data-img="' + esc(p) + '" alt="Notizbild" loading="lazy">'; }).join('') + '</div>';
+  }).join('');
+  qa('img[data-img]', box).forEach(function (im) {
+    imageUrl(im.dataset.img).then(function (u) { im.src = u; }).catch(function () { im.alt = 'Bild nicht verfügbar'; });
+    im.onclick = function () { window.open(im.src, '_blank', 'noopener'); };
+  });
+  qa('.ks-note', box).forEach(function (el) {
+    var id = el.dataset.id, n = S.notes.filter(function (x) { return x.id === id; })[0];
+    el.querySelector('[data-pin]').onclick = function () { patchNote(id, { pinned: !n.pinned }); };
+    el.querySelector('[data-col]').onclick = function () { patchNote(id, { color: NOTE_COLORS[(NOTE_COLORS.indexOf(n.color || NOTE_COLORS[0]) + 1) % NOTE_COLORS.length] }); };
+    el.querySelector('[data-edit]').onclick = function () {
+      var b = modal('<h3>Notiz bearbeiten</h3><textarea id="ne-t" rows="6">' + esc(n.body) + '</textarea><div class="ks-row" style="justify-content:flex-start;margin-top:10px"><button id="ne-ok" class="on">Speichern</button></div>');
+      b.querySelector('#ne-ok').onclick = function () { patchNote(id, { body: b.querySelector('#ne-t').value }); closeModal(); };
+    };
+    el.querySelector('[data-del]').onclick = function () {
+      if (!confirm('Notiz löschen?')) return;
+      S.notes = S.notes.filter(function (x) { return x.id !== id; });
+      sb.from('ks_notes').delete().eq('id', id).then(function () {});
+      if ((n.images || []).length) sb.storage.from('ks-media').remove(n.images).then(function () {});
+      renderNotes();
+    };
+    var sk = el.querySelector('[data-seek]');
+    if (sk) sk.onclick = function (e) {
+      e.preventDefault();
+      var s = parseFloat(sk.dataset.seek);
+      if (!current || current.id !== sk.dataset.v) { var v = vid(sk.dataset.v); if (!v) return; openVideo(v, { fromStart: true }); }
+      setTimeout(function () { if (player) { player.seek(s); player.play(); } }, 400);
+    };
+  });
+}
+
+/* ---------- Meditationsklang ----------
+   Vorrang: eigene Meditationsmusik aus ks_settings.meditation_audio.
+   Sonst ein erzeugter Klangteppich (Grundton + Quinte + sanftes Rauschen) – läuft ohne Datei. */
+var actx = null, drone = null, medAudio = null, soundOn = store('ks_medsound') !== 'off';
+function ctx() {
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function bowl(delay) {
+  // Klangschale: ein paar unharmonische Obertöne mit langem Ausklang
+  var c = ctx(), t0 = c.currentTime + (delay || 0), out = c.createGain(); out.gain.value = .22; out.connect(c.destination);
+  [[220, 1], [528, .5], [843, .3], [1204, .16]].forEach(function (p) {
+    var o = c.createOscillator(), gn = c.createGain(); o.frequency.value = p[0]; o.connect(gn); gn.connect(out);
+    gn.gain.setValueAtTime(0, t0); gn.gain.linearRampToValueAtTime(p[1], t0 + .02); gn.gain.exponentialRampToValueAtTime(.0001, t0 + 7);
+    o.start(t0); o.stop(t0 + 7.2);
+  });
+}
+function startSound() {
+  if (!soundOn) return;
+  var url = safeUrl(S.settings.meditation_audio);
+  if (url) {
+    medAudio = medAudio || new Audio(url); medAudio.loop = true; medAudio.volume = 0; medAudio.play().catch(function () {});
+    var k = 0, iv = setInterval(function () { k += .05; medAudio.volume = Math.min(.7, k); if (k >= .7) clearInterval(iv); }, 150);
+    return;
+  }
+  var c = ctx(), out = c.createGain(); out.gain.value = 0; out.connect(c.destination);
+  out.gain.linearRampToValueAtTime(.18, c.currentTime + 4);
+  var nodes = [];
+  [136.1, 204.15, 272.2].forEach(function (f, i) {
+    var o = c.createOscillator(), gn = c.createGain(), l = c.createOscillator(), lg = c.createGain();
+    o.type = i ? 'sine' : 'triangle'; o.frequency.value = f; gn.gain.value = i ? .25 : .5;
+    l.frequency.value = .05 + i * .03; lg.gain.value = .15; l.connect(lg); lg.connect(gn.gain);
+    o.connect(gn); gn.connect(out); o.start(); l.start(); nodes.push(o, l);
+  });
+  // Meeresrauschen: gefiltertes Rauschen mit langsamer Welle (10 s = ein Atemzug)
+  var buf = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = buf.getChannelData(0);
+  for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  var n = c.createBufferSource(); n.buffer = buf; n.loop = true;
+  var lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 500;
+  var ng = c.createGain(); ng.gain.value = .05; var w = c.createOscillator(), wg = c.createGain(); w.frequency.value = .1; wg.gain.value = .04; w.connect(wg); wg.connect(ng.gain);
+  n.connect(lp); lp.connect(ng); ng.connect(out); n.start(); w.start(); nodes.push(n, w);
+  drone = { out: out, nodes: nodes };
+  bowl(.3);
+}
+function stopSound() {
+  if (medAudio) { var a = medAudio, iv = setInterval(function () { a.volume = Math.max(0, a.volume - .05); if (a.volume <= 0) { clearInterval(iv); a.pause(); } }, 120); }
+  if (drone) {
+    var c = ctx(), dn = drone; drone = null;
+    dn.out.gain.cancelScheduledValues(c.currentTime); dn.out.gain.setValueAtTime(dn.out.gain.value, c.currentTime); dn.out.gain.linearRampToValueAtTime(0, c.currentTime + 3);
+    setTimeout(function () { dn.nodes.forEach(function (x) { try { x.stop(); } catch (e) {} }); dn.out.disconnect(); }, 3200);
+  }
+}
+$('ks-med-snd').onclick = function () {
+  soundOn = !soundOn; store('ks_medsound', soundOn ? 'on' : 'off');
+  this.textContent = soundOn ? '♫ Klang an' : '♫ Klang aus'; this.classList.toggle('on', soundOn);
+  soundOn ? startSound() : stopSound();
+};
+
+/* ---------- Meditation: nach dem Film (10 Min) und in der Fokus-Pause (5 Min) ---------- */
+var med = null;
+function startMeditation(reason) {
+  if (med) return;
+  var min = reason === 'focus' ? KS_CONFIG.focusBreak : KS_CONFIG.medMinutes, end = Date.now() + min * 60000;
+  var lightBefore = S.prefs.light;
+  if (!lightBefore || lightBefore === 'aus') setLight(reason === 'focus' ? 'wald' : 'kristall');
+  $('ks-med-k').textContent = reason === 'focus' ? 'FOKUS-PAUSE · 5 MINUTEN' : 'NACH DEM FILM · ' + min + ' MINUTEN STILLE';
+  $('ks-med-hint').textContent = reason === 'focus'
+    ? 'Steh kurz auf, trink einen Schluck Wasser, schau in die Ferne. Der Film wartet auf dich.'
+    : 'Einatmen, wenn der Kreis wächst. Ausatmen, wenn er kleiner wird. Lass die Bilder nachklingen.';
+  $('ks-med-snd').textContent = soundOn ? '♫ Klang an' : '♫ Klang aus'; $('ks-med-snd').classList.toggle('on', soundOn);
+  $('ks-med').classList.remove('ks-hide');
+  startSound();
+  med = { reason: reason, lightBefore: lightBefore, iv: setInterval(function () {
+    var left = (end - Date.now()) / 1000;
+    $('ks-med-t').textContent = fmt(Math.max(0, left));
+    if (left <= 0) endMeditation(true);
+  }, 500) };
+  $('ks-med-t').textContent = fmt(min * 60);
+}
+function endMeditation(done) {
+  if (!med) return;
+  var m = med; med = null; clearInterval(m.iv);
+  if (done && soundOn) bowl(0);
+  stopSound(); $('ks-med').classList.add('ks-hide');
+  setLight(m.lightBefore || 'aus');
+  if (m.reason === 'focus') { focusPhase('work'); if (focus.resume && player) player.play(); }
+  else {
+    var nx = nextInPlaylist();
+    if (nx) { toast('Weiter in der Playlist: ' + nx.title); openVideo(nx, { autoplay: true }); }
+  }
+}
+$('ks-med-x').onclick = function () { endMeditation(false); };
+$('ks-med-room').onclick = function () { endMeditation(false); openRoom('meditationsraum_url', 'Der Meditationsraum'); };
+
+/* ---------- Fokus-Timer 45/5 ---------- */
+var focus = { on: false, phase: 'work', until: 0, iv: 0, resume: false };
+function focusPhase(ph) {
+  focus.phase = ph; focus.until = Date.now() + (ph === 'work' ? KS_CONFIG.focusWork : KS_CONFIG.focusBreak) * 60000;
+}
+function focusTick() {
+  if (!focus.on) { $('ks-focus').textContent = '⏱ Fokus'; return; }
+  var left = (focus.until - Date.now()) / 1000;
+  $('ks-focus').textContent = (focus.phase === 'work' ? '⏱ ' : '☾ ') + fmt(Math.max(0, left));
+  if (left > 0 || focus.phase !== 'work') return;
+  focus.resume = !!(player && !player.paused());
+  if (player) player.pause();
+  focusPhase('break'); startMeditation('focus');
+}
+$('ks-focus').onclick = function () {
+  focus.on = !focus.on; this.classList.toggle('on', focus.on);
+  clearInterval(focus.iv);
+  if (focus.on) { focusPhase('work'); focus.iv = setInterval(focusTick, 1000); toast('Fokus an: 45 Minuten Film, dann 5 Minuten Pause'); }
+  else toast('Fokus-Timer aus');
+  focusTick(); savePrefs({ focus: focus.on });
+};
+
+/* ---------- Tastatur ---------- */
+document.addEventListener('keydown', function (e) {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  var tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
+  if (!root.isConnected) return;
+  var k = e.key.toLowerCase(), hit = true;
+  if (k === ' ' && player) togglePlay();
+  else if (k === 'arrowleft' && player) player.seek(player.time() - 10);
+  else if (k === 'arrowright' && player) player.seek(player.time() + 10);
+  else if (k === 'b') addBookmark();
+  else if (k === 's') screenshot();
+  else if (k === 'n') { if (root.dataset.mode === 'kino') root.dataset.side = 'on'; $('ks-note-in').focus(); }
+  else if (k === 'k') setMode(root.dataset.mode === 'kino' ? 'lern' : 'kino');
+  else if (k === 'h') setHub(root.dataset.hub !== 'on');
+  else if (k === 'f') $('ks-fs').click();
+  else if (k === 'm') { var v = $('ks-vol'); v.value = v.value > 0 ? 0 : 1; v.oninput(); }
+  else if (k === 'escape' && med) endMeditation(false);
+  else hit = false;
+  if (hit) e.preventDefault();
+});
+// Im Kinosaal mit ausgeblendetem Hub: Maus an den oberen Rand holt ihn kurz zurück
+root.addEventListener('mousemove', function (e) {
+  if (root.dataset.hub === 'off' && e.clientY - root.getBoundingClientRect().top < 12) setHub(true);
+});
+
+/* ---------- Start ---------- */
+if (S.prefs.mode === 'kino') setMode('kino', true);
+if (S.prefs.light && S.prefs.light !== 'aus') setLight(S.prefs.light);
+loadAll().then(function () {
+  var last = store('ks_last'), v = last && vid(last);
+  if (v) openVideo(v, { noScroll: true });
+});
+
+})();

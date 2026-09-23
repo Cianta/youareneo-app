@@ -1,0 +1,138 @@
+<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Room · YOU ARE NEO</title>
+<style>html,body{margin:0;background:#03070d}#vr-root{border-radius:0!important}</style>
+<script>
+/* === VR PLAYER FIX v2026-09-20 ============================================
+ * Vorab: PMODE immer auf 'dock' zwingen — damit hdr/mini/compact nicht greifen.
+ * Das eigentliche Player-Verhalten kommt aus dem Bundle (vrDockC etc.).
+ * ====================================================================== */
+try { localStorage.setItem('vr_pmode','dock'); } catch(e) {}
+window.VR_IS_STANDALONE = true;
+/* Diese URL merken — Supabase RPC gibt sie auch zurück, aber wir patchen vorher. */
+window.VR_PLAYER_FIX = 'v20260920-r3';
+</script>
+<!-- VISUAL ROOM · YOU ARE NEO — Lader. Bundle liegt im FuseBase-Speicher;
+     welche Fassung geladen wird, steht in Supabase (vr_settings.bundle_url).
+     Updates brauchen keine Änderung hier. -->
+<div id="vr-mount"><div style="min-height:80vh;display:flex;align-items:center;justify-content:center;background:#03070D;color:#7FD9E8;border-radius:18px;font:13px system-ui,sans-serif;letter-spacing:.4em">VISUAL ROOM ÖFFNET SICH …</div></div>
+<script>
+(function () {
+  if (window.__vrLoader) return; window.__vrLoader = 1;
+  var mount = document.getElementById('vr-mount'), pending = false;
+  function fail() {
+    pending = false;
+    mount.innerHTML = '<div role="status" style="min-height:70vh;display:grid;place-content:center;gap:18px;text-align:center;background:#03070D;color:#c0dcd7;font:15px system-ui;padding:24px"><p>Der Visual Room konnte nicht geladen werden.</p><button id="vr-retry" style="padding:12px 20px;cursor:pointer">Erneut versuchen</button></div>';
+    document.getElementById('vr-retry').onclick = load;
+  }
+  function load() {
+    if (pending) return; pending = true;
+    mount.innerHTML = '<div role="status" style="min-height:70vh;display:grid;place-content:center;background:#03070D;color:#c0dcd7;font:14px system-ui">VISUAL ROOM ÖFFNET SICH …</div>';
+    var controller = new AbortController(), timeout = setTimeout(function () { controller.abort(); }, 15000);
+    fetch('https://emxqoahtipbmumghlixb.supabase.co/rest/v1/rpc/vr_public_settings', {
+      method: 'POST',
+      headers: {
+        apikey: 'sb_publishable_LPbsKEws5DMQLcKix0X2AQ_VtYNbO-P',
+        'Content-Type': 'application/json'
+      },
+      body: '{}', signal: controller.signal
+    }).then(function (r) { if (!r.ok) throw new Error('settings'); return r.json(); })
+      .then(function (s) {
+        clearTimeout(timeout);
+        if (!s || typeof s.bundle_url !== 'string' || !/^https:\/\//.test(s.bundle_url)) throw new Error('bundle');
+        window.VR_STANDALONE_URL = s.standalone_url;
+        var sc = document.createElement('script'); sc.src = s.bundle_url;
+        sc.onerror = function () { sc.remove(); fail(); };
+        sc.onload = function () {
+          pending = false;
+          if (!document.getElementById('vr-root')) { sc.remove(); fail(); return; }
+          applyPlayerFix();
+        };
+        document.body.appendChild(sc);
+      }).catch(function () { clearTimeout(timeout); fail(); });
+  }
+
+  /* === Player-Fix Patch ====================================================
+   * 1. CSS-Override: hdr/mini/compact-player Klassen dürfen den Player NICHT
+   *    schrumpfen oder verstecken. Nur die Standard-Dock-Optik ist gewollt.
+   * 2. MutationObserver: falls das Bundle setPMode() aufruft und hdr/mini wieder
+   *    draufpackt, fangen wir das ab und re-setzen sofort auf 'dock'.
+   * 3. Scroll-Dock-Polling: vrDockC() rechnet die Position für aside-Dock —
+   *    wir rufen es regelmäßig neu auf, damit es beim Scrollen mit der Uhr
+   *    in der Seitenleiste einrastet und immer sichtbar bleibt.
+   * ====================================================================== */
+  function applyPlayerFix() {
+    var css = document.createElement('style');
+    css.id = 'vr-player-fix-css';
+    css.textContent =
+      /* hdr-Mode entfernen — Player wird nicht mehr auf 96px / 210px geschrumpft */
+      '#vr-pwrap.hdr #vr-player, #vr-root.vr-cinematic #vr-pwrap.hdr #vr-player { max-height: 440px !important; overflow: visible !important; }' +
+      '#vr-pwrap.hdr #vr-player iframe { height: auto !important; min-height: 220px; }' +
+      /* mini-Mode unterdrücken — opacity:0 wird neutralisiert */
+      '#vr-pwrap, #vr-pwrap.hdr, #vr-pwrap.mini, #vr-pwrap.adock { opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; }' +
+      /* vr-compact-player (mobile) KLASSE entfernen — keine visibility:hidden */
+      '#vr-root.vr-compact-player #vr-pwrap { visibility: visible !important; pointer-events: auto !important; }' +
+      /* Dock-Container sichtbar halten, damit der Player reinrutschen kann */
+      '#vr-adock { min-height: 8px !important; }' +
+      /* Adock-spezifische Höhe des Players nicht zu klein */
+      '#vr-pwrap.adock #vr-player { max-height: none !important; }' +
+      /* Aside Polster unten — damit Player beim Dock nicht überlappt */
+      '#vr-aside { padding-bottom: max(420px, var(--vr-dock-pad, 420px)); }';
+    document.head.appendChild(css);
+
+    var lastDockT = 0;
+    function redock() {
+      var now = Date.now();
+      if (now - lastDockT < 80) return;  /* throttle */
+      lastDockT = now;
+      /* vrDockC(pw, ph, C) ist im Bundle definiert; wir rufen es mit aktueller
+         Player-Größe auf, damit Aside-Padding + Position neu berechnet werden. */
+      try {
+        if (typeof window.vrDockC !== 'function') return;
+        var pwrap = document.getElementById('vr-pwrap');
+        if (!pwrap || !pwrap.offsetParent) return;
+        var rect = pwrap.getBoundingClientRect();
+        if (rect.width < 40 || rect.height < 20) return;
+        window.vrDockC(rect.width, rect.height, null);
+      } catch (e) { /* still loading — retry next tick */ }
+    }
+
+    /* Mutation-Wächter: hdr/mini Klassen werden sofort wieder weggemacht */
+    var root = document.getElementById('vr-root');
+    var pwrap = document.getElementById('vr-pwrap');
+    if (!pwrap) return;
+    var mo = new MutationObserver(function () {
+      var pw = document.getElementById('vr-pwrap');
+      if (!pw) return;
+      var changed = false;
+      if (pw.classList.contains('hdr')) { pw.classList.remove('hdr'); changed = true; }
+      if (pw.classList.contains('mini')) { pw.classList.remove('mini'); changed = true; }
+      var r = document.getElementById('vr-root');
+      if (r && r.classList.contains('vr-compact-player')) {
+        r.classList.remove('vr-compact-player');
+        changed = true;
+      }
+      if (changed) redock();
+    });
+    mo.observe(pwrap, { attributes: true, attributeFilter: ['class'] });
+    if (root) mo.observe(root, { attributes: true, attributeFilter: ['class'] });
+    /* auch beim ersten Tick sicherheits-halber */
+    pwrap.classList.remove('hdr', 'mini');
+    if (root) root.classList.remove('vr-compact-player');
+
+    /* Scroll- und Resize-Listener, damit der Player immer brav in der Seitenleiste
+       unten neben der Uhr einrastet. */
+    var ticking = false;
+    function onScroll() { if (!ticking) { requestAnimationFrame(function () { redock(); ticking = false; }); ticking = true; } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    /* initial ein paar Ticks, damit DOM-Dock greift */
+    var bootTicks = 0;
+    var boot = setInterval(function () {
+      redock();
+      if (++bootTicks > 12) clearInterval(boot);
+    }, 120);
+  }
+
+  load();
+})();
+</script>
+</html>

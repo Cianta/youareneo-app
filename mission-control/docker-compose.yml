@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  mission-control:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: neo-mission-control
+    restart: unless-stopped
+    ports:
+      - "3000:3000"           # Change left port to expose on a different host port
+    volumes:
+      - ./data:/app/data      # Persist all JSON data (memory, kanban, notebooks)
+    env_file:
+      - .env.local            # All your API keys go here (never committed)
+    environment:
+      - NODE_ENV=production
+      - DATA_DIR=/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/agents"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mission-control.rule=Host(`mission.youracademy.com`)"
+      - "traefik.http.routers.mission-control.entrypoints=websecure"
+      - "traefik.http.routers.mission-control.tls.certresolver=letsencrypt"
+
+  # Optional: Traefik reverse proxy (uncomment for VPS/cloud deployment)
+  # traefik:
+  #   image: traefik:v3
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - ./traefik:/etc/traefik
+  #     - traefik-certs:/letsencrypt
+  #   command:
+  #     - "--providers.docker=true"
+  #     - "--providers.docker.exposedbydefault=false"
+  #     - "--entrypoints.web.address=:80"
+  #     - "--entrypoints.websecure.address=:443"
+  #     - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+  #     - "--certificatesresolvers.letsencrypt.acme.email=info@youareneo.com"
+  #     - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+  #     - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+
+volumes:
+  traefik-certs:

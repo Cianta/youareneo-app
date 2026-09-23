@@ -1,0 +1,3 @@
+Codex arbeitet ab 2026-09-20 getrennt in /Users/cianta/workspace/visual-room-codex-next. MiniMax schließt seinen laufenden Sternen/Mond-Deploy ab und übergibt via MINIMAX-HANDOFF.md. Danach übernimmt Codex die folgenden Releases. Originale und laufende MiniMax-Quellen bleiben erhalten. Keine Zugangsdaten in Handoffs.
+
+20.09.2026 — neuer Codex-Release liegt getrennt unter `/Users/cianta/workspace/visual-room-codex-next`. Details und geprüfte Funktionen: `RELEASE-NOTES.md`, öffentliche Versionen und Hashes: `visual-room-release.json`. MiniMax-Quellen und Claude-Original werden nicht überschrieben. Weitere Arbeiten bitte von dieser neuen Arbeitskopie aus koordinieren; der alte lokale Quellbaum ist der gesicherte Vorgänger.

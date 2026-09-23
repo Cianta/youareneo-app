@@ -1,0 +1,102 @@
+<div id="ks-root" data-mode="lern" data-hub="on" data-side="off">
+  <canvas id="ks-sky" aria-hidden="true"></canvas>
+  <div id="ks-light" aria-hidden="true"></div>
+  <div class="ks-valance" aria-hidden="true"></div>
+  <div class="ks-curtain l" aria-hidden="true"></div><div class="ks-curtain r" aria-hidden="true"></div>
+
+  <header id="ks-hub" class="ks-glass">
+    <div class="ks-brand"><b>KINOSAAL</b><small>YOU ARE NEO</small></div>
+    <div class="ks-mode" role="group" aria-label="Modus">
+      <button data-mode="lern" class="on" title="Lernraum (K)">Lernraum</button>
+      <button data-mode="kino" title="Kinosaal (K)">Kinosaal</button>
+    </div>
+    <input id="ks-q" class="ks-search" type="search" placeholder="Filme, Kurse, Themen suchen …" aria-label="Suchen">
+    <div class="ks-actions">
+      <button id="ks-focus" class="ks-chip" title="Fokus-Timer 45/5">⏱ Fokus</button>
+      <button id="ks-lightbtn" title="Meditationslicht">✦ Licht</button>
+      <button id="ks-medroom" title="Pause im Meditationsraum">☾ Meditationsraum</button>
+      <button id="ks-vr" title="Visual Room öffnen">◎ Visual Room</button>
+      <button id="ks-upload" title="Eigenen Film einreichen">＋ Film einreichen</button>
+      <button id="ks-account">Anmelden</button>
+      <button id="ks-hubhide" title="Hub ausblenden (H)">▴</button>
+    </div>
+  </header>
+  <button id="ks-reveal" title="Hub zeigen (H)">▾ Hub</button>
+
+  <main id="ks-main">
+    <section id="ks-stage">
+      <div id="ks-screen">
+        <div id="ks-frame"></div>
+        <div id="ks-welcome" class="ks-over">
+          <h2>Willkommen im Kinosaal</h2>
+          <p>Wähle unten einen Film. Im <b>Lernraum</b> schreibst du mit, im <b>Kinosaal</b> taucht alles ins Dunkel. Nach jedem Film wartet eine kurze Meditation.</p>
+        </div>
+        <div id="ks-ms" class="ks-over ks-hide">
+          <h2 id="ks-ms-t"></h2>
+          <p>Dieser Film läuft in der Academy. Deine Notizen, Favoriten und Playlisten bleiben hier.</p>
+          <div class="ks-row"><button id="ks-ms-go" class="on">▶ Im Kurs ansehen</button><button id="ks-ms-note">✎ Notiz dazu</button></div>
+        </div>
+        <div id="ks-buf" class="ks-over ks-hide">
+          <div class="ks-ring"><span id="ks-buf-p">0 %</span></div>
+          <p id="ks-buf-t">Film wird vorgeladen …</p>
+          <div class="ks-row"><button id="ks-buf-go">Jetzt starten</button><button id="ks-buf-x">Abbrechen</button></div>
+        </div>
+      </div>
+      <div id="ks-controls" class="ks-glass">
+        <button id="ks-play" title="Abspielen/Pause (Leertaste)">▶</button>
+        <button id="ks-back" title="10 s zurück (←)">↺10</button>
+        <button id="ks-fwd" title="10 s vor (→)">10↻</button>
+        <div id="ks-seek" title="Springen"><div class="bar"></div><div class="buf"></div><div class="pos"></div><div id="ks-marks"></div></div>
+        <span id="ks-time">0:00 / 0:00</span>
+        <button id="ks-pre" title="Vorladen bis 25 %, dann starten">⇣ Vorladen</button>
+        <button id="ks-bm" title="Lesezeichen an dieser Sekunde (B)">🔖</button>
+        <button id="ks-shot" title="Bildschirmfoto in Notizen (S)">📷</button>
+        <select id="ks-rate" title="Tempo" style="width:auto"><option value="0.75">0,75×</option><option value="1" selected>1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option><option value="2">2×</option></select>
+        <input id="ks-vol" type="range" min="0" max="1" step="0.05" value="1" aria-label="Lautstärke">
+        <button id="ks-sidebtn" title="Notizen & Lesezeichen">☰</button>
+        <button id="ks-fs" title="Vollbild (F)">⛶</button>
+      </div>
+      <div id="ks-meta" class="ks-glass ks-hide">
+        <div><h1 id="ks-title"></h1><div class="sub" id="ks-sub"></div></div>
+        <div class="ks-row"><button id="ks-fav">♡ Favorit</button><button id="ks-wish">☆ Merken</button><button id="ks-addpl">＋ Playlist</button><label style="display:flex;align-items:center;gap:6px;margin:0;font-size:13px"><input id="ks-aftermed" type="checkbox" style="width:auto" checked> Meditation danach</label></div>
+      </div>
+    </section>
+
+    <aside id="ks-side" class="ks-glass">
+      <div class="ks-tabs"><button data-tab="notes" class="on">Notizen</button><button data-tab="bm">Lesezeichen</button><button data-tab="pl">Playlist</button></div>
+      <div class="ks-pane" data-pane="notes">
+        <textarea id="ks-note-in" placeholder="Gedanke festhalten … (N)"></textarea>
+        <div class="ks-row" style="justify-content:flex-start;margin:6px 0 10px">
+          <button id="ks-note-add" class="ks-mini on">Speichern</button>
+          <button id="ks-note-img" class="ks-mini">🖼 Bild</button>
+          <button id="ks-note-time" class="ks-mini on" title="Zeitstempel anhängen">⏲ mit Zeit</button>
+          <input id="ks-note-file" type="file" accept="image/*" class="ks-hide">
+        </div>
+        <div id="ks-notes"></div>
+      </div>
+      <div class="ks-pane ks-hide" data-pane="bm"><div id="ks-bms"></div></div>
+      <div class="ks-pane ks-hide" data-pane="pl"><div id="ks-pls"></div></div>
+    </aside>
+  </main>
+
+  <section id="ks-catalog" class="ks-glass">
+    <h2 id="ks-cat-h">Programm</h2>
+    <div class="ks-filters" id="ks-filters"></div>
+    <div class="ks-grid" id="ks-grid"></div>
+  </section>
+
+  <div id="ks-med" class="ks-full ks-hide" role="dialog" aria-label="Meditation">
+    <p class="ks-muted" id="ks-med-k">NACH DEM FILM</p>
+    <div class="ks-breath"></div>
+    <div class="ks-big" id="ks-med-t">10:00</div>
+    <p id="ks-med-hint">Einatmen, wenn der Kreis wächst. Ausatmen, wenn er kleiner wird. Lass die Bilder nachklingen.</p>
+    <div class="ks-row">
+      <button id="ks-med-snd" class="on">♫ Klang an</button>
+      <button id="ks-med-room">☾ In den Meditationsraum</button>
+      <button id="ks-med-x">Beenden</button>
+    </div>
+  </div>
+
+  <div id="ks-modal" class="ks-hide"><div class="box ks-glass" id="ks-modal-box"></div></div>
+  <div id="ks-toast" role="status"></div>
+</div>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Visual Room · Cinematic · Tempelgarten</title>
+<style>
+ html,body{margin:0;height:100%;background:#03070D;color:#c0dcd7;font-family:Rajdhani,system-ui,sans-serif}
+ body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+ #vr-mount{display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+ .err,.loading{max-width:520px;width:100%;padding:28px 24px;border-radius:18px;background:rgba(8,6,14,.78);border:1px solid rgba(184,107,255,.32);color:#c0dcd7;font-size:14px;line-height:1.55}
+ .err h2,.loading h2{font-family:Cinzel,Georgia,serif;font-weight:400;font-size:22px;color:#fff;margin:0 0 8px;letter-spacing:.06em}
+ .err p,.loading p{margin:8px 0;color:#aab8c4}
+ .err a{color:#2FD3E8;text-decoration:none;border-bottom:1px solid rgba(47,211,232,.5)}
+</style>
+</head>
+<body>
+<div id="vr-mount">
+ <div class="loading"><h2>Visual Room · öffnet sich</h2><p>Sterne und Mond werden gesammelt …</p></div>
+</div>
+<script>
+window.IS_STANDALONE = true;
+window.VR_HIGHEND = true;
+window.SUPABASE_PUBLIC_URL = 'https://emxqoahtipbmumghlixb.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_ACeLcoB914WyrDKFhg_B1Q_322AgrKd';
+(function () {
+ var q = new URLSearchParams(location.search);
+ var pixel = q.has('pixel') ? q.get('pixel') === '1' : (window.VR_MODE === 'pixel');
+ window.VR_MODE = pixel ? 'pixel' : 'cinematic';
+ var mount = document.getElementById('vr-mount');
+ function fail(msg, technical) {
+  mount.innerHTML = '<div class="err"><h2>Der Raum kann sich nicht öffnen</h2>'
+   + '<p>' + msg + '</p>'
+   + (technical ? '<p style="font-size:11px;color:#7d8f9c;font-family:ui-monospace,monospace">' + technical + '</p>' : '')
+   + '<p style="margin-top:14px"><a href="#" onclick="location.reload();return false">Seite neu laden</a> · <a href="' + window.SUPABASE_PUBLIC_URL + '/rest/v1/rpc/vr_public_settings" target="_blank" rel="noopener">Settings prüfen</a></p></div>';
+ }
+ function bootBundle(url) {
+  var s = document.createElement('script');
+  s.src = url;
+  s.onerror = function () { fail('Bundle-Script konnte nicht geladen werden.', url); };
+  document.body.appendChild(s);
+ }
+ var PIXEL_FALLBACK_BUNDLE = 'https://fvd-data.s3.amazonaws.com/apps/3708781/1789845703-3SK530/visual-room-pixel.bundle.js';
+ fetch(window.SUPABASE_PUBLIC_URL + '/rest/v1/rpc/vr_public_settings', {
+  method: 'POST',
+  headers: {
+   'apikey': window.SUPABASE_ANON_KEY,
+   'Authorization': 'Bearer ' + window.SUPABASE_ANON_KEY,
+   'Content-Type': 'application/json'
+  },
+  body: '{}',
+  cache: 'no-store'
+ })
+ .then(function (r) {
+  if (!r.ok) throw new Error('HTTP ' + r.status + ' von vr_public_settings');
+  return r.json();
+ })
+ .then(function (settings) {
+  if (!settings || typeof settings !== 'object') throw new Error('vr_public_settings lieferte kein Objekt');
+  var url = pixel
+   ? (settings.pixel_bundle_url || PIXEL_FALLBACK_BUNDLE)
+   : (settings.bundle_url || '');
+  if (!url) {
+   fail('Kein bundle_url in den vr_settings gefunden. PATCH vr_settings SET value=… WHERE key=\'bundle_url\' auf Supabase machen.');
+   return;
+  }
+  bootBundle(url);
+ })
+ .catch(function (e) {
+  fail('Public-RPC vr_public_settings nicht erreichbar.', (e && e.message) || String(e));
+ });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+
+<div id="vr-root">
+ <div id="vr-main">
+  <div id="vr-bg">
+    <div class="vr-tree l" id="vr-treeL"></div>
+    <div class="vr-tree r" id="vr-treeR"></div>
+    <canvas id="vr-energy"></canvas>
+    <canvas id="vr-mandala"></canvas>
+    <canvas id="vr-flora"></canvas>
+    <canvas id="vr-over"></canvas>
+    <div id="vr-meter" title="Wie sehr du im Takt scrollst"></div>
+    <div id="vr-goldwash"></div>
+    <div id="vr-flash"></div>
+    <div id="vr-title"><h2 data-text="VISUAL ROOM">VISUAL ROOM</h2><p>Lausche · Atme · Sei</p></div>
+    <button id="vr-avatar" title="Anmelden"><span>◉</span></button>
+    <div id="vr-hint">↓ tiefer eintauchen</div>
+
+    <div id="vr-pwrap" class="vr-glass">
+      <div id="vr-player"></div>
+      <div id="vr-now"></div>
+    </div>
+
+    <div id="vr-drum">
+      <div id="vr-drumface" title="Klick: Start / Pause · am Rand drehen: Zeit einstellen">
+        <svg viewBox="0 0 200 200" aria-hidden="true" id="vr-drumsvg">
+          <defs>
+            <radialGradient id="vrSkin" cx="45%" cy="38%" r="65%"><stop offset="0" stop-color="#3a2a1e"/><stop offset=".6" stop-color="#22160e"/><stop offset="1" stop-color="#110a05"/></radialGradient>
+            <linearGradient id="vrRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a180c"/><stop offset=".5" stop-color="#140b05"/><stop offset="1" stop-color="#24140a"/></linearGradient>
+            <linearGradient id="vrProg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FD3E8"/><stop offset=".5" stop-color="#b86bff"/><stop offset="1" stop-color="#F2913C"/></linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="98" fill="url(#vrRim)"/>
+          <circle cx="100" cy="100" r="98" fill="none" stroke="#000" stroke-width="1.5"/>
+          <g id="vr-ticks"></g>
+          <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(127,217,232,.08)" stroke-width="5"/>
+          <circle id="vr-arc" cx="100" cy="100" r="88" fill="none" stroke="url(#vrProg)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="552.9" stroke-dashoffset="0" transform="rotate(-90 100 100)" style="filter:drop-shadow(0 0 3px #b86bff)"/>
+          <circle cx="100" cy="100" r="80" fill="url(#vrSkin)"/>
+          <g fill="none" stroke="#5a2a1a" stroke-width="2" stroke-linecap="round" opacity=".9" id="vr-glyphs">
+            <circle cx="100" cy="36" r="5"/><path d="M100 26v-3M100 46v3M90 36h-3M110 36h3"/>
+            <path d="M100 152a9 9 0 1 0 7 14a7 7 0 1 1 -7 -14z" fill="#5a2a1a" stroke="none"/>
+            <path d="M42 100c0-3 3-5 6-5s6 3 6 6-4 8-8 8-10-4-10-10 5-12 12-12"/>
+            <path d="M158 94v12M158 106l-6 5M158 106l6 5M158 106v7"/>
+          </g>
+          <circle cx="100" cy="100" r="44" fill="none" stroke="rgba(47,211,232,.18)" stroke-width="1" stroke-dasharray="2 6"/>
+          <circle id="vr-knob" cx="100" cy="12" r="7" fill="#1a0f07" stroke="#F2913C" stroke-width="2" style="filter:drop-shadow(0 0 4px #F2913C);cursor:grab"/>
+        </svg>
+        <div id="vr-drumtime"><span id="vr-time">10:00</span><small id="vr-tstate">Start</small></div>
+      </div>
+      <div id="vr-drumctl">
+        <div class="vr-drumrow"><button id="vr-reset" title="Zurücksetzen">↺</button><button id="vr-test" title="Gong anhören">◎</button></div>
+      </div>
+    </div>
+
+    <div id="vr-tools">
+      <button id="vr-mute" title="Klänge an/aus">🔔</button>
+      <button id="vr-mic" title="Resonanz: Energien hören über das Mikrofon mit">🎙</button>
+      <button id="vr-change" title="Player wechseln">⚙</button>
+      <button id="vr-mixbtn" title="Mischpult">🎚</button>
+      <button id="vr-full" title="Vollbild in neuem Tab">⛶</button>
+    </div>
+  </div>
+
+  <section class="vr-sec" style="height:100vh"></section>
+  <section class="vr-sec" style="height:170vh"></section>
+  <section class="vr-sec" style="height:70vh"></section>
+
+  <section class="vr-sec" id="vr-catalog">
+   <div class="vr-panel vr-glass">
+    <h3>Klangwelten</h3>
+    <div class="vr-muted">Künstler, Alben, Songs und Playlisten der Gemeinschaft. ♡ legt sie in deine Liste, ▶ spielt sie in deinem Player.</div>
+    <div class="vr-tabs" id="vr-tabs">
+      <button data-tab="artist" class="on">Künstler</button><button data-tab="album">Alben</button><button data-tab="song">Songs</button><button data-tab="playlist">Playlisten</button>
+    </div>
+    <div class="vr-toolbar">
+      <input id="vr-search" type="search" placeholder="Suchen …" aria-label="Suchen">
+      <button id="vr-new">＋ Neu</button>
+    </div>
+    <div class="vr-chips" id="vr-styles"></div>
+    <div id="vr-list" data-drop="catalog"></div>
+   </div>
+  </section>
+
+  <section class="vr-sec" id="vr-submit">
+   <div class="vr-panel vr-glass">
+    <h3>Song einreichen</h3>
+    <div class="vr-muted">Du machst selbst Musik? Lade deinen Song hoch — er landet im Vereins-Drive unter <i>Songs von Mitgliedern › Eingereicht</i>, wir hören rein.</div>
+    <div class="vr-form2">
+      <div><label for="vr-s-title">Titel *</label><input id="vr-s-title" maxlength="120"></div>
+      <div><label for="vr-s-artist">Künstlername</label><input id="vr-s-artist" maxlength="120"></div>
+      <div class="full"><label for="vr-s-note">Nachricht an uns</label><textarea id="vr-s-note" maxlength="1000"></textarea></div>
+      <div class="full"><label for="vr-s-file">Audiodatei (mp3, wav, m4a, flac, ogg · max. 50 MB) *</label><input id="vr-s-file" type="file" accept="audio/*,.mp3,.wav,.m4a,.flac,.ogg,.aiff,.aif,.aac"></div>
+      <div class="full"><label style="display:flex;gap:8px;align-items:flex-start;color:#aab8c4"><input id="vr-s-ok" type="checkbox" style="width:auto;margin-top:2px"> Ich besitze die Rechte an diesem Song und erlaube YOU ARE NEO, ihn im Verein anzuhören und zu nutzen.</label></div>
+    </div>
+    <div class="vr-progress"><i id="vr-s-bar"></i></div>
+    <div style="display:flex;gap:10px;align-items:center;margin-top:10px"><button id="vr-s-send">⬆ Einreichen</button><span class="vr-msg" id="vr-s-msg"></span></div>
+   </div>
+  </section>
+
+  <section class="vr-sec" id="vr-temple">
+    <canvas id="vr-tcanvas"></canvas>
+    <div class="vr-tcap">Nimm den Klöppel · berühre, was leuchtet</div>
+  </section>
+
+  <footer id="vr-credits">
+    Fotos: <a href="https://unsplash.com/@zoltantasi" target="_blank" rel="noopener">Zoltan Tasi</a> &amp; <a href="https://unsplash.com/@seanrobbins" target="_blank" rel="noopener">Sean Robbins</a> auf Unsplash ·
+    Krafttier-Silhouetten: <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a> (CC BY 3.0) · Klänge werden live im Browser erzeugt.
+  </footer>
+ </div>
+
+ <aside id="vr-aside">
+   <div class="vr-ahead">
+     <h3>♡ Meine Liste</h3>
+     <div class="vr-acct" id="vr-acct"></div>
+   </div>
+   <div class="vr-abody">
+     <div id="vr-fav" data-drop="fav"></div>
+     <h4>Meine Playlisten</h4>
+     <div id="vr-mypl"></div>
+     <button id="vr-newpl" style="margin-top:8px;font-size:12px">＋ Neue Playlist</button>
+   </div>
+ </aside>
+ <button id="vr-aside-toggle">♡ Meine Liste</button>
+
+ <div class="vr-modal" id="vr-modal"><div class="vr-box" id="vr-mbox"></div></div>
+</div>

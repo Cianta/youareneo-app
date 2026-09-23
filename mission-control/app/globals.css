@@ -1,0 +1,274 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom Properties ──────────────────────────────────────────────────────── */
+:root {
+  /* YOU ARE NEO mandala palette */
+  --mandala-green:       #4a8a3f;
+  --mandala-green-deep:  #2f5c2c;
+  --mandala-green-light: #a3c79a;
+  --mandala-blue:        #2244a8;
+  --mandala-blue-deep:   #16306f;
+  --mandala-blue-light:  #8aa1d4;
+  --mandala-ochre:       #c89a4e;
+  --mandala-rust:        #b04a3a;
+  --forest-950: #060E09;
+  --forest-900: #0D1A12;
+  --forest-800: #122218;
+  --forest-700: #1B3D27;
+  --forest-600: #2A6040;
+  --forest-500: #3A7D55;
+  --forest-400: #4F9E70;
+  --forest-300: #68BC8C;
+  --gold:        #C9A84C;
+  --gold-bright: #E2C97E;
+  --anth-900:    #111111;
+  --anth-800:    #1A1A1A;
+  --anth-700:    #454545;
+  --bg:          #15171C;
+  --surface:     #1B1E24;
+  --panel:       #1F2229;
+  --border:      #2C313A;
+
+  /* YOU ARE NEO brand serif — mapped to next/font variable */
+  --font-serif:  var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-brand:  var(--font-poppins), 'Poppins', system-ui, sans-serif;
+  --font-code:   var(--font-jetbrains), 'JetBrains Mono', monospace;
+}
+
+/* ── Base Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg);
+  color: #CBD2D9;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  /* ── Global base font — sidebar stays at its own clamp values ── */
+  font-size: 15px;
+}
+
+/* ── Scrollbars ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: var(--surface); }
+::-webkit-scrollbar-thumb  { background: #2C313A; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #3C424E; }
+
+/* ── Selection ──────────────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(74, 158, 112, 0.3);
+  color: #C8D8CC;
+}
+
+/* ── Sacred Geometry Background Pattern ─────────────────────────────────────── */
+.sacred-bg {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(42, 96, 64, 0.08) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%231E3028' stroke-width='0.5' opacity='0.5'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='10' r='20'/%3E%3Ccircle cx='30' cy='50' r='20'/%3E%3Ccircle cx='12.7' cy='20' r='20'/%3E%3Ccircle cx='47.3' cy='20' r='20'/%3E%3Ccircle cx='12.7' cy='40' r='20'/%3E%3Ccircle cx='47.3' cy='40' r='20'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, 60px 60px;
+}
+
+/* ── Glass Morphism ─────────────────────────────────────────────────────────── */
+.glass {
+  background: rgba(27, 30, 36, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(44, 49, 58, 0.8);
+}
+
+.glass-light {
+  background: rgba(27, 30, 36, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(44, 49, 58, 0.6);
+}
+
+.glass-dark {
+  background: rgba(21, 23, 28, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(44, 49, 58, 0.5);
+}
+
+/* ── Gold Text Gradient ─────────────────────────────────────────────────────── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C9A84C 0%, #E2C97E 50%, #C9A84C 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Green Glow Pulse ───────────────────────────────────────────────────────── */
+.pulse-green {
+  animation: glowPulse 3s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(74, 158, 112, 0.7);
+}
+
+/* ── Status Dot ─────────────────────────────────────────────────────────────── */
+.status-dot-online  { @apply bg-forest-400 shadow-[0_0_6px_rgba(79,158,112,0.8)]; }
+.status-dot-offline { @apply bg-anth-500; }
+.status-dot-busy    { @apply bg-gold shadow-[0_0_6px_rgba(201,168,76,0.8)]; }
+.status-dot-error   { @apply bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.8)]; }
+.status-dot-idle    { @apply bg-forest-700; }
+
+/* ── Card Styles ────────────────────────────────────────────────────────────── */
+.card {
+  @apply glass rounded-2xl p-5 border border-border;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  border-color: rgba(42, 96, 64, 0.8);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(42,96,64,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* ── Agent Color Accents ────────────────────────────────────────────────────── */
+.agent-claude   { --agent-color: 168, 85, 247; }
+.agent-hermes   { --agent-color: 59, 130, 246; }
+.agent-gemini   { --agent-color: 20, 184, 166; }
+.agent-openclaw { --agent-color: 249, 115, 22; }
+.agent-system   { --agent-color: 79, 158, 112; }
+
+.agent-glow {
+  box-shadow: 0 0 20px rgba(var(--agent-color), 0.2), 0 0 40px rgba(var(--agent-color), 0.08);
+}
+
+/* ── Prose overrides in dark theme ─────────────────────────────────────────── */
+.dark-prose p   { @apply mb-3 leading-relaxed; }
+.dark-prose h1  { @apply text-xl font-semibold text-forest-200 mb-3; }
+.dark-prose h2  { @apply text-lg font-semibold text-forest-300 mb-2; }
+.dark-prose h3  { @apply text-base font-medium text-forest-400 mb-2; }
+.dark-prose ul  { @apply list-disc list-inside mb-3 space-y-1; }
+.dark-prose ol  { @apply list-decimal list-inside mb-3 space-y-1; }
+.dark-prose code { @apply bg-forest-900 text-gold px-1.5 py-0.5 rounded text-sm font-mono; }
+.dark-prose pre  { @apply bg-anth-900 rounded-xl p-4 mb-3 overflow-x-auto; }
+.dark-prose strong { @apply text-forest-200 font-semibold; }
+
+/* ── Main Content Area — larger text (sidebar excluded via its own classes) ── */
+main, [data-main-content],
+.topbar-area {
+  font-size: 1rem; /* 16px on 15px base = slightly larger */
+}
+
+/* Boost common Tailwind text-xs/text-sm inside content (not sidebar) */
+main .text-xs   { font-size: 0.82rem  !important; }
+main .text-sm   { font-size: 0.94rem  !important; }
+main .text-base { font-size: 1.05rem  !important; }
+main .\text-\[10px\] { font-size: 0.75rem !important; }
+main .\text-\[11px\] { font-size: 0.80rem !important; }
+main .\text-\[12px\] { font-size: 0.84rem !important; }
+main .\text-\[13px\] { font-size: 0.88rem !important; }
+main .\text-\[14px\] { font-size: 0.93rem !important; }
+main .\text-\[9px\]  { font-size: 0.70rem !important; }
+
+/* TopBar content area boost */
+header .text-xs  { font-size: 0.82rem; }
+header .text-sm  { font-size: 0.94rem; }
+header .text-\[10px\] { font-size: 0.74rem; }
+header .text-\[11px\] { font-size: 0.80rem; }
+header .text-\[13px\] { font-size: 0.88rem; }
+
+/* ── Sidebar Fluid Typography ───────────────────────────────────────────────── */
+/* Scales from compact (small screens) to readable (large / full-screen) */
+.sidebar-nav-text {
+  font-size: clamp(0.90rem, 1.25vw, 1.05rem);
+  line-height: 1.45;
+}
+.sidebar-category-label {
+  font-size: clamp(0.74rem, 0.95vw, 0.86rem);
+  letter-spacing: 0.13em;
+}
+.sidebar-leaf-text {
+  font-size: clamp(0.85rem, 1.12vw, 0.98rem);
+}
+
+/* ── Input Base ─────────────────────────────────────────────────────────────── */
+.mc-input {
+  @apply w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm text-forest-100
+         placeholder-anth-400 outline-none transition-all duration-200;
+}
+.mc-input:focus {
+  @apply border-forest-600 ring-1 ring-forest-700/50;
+  box-shadow: 0 0 0 3px rgba(42, 96, 64, 0.15);
+}
+
+/* ── Button Base ────────────────────────────────────────────────────────────── */
+.mc-btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5
+         font-medium text-sm transition-all duration-200 cursor-pointer select-none;
+}
+.mc-btn-primary {
+  @apply mc-btn bg-forest-600 text-white hover:bg-forest-500;
+  box-shadow: 0 2px 8px rgba(42, 96, 64, 0.4);
+}
+.mc-btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(42, 96, 64, 0.5);
+}
+.mc-btn-ghost {
+  @apply mc-btn bg-transparent text-forest-300 hover:bg-forest-800/50 hover:text-forest-100;
+}
+.mc-btn-gold {
+  @apply mc-btn bg-gold/10 text-gold border border-gold/30 hover:bg-gold/20;
+}
+.mc-btn-danger {
+  @apply mc-btn bg-red-950/50 text-red-400 border border-red-900/50 hover:bg-red-950;
+}
+
+/* ── Tag ────────────────────────────────────────────────────────────────────── */
+.tag {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium
+         bg-forest-800/60 text-forest-300 border border-forest-700/50;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+}
+
+@keyframes ripple {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ── Transitions ────────────────────────────────────────────────────────────── */
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in {
+  animation: slideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

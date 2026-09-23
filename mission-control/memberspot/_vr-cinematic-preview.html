@@ -1,0 +1,17 @@
+<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Visual Room · Cinematic · Lokal-Preview</title>
+<style>html,body{margin:0;background:#000;height:100vh}#vr-mount{height:100vh}</style>
+<body>
+<div id="vr-mount">Visual Room · Cinematic lädt …</div>
+<script>window.VR_IS_STANDALONE=true;window.VR_HIGHEND=true;
+window.VR_ASSETS={
+  "sanctuary.png":"https://fvd-data.s3.amazonaws.com/apps/3708781/1789845659-YW9dTv/sanctuary.png",
+  "forest-foreground.png":"https://fvd-data.s3.amazonaws.com/apps/3708781/1789845697-W8bN2u/forest-foreground.png",
+  "forest-snake.png":"https://fvd-data.s3.amazonaws.com/apps/3708781/1789845701-OpdmwS/forest-snake.png"
+};
+window.VR_MODE="cinematic";
+// Hemisphere-Preset
+try { localStorage.setItem('vr_hemisphere','north'); } catch(e){}
+</script>
+<script src="visual-room.bundle.js"></script>
+</body></html>

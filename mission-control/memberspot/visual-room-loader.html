@@ -1,0 +1,32 @@
+<!-- VISUAL ROOM · YOU ARE NEO — Lader. Das eigentliche Paket liegt im FuseBase-Speicher;
+     welche Fassung geladen wird, steht in Supabase (vr_settings.bundle_url). Updates brauchen keine Änderung hier. -->
+<div id="vr-mount"><div style="min-height:80vh;display:flex;align-items:center;justify-content:center;background:#03070D;color:#7FD9E8;border-radius:18px;font:13px system-ui,sans-serif;letter-spacing:.4em">VISUAL ROOM ÖFFNET SICH …</div></div>
+<script>
+(function () {
+  if (window.__vrLoader) return; window.__vrLoader = 1;
+  var mount = document.getElementById('vr-mount'), pending = false;
+  function fail() {
+    pending = false;
+    mount.innerHTML = '<div role="status" style="min-height:70vh;display:grid;place-content:center;gap:18px;text-align:center;background:#03070D;color:#c0dcd7;font:15px system-ui;padding:24px"><p>Der Visual Room konnte nicht geladen werden.</p><button id="vr-retry" style="padding:12px 20px;cursor:pointer">Erneut versuchen</button></div>';
+    document.getElementById('vr-retry').onclick = load;
+  }
+  function load() {
+    if (pending) return; pending = true;
+    mount.innerHTML = '<div role="status" style="min-height:70vh;display:grid;place-content:center;background:#03070D;color:#c0dcd7;font:14px system-ui">VISUAL ROOM ÖFFNET SICH …</div>';
+    var controller = new AbortController(), timeout = setTimeout(function () { controller.abort(); }, 15000);
+    fetch('https://emxqoahtipbmumghlixb.supabase.co/rest/v1/rpc/vr_public_settings', {
+      method: 'POST', headers: { apikey: 'sb_publishable_LPbsKEws5DMQLcKix0X2AQ_VtYNbO-P', 'Content-Type': 'application/json' }, body: '{}', signal: controller.signal
+    }).then(function (r) { if (!r.ok) throw new Error('settings'); return r.json(); })
+      .then(function (s) {
+        clearTimeout(timeout);
+        if (!s || typeof s.bundle_url !== 'string' || !/^https:\/\//.test(s.bundle_url)) throw new Error('bundle');
+        window.VR_STANDALONE_URL = s.standalone_url;
+        var sc = document.createElement('script'); sc.src = s.bundle_url;
+        sc.onerror = function () { sc.remove(); fail(); };
+        sc.onload = function () { pending = false; if (!document.getElementById('vr-root')) { sc.remove(); fail(); } };
+        document.body.appendChild(sc);
+      }).catch(function () { clearTimeout(timeout); fail(); });
+  }
+  load();
+})();
+</script>

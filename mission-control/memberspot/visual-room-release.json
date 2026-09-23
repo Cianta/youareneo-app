@@ -1,0 +1,62 @@
+{
+  "visual-room-claude-original.html": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789845466-IOJuLa/visual-room-claude-original.html",
+    "sha256": "2e751800e0b1d43f0bff64741dcc9cc2dbe791da7b574bf58ea45aafd569c783",
+    "bytes": 378539,
+    "storedFileUUID": "a0ad1177-9bd7-4ff9-96c2-282d3a426f12"
+  },
+  "sanctuary.png": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789845659-YW9dTv/sanctuary.png",
+    "sha256": "d9c0e6cda02b81eb092115f857cb549b67dcca8bdad188c92dc914d51391ff0e",
+    "bytes": 2858046,
+    "storedFileUUID": "dab970bc-e103-4ec2-8051-71949351a12b"
+  },
+  "forest-foreground.png": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789845697-W8bN2u/forest-foreground.png",
+    "sha256": "9a0f3f0e67da2f7adc21c1075fa5968caa83c2d5c35c4d6bdc86cea4b5adb4bc",
+    "bytes": 2721555,
+    "storedFileUUID": "39d8e0ec-e49c-4405-a979-c186700f81f2"
+  },
+  "forest-snake.png": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789845701-OpdmwS/forest-snake.png",
+    "sha256": "4236f763bcd7a817a744d60333491e7b3b70da49b59bfcb5d00f892124dbd7fc",
+    "bytes": 877342,
+    "storedFileUUID": "fbd79a19-2a84-4982-bb6a-032829c7f98e"
+  },
+  "visual-room-pixel.bundle.js": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789845703-3SK530/visual-room-pixel.bundle.js",
+    "sha256": "0831ac711cd58b8839002ee0985fc90c1f75b678e0c1bae0f731c0ff10ed4459",
+    "bytes": 379040,
+    "storedFileUUID": "d42e7713-78db-4145-bade-b9af43b177e5"
+  },
+  "visual-room-cinematic.bundle.js": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789864257-J5grGB/visual-room-cinematic.bundle.js",
+    "sha256": "a7aaa357b865750438a8cf0f1ed4ab8fcc2de5c856e5a83bf9d746728884b278",
+    "bytes": 405759,
+    "storedFileUUID": "2b788c84-dbc6-43c3-a662-d115aa93cb4e"
+  },
+  "visual-room-cinematic-v2.html": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789846094-VIEzB8/visual-room-cinematic-v2.html",
+    "sha256": "a8f4eb9d8a878b9fd4a6648d69460829463c6cdca183cf00f2b657e5cf06bed6",
+    "bytes": 1117,
+    "storedFileUUID": "22088dde-6686-4fa2-946c-ba14d959047c"
+  },
+  "visual-room-pixel-live.html": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789846132-gvqQ9z/visual-room-pixel-live.html",
+    "sha256": "1bab86d38596e2f1b79968d5c598b10da3b212817c24441ae44dbfcba1d77dbb",
+    "bytes": 1120,
+    "storedFileUUID": "1b82c9d0-d6b5-4fb9-b020-8979f3490d4f"
+  },
+  "visual-room-router.js": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789846198-uGt77S/visual-room-router.js",
+    "sha256": "4a1a9d49a6c7e22fe2a50a78b82dbe185c7be45726a59543b9f3669c9c87a633",
+    "bytes": 700,
+    "storedFileUUID": "4d497bdc-b9cf-48c8-8645-49ce290d0de7"
+  },
+  "visual-room-loader-dynamic.html": {
+    "url": "https://fvd-data.s3.amazonaws.com/apps/3708781/1789866843-hKEyau/visual-room-loader-dynamic.html",
+    "sha256": "c88539d178fb65c9c329d55b6f753b0520709cdfa3bbda20057c49eec376465b",
+    "bytes": 3716,
+    "storedFileUUID": "5d29f753-1409-4b4f-8594-c5314088b035"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "fusebase-gate": {
+      "type": "http",
+      "url": "https://gate-mcp.thefusebase.com/mcp",
+      "headers": {
+        "Authorization": "Bearer 4b7615e9d95dc5cb6aa03cd808735e5f66b052970e824935d1c886c0a7545d8f"
+      }
+    }
+  }
+}

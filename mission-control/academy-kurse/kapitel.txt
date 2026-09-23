@@ -1,0 +1,145 @@
+# Neue Kurse: angelegte Module (Stand 14.09.2026 ~14:25 UTC). Alle noch "draft", noch ohne erste Einheit.
+# slug | modul-index | chapterId
+ai-art 1 PIcVHXOKMTOTDmuzWPta
+ai-art 2 gS1jq1EdftiO511VPVH0
+ai-art 3 0zHVQD9BiCnJUkQA5B8g
+atemarbeit 1 eSodRRiNj2OZCp1SVZ64
+atemarbeit 2 3nFr4l2XrrgK5hVdV9FK
+atemarbeit 3 a9fVz3lyacwicu9tfUKD
+batto-jutsu 1 kqwSODtzCxvaEZtxhVNM
+batto-jutsu 2 tUX2ZxZyfWkPW0y9aln2
+batto-jutsu 3 AgSvMU33SMkSjg3XUdyX
+berufung 1 1VeCx0j9B3Zoa3iwlOTf
+berufung 2 8auoYwJZdfCIxb2vDoK5
+berufung 3 FQB8h0cR5r5fO2rgRBSX
+beziehungen 1 6W2GCqwr8dmso0GrcKF9
+beziehungen 2 ZRselyQNu3g4pFHEzh42
+beziehungen 3 YYsyYEo1vtDJd0HnT2nD
+bienen 1 sii6ksiXzMwzp4kkoczD
+bienen 2 xBKxKxQyIRY5q5rIDnsy
+bienen 3 mqZlqdyeRrIA1aW7PGN0
+digitale-selbstverteidigung 1 KHEFaXJz8y0XhxZuodr0
+digitale-selbstverteidigung 2 wfcDisX2yh3eR06H4AxJ
+digitale-selbstverteidigung 3 7CLMZGNVppLyqfXTP2op
+film-smartphone 1 mJzf6bjcbJo2Aun5mc7E
+film-smartphone 2 75bOI1WWrSP1ZYYq8O1V
+film-smartphone 3 K2siPB7SNszrGhldao9X
+finanzielle-freiheit 1 1RYkblfRMN9f9NQ3pZcG
+finanzielle-freiheit 2 Gxd8ca3jst9Ouo8gp8lZ
+finanzielle-freiheit 3 DdcN2ucc2MSBuqOk5hiL
+freies-lernen 1 ZQZ3ZsqbjSnshxcgkuja
+freies-lernen 2 NvJmg80tMp0UyeGG59Dv
+freies-lernen 3 pNT8RHlFq6oF9IhuPJob
+# Stand 14:37 UTC: Module oben bis finanzielle 2 VERÖFFENTLICHT; finanzielle 3 + freies-lernen 1-3 noch draft
+# Einheiten angelegt (draft): ai-art 1-3 dem_azmnDrYTYNXJLpSLV JXaABWirVbMYxvZ3JgDH1 ceK9wstSmWHA9QrisJ0_E
+#   atemarbeit 1-3 _odJaKrSuHcKxyjjGs2ow SeRLVUADxgxo720NUgyem b2UC6aH0BGgPnh2jFNlhA
+#   batto 1-3 _-uhLhhbeV8IN4aFFKVBe uWBIaKicmDibCPImUrMDk 1-2hB9WGM4x_u0McsSJZy ; berufung 1 Hm1ntfRWHDxewxpKpWkCc
+# Stand 14:46 UTC: alle Module oben VERÖFFENTLICHT; Einheiten für ai-art…freies-lernen alle angelegt (draft)
+# Einheiten (draft) berufung2 p12gynJwVyd7-J65onplQ berufung3 JZDLBWyi814yO0HR0WTrZ beziehungen 4Q2h4LZWT7xdykWZVUMwf jBOMlmjGH8j7U7KFftuBy GWF1rrOcqPQ_tfo24SurG
+#   bienen BeTeE0leO9WQ21BwdQiwY SwcfiecIMMAJSa1jEvqwW WxqiWuTBPhunO5v9LxtO5 digitale WofrCxh2OOFknicuqi3uj efeqbgGiLL65emGLRuQ72 oef9h_DoBvAZ_JtwPQBOc
+#   film Qh5LFWQFV6JGgltGbUmtj DyjCETsclZ5-nvCvY9q8c Xndb3SmPiSrbCgWHPuQCF finanzielle s8A0IV39ih3p-FFVqE5rc dJUQXqOLo0M8sKUCkeIGO EokMd8N5p4kDZPRuK0F1b
+#   freies-lernen Zvjwi01a7plGSZbbIgWfi QjaBi2eQEkMWm20eVY48n -IyCmiJirwn2BN_NbiSpR
+# Neue Module (draft, noch ohne Einheit):
+frequenz-labor 1 SkQA1GPj4R869sN0wdFu
+frequenz-labor 2 xTj70Y8MHLx4TviJp8p4
+frequenz-labor 3 DSZ9rxsSWgPIhgM1I7el
+gemeinschaft-gruenden 1 R7kPJk0lZ7ijyiVIzzt6
+gemeinschaft-gruenden 2 4IJHFxrsnRTAyXkydmgr
+gemeinschaft-gruenden 3 W3mAIs8HzuOzKBYqvucv
+gewaltfreie-kommunikation 1 7lb1CRhs0DDcvjgWWvrt
+gewaltfreie-kommunikation 2 pf7N1NqR1P8gB8g0IMbr
+gewaltfreie-kommunikation 3 3IbB7Ugn8uFLpNBsd6Ds
+hausapotheke 1 Vkk4r8W2KpMVIr6VygYP
+hausapotheke 2 FvPuCP5VBN1JnynVczMI
+hausapotheke 3 C4e4sBXmPyxBw4fDMWJA
+heilfasten 1 3yB0Ygxasn86kpbCEDti
+heilfasten 2 vDPP3WXPjfeqyRsY1dSk
+heilfasten 3 AVq11HoAktAQPDdlirIA
+holistic-pulsing 1 rNNKc7USuRvOxbKE3Arj
+holistic-pulsing 2 TCMbsxuB6gtER7YinmBw
+holistic-pulsing 3 yqEoWlaU3iO2WgB9PE5n
+intuition 1 CaYvdcrVLbLymYC8tcZo
+intuition 2 KAA7PMlmmij7iaGOVBqh
+intuition 3 VAq3c3P76JZtBUX5HWDU
+intuitives-malen 1 nOovDSRvSbzkYb0BZjTy
+intuitives-malen 2 n4YyuE0kDyLTB2HJjrBR
+intuitives-malen 3 RCo8tevfFWfIE74jmbMc
+# offen: Module ab ki-verstehen (27 Kurse); alle Einheiten veröffentlichen; Zugangspakete
+# Block 3: 24 Module veröffentlicht, erste Einheiten (draft)
+frequenz-labor L GMqido6z1XaLL2Aa2UQAe Mt3e5uGQw1uTD3RuNPzOD 5KmeH0u5QHYfMh8DIOZJG
+gemeinschaft-gruenden L 4sgVXexQLavmZPHFyVjBx zOLKTL3qSS60SXjsSB-Y3 cy3hIE07KfVT81nQsyqH3
+gewaltfreie-kommunikation L pYFm6i45GFQwDzNNt_6sT 7nWDLScsUeJkaydKB0M3d Yppfi2njW4cI-P449VzXS
+hausapotheke L m1Hv-9V93MSf451N7AvRn gzUQUIXnnLtbaQ5r-0z-W jkaOC9Cr-psqy6oBg3OW0
+heilfasten L p7dEPMlkjsIbz6TdjN0-a yjnIjv5GPBOzUUY8mV2iw s6RW0z9J3lZBB0LCmdXz5
+holistic-pulsing L DYN_o8J4fyk8Dtqb4W4sM Toge4e2MV7HSuF-YfAZcJ oouAZThqyk-vsh3XG3ll7
+intuition L EfFiBy4-MbnlUF-tqobgM 6IbSyk4fEdoafYvl3CpCK cH6BA0OqB4geGkcnxljXV
+intuitives-malen L Jurh8ORfk-hJU7tFAgPJj 7EAruiPVvUr9BdPMdhpGf 6N6eZGLC2fewIK4b2ubQA
+# Block 4: Module angelegt (draft)
+ki-verstehen C Ft9Qkuh8L6ckUe6SWcJR QBhAsM8CvOtvDr0RXOKF WSg48yThthYlfne9wSmH
+kung-fu C gRdDpxJWUdn0jXDC9Uc9 cfQIJhk7sIQjvBjq45nO dalWuMYYqvOuRYv9kaxA
+lebensschule-kinder C 8BAcDmn7GGTMrharO5HY GhMy84f23DDBYq5O5yuj DOpp6mkQi2YNAiNRLC3D
+massage-energiepraxis C bKX76rXTiPNJoEgtAR4d pIdE3bNEd80msnKUDTan 4KgVvdtxIm3MbMcPQXTo
+meditation-lernen C DSITnMvnJVVw97u5NtY1 RkC4AMr3afZbXA8i8jxr fjKy9zBeTKNnmB4ZNxdk
+moderne-techniken C SVfycPydTE7r2xXhdBeB GrADBboCAqsszhw5oIg4 QafEt4VI8Cj8PvkA4Jh9
+musik-produzieren C 6iambwl3dsTaKcQygSEC pMFjYF9OqfIqo2VlVjhZ TyPonpJK2Lsx9bDe06mm
+natuerlich-bauen C lfDQIjoaw2nfpoUAMu0U 0Ed1lEn3hKw8I4TqFmLx VoblLE9wK1ALwKQ3gDsE
+natur-entdecker-kinder C IpQW5KWrQ6lnk8XuttuR HKU7kPJSP3GYLYkHwUjQ WcvuPXvs6iLVDIPCtvas
+nature-art C J9Pzd2GrykI6W2aq4r5H RGeidkmY3jxYVS6Nvywb f02c5xKQjD0qAdDTq85I
+ninjutsu-vertiefung C qIJD6MPTZyd7siYsiLxE XnmvY7mT5xDAccFw5qgp N4e77MP3WSCtkeNK2MTW
+online-praesenz C NZq9GEIfdTM13swqEaib 6cJORixXZoGntCqmeioZ 5M9qOqz7WomHZPe1Rdja
+permakultur C DBMkaiMxL8uZcRkonyYE ensUs63IaKu9s6n5pVQd 5rtsWDZtEyqy7MqDfR0I
+qigong-kinder C 4eAMEMU5TcC2AGcFameg iUZt0dKc2uX8ZSBWdi7o YYk1KKjaUgj5PDfrLuu1
+retreat-leitung C ctfMwQ1cWWnU6i0N3jM8 Zf11o4fWJznB9MLYNE3G k1hblJmKaV0CEncHMuFn
+rituale-jahreskreis C c4rK8GU37ZuSJCLurBAh 8RDcQwpeiUd9shJ7FDqz FcSLZ7lEZK37RY3ggfaX
+# 14.09. abends: 38 Module veröffentlicht (ki-verstehen … qigong-kinder Modul 1). Offen veröffentlichen: qigong-kinder iUZt0dKc2uX8ZSBWdi7o YYk1KKjaUgj5PDfrLuu1, retreat-leitung (3), rituale-jahreskreis (3)
+# Zugänge neu: Kursbibliothek 6aa839a2e7bdb3ef6986234b · Samstags-Seminar 6aa839a7e7bdb3ef6986234f · LIVE Access 6947e1aecaf241836d7017d8 · Alle Kurse 6558d3e1581bc3cd595a580a
+# access_write addCourseIds kommt als String an → Kurse nur über die Admin-Oberfläche zuordnen
+# Block 14.09. 20:23: alle 48 Module der 16 Kurse veröffentlicht; erste Einheiten (draft) für 10 Kurse
+ki-verstehen L mMZPOhV_3n9Aso2qtSC-I WPTDN0aYlmlteCmt7fNec TtynPpNJjtSMJ1E5l_HIW
+kung-fu L xSYT1QCDOto2R2ZG_ZumR VXyJxPsN9dpJSV4A3oRLv 6Dw-wEB9K2sfSdxhO4B9H
+lebensschule-kinder L 2hllKvAmGccn3mTa8hvHS KoJ46OZ5YUgx_NzVAXokE Dk6JB3deHQ24frmkhqazF
+massage-energiepraxis L 2OyL5BHA6SIRO9ttvFGio THG36rRFzQs7oY5rdHYKO PN_no0mXy4oSoaN8zkR5M
+meditation-lernen L B4vvA3zN_8674chwmJuOt v0959FoxQxuVWLzvT5hyG 9jA3Gon-lksGrbfa0cUQu
+moderne-techniken L oxPRpvuOoXby8oC4m8IlI _62gaiLr9pXKj1XV2P1td 3TFw05oG6uWD24rO92EKo
+musik-produzieren L izf-uA_7cAajuj54x8quO kbhDRJVXFi5Iuf_6Yu1zZ RKL4nWBjJi8llF-UOMp6I
+natuerlich-bauen L Z1sz_chhQstRubbfGtWwN _PkRC53kN3qKV3WFJTLHF zd02u7Bq3ZL7UT1-huPJ5
+natur-entdecker-kinder L dxY0ZCca-RCogsnqcK9j_ oTvIDcU4UJq1m7eG4hvfC r2kf4EcjMV_TT2_Thi598
+nature-art L parrio66N2Xf1Nm2Svg12 x9nNRfMxy6eoDOekeNoT6 CgRCmrOWMiuEjDbiq1DMN
+# Offen Einheiten: ninjutsu-vertiefung, online-praesenz, permakultur, qigong-kinder, retreat-leitung, rituale-jahreskreis
+ninjutsu-vertiefung L gbBKAZGIxDsVxlDpdtdz2 HWtzJgzA-l9v3bBPXsJUj c9Y_F1JqRjXYbcXRfBXcb
+online-praesenz L 5kR2Zgbi5EjkMgD1k7fj9 sjiZfKVGoz3zsb3epEfG3 kB9eqXYLEMBUxiU35ycnU
+permakultur L _mCJ99nJ-QleaDqwH4C3O XsvHprbwno7DbS1khUti2 nrxeKdH5sHXvy2VIzRxtJ
+qigong-kinder L T7vR0Tn6CNRgGigjhsVyO kKcas5XKv2DD_uOJjnG-L nMczDVTXPJQm7kFckV0rJ
+retreat-leitung L WqhA0mpaMtKVgK3gSgC6C LJkmkIIv20MOlh57XfvYk S7N5in7iTgtZyEMAVnKIg
+rituale-jahreskreis L X7l25IQ5_jPzVOurdvCq8 vvLVhrq32dUiIWLs7Amyj EhyxFzrZ6BEClXBkUHGqe
+# Stand 18:30: 35 neue Kurse mit veröffentlichten Modulen + ersten Einheiten (Entwurf). Offen: 11 Kurse ohne Module, alle Einheiten veröffentlichen
+# Block 18:43: Module für die letzten 11 Kurse angelegt (draft) — Kursbibliothek-Zugang geprüft: 77 Kurse ohne die 3 Live-Kurse
+ruecken-befreien C nMa6DHSYZzAFpZczKobC Lr8siPLmbiyzNs80uTtz KMo3uPCVT2UtgnyCCZkw
+schamanische-reise C Uhv2OoZ9kIuO6bURsvpy sskpe3M8JBxtgJasenGM uEC6nS6JD0VJGoHCjdsP
+selbststaendig-mit-herz C tBfFev65SegJSTvSGlus MHuVjryOzHHUIAI12Tkg PR6nWsaUr1YTYsJcKEX4
+selbstversorgung C jHL18VfaUR9srDXABIan PSQB6Sv5RMWIdDybTWen pr0yeCH3XMTIMjmKEmNr
+selbstverteidigung C ITAqsJdf963VcD7mBO4Y XSrn8xH9TshtN4vBDqYP 5HdBda8YCx0jkZSInBzC
+stimme-gesang C Vl0NezUe7krzu6ZKdf6N apKpvdEIhjib9AWg9BQJ kzR5jCwszm1JsPXMeZ3h
+tauschen-teilen C 27RuTitCh6Ued3rcc3CS bKCMAOvU3mMwSksMUubh Azgj7qytQyovsuqipO3K
+traeume-verwirklichen C dRxvvkFZDxPbsVwmZxKo 3rC7ZyOoSyDmNfCsqfqu sTnwDEZRJFLFpcigqERI
+traumarbeit C YNhqE95s1IPHYtpOpYSA 5TkxHKLRvsBe32NVaIdu DOaymbUejirIVe8DYHvV
+waldwissen C no4yqGPb4aSZ0rpGPXlc V4HtlG9lAPGdhY7HotuT IrVnNyjBLNfF7h4wnqRA
+wasser C mTl4D6J0hjwrsGZ0enYc mNYLlnkBUt5dVEoG3Vi1 iQtUS0JtGs4aau5squPp
+# 14.09. abends: alle 33 Module der letzten 11 Kurse veröffentlicht → alle 46 neuen Kurse haben veröffentlichte Module. Offen: Einheiten für die 11 Kurse, alle Einheiten veröffentlichen
+# Block 19:42: erste Einheiten der letzten 11 Kurse (draft) → alle 46 neuen Kurse haben Module (veröffentlicht) + erste Einheiten (Entwurf)
+ruecken-befreien L QH4Hx0RFfuoBm9HkR6atu SLBBSNVbsViQskP0zfDjk -_PBFbIiAt6TATEpwJVp1
+schamanische-reise L axez-k6zPK8rKnC-79qqH u-ramiPJKiIps7mZ2kBa3 YBlVdL7E8CJbFX1vqVmbE
+selbststaendig-mit-herz L 8oufou4yPgo6-4raqmQpx cze8-Opu7Ybv8h-WluX15 wt9cwOsz_57koTCtOxiOz
+selbstversorgung L IwOp7tjaB2NSHJk-i_pQN j1G5gnmwvJT4ew4nTRPdo DL0MnoHSsg5q-BPpy-g1V
+selbstverteidigung L bvQU8rhXpB-pUnDBUY5Pi jt3Y9zNDHWk1uQ9tr28j0 LyPpx8qViZXBvQLtqQF8s
+stimme-gesang L sbMXBi_F5iwneTXtQzwey eIfWTB-b3-xKtGLu0LFtl INVRZ0eIPJxB0RRftQ2Vg
+tauschen-teilen L mnf0YLW8UfI1ufDKvFktp 8qyKk3H-e2uFZMv2M-ELd wNRuqnb0DiW2YYDjpCuTY
+traeume-verwirklichen L TUrLATId17yw6Rw7riRau ungtY9p1lyS2sA3PqnjgM T5NGwQ_2UEWZIoB_i8-sN
+traumarbeit L 6rYYcqU3vcd5VD_h5aD47 NWr9wTsqDEOZbzdzMk8-Y iLW0eCTctb2fHlmZyMo44
+waldwissen L aNZN2nasIpYnBLAiosWVA kzlNETRARuig8_-piG6R8 gTyiZ4YxR6q2YmGD4VEyZ
+wasser L 60vHkbw61LeKvc2F07N5P hzwLZigM4TuEfAqWzg4OL 3RXJrK4EZ3QL_TpFXXqXh
+# 21:57 Veröffentlicht: publish-liste Zeilen 1–40
+# 22:10 Veröffentlicht: publish-liste Zeilen 41–80
+# 22:23 Veröffentlicht: publish-liste Zeilen 81–120
+# 22:36 Veröffentlicht: publish-liste Zeilen 121–160
+# 22:48 Veröffentlicht: publish-liste Zeilen 161–186 → ALLE 186 Einheiten veröffentlicht

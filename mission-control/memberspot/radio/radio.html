@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEO Radio · YOU ARE NEO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- NEO RADIO · Sendersuche über die freie radio-browser.info-API (über 50.000 Sender).
+     Gedacht als iFrame im Meditationsraum-Portal. Favoriten bleiben im Browser. -->
+<style>
+:root{--night:#050B14;--deep:#0B1A2B;--cyan:#2FD3E8;--cyan2:#7FD9E8;--orange:#F2913C;--gold:#E8B94A;--silver:#C9D5E0;--muted:#8FA6B8;--line:rgba(127,217,232,.2);--panel:rgba(14,30,48,.7)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--night);color:var(--silver);font:15px/1.45 Rajdhani,system-ui,sans-serif}
+button,input,select{font:inherit;color:#fff}
+button{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;transition:.2s;white-space:nowrap}
+button:hover{border-color:var(--cyan);box-shadow:0 0 14px rgba(47,211,232,.3)}
+button.on{background:rgba(47,211,232,.18);border-color:var(--cyan)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+input,select{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%}
+select option{background:var(--deep)}
+
+/* Banner */
+.banner{position:relative;height:210px;overflow:hidden;border-bottom:1px solid var(--line)}
+.banner canvas{position:absolute;inset:0;width:100%;height:100%}
+.banner .txt{position:absolute;left:24px;bottom:22px;right:24px}
+.banner h1{margin:0;font:900 clamp(26px,5vw,44px)/1 Orbitron,sans-serif;letter-spacing:.3em;color:#fff;text-shadow:0 0 30px rgba(47,211,232,.5)}
+.banner p{margin:8px 0 0;font:400 13px Cinzel,serif;letter-spacing:.3em;color:var(--cyan2)}
+
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar input{flex:1 1 240px;width:auto}
+.bar select{width:auto}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.chips button{font-size:13px;padding:5px 11px}
+
+/* Jetzt läuft */
+.now{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:12px 14px;margin:0 0 14px;background:var(--panel);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.now img,.card .ic{width:54px;height:54px;border-radius:12px;object-fit:cover;background:linear-gradient(135deg,#0B1A2B,#1b2f45);flex:none}
+.now .info{flex:1;min-width:0}
+.now b{display:block;color:#fff;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now small{color:var(--muted)}
+.eq{display:flex;gap:3px;align-items:flex-end;height:26px}
+.eq i{width:4px;background:var(--cyan);border-radius:2px;height:4px;transition:height .15s}
+.now input[type=range]{width:100px;padding:0;accent-color:var(--cyan);border:0;background:none}
+.big{width:48px;height:48px;padding:0;font-size:18px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.card{display:flex;gap:10px;align-items:center;padding:10px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);cursor:pointer;transition:.2s;min-width:0}
+.card:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.card.playing{border-color:var(--gold);box-shadow:0 0 20px -6px rgba(232,185,74,.6)}
+.card .t{flex:1;min-width:0}
+.card b{display:block;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card small{display:block;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .fav{border:0;background:none;padding:4px 6px;font-size:18px;box-shadow:none}
+h2{font:400 18px Cinzel,serif;color:#fff;letter-spacing:.06em;margin:18px 0 8px}
+.msg{color:var(--muted);padding:20px;text-align:center}
+@media (max-width:560px){.now input[type=range]{display:none}.banner{height:160px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="banner">
+  <canvas id="sky"></canvas>
+  <div class="txt"><h1>NEO RADIO</h1><p>KLÄNGE AUS ALLER WELT · FÜR STILLE, FOKUS UND FEUER</p></div>
+</header>
+
+<div class="wrap">
+  <div class="now" id="now">
+    <button class="big" id="play" title="Abspielen/Pause" disabled>▶</button>
+    <img id="nimg" alt="">
+    <div class="info"><b id="nname">Wähle einen Sender</b><small id="nsub">Vorausgewählt: Ambient, Meditation, Weltmusik & mehr</small></div>
+    <div class="eq" id="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <input type="range" id="vol" min="0" max="1" step="0.05" value=".8" aria-label="Lautstärke">
+  </div>
+
+  <div class="bar">
+    <input id="q" type="search" placeholder="Sender, Stil oder Stadt suchen …" aria-label="Suchen">
+    <select id="country" aria-label="Land"><option value="">Alle Länder</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="CH">Schweiz</option><option value="US">USA</option><option value="GB">Großbritannien</option><option value="FR">Frankreich</option><option value="NL">Niederlande</option><option value="IN">Indien</option><option value="BR">Brasilien</option><option value="JP">Japan</option></select>
+    <button id="go" class="on">Suchen</button>
+  </div>
+  <div class="chips" id="chips"></div>
+
+  <div id="favbox"></div>
+  <h2 id="lh">Ambient & Meditation</h2>
+  <div class="grid" id="list"><div class="msg">Sender werden geladen …</div></div>
+</div>
+
+<audio id="audio" preload="none"></audio>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var audio = $('audio');
+  // Vorausgewählte Welten – bewusst jenseits des Mainstreams
+  var PRESETS = [
+    ['Ambient & Meditation', ['ambient', 'meditation']],
+    ['Meditation', ['meditation', 'relaxation']],
+    ['Weltmusik', ['world music', 'world', 'ethnic']],
+    ['Schamanisch & Trommeln', ['shamanic', 'tribal', 'drums', 'native american']],
+    ['Natur & Klang', ['nature', 'sleep', 'nature sounds']],
+    ['New Age', ['new age']],
+    ['Chillout', ['chillout', 'downtempo']],
+    ['Lo-Fi', ['lofi', 'lo-fi']],
+    ['Jazz', ['jazz']],
+    ['Klassik', ['classical']],
+    ['Psychedelic', ['psychedelic', 'psytrance', 'psybient']],
+    ['Alternative', ['alternative']],
+    ['Indie', ['indie']],
+    ['Reggae & Dub', ['reggae', 'dub']],
+    ['Kirtan & Mantra', ['mantra', 'devotional', 'kirtan', 'bhajan']],
+    ['Freie Radios', ['community radio', 'free radio']]
+  ];
+  var HOSTS = ['de1.api.radio-browser.info', 'de2.api.radio-browser.info', 'nl1.api.radio-browser.info', 'at1.api.radio-browser.info', 'fi1.api.radio-browser.info'];
+  var host = 0, current = null, stations = [];
+  var favs = load();
+
+  function load() { try { return JSON.parse(localStorage.getItem('neo_radio_favs') || '[]'); } catch (e) { return []; } }
+  function save() { try { localStorage.setItem('neo_radio_favs', JSON.stringify(favs)); } catch (e) {} }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function httpsOnly(u) { return typeof u === 'string' && /^https:\/\//.test(u) ? u : ''; }
+
+  function api(path, params) {
+    params = Object.assign({ hidebroken: 'true', is_https: 'true', order: 'clickcount', reverse: 'true', limit: '60' }, params || {});
+    var qs = Object.keys(params).filter(function (k) { return params[k] !== '' && params[k] != null; }).map(function (k) { return k + '=' + encodeURIComponent(params[k]); }).join('&');
+    function attempt(n) {
+      return fetch('https://' + HOSTS[host] + '/json/' + path + '?' + qs).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .catch(function (e) { if (n >= HOSTS.length - 1) throw e; host = (host + 1) % HOSTS.length; return attempt(n + 1); });
+    }
+    return attempt(0);
+  }
+  function clean(list) {
+    // Nur sichere Streams (https), doppelte Sender raus
+    var seen = {};
+    return list.filter(function (s) {
+      var u = httpsOnly(s.url_resolved || s.url), key = (s.name || '').trim().toLowerCase();
+      if (!u || seen[key]) return false; seen[key] = 1; s.play = u; return true;
+    });
+  }
+  function search(title, tags) {
+    // Jede Welt fragt mehrere Stichworte parallel ab (ODER) und sortiert nach Beliebtheit
+    $('lh').textContent = title; $('list').innerHTML = '<div class="msg">Sender werden geladen …</div>';
+    Promise.all(tags.map(function (t) { return api('stations/search', { tag: t, countrycode: $('country').value, limit: '40' }).catch(function () { return []; }); }))
+      .then(function (r) {
+        var all = [].concat.apply([], r);
+        if (!all.length && r.every(function (x) { return !x.length; })) throw new Error('leer');
+        all.sort(function (a, b) { return (b.clickcount || 0) - (a.clickcount || 0); });
+        stations = clean(all).slice(0, 80); render();
+      })
+      .catch(function () { stations = []; $('list').innerHTML = '<div class="msg">Keine Sender gefunden – oder das Verzeichnis antwortet gerade nicht.</div>'; });
+  }
+  function card(s) {
+    var isFav = favs.some(function (f) { return f.stationuuid === s.stationuuid; });
+    var sub = [s.country, (s.tags || '').split(',').slice(0, 3).join(', '), s.bitrate ? s.bitrate + ' kbit/s' : ''].filter(Boolean).join(' · ');
+    return '<div class="card' + (current && current.stationuuid === s.stationuuid ? ' playing' : '') + '" data-id="' + esc(s.stationuuid) + '" tabindex="0">' +
+      (httpsOnly(s.favicon) ? '<img class="ic" src="' + esc(s.favicon) + '" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">' : '<div class="ic"></div>') +
+      '<div class="t"><b>' + esc(s.name) + '</b><small>' + esc(sub) + '</small></div>' +
+      '<button class="fav" data-fav title="Favorit">' + (isFav ? '♥' : '♡') + '</button></div>';
+  }
+  function bind(box, list) {
+    Array.prototype.forEach.call(box.querySelectorAll('.card'), function (c) {
+      var s = list.filter(function (x) { return x.stationuuid === c.dataset.id; })[0];
+      c.onclick = function (e) { if (e.target.hasAttribute('data-fav')) { toggleFav(s); e.stopPropagation(); return; } play(s); };
+      c.onkeydown = function (e) { if (e.key === 'Enter') play(s); };
+    });
+  }
+  function render() {
+    $('list').innerHTML = stations.length ? stations.map(card).join('') : '<div class="msg">Keine passenden Sender gefunden.</div>';
+    bind($('list'), stations);
+    $('favbox').innerHTML = favs.length ? '<h2>Deine Favoriten</h2><div class="grid" id="favs">' + favs.map(card).join('') + '</div>' : '';
+    if (favs.length) bind($('favs'), favs);
+  }
+  function toggleFav(s) {
+    var i = favs.findIndex(function (f) { return f.stationuuid === s.stationuuid; });
+    if (i >= 0) favs.splice(i, 1);
+    else favs.unshift({ stationuuid: s.stationuuid, name: s.name, play: s.play, favicon: s.favicon, country: s.country, tags: s.tags, bitrate: s.bitrate });
+    save(); render();
+  }
+  function play(s) {
+    current = s;
+    audio.src = s.play; audio.play().catch(function () { $('nsub').textContent = 'Dieser Sender startet gerade nicht – probier einen anderen.'; });
+    $('nname').textContent = s.name;
+    $('nsub').textContent = [s.country, (s.tags || '').split(',').slice(0, 4).join(', ')].filter(Boolean).join(' · ');
+    $('nimg').src = httpsOnly(s.favicon) || ''; $('nimg').style.visibility = httpsOnly(s.favicon) ? 'visible' : 'hidden';
+    $('play').disabled = false;
+    // Dem Verzeichnis einen Klick melden (hilft der Rangliste, ist anonym)
+    fetch('https://' + HOSTS[host] + '/json/url/' + encodeURIComponent(s.stationuuid)).catch(function () {});
+    try { localStorage.setItem('neo_radio_last', JSON.stringify(s)); } catch (e) {}
+    render();
+  }
+  audio.onplaying = function () { $('play').textContent = '❚❚'; };
+  audio.onpause = function () { $('play').textContent = '▶'; };
+  audio.onerror = function () { if (current) $('nsub').textContent = 'Stream nicht erreichbar – probier einen anderen Sender.'; };
+  $('play').onclick = function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); };
+  $('vol').oninput = function () { audio.volume = +this.value; };
+  audio.volume = .8;
+
+  // Sanfte Pegel-Anzeige (Streams geben ihre Daten meist nicht frei, daher gezeichnet)
+  var bars = document.querySelectorAll('#eq i');
+  setInterval(function () {
+    Array.prototype.forEach.call(bars, function (b, i) { b.style.height = (audio.paused ? 4 : 6 + Math.abs(Math.sin(Date.now() / (220 + i * 70) + i)) * 20) + 'px'; });
+  }, 150);
+
+  $('chips').innerHTML = PRESETS.map(function (p, i) { return '<button data-i="' + i + '"' + (i ? '' : ' class="on"') + '>' + esc(p[0]) + '</button>'; }).join('');
+  Array.prototype.forEach.call($('chips').querySelectorAll('button'), function (b) {
+    b.onclick = function () {
+      Array.prototype.forEach.call($('chips').querySelectorAll('button'), function (x) { x.classList.toggle('on', x === b); });
+      var p = PRESETS[+b.dataset.i]; search(p[0], p[1]);
+    };
+  });
+  function freeSearch() {
+    var q = $('q').value.trim(); if (!q) return;
+    Array.prototype.forEach.call($('chips').querySelectorAll('button'), function (x) { x.classList.remove('on'); });
+    $('lh').textContent = 'Suche: ' + q; $('list').innerHTML = '<div class="msg">Suche läuft …</div>';
+    Promise.all([api('stations/search', { name: q, countrycode: $('country').value }), api('stations/search', { tag: q.toLowerCase(), countrycode: $('country').value })])
+      .then(function (r) { stations = clean(r[0].concat(r[1])); render(); })
+      .catch(function () { $('list').innerHTML = '<div class="msg">Das Senderverzeichnis antwortet gerade nicht.</div>'; });
+  }
+  $('go').onclick = freeSearch;
+  $('q').onkeydown = function (e) { if (e.key === 'Enter') freeSearch(); };
+  $('country').onchange = function () { var on = $('chips').querySelector('.on'); if (on) on.click(); else freeSearch(); };
+
+  try { var last = JSON.parse(localStorage.getItem('neo_radio_last') || 'null'); if (last && last.play) { current = last; $('nname').textContent = last.name; $('nsub').textContent = 'Zuletzt gehört – ▶ zum Weiterhören'; audio.src = last.play; $('play').disabled = false; } } catch (e) {}
+  search(PRESETS[0][0], PRESETS[0][1]);
+
+  // Banner: Sternenfeld mit Schallwellen und Feuerglut
+  var cv = $('sky'), g = cv.getContext('2d'), W, H, stars = [];
+  function size() { var r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = W * 1.5; cv.height = H * 1.5; g.setTransform(1.5, 0, 0, 1.5, 0, 0); stars = []; for (var i = 0; i < W * H / 900; i++) stars.push([Math.random() * W, Math.random() * H, Math.random() * 6]); }
+  window.addEventListener('resize', size); size();
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (function draw(t) {
+    t = t || 0;
+    var bg = g.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#040914'); bg.addColorStop(1, '#0B1A2B'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    stars.forEach(function (s) { g.fillStyle = 'rgba(255,248,235,' + (.2 + .5 * (.5 + .5 * Math.sin(t / 900 + s[2]))) + ')'; g.fillRect(s[0], s[1], 1.2, 1.2); });
+    var fg = g.createRadialGradient(W * .82, H * 1.1, 0, W * .82, H * 1.1, H * 1.2); fg.addColorStop(0, 'rgba(242,145,60,.35)'); fg.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = fg; g.fillRect(0, 0, W, H);
+    var amp = audio.paused ? 6 : 16;
+    for (var k = 0; k < 4; k++) {
+      g.strokeStyle = k % 2 ? 'rgba(242,145,60,.35)' : 'rgba(47,211,232,.4)'; g.lineWidth = 1.4; g.beginPath();
+      for (var x = 0; x <= W; x += 6) { var y = H * .55 + Math.sin(x / (60 + k * 25) + t / (700 + k * 300)) * amp * (1 + k * .4) * Math.sin(x / W * Math.PI); x ? g.lineTo(x, y) : g.moveTo(x, y); }
+      g.stroke();
+    }
+    if (!still) requestAnimationFrame(draw);
+  })();
+})();
+</script>
+</body>
+</html>

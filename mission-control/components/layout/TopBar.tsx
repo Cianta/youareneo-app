@@ -18,9 +18,7 @@ import {
 } from '@/lib/store';
 import { SIDEBAR_NAV_LINKS } from '@/components/layout/Sidebar';
 import { playGong } from '@/lib/gong';
-import { SupabaseAuth } from '@/components/auth/SupabaseAuth';
-import { supabaseConfigured } from '@/lib/supabase';
-import { restoreSession, signOutSupabase, fetchFirma, type SbFirma } from '@/lib/supabaseAuth';
+import { FuseBaseAuth } from '@/components/auth/FuseBaseAuth';
 import { useLangStore, useT } from '@/lib/i18n';
 import type { PomodoroMode, NotificationType } from '@/lib/store';
 
@@ -339,14 +337,12 @@ function BrainToggle() {
 
 // ── Login Button ───────────────────────────────────────────────────────────────
 function LoginButton() {
-  const t = useT();
-  const { user, login, logout } = useAuthStore();
+  const { user, login, logout, setUser } = useAuthStore();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [pw, setPw] = useState('');
   const [error, setError] = useState('');
-  const [authTab, setAuthTab] = useState<'firma' | 'team'>('firma');
-  const [firma, setFirma] = useState<SbFirma | null>(null);
+  const [authTab, setAuthTab] = useState<'fusebase' | 'team'>('fusebase');
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -355,20 +351,25 @@ function LoginButton() {
     return () => document.removeEventListener('mousedown', h);
   }, []);
 
-  // Bestehende Supabase-Session beim Start wiederherstellen
+  // Restore FuseBase MC session cookie → local auth store
   useEffect(() => {
-    if (supabaseConfigured()) restoreSession().catch(() => {});
-  }, []);
-
-  // Firma (inkl. Einladungscode) laden, wenn das User-Menü geöffnet wird
-  useEffect(() => {
-    if (open && user && supabaseConfigured()) fetchFirma().then(setFirma).catch(() => setFirma(null));
-  }, [open, user]);
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(data => {
+        if (data?.authenticated && data.email) {
+          setUser({
+            name: String(data.email).split('@')[0] || 'Member',
+            role: 'FuseBase',
+            avatar: '🔮',
+          });
+        }
+      })
+      .catch(() => {});
+  }, [setUser]);
 
   const doLogout = () => {
-    if (supabaseConfigured()) signOutSupabase().catch(() => logout());
-    else logout();
-    setFirma(null);
+    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    logout();
   };
 
   const submit = () => {
@@ -394,12 +395,6 @@ function LoginButton() {
                 <p className="text-[10px] text-anth-500">{user.role}</p>
               </div>
             </div>
-            {firma && (
-              <div className="pb-2 border-b border-border/60 space-y-0.5">
-                <p className="text-[10px] text-anth-500">{t('Firma')}: <span className="text-forest-200">{firma.name}</span></p>
-                <p className="text-[10px] text-anth-500">{t('Einladungscode')}: <span className="font-mono text-mint-400 select-all">{firma.invite_code}</span></p>
-              </div>
-            )}
             <button onClick={doLogout}
               className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-red-400 hover:bg-red-900/20 transition-colors">
               <LogOut size={12} /> Sign Out
@@ -421,14 +416,14 @@ function LoginButton() {
       {open && (
         <div className="absolute top-full right-0 mt-2 w-72 glass-dark border border-border rounded-2xl shadow-panel z-50 p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <p className="text-[9px] uppercase tracking-widest text-anth-500 flex items-center gap-1.5"><User size={10} /> {authTab === 'firma' ? t('Firmen-Login') : 'Team Login'}</p>
-            <button onClick={() => setAuthTab(v => v === 'firma' ? 'team' : 'firma')}
+            <p className="text-[9px] uppercase tracking-widest text-anth-500 flex items-center gap-1.5"><User size={10} /> {authTab === 'fusebase' ? 'FuseBase' : 'Team Login'}</p>
+            <button onClick={() => setAuthTab(v => v === 'fusebase' ? 'team' : 'fusebase')}
               className="text-[9px] text-anth-500 hover:text-mint-400 transition-colors underline underline-offset-2">
-              {authTab === 'firma' ? 'Team Login' : t('Firmen-Login')}
+              {authTab === 'fusebase' ? 'Team Login' : 'FuseBase'}
             </button>
           </div>
-          {authTab === 'firma' ? (
-            <SupabaseAuth onSuccess={() => setOpen(false)} />
+          {authTab === 'fusebase' ? (
+            <FuseBaseAuth onSuccess={() => setOpen(false)} />
           ) : (<>
           <select value={name} onChange={e => setName(e.target.value)}
             className="w-full bg-surface border border-border rounded-xl px-3 py-2 text-xs text-forest-100 outline-none focus:border-forest-600 transition-colors">

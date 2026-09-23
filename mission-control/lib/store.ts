@@ -714,7 +714,7 @@ export const EMPLOYEES = EMPLOYEES_DATA;
 interface AuthStore {
   user: AuthUser | null;
   login: (name: string, password: string) => boolean;
-  /** Session direkt setzen (z.B. nach Supabase-Login) */
+  /** Session direkt setzen (z.B. nach FuseBase-Login) */
   setUser: (u: AuthUser) => void;
   logout: () => void;
 }

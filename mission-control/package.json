@@ -1,7 +1,7 @@
 {
   "name": "mission-control",
   "version": "1.0.0",
-  "description": "AI Agent Operating System \u2014 Academy Mission Control Dashboard",
+  "description": "AI Agent Operating System — Academy Mission Control Dashboard",
   "private": true,
   "main": "electron/main.js",
   "scripts": {
@@ -53,7 +53,6 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@fusebase/fusebase-gate-sdk": "2.11.8-sdk.0",
     "@google/generative-ai": "^0.14.1",
-    "@supabase/supabase-js": "^2.110.2",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.0",
     "lucide-react": "^0.400.0",

@@ -108,7 +108,7 @@ function TrackWidget({ tracks, selectedId, onSelect, onRemove, onAdd, label, emo
     if (!files) return;
     setUploading(true);
     Array.from(files).forEach(async file => {
-      // Dauerhaft in Supabase Storage speichern; Fallback: lokale DataURL
+      // Cloud-Stub (FuseBase Store später); Fallback: lokale DataURL
       const cloudUrl = await uploadToStorage(file, 'meditation/music');
       if (cloudUrl) {
         onAdd({ id: `track-${Date.now()}-${Math.random().toString(36).slice(2)}`, name: file.name.replace(/\.[^.]+$/, ''), dataUrl: cloudUrl, size: file.size });

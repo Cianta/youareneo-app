@@ -1,17 +1,15 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Check, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
 import { useAuthStore, useNinjasStore } from '@/lib/store';
-import { supabaseConfigured } from '@/lib/supabase';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Wiederverwendbarer Teilen-Picker (Ziele, Karten, Boards, Eden-Canvas).
-// Struktur: 🌐 Alle (ganz oben, wählt automatisch alle) → Mitglieder einzeln
-// anklickbar → 🔒 Privat. Mitglieder = Firmen-Profile aus Supabase (falls
-// eingeloggt), sonst die lokalen Team-Mitglieder.
+// Mitglieder = lokale Team-Mitglieder (Ninjas). Cloud-Firm-Roster entfernt
+// (Supabase out; FuseBase Isolated Store später).
 // Popover rendert als Portal mit fixer Position — wird nie abgeschnitten.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -19,42 +17,13 @@ export type SharedWith = 'all' | string[] | null | undefined;
 
 interface FirmMember { name: string; avatar: string }
 
-// Supabase-Firmen-Mitglieder werden einmal pro Seite geladen und gecacht.
-let sbMembersCache: FirmMember[] | null = null;
-let sbMembersPromise: Promise<FirmMember[]> | null = null;
-
-async function loadSbMembers(): Promise<FirmMember[]> {
-  if (sbMembersCache) return sbMembersCache;
-  if (!sbMembersPromise) {
-    sbMembersPromise = (async () => {
-      try {
-        const { getSupabase } = await import('@/lib/supabase');
-        const sb = getSupabase();
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) return [];
-        const { data } = await sb.from('profile').select('display_name,avatar');
-        sbMembersCache = (data ?? []).map(p => ({ name: p.display_name as string, avatar: (p.avatar as string) || '🥷' }));
-        return sbMembersCache;
-      } catch { return []; }
-    })();
-  }
-  return sbMembersPromise;
-}
-
-/** Team-Mitglieder der Firma: Supabase-Profile (falls Session), sonst lokale Mitglieder. */
+/** Team-Mitglieder: lokale Ninjas (ohne den eingeloggten User). */
 export function useFirmMembers(): FirmMember[] {
   const ninjas = useNinjasStore(s => s.members);
   const me = useAuthStore(s => s.user?.name ?? null);
-  const [sbMembers, setSbMembers] = useState<FirmMember[]>(sbMembersCache ?? []);
-
-  useEffect(() => {
-    if (supabaseConfigured()) loadSbMembers().then(m => { if (m.length) setSbMembers(m); });
-  }, []);
-
-  const base = sbMembers.length
-    ? sbMembers
-    : ninjas.map(m => ({ name: m.name, avatar: m.avatar }));
-  return base.filter(m => m.name !== me); // sich selbst nicht anzeigen
+  return ninjas
+    .map(m => ({ name: m.name, avatar: m.avatar }))
+    .filter(m => m.name !== me);
 }
 
 export function SharePicker({
@@ -86,7 +55,6 @@ export function SharePicker({
   const isShared = value === 'all' || list.length > 0;
 
   const toggleMember = (name: string) => {
-    // Von 'all' aus: alle Mitglieder als Liste übernehmen, dann einen abwählen
     const cur = value === 'all' ? members.map(m => m.name) : list;
     const next = cur.includes(name) ? cur.filter(n => n !== name) : [...cur, name];
     onChange(next.length ? next : null);
@@ -117,7 +85,6 @@ export function SharePicker({
             onClick={e => e.stopPropagation()}>
             <p className="text-[9px] uppercase tracking-widest text-anth-600 px-1">{t('Teilen mit')}</p>
 
-            {/* Alle — ganz oben, wählt automatisch alle Mitglieder */}
             <button onClick={() => onChange(value === 'all' ? null : 'all')}
               className={cn('w-full flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-[10px] transition-colors',
                 value === 'all' ? 'bg-mint-500/15 text-mint-300' : 'text-anth-400 hover:bg-anth-800/50')}>
@@ -126,7 +93,6 @@ export function SharePicker({
               {value === 'all' && <Check size={9} />}
             </button>
 
-            {/* Mitglieder einzeln */}
             <div className="max-h-40 overflow-y-auto space-y-0.5 border-t border-border/40 pt-1">
               {members.length === 0 && (
                 <p className="text-[9px] text-anth-600 px-2 py-1">{t('Keine Team-Mitglieder angelegt.')}</p>
@@ -145,7 +111,6 @@ export function SharePicker({
               })}
             </div>
 
-            {/* Privat */}
             <button onClick={() => { onChange(null); setOpen(false); }}
               className={cn('w-full text-left px-2 py-1.5 rounded-lg text-[10px] border-t border-border/40 transition-colors',
                 !isShared ? 'bg-anth-800/70 text-anth-200' : 'text-anth-400 hover:bg-anth-800/50')}>

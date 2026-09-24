@@ -1,6 +1,7 @@
 'use client';
+import { PersonalSettings } from '@/components/workspace/PersonalSettings';
 import { useState } from 'react';
-import { useAgentStore, useGlobalAudioStore, useTemporalStore } from '@/lib/store';
+import { useAgentStore, useGlobalAudioStore, useTemporalStore, useUIExtStore } from '@/lib/store';
 import { cn, AGENT_COLORS } from '@/lib/utils';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
@@ -74,7 +75,8 @@ function persistKeys(keys: Record<string, string>) {
 }
 
 function AudioSettings() {
-  const { workSoundUrl, breakSoundUrl, setWorkSound, setBreakSound, volume, setVolume } = useGlobalAudioStore();
+  const { workSoundUrl, breakSoundUrl, setWorkSound, setBreakSound } = useGlobalAudioStore();
+  const { musicVolume: volume, setMusicVolume: setVolume } = useUIExtStore();
   return (
     <section>
       <h2 className="text-xs uppercase tracking-widest text-anth-500 mb-4 flex items-center gap-1.5">
@@ -246,6 +248,7 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-4xl space-y-8 fade-in">
+      <PersonalSettings />
 
       {/* ── Secure API Key Manager ── */}
       <section>

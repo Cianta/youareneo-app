@@ -1,5 +1,6 @@
 'use client';
 import { create } from 'zustand';
+import { remainingSeconds } from './workspace/time';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { AgentConfig, KanbanTask, MemoryEntry, NotebookEntry, ChatMessage } from '@/types';
 
@@ -332,7 +333,7 @@ export const useNotebookStore = create<NotebookStore>()(
   persist(
     (set) => ({
       entries: [],
-      isOpen: true,
+      isOpen: false,
       setEntries: (entries) => set({ entries }),
       addEntry: (entry) => set((s) => ({ entries: [entry, ...s.entries] })),
       toggle: () => set((s) => ({ isOpen: !s.isOpen })),
@@ -426,6 +427,7 @@ interface FocusStore {
   pomodoroMode: PomodoroMode;
   pomodoroRunning: boolean;
   pomodoroSeconds: number;
+  pomodoroDeadline: number | null;
   pomodoroRound: number; // 0-indexed; after round 1 completes → deep-recovery
   todayNote: string;
   // Actions
@@ -450,6 +452,7 @@ export const useFocusStore = create<FocusStore>()(
       pomodoroRunning: false,
       pomodoroSeconds: POMO_DURATIONS.focus,
       pomodoroRound: 0,
+      pomodoroDeadline: null,
       todayNote: '',
       toggleFocus: () => set((s) => ({ isOpen: !s.isOpen })),
       setDailyTask: (i, val) =>
@@ -464,16 +467,23 @@ export const useFocusStore = create<FocusStore>()(
           d[i] = val;
           return { dailyTaskDone: d };
         }),
-      togglePomodoro: () => set((s) => ({ pomodoroRunning: !s.pomodoroRunning })),
+      togglePomodoro: () => set((s) => {
+        const seconds = remainingSeconds(s.pomodoroDeadline, s.pomodoroSeconds);
+        if (s.pomodoroRunning) return { pomodoroRunning: false, pomodoroSeconds: seconds, pomodoroDeadline: null };
+        if (seconds <= 0) return {};
+        return { pomodoroRunning: true, pomodoroDeadline: Date.now() + seconds * 1000 };
+      }),
       tickPomodoro: () =>
         set((s) => {
-          if (s.pomodoroSeconds > 1) return { pomodoroSeconds: s.pomodoroSeconds - 1 };
-          // Phase complete — advance (caller plays gong)
-          return { pomodoroSeconds: 0, pomodoroRunning: false };
+          if (!s.pomodoroRunning) return {};
+          const deadline = s.pomodoroDeadline ?? Date.now() + s.pomodoroSeconds * 1000;
+          const seconds = remainingSeconds(deadline, s.pomodoroSeconds);
+          return { pomodoroSeconds: seconds, pomodoroRunning: seconds > 0, pomodoroDeadline: seconds > 0 ? deadline : null };
         }),
       resetPomodoro: () =>
         set((s) => ({
           pomodoroRunning: false,
+          pomodoroDeadline: null,
           pomodoroSeconds: POMO_DURATIONS[s.pomodoroMode],
         })),
       advancePomodoro: () =>
@@ -481,17 +491,17 @@ export const useFocusStore = create<FocusStore>()(
           if (s.pomodoroMode === 'focus') {
             const nextRound = s.pomodoroRound + 1;
             if (nextRound >= 2) {
-              return { pomodoroMode: 'deep-recovery', pomodoroSeconds: POMO_DURATIONS['deep-recovery'], pomodoroRound: 0, pomodoroRunning: false };
+              return { pomodoroMode: 'deep-recovery', pomodoroSeconds: POMO_DURATIONS['deep-recovery'], pomodoroRound: 0, pomodoroRunning: false, pomodoroDeadline: null };
             }
-            return { pomodoroMode: 'break', pomodoroSeconds: POMO_DURATIONS.break, pomodoroRound: nextRound, pomodoroRunning: false };
+            return { pomodoroMode: 'break', pomodoroSeconds: POMO_DURATIONS.break, pomodoroRound: nextRound, pomodoroRunning: false, pomodoroDeadline: null };
           }
           if (s.pomodoroMode === 'break') {
-            return { pomodoroMode: 'focus', pomodoroSeconds: POMO_DURATIONS.focus, pomodoroRunning: false };
+            return { pomodoroMode: 'focus', pomodoroSeconds: POMO_DURATIONS.focus, pomodoroRunning: false, pomodoroDeadline: null };
           }
           // deep-recovery → back to focus, round 0
-          return { pomodoroMode: 'focus', pomodoroSeconds: POMO_DURATIONS.focus, pomodoroRound: 0, pomodoroRunning: false };
+          return { pomodoroMode: 'focus', pomodoroSeconds: POMO_DURATIONS.focus, pomodoroRound: 0, pomodoroRunning: false, pomodoroDeadline: null };
         }),
-      snoozeBreak: (seconds = 10 * 60) => set({ pomodoroSeconds: seconds, pomodoroRunning: true }),
+      snoozeBreak: (seconds = 10 * 60) => set({ pomodoroSeconds: seconds, pomodoroRunning: true, pomodoroDeadline: Date.now() + seconds * 1000 }),
       setTodayNote: (note) => set({ todayNote: note }),
     }),
     {
@@ -499,7 +509,7 @@ export const useFocusStore = create<FocusStore>()(
       // Don't persist pomodoroRunning — timer must not silently restart after a page reload
       partialize: (s) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { pomodoroRunning, ...rest } = s;
+        const { pomodoroRunning, pomodoroDeadline, ...rest } = s;
         return rest;
       },
     }
@@ -548,12 +558,6 @@ interface TemporalStore {
 export const useTemporalStore = create<TemporalStore>()(
   persist(
     (set) => {
-      const _now = new Date();
-      const _fmt = (d: Date) =>
-        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-      const _d0 = _fmt(_now);
-      const _d2 = _fmt(new Date(_now.getTime() + 2 * 864e5));
-      const _d5 = _fmt(new Date(_now.getTime() + 5 * 864e5));
       return {
         isOpen: false,
         synergy: false,
@@ -561,15 +565,7 @@ export const useTemporalStore = create<TemporalStore>()(
           { id: 'assoc-default', name: 'Vereins-Kalender',  url: '', provider: 'local', type: 'association', visible: true, color: '#8b5cf6' },
           { id: 'priv-default',  name: 'Privater Kalender', url: '', provider: 'local', type: 'private',     visible: true, color: '#11CAA0' },
         ],
-        events: [
-          { id: 'ev-d1', title: 'Team Standup',    calendarId: 'assoc-default', date: _d0, startTime: '09:00' },
-          { id: 'ev-d2', title: 'Deep Work',       calendarId: 'priv-default',  date: _d0, startTime: '10:00', endTime: '12:00' },
-          { id: 'ev-d3', title: 'Strategy Call',   calendarId: 'assoc-default', date: _d0, startTime: '14:00' },
-          { id: 'ev-d4', title: 'Workout',         calendarId: 'priv-default',  date: _d0, startTime: '18:00' },
-          { id: 'ev-d5', title: 'Client Review',   calendarId: 'assoc-default', date: _d2, startTime: '10:00' },
-          { id: 'ev-d6', title: 'Sprint Planning', calendarId: 'assoc-default', date: _d5, startTime: '09:00' },
-          { id: 'ev-d7', title: 'Lunch Meeting',   calendarId: 'priv-default',  date: _d5, startTime: '12:30' },
-        ],
+        events: [],
         quickInput: '',
         quickAlarm: false,
         toggleTemporal: () => set((s) => ({ isOpen: !s.isOpen })),
@@ -1001,14 +997,8 @@ interface NeuralNotebookStore {
 export const useNeuralNotebookStore = create<NeuralNotebookStore>()(
   persist(
     (set) => ({
-      goals: [
-        { id: 'g1', text: 'Build sovereign digital empire', folder: 'lebensziele' as GoalFolder, notes: [], createdAt: new Date().toISOString(), completed: false },
-        { id: 'g2', text: 'Launch Arche Academy Q3',        folder: 'vereinsziele' as GoalFolder, notes: [], createdAt: new Date().toISOString(), completed: false },
-        { id: 'g3', text: 'Ship TRINITY OS v5',             folder: 'projekte'    as GoalFolder, notes: [], createdAt: new Date().toISOString(), completed: false },
-      ],
-      journal: [
-        { id: 'j1', text: 'Vision: AI-assisted community platform where every member has a personal avatar...', folder: 'ideen' as JournalFolder, notes: [], createdAt: new Date().toISOString() },
-      ],
+      goals: [],
+      journal: [],
       notes: [],
       quickNotes: [],
       archivedGoals: [],
@@ -1478,6 +1468,7 @@ export interface AstroData {
   maya: { kin: number; tone: number; toneName: string; seal: string; glyph: string };
   // Human Design — auto-computed from I-Ching gate wheel + Meeus ephemeris
   hd?: {
+    type?: string;
     profile:       string;  // e.g. "2/4" (Conscious Sun line / Design Sun line)
     gateConscious: number;  // I-Ching gate 1-64 at birth
     lineConscious: number;  // Line 1-6 within gate

@@ -741,7 +741,7 @@ export default function EdenPage() {
 
         {/* Toolbar */}
         <div className="relative z-40 shrink-0 flex items-center gap-2 px-4 py-2.5 border-b border-white/10 backdrop-blur-sm"
-          style={{ background: 'rgba(27,30,36,0.92)' }}>
+          style={{ background: 'var(--w-surface)' }}>
           <div className="flex-1">
             <p className="text-[10px] uppercase tracking-widest mb-0" style={{ color: '#11CAA0', opacity: 0.8 }}>Eden Canvas</p>
             <p className="text-[11px] text-anth-400">{cards.length} {t('Karten')} · {connections.length} {t('Verbindungen')}</p>
@@ -764,7 +764,7 @@ export default function EdenPage() {
               {addOpen && (
                 <>
                   <div className="absolute left-0 top-full mt-1.5 z-50 w-60 rounded-2xl border border-white/15 shadow-2xl p-1.5 space-y-0.5"
-                    style={{ background: 'rgba(12,16,24,0.97)' }}>
+                    style={{ background: 'var(--w-surface)' }}>
                     {(['note','idea','text','video','website','image'] as CardType[]).map(type => {
                       const Icon = CARD_ICONS[type];
                       return (
@@ -839,7 +839,7 @@ export default function EdenPage() {
           ref={canvasRef}
           className="absolute inset-0 overflow-auto scrollbar-thin"
           style={{
-            background: 'radial-gradient(ellipse at 30% 40%,rgba(17,202,160,0.04) 0%,transparent 60%),radial-gradient(ellipse at 70% 60%,rgba(79,158,112,0.04) 0%,transparent 60%),#15171C',
+            background: 'radial-gradient(ellipse at 30% 40%,rgba(17,202,160,0.04) 0%,transparent 60%),radial-gradient(ellipse at 70% 60%,rgba(79,158,112,0.04) 0%,transparent 60%),var(--w-bg)',
             cursor: connectMode ? 'crosshair' : 'default',
           }}
           onMouseMove={onMouseMove}
@@ -902,7 +902,7 @@ export default function EdenPage() {
             const py = (from.cy + to.cy) / 2;
             return (
               <div className="absolute z-30 flex flex-col gap-2 p-3 rounded-xl border border-white/15 shadow-2xl"
-                style={{ left: px - 75, top: py - 90, width: 150, background: 'rgba(10,14,22,0.95)', backdropFilter: 'blur(12px)' }}>
+                style={{ left: px - 75, top: py - 90, width: 150, background: 'var(--w-surface)', backdropFilter: 'blur(12px)' }}>
                 <p className="text-[9px] uppercase tracking-widest text-anth-500">{t('Verbindung')}</p>
                 <div className="flex flex-wrap gap-1">
                   {CONN_COLORS.map(c => (
@@ -1193,7 +1193,7 @@ export default function EdenPage() {
 
         {/* Zoom-Controls — unten rechts */}
         <div className="absolute bottom-3 right-3 z-30 flex items-center gap-0.5 rounded-xl border border-white/15 px-1 py-1 shadow-xl"
-          style={{ background: 'rgba(12,16,24,0.92)' }}>
+          style={{ background: 'var(--w-surface)' }}>
           <button onClick={() => setZoom(z => Math.max(0.4, +(z - 0.1).toFixed(2)))}
             title={t('Herauszoomen')}
             className="p-1.5 rounded-lg text-anth-400 hover:text-forest-100 hover:bg-white/5 transition-colors">

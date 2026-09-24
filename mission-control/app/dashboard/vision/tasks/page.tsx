@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useKanbanStore, useLauncherStore } from '@/lib/store';
+import { useAuthStore, useLauncherStore } from '@/lib/store';
 import { KanbanBoard } from '@/components/kanban/KanbanBoard';
 import { IframeView } from '@/components/iframe/IframeView';
 import { ExternalLink, Loader2, Archive, RotateCcw, Trash2, Plus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
-import type { KanbanTask } from '@/types';
+import { useBoard } from '@/lib/workspace/useBoard';
+import { boardTasks } from '@/lib/workspace/board';
 import { useNeuralNotebookStore } from '@/lib/store';
 
 type TaskTab = 'kanban' | 'trello' | 'archiv';
@@ -129,18 +130,12 @@ function TrelloWorkspaces() {
 
 export default function TasksPage() {
   const t = useT();
-  const { setTasks, tasks } = useKanbanStore();
+  const { board, ready } = useBoard();
+  const user = useAuthStore(s => s.user);
+  const tasks = boardTasks(board, user?.name ?? null);
   const { archivedGoals, archivedJournalEntries, restoreGoal, deleteArchivedGoal, deleteArchivedJournalEntry } = useNeuralNotebookStore();
-  const [loading, setLoading] = useState(true);
+  const loading = !ready;
   const [activeTab, setActiveTab] = useState<TaskTab>('kanban');
-
-  useEffect(() => {
-    fetch('/api/kanban')
-      .then(r => r.json())
-      .then(data => { setTasks(data.data?.tasks ?? []); })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [setTasks]);
 
   const tabs: { id: TaskTab; label: string; emoji: string }[] = [
     { id: 'kanban', label: 'Eigenes Kanban', emoji: '📋' },
@@ -149,7 +144,8 @@ export default function TasksPage() {
   ];
 
   return (
-    <div className="h-full flex flex-col fade-in">
+    <div className="w-tasks-page h-full flex flex-col fade-in">
+      <div className="w-page-heading"><div><span className="w-eyebrow">AUS IDEEN WIRD WIRKLICHKEIT</span><h1>Ein Schritt nach dem anderen.</h1><p>Deine Projekte. Dein Tempo. Alles in Bewegung.</p></div></div>
 
       {/* ── Sub-Navigation Tab Bar ── */}
       <div className="shrink-0 flex items-center gap-1 mb-3 p-1 rounded-2xl bg-anth-900/60 border border-anth-700/30 backdrop-blur-sm"

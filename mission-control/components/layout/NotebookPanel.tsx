@@ -330,11 +330,12 @@ export function NotebookPanel() {
       {isOpen && (
         <motion.aside
           key="notebook"
+          aria-label="Mein Notizbuch"
           initial={{ width: 0, opacity: 0 }}
           animate={{ width: panelW, opacity: 1 }}
           exit={{ width: 0, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 350, damping: 35 }}
-          className="h-full glass-dark border-l border-border flex flex-col overflow-hidden shrink-0"
+          className="w-notebook-drawer glass-dark border-l border-border flex flex-col overflow-hidden shrink-0"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-4 border-b border-border/60">
@@ -343,6 +344,7 @@ export function NotebookPanel() {
               <span className="text-sm font-semibold text-forest-100">{t('Daily Notebook')}</span>
             </div>
             <button
+              aria-label="Notizbuch schließen"
               onClick={() => setOpen(false)}
               className="p-1 rounded-lg text-anth-500 hover:text-forest-300 hover:bg-forest-800/50 transition-colors"
             >

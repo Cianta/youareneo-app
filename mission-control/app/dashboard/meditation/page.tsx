@@ -9,6 +9,7 @@ import { useUIExtStore } from '@/lib/store';
 import type { MusicTrack, VideoTrack } from '@/lib/store';
 import { cn } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
+import { MediaLibrary } from '@/components/workspace/MediaLibrary';
 import { uploadToStorage } from '@/lib/storage';
 
 const NATURE_LOOPS = [
@@ -325,55 +326,7 @@ export default function MeditationPage() {
 
   return (
     <div className="space-y-8 fade-in">
-      <div>
-        <h1 className="text-xl font-bold text-gold-gradient mb-1">Meditation</h1>
-        <p className="text-xs text-anth-500">Focus backgrounds · Healing frequencies · Pause loops</p>
-      </div>
-
-      {/* ── 4K Nature Loop Selector ── */}
-      <section>
-        <h2 className="text-xs uppercase tracking-widest text-anth-500 mb-3">4K Nature Pause Loops</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-          {NATURE_LOOPS.map((loop, i) => (
-            <motion.button key={loop.key} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-              onClick={() => { setMeditationBg(loop.key); setSelectedCustomVideoId(null); }}
-              className={cn('glass rounded-2xl border p-4 flex items-center gap-3 transition-all hover:scale-[1.02]',
-                loop.color, !useCustomVideo && meditationBg === loop.key ? 'ring-2 ring-mint-500/50' : ''
-              )}>
-              <span className="text-2xl">{loop.emoji}</span>
-              <div className="text-left">
-                <p className="text-xs font-medium text-forest-100">{loop.label}</p>
-                <p className="text-[10px] text-anth-500 mt-0.5">{!useCustomVideo && meditationBg === loop.key ? t('✓ Aktiv') : t('Auswählen')}</p>
-              </div>
-            </motion.button>
-          ))}
-        </div>
-
-        {/* Preview frame */}
-        <div className="relative glass rounded-2xl border border-border overflow-hidden" style={{ paddingTop: '40%' }}>
-          {useCustomVideo ? (
-            <video
-              src={selectedCustom!.dataUrl}
-              className="absolute inset-0 w-full h-full object-cover"
-              autoPlay loop muted
-            />
-          ) : (
-            <iframe src={selectedNature.src} className="absolute inset-0 w-full h-full" allow="autoplay" title={selectedNature.label} />
-          )}
-          <div className="absolute inset-0 flex items-end justify-between p-4 bg-gradient-to-t from-anth-950/80 via-transparent to-transparent pointer-events-none">
-            <div>
-              <p className="text-xs text-anth-400">{t('Wird angezeigt')}</p>
-              <p className="text-sm font-semibold text-mint-light">
-                {useCustomVideo ? `🎬 ${selectedCustom!.name}` : `${selectedNature.emoji} ${selectedNature.label}`}
-              </p>
-            </div>
-          </div>
-          <button onClick={() => setFullscreen(true)}
-            className="absolute top-3 right-3 p-2 rounded-lg bg-anth-900/60 border border-anth-700/50 text-anth-300 hover:text-mint-light hover:bg-anth-800/60 transition-colors z-10 pointer-events-auto">
-            <Expand size={14} />
-          </button>
-        </div>
-      </section>
+      <MediaLibrary />
 
       {/* ── 3 Compact Music / Video Widgets ── */}
       <section>

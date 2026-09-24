@@ -19,8 +19,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn, PRIORITY_COLORS, TASK_TYPE_ICONS } from '@/lib/utils';
 import { useAuthStore } from '@/lib/store';
 import { SharePicker } from '@/components/shared/SharePicker';
-import { newComment, TRINITY_SYNC_EVENT } from '@/lib/crossPublish';
+import { newComment, TRINITY_SYNC_EVENT, notifyTrinitySync } from '@/lib/crossPublish';
 import { Bot } from 'lucide-react';
+import { parseBoard, BOARD_KEY } from '@/lib/workspace/board';
 import { useT } from '@/lib/i18n';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
@@ -168,24 +169,11 @@ const colAccent = (colorClass: string) => COL_ACCENTS[colorClass] ?? '#68BC8C';
 // ══════════════════════════════════════════════════════════════════════════════
 function loadState(): KanbanState {
   if (typeof window === 'undefined') return DEFAULT_STATE;
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (!raw) return DEFAULT_STATE;
-    const parsed = JSON.parse(raw) as KanbanState;
-    // Safety: ensure required fields exist
-    if (!parsed.projects?.length) return DEFAULT_STATE;
-    if (!parsed.cards) parsed.cards = {};
-    if (!parsed.connections) parsed.connections = [];
-    return parsed;
-  } catch {
-    return DEFAULT_STATE;
-  }
+  return parseBoard(localStorage.getItem(BOARD_KEY));
 }
 
 function saveState(state: KanbanState) {
-  try {
-    localStorage.setItem(LS_KEY, JSON.stringify(state));
-  } catch { /* storage full — ignore */ }
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 
 function genId(prefix = 'id') {
@@ -347,11 +335,11 @@ function SortableColumn({
         transition,
         // 3D column card: per-column colour tint fading into anthracite,
         // top accent bar, deep drop shadow + subtle inner top highlight
-        background: `linear-gradient(180deg, ${accent}16 0%, rgba(27,30,36,0.72) 26%, rgba(21,23,28,0.92) 100%)`,
+        background: `linear-gradient(180deg, ${accent}16 0%, var(--w-surface) 26%, var(--w-bg) 100%)`,
         border: `1px solid ${accent}2e`,
         borderTop: `3px solid ${accent}cc`,
         borderRadius: '1.25rem',
-        boxShadow: `0 14px 34px rgba(0,0,0,0.45), 0 3px 10px rgba(0,0,0,0.35), 0 0 24px ${accent}0d, inset 0 1px 0 rgba(255,255,255,0.07)`,
+        boxShadow: 'var(--w-shadow)',
       }}
       className={cn('flex flex-col w-64 shrink-0 p-2.5', isDragging && 'opacity-50')}
     >
@@ -409,7 +397,7 @@ function SortableColumn({
         className="flex-1 rounded-xl transition-all min-h-[120px] p-1.5"
         style={activeCardId
           ? { background: `${accent}0f`, boxShadow: `inset 0 0 0 1.5px ${accent}66, inset 0 2px 8px rgba(0,0,0,0.3)` }
-          : { background: 'rgba(0,0,0,0.18)', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.28)' }}
+          : { background: 'var(--w-soft)', boxShadow: 'none' }}
       >
         <SortableContext items={col.cardIds} strategy={verticalListSortingStrategy}>
           <AnimatePresence>
@@ -518,23 +506,19 @@ export function KanbanBoard() {
   const [hydrated, setHydrated] = useState(false);
   const currentUser = useAuthStore(s => s.user?.name ?? null);
 
-  // Load from localStorage on mount (anti-wipe)
-  useEffect(() => {
-    setKb(loadState());
+  const [storageError, setStorageError] = useState('');
+  const reload = useCallback(() => {
+    try { setKb(loadState()); setStorageError(''); }
+    catch (e) { setStorageError(e instanceof Error ? e.message : 'Board nicht verfügbar.'); }
     setHydrated(true);
   }, []);
-
-  // Der Assistent (Chat-Widget) schreibt direkt in localStorage → neu laden
   useEffect(() => {
-    const reload = () => setKb(loadState());
+    reload();
+    const onStorage = (e: StorageEvent) => { if (e.key === LS_KEY || e.key === null) reload(); };
     window.addEventListener(TRINITY_SYNC_EVENT, reload);
-    return () => window.removeEventListener(TRINITY_SYNC_EVENT, reload);
-  }, []);
-
-  // Persist every change
-  useEffect(() => {
-    if (hydrated) saveState(kb);
-  }, [kb, hydrated]);
+    window.addEventListener('storage', onStorage);
+    return () => { window.removeEventListener(TRINITY_SYNC_EVENT, reload); window.removeEventListener('storage', onStorage); };
+  }, [reload]);
 
   // ── DnD state ──────────────────────────────────────────────────────────────
   const [activeId,   setActiveId]   = useState<string | null>(null);
@@ -682,11 +666,12 @@ export function KanbanBoard() {
 
   // ── State helpers (always sync to localStorage) ────────────────────────────
   const update = useCallback((fn: (prev: KanbanState) => KanbanState) => {
-    setKb(prev => {
-      const next = fn(prev);
+    try {
+      // Read current document immediately before editing: do not overwrite newer tab changes.
+      const next = fn(loadState());
       saveState(next);
-      return next;
-    });
+      setKb(next); setStorageError(''); notifyTrinitySync();
+    } catch (e) { setStorageError(e instanceof Error ? e.message : 'Speichern fehlgeschlagen. Bitte Speicherplatz prüfen.'); }
   }, []);
 
   // ── Projects ───────────────────────────────────────────────────────────────
@@ -1069,12 +1054,13 @@ export function KanbanBoard() {
   if (!activeProject) return null;
 
   return (
-    <div className="h-full flex gap-0 overflow-hidden">
+    <div className="trinity-board h-full flex gap-0 overflow-hidden relative">
+      {storageError && <div role="alert" className="w-board-error">{storageError}</div>}
 
       {/* ══════════════════════════════════════════════════════════════════════
           LEFT: PROJECTS PANEL (250px)
       ══════════════════════════════════════════════════════════════════════ */}
-      <div className="w-[250px] shrink-0 flex flex-col bg-anth-950/40 overflow-hidden"
+      <div className="w-board-projects w-[250px] shrink-0 flex flex-col bg-anth-950/40 overflow-hidden"
         style={{ borderRight: '1px solid rgba(255,255,255,0.10)', boxShadow: '2px 0 16px rgba(0,0,0,0.5), inset -1px 0 0 rgba(17,202,160,0.06)' }}>
         {/* Header */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border/40 shrink-0">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Cormorant_Garamond, Poppins, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import './workspace.css';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -33,7 +34,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'TRINITY OS | Powered by YOU ARE NEO',
-  description: 'TRINITY OS — Hybrid Enterprise Agent Operating System · Powered by YOU ARE NEO Academy',
+  description: 'Trinity — dein bewusster Arbeitsraum für Aufgaben, Teamarbeit, Fokus und neue Ideen.',
   robots: 'noindex',
 };
 
@@ -45,7 +46,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${cormorant.variable} ${poppins.variable} ${jetbrainsMono.variable}`}>
+    <html lang="de" suppressHydrationWarning className={`${inter.variable} ${cormorant.variable} ${poppins.variable} ${jetbrainsMono.variable}`}>
+      <head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var a=JSON.parse(localStorage.getItem('trinity-appearance')||'{}');var m=['dark','light','system'].includes(a.mode)?a.mode:'dark';var b=typeof a.brightness==='number'?Math.min(100,Math.max(45,a.brightness)):100;var r=document.documentElement;r.dataset.appearance=m;r.dataset.brightness=String(b);r.dataset.theme=m==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):m;r.style.setProperty('--ui-brightness',String(b/100));}catch(e){document.documentElement.dataset.theme='dark';}})();` }}/></head>
       <body suppressHydrationWarning className="bg-bg antialiased overflow-hidden">
         {children}
         <script dangerouslySetInnerHTML={{ __html: `

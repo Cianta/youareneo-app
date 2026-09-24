@@ -309,7 +309,7 @@ function RoleColumn({
 // ═══════════════════════════════════════════════════════════════
 // Version stamp forces re-fetch after code changes that add new fields (e.g. hd, meta)
 // v4: fixed Chinese element order, Maya Kin anchor (Kin 34 @ 1987-07-26), UTC date rollover
-const ASTRO_CACHE_VERSION = 'v4';
+const ASTRO_CACHE_VERSION = 'v5-ephemeris';
 function inputKey(m: NinjaMember) {
   return [m.birthDate, m.birthTime, m.birthTimezone ?? 'Europe/Vienna',
           m.birthCity, m.birthCountry, ASTRO_CACHE_VERSION].join('|');
@@ -397,7 +397,7 @@ function AstroBadges({ member }: { member: NinjaMember }) {
   // If the user has set hdProfile manually, that takes precedence over API profile
   const apiHdProfile  = a?.hd?.profile ?? null;
   const hdProfileShow = member.hdProfile ?? apiHdProfile ?? '?';
-  const hdTypeShow    = member.hdType ?? null;   // Type still manual (needs full planetary chart)
+  const hdTypeShow    = member.hdType || a?.hd?.type || null;
   const hdGateCon     = a?.hd?.gateConscious;
   const hdGateDes     = a?.hd?.gateDesign;
   const hdHasData     = !!(hdTypeShow || apiHdProfile);

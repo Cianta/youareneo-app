@@ -3,8 +3,9 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { KeyRound, Mail, Sparkles } from 'lucide-react';
+import { FOERDER_PRODUCT_URL } from '@/lib/membership';
 
-type Mode = 'password' | 'magic';
+type Mode = 'password' | 'magic' | 'forgot';
 
 /**
  * Trinity / Mission Control login via FuseBase Gate helpers
@@ -50,6 +51,23 @@ export default function LoginPage() {
         return;
       }
 
+      if (mode === 'forgot') {
+        const res = await fetch('/api/auth/password-restore', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || `Password restore failed (${res.status})`);
+        }
+        setInfo(
+          data.message ||
+            'Falls ein Konto mit dieser E-Mail existiert, erhältst du eine Nachricht zum Zurücksetzen des Passworts.',
+        );
+        return;
+      }
+
       const res = await fetch('/api/auth/magic-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -69,6 +87,13 @@ export default function LoginPage() {
 
   const input =
     'w-full bg-surface border border-border rounded-xl px-3 py-2.5 text-sm text-forest-100 placeholder-anth-600 outline-none focus:border-forest-600 transition-colors';
+
+  const submitLabel =
+    mode === 'password'
+      ? 'Anmelden'
+      : mode === 'forgot'
+        ? 'Reset-Link anfordern'
+        : 'Magic Link senden';
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg p-6">
@@ -107,6 +132,13 @@ export default function LoginPage() {
           ))}
         </div>
 
+        {mode === 'forgot' && (
+          <p className="text-[11px] text-anth-500 leading-relaxed">
+            Passwort vergessen? Gib deine E-Mail ein. FuseBase sendet einen Reset-Link
+            (nur wenn ein Konto existiert — die Antwort bleibt bewusst generisch).
+          </p>
+        )}
+
         <form onSubmit={onSubmit} className="space-y-3">
           <div className="relative">
             <Mail size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-anth-600" />
@@ -136,6 +168,38 @@ export default function LoginPage() {
             </div>
           )}
 
+          {mode === 'password' && (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode('forgot');
+                  setError('');
+                  setInfo('');
+                }}
+                className="text-[11px] text-mint-400/90 hover:text-mint-300 underline-offset-2 hover:underline"
+              >
+                Passwort vergessen?
+              </button>
+            </div>
+          )}
+
+          {mode === 'forgot' && (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode('password');
+                  setError('');
+                  setInfo('');
+                }}
+                className="text-[11px] text-anth-500 hover:text-anth-400 underline-offset-2 hover:underline"
+              >
+                Zurück zur Anmeldung
+              </button>
+            </div>
+          )}
+
           {error && <p className="text-xs text-red-400">{error}</p>}
           {info && <p className="text-xs text-mint-400">{info}</p>}
 
@@ -144,9 +208,18 @@ export default function LoginPage() {
             disabled={busy}
             className="w-full py-2.5 rounded-xl bg-forest-700/50 border border-forest-600/40 text-sm text-forest-100 font-medium hover:bg-forest-600/40 transition-colors disabled:opacity-50"
           >
-            {busy ? '…' : mode === 'password' ? 'Anmelden' : 'Magic Link senden'}
+            {busy ? '…' : submitLabel}
           </button>
         </form>
+
+        <a
+          href={FOERDER_PRODUCT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full text-center py-2.5 rounded-xl bg-anth-800/50 border border-anth-600/40 text-sm text-forest-100 font-medium hover:bg-anth-700/40 hover:border-mint-600/30 transition-colors"
+        >
+          Noch kein Konto? Fördermitglied werden – 3,33 €
+        </a>
 
         <p className="text-[10px] text-anth-600 leading-relaxed">
           Gleiche FuseBase-Identität wie Freigeist. Service-Token bleibt serverseitig.

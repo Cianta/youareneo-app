@@ -1,5 +1,5 @@
 /**
- * Minimal Trinity Gate auth helpers (login + app magic link).
+ * Minimal Trinity Gate auth helpers (login + magic link + password restore).
  */
 import { authApi, magicLinksApi, FuseBaseConfigError } from './gate';
 
@@ -53,4 +53,17 @@ export async function requestTrinityMagicLink(opts: {
 export async function activateTrinityMagicLink(globalId: string) {
   const api = magicLinksApi();
   return api.activateAppMagicLink({ path: { globalId } });
+}
+
+/**
+ * Request FuseBase platform password-restore email (visitor-safe).
+ * Gate always returns { ok: true }; platform mails the reset link.
+ */
+export async function requestTrinityPasswordRestore(opts: { email: string }) {
+  const api = authApi();
+  return api.requestFusebasePasswordRestore({
+    body: {
+      email: opts.email.trim().toLowerCase(),
+    },
+  });
 }

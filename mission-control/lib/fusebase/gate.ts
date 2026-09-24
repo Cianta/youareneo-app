@@ -5,6 +5,7 @@
 import {
   createClient,
   PortalsApi,
+  OrgUsersApi,
   FusebaseAuthApi,
   AppMagicLinksApi,
   type Client,
@@ -124,5 +125,68 @@ export async function inviteFoerderToPortal(opts: {
     orgId,
     portalId,
     isFullAccess: true,
+  };
+}
+
+export type RevokeFoerderResult = {
+  ok: true;
+  email: string;
+  orgId: string;
+  portalId: string;
+  workspaceId: string;
+  userId: number | null;
+  removed: boolean;
+  noopReason?: 'not_found';
+};
+
+/**
+ * Revoke Fördermitglied portal access by email (idempotent: missing member = noop).
+ * Uses OrgUsersApi.listPortalMembers + removePortalMember after resolving portal→workspaceId.
+ */
+export async function revokeFoerderFromPortal(opts: {
+  email: string;
+}): Promise<RevokeFoerderResult> {
+  const { orgId, portalId } = requireGateEnv();
+  const email = opts.email.trim().toLowerCase();
+  const portals = portalsApi();
+  const orgUsers = new OrgUsersApi(createGateClient());
+
+  const portal = await portals.getPortal({
+    path: { orgId, portalId },
+  });
+  const workspaceId = portal.workspaceId;
+
+  const listed = await orgUsers.listPortalMembers({
+    path: { orgId, workspaceId },
+  });
+  const member = (listed.members || []).find(
+    (m) => (m.email || '').trim().toLowerCase() === email,
+  );
+
+  if (!member) {
+    return {
+      ok: true,
+      email,
+      orgId,
+      portalId,
+      workspaceId,
+      userId: null,
+      removed: false,
+      noopReason: 'not_found',
+    };
+  }
+
+  await orgUsers.removePortalMember({
+    path: { orgId, workspaceId, userId: member.userId },
+  });
+
+  return {
+    ok: true,
+    email,
+    orgId,
+    portalId,
+    workspaceId,
+    userId: member.userId,
+    removed: true,
   };
 }

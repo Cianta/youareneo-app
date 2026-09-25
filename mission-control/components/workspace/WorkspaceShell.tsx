@@ -33,6 +33,7 @@ import { Modal } from "@/components/ui/Modal";
 import { TrinityLogo } from "@/components/sacred-geometry/TrinityLogo";
 import { CosmosMenu } from "./CosmosMenu";
 import { Bookmarks } from "./Bookmarks";
+import { DirectoryMenu } from "./DirectoryMenu";
 import { usePersonal } from "@/lib/workspace/personal";
 export const workspaceLinks = [
   { href: "/dashboard", label: "Mein Tag", icon: Home, hint: "Dein Überblick" },
@@ -157,6 +158,7 @@ export function WorkspaceShell({ children }: { children: React.ReactNode }) {
             Mein Workspace<small>Raum für deine Möglichkeiten</small>
           </div>
         </div>
+        <label className="w-scope-label">Dein Bereich<select className="w-input" aria-label="Workspace wechseln" value={personal.workspace} onChange={e=>personal.set({workspace:e.target.value as "private"|"organization"})}><option value="private">Privat</option><option value="organization">Organisation</option></select></label>
         <CosmosMenu />
         <details className="w-nav-group" open={personal.navOpen.work??true} onToggle={e=>{const open=e.currentTarget.open;if(open!==(personal.navOpen.work??true))personal.set({navOpen:{...personal.navOpen,work:open}});}}><summary className="w-nav-caption">DEIN ARBEITSRAUM</summary>
         <nav>
@@ -176,7 +178,7 @@ export function WorkspaceShell({ children }: { children: React.ReactNode }) {
         </details><div className="w-nav-divider" />
         <details className="w-nav-group" open={personal.navOpen.more??true} onToggle={e=>{const open=e.currentTarget.open;if(open!==(personal.navOpen.more??true))personal.set({navOpen:{...personal.navOpen,more:open}});}}><summary className="w-nav-caption">RAUM FÜR MEHR</summary>
         <nav>
-          {workspaceLinks.slice(6, 8).map(({ href, label, icon: Icon }) => (
+          {workspaceLinks.slice(6, 7).map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
               href={href}
@@ -187,7 +189,7 @@ export function WorkspaceShell({ children }: { children: React.ReactNode }) {
               {label}
             </Link>
           ))}
-          <button
+          <DirectoryMenu/><button
             className="w-nav-link"
             onClick={() => useNotebookStore.getState().toggle()}
           >

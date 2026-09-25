@@ -1,0 +1,42 @@
+[
+  {
+    "brand": "shopify",
+    "source": "https://cdn.shopify.com/b/shopify-brochure2-assets/61cc781fe73f11e9d4bd160d27cc627b.png",
+    "bytes": 2578
+  },
+  {
+    "brand": "hubspot",
+    "source": "https://www.hubspot.com/hubfs/HubSpot_Logos/HubSpot-Inversed-Favicon.png",
+    "bytes": 5123
+  },
+  {
+    "brand": "highlevel",
+    "source": "https://www.gohighlevel.com/favicon.ico",
+    "bytes": 318
+  },
+  {
+    "brand": "google",
+    "source": "https://www.google.com/favicon.ico",
+    "bytes": 5430
+  },
+  {
+    "brand": "whatsapp",
+    "source": "https://www.whatsapp.com/favicon.ico",
+    "bytes": 3648
+  },
+  {
+    "brand": "telegram",
+    "source": "https://telegram.org/img/apple-touch-icon.png",
+    "bytes": 5644
+  },
+  {
+    "brand": "riverside",
+    "source": "https://cdn.prod.website-files.com/685be7dcd32275d3830651d3/685be7dcd32275d383065e49_RS_favicon-black.png",
+    "bytes": 807
+  },
+  {
+    "brand": "obsidian",
+    "source": "https://obsidian.md/favicon.ico",
+    "bytes": 31332
+  }
+]

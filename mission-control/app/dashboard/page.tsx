@@ -1,2 +1,2 @@
-import { Today } from '@/components/workspace/Today';
-export default function DashboardPage() { return <Today/>; }
+import { WorkspaceHome } from '@/components/workspace/PrivateHome';
+export default function DashboardPage(){return <WorkspaceHome/>;}

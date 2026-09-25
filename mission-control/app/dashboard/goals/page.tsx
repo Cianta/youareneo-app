@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Plus, Check, Trash2, Pencil } from "lucide-react";
 import {
-  usePersonal,
+  usePersonal, inWorkspace, type Workspace,
   AREAS,
   AREA_COLORS,
   type SoulGoal,
@@ -10,6 +10,8 @@ import {
 } from "@/lib/workspace/personal";
 import { useBoard } from "@/lib/workspace/useBoard";
 import { Modal } from "@/components/ui/Modal";
+import { DailyPlanner } from '@/components/workspace/DailyPlanner';
+import { WorkspaceChoice } from '@/components/workspace/WorkspaceChoice';
 export default function GoalsPage() {
   const s = usePersonal(),
     { board } = useBoard();
@@ -27,7 +29,7 @@ export default function GoalsPage() {
           Ziel hinzufügen
         </button>
       </div>
-      <section className="w-card s-grid s-form">
+      <DailyPlanner/><section className="w-card s-grid s-form">
         <label>
           Wofür möchte ich meine Zeit einsetzen?
           <textarea
@@ -50,7 +52,7 @@ export default function GoalsPage() {
         </label>
       </section>
       <div className="s-grid">
-        {s.goals.map((g) => (
+        {s.goals.filter(g=>inWorkspace(g,s.workspace)).map((g) => (
           <article
             className="w-card s-goal"
             key={g.id}
@@ -129,6 +131,7 @@ export default function GoalsPage() {
               const f = new FormData(e.currentTarget);
               const goal: SoulGoal = {
                 id: editing.id ?? crypto.randomUUID(),
+                workspace: String(f.get("workspace")) as Workspace,
                 title: String(f.get("title")).trim(),
                 why: String(f.get("why")).trim(),
                 step: String(f.get("step")).trim(),
@@ -139,7 +142,7 @@ export default function GoalsPage() {
               };
               s.set({
                 goals: editing.id
-                  ? s.goals.map((g) => (g.id === editing.id ? goal : g))
+                  ? s.goals.filter(g=>inWorkspace(g,s.workspace)).map((g) => (g.id === editing.id ? goal : g))
                   : [...s.goals, goal],
               });
               setEditing(null);
@@ -207,7 +210,7 @@ export default function GoalsPage() {
                 defaultValue={editing.due}
               />
             </label>
-            <button className="w-btn w-btn-primary">Speichern</button>
+            <WorkspaceChoice value={editing.workspace}/><button className="w-btn w-btn-primary">Speichern</button>
           </form>
         )}
       </Modal>

@@ -15,12 +15,17 @@ import { uploadToStorage } from '@/lib/storage';
 import { CommentsPopover } from '@/components/shared/CommentsPopover';
 import { listKanbanProjects, publishToKanban, newComment, TRINITY_SYNC_EVENT, type CardComment } from '@/lib/crossPublish';
 
+import { CanvasRichCard, exportCanvasCard } from '@/components/workspace/CanvasRichCard';
+import { useContacts } from '@/lib/workspace/contacts';
+import { usePersonal, inWorkspace } from '@/lib/workspace/personal';
+
 // ── Types ──────────────────────────────────────────────────────────────────────
-type CardType = 'note' | 'idea' | 'video' | 'text' | 'image' | 'website';
+type CardType = 'note' | 'idea' | 'video' | 'text' | 'image' | 'website' | 'table' | 'chart' | 'formula' | 'contact';
 
 interface CanvasCard {
   id: string;
   type: CardType;
+  contactId?: string;
   title: string;
   content: string;
   x: number;
@@ -52,6 +57,7 @@ interface EdenBoard {
   name: string;
   /** Besitzer (Team-Mitglied). Legacy-Boards ohne Besitzer sind für alle sichtbar. */
   ownerId?: string;
+  workspace?: "private"|"organization"|"both";
   /** Teilen: undefined/null = privat · 'all' = ganze Firma · string[] = ausgewählte Mitglieder */
   sharedWith?: 'all' | string[] | null;
 }
@@ -70,6 +76,7 @@ function boardVisibleTo(b: EdenBoard, userName: string | null): boolean {
 
 // ── Style maps ────────────────────────────────────────────────────────────────
 const CARD_COLORS: Record<CardType, string> = {
+  table:'border-sky-500/60 bg-sky-900/20', chart:'border-violet-500/60 bg-violet-900/20', formula:'border-emerald-500/60 bg-emerald-900/20', contact:'border-orange-500/60 bg-orange-900/20',
   note:    'border-amber-500/60  bg-amber-900/20',
   idea:    'border-violet-500/60 bg-violet-900/20',
   video:   'border-sky-500/60   bg-sky-900/20',
@@ -79,11 +86,13 @@ const CARD_COLORS: Record<CardType, string> = {
 };
 
 const CARD_ICONS: Record<CardType, React.ElementType> = {
+  table: LayoutGrid, chart: Paintbrush, formula: Sparkles, contact: Bot,
   note: StickyNote, idea: Lightbulb, video: Video, text: FileText,
   image: ImageIcon, website: Globe,
 };
 
 const CARD_LABELS: Record<CardType, string> = {
+  table:'Tabelle', chart:'Diagramm', formula:'Formel', contact:'Kontakt',
   note: 'Notiz', idea: 'Idee', text: 'Text',
   video: 'Video (Link + Thumbnail)', website: 'Website (Link + Vorschau)', image: 'Bild (Upload / URL)',
 };
@@ -102,6 +111,7 @@ function isHttpUrl(v: string): boolean {
 }
 
 const CARD_ACCENT: Record<CardType, string> = {
+  table:'#86b9ed', chart:'#c1a0ec', formula:'#94c5a4', contact:'#e5c180',
   note: '#f59e0b', idea: '#a78bfa', video: '#38bdf8', text: '#11CAA0',
   image: '#f472b6', website: '#22d3ee',
 };
@@ -165,6 +175,9 @@ const EDEN_SYSTEM_PROMPT =
 
 // ═════════════════════════════════════════════════════════════════════════════
 export default function EdenPage() {
+  const personal=usePersonal(); const contacts=useContacts(s=>s.contacts).filter(c=>inWorkspace(c,personal.workspace));
+  const [context,setContext]=useState<{x:number;y:number;cx:number;cy:number;cardId?:string}|null>(null);
+  const [exportError,setExportError]=useState('');
   const t = useT();
   const [cards,       setCards]       = useState<CanvasCard[]>(SEED_CARDS);
   const [connections, setConnections] = useState<EdenConnection[]>([]);
@@ -331,7 +344,7 @@ export default function EdenPage() {
     const name = newBoardName.trim();
     if (!name) return;
     const id = `eden-board-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-    const b: EdenBoard = { id, name, ownerId: currentUser ?? undefined };
+    const b: EdenBoard = { id, name, workspace: personal.workspace, ownerId: currentUser ?? undefined };
     boardDataRef.current[activeBoardId] = { cards, connections };
     boardDataRef.current[id] = { cards: [], connections: [] };
     setBoards(prev => [...prev, b]);
@@ -365,7 +378,8 @@ export default function EdenPage() {
       : b));
   };
 
-  const visibleBoards = boards.filter(b => boardVisibleTo(b, currentUser));
+  const visibleBoards = boards.filter(b => boardVisibleTo(b, currentUser)&&inWorkspace(b,personal.workspace));
+  useEffect(()=>{if(!hydrated)return;const valid=boards.find(b=>b.id===activeBoardId&&inWorkspace(b,personal.workspace));if(valid)return;const next=boards.find(b=>inWorkspace(b,personal.workspace)&&boardVisibleTo(b,currentUser));if(next){switchBoard(next.id);}else{const id=crypto.randomUUID();boardDataRef.current[activeBoardId]={cards,connections};boardDataRef.current[id]={cards:[],connections:[]};setBoards(v=>[...v,{id,name:personal.workspace==='private'?'Mein privater Ideenraum':'Mein Arbeitsraum',workspace:personal.workspace,ownerId:currentUser??undefined}]);setActiveBoardId(id);setCards([]);setConnections([]);}},[personal.workspace,hydrated]);
 
   // ── Card rects — computed directly from card state (never stale) ─────────
   //    No DOM querying: card positions come straight from state so the SVG
@@ -452,11 +466,12 @@ export default function EdenPage() {
     setCards(cs => [...cs, {
       id, type,
       title: preset?.title ?? 'Neue Karte',
-      content: preset?.content ?? '',
+      content: preset?.content ?? (type==='chart'?'Idee A: 30\nIdee B: 50':type==='formula'?'(120 + 80) * 1.2':''),
+      contactId: preset?.contactId,
       x: preset?.x ?? 80 + Math.random() * 200,
       y: preset?.y ?? 80 + Math.random() * 200,
       w: preset?.w ?? (media ? 300 : 280),
-      h: preset?.h ?? (media ? 250 : 140),
+      h: preset?.h ?? (media || ["table","chart"].includes(type) ? 280 : 180),
       url: preset?.url, thumb: preset?.thumb,
       metaTitle: preset?.metaTitle, metaDesc: preset?.metaDesc,
     }]);
@@ -522,7 +537,7 @@ export default function EdenPage() {
           const id = `eden-board-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
           boardDataRef.current[activeBoardId] = { cards, connections };
           boardDataRef.current[id] = { cards: [], connections: [] };
-          setBoards(prev => [...prev, { id, name: a.name, ownerId: currentUser ?? undefined }]);
+          setBoards(prev => [...prev, { id, name: a.name, workspace: personal.workspace, ownerId: currentUser ?? undefined }]);
           setCards([]); setConnections([]);
           setActiveBoardId(id);
           idx = 0;
@@ -531,7 +546,7 @@ export default function EdenPage() {
           setCards([]); setConnections([]);
           idx = 0;
         } else if (a.op === 'addCard') {
-          const type: CardType = (['note','idea','text','video','website','image'] as CardType[])
+          const type: CardType = (['note','idea','text','table','chart','formula','contact','video','website','image'] as CardType[])
             .includes(a.type as CardType) ? a.type as CardType : 'note';
           const pos = place();
           const media = URL_TYPES.includes(type);
@@ -736,9 +751,12 @@ export default function EdenPage() {
         </div>
       </div>
 
+      {context&&<><button className="s-context-backdrop" aria-label="Kontextmenü schließen" onClick={()=>setContext(null)}/><div className="s-canvas-context" role="dialog" aria-label="Ideenraum Aktionen" style={{left:context.x,top:context.y}} onKeyDown={e=>{if(e.key==='Escape')setContext(null);}}><button className="w-btn" onClick={()=>setContext(null)}>Schließen ×</button>{(['text','table','chart','formula','image','video'] as CardType[]).map(type=><button key={type} onClick={()=>{addCard(type,{x:context.cx,y:context.cy});setContext(null);}}>{CARD_LABELS[type]} einfügen</button>)}<label>Kontakt verknüpfen<select className="w-input" defaultValue="" onChange={e=>{const c=contacts.find(x=>x.id===e.target.value);if(!c)return;const id=addCard('contact',{contactId:c.id,title:c.name,content:[c.company,c.email].filter(Boolean).join('\n'),x:context.cx+320,y:context.cy});if(context.cardId)setConnections(v=>[...v,{id:crypto.randomUUID(),fromId:context.cardId!,toId:id,color:'#e5c180'}]);setContext(null);}}><option value="">Kontakt wählen …</option>{contacts.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label><a href="/dashboard/contacts">Kontakte & HubSpot öffnen ↗</a>{context.cardId&&(['pdf','docx'] as const).map(format=><button key={format} onClick={()=>{const card=cards.find(c=>c.id===context.cardId);if(card)void exportCanvasCard(card,format).catch(e=>setExportError(String(e)));setContext(null);}}>Als {format==='docx'?'Word': 'PDF'} exportieren</button>)}{context.cardId&&<label>E-Mail vorbereiten<select className="w-input" defaultValue="" onChange={e=>{const c=contacts.find(x=>x.id===e.target.value),card=cards.find(x=>x.id===context.cardId);if(c?.email&&card){window.location.href=`mailto:${encodeURIComponent(c.email)}?subject=${encodeURIComponent(card.title)}&body=${encodeURIComponent(card.content.slice(0,1500))}`;setContext(null);}}}><option value="">Empfänger auswählen …</option>{contacts.filter(c=>c.email).map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select><small>Öffnet dein Mailprogramm. PDF/Word vorher exportieren und anhängen.</small></label>}</div></>}
       {/* ── Canvas Area ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
+        {exportError&&<p role="alert">{exportError}</p>}
+        <div className="s-canvas-toolbar">{(['text','table','chart','formula','video','image','contact'] as CardType[]).map(type=><button className="w-btn" key={type} onClick={()=>addCard(type)}>{CARD_LABELS[type]}</button>)}</div>
         {/* Toolbar */}
         <div className="relative z-40 shrink-0 flex items-center gap-2 px-4 py-2.5 border-b border-white/10 backdrop-blur-sm"
           style={{ background: 'var(--w-surface)' }}>
@@ -765,7 +783,7 @@ export default function EdenPage() {
                 <>
                   <div className="absolute left-0 top-full mt-1.5 z-50 w-60 rounded-2xl border border-white/15 shadow-2xl p-1.5 space-y-0.5"
                     style={{ background: 'var(--w-surface)' }}>
-                    {(['note','idea','text','video','website','image'] as CardType[]).map(type => {
+                    {(['note','idea','text','table','chart','formula','contact','video','website','image'] as CardType[]).map(type => {
                       const Icon = CARD_ICONS[type];
                       return (
                         <button key={type}
@@ -842,6 +860,7 @@ export default function EdenPage() {
             background: 'radial-gradient(ellipse at 30% 40%,rgba(17,202,160,0.04) 0%,transparent 60%),radial-gradient(ellipse at 70% 60%,rgba(79,158,112,0.04) 0%,transparent 60%),var(--w-bg)',
             cursor: connectMode ? 'crosshair' : 'default',
           }}
+          onContextMenu={e=>{e.preventDefault();const r=e.currentTarget.getBoundingClientRect();setContext({x:Math.min(e.clientX,window.innerWidth-260),y:Math.min(e.clientY,window.innerHeight-420),cx:(e.clientX-r.left+e.currentTarget.scrollLeft)/zoom,cy:(e.clientY-r.top+e.currentTarget.scrollTop)/zoom});}}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
           onMouseLeave={onMouseUp}
@@ -929,6 +948,7 @@ export default function EdenPage() {
             return (
               <div
                 key={card.id}
+                onContextMenu={e=>{e.preventDefault();e.stopPropagation();setContext({x:Math.min(e.clientX,window.innerWidth-260),y:Math.max(12,Math.min(e.clientY,window.innerHeight-420)),cx:card.x,cy:card.y,cardId:card.id});}}
                 style={{
                   position: 'absolute', left: card.x, top: card.y,
                   width: card.w, height: card.h,
@@ -1072,13 +1092,18 @@ export default function EdenPage() {
                     </a>
                   )}
 
-                  <textarea
+                  <div onContextMenu={e=>{e.preventDefault();e.stopPropagation();setContext({x:Math.min(e.clientX,window.innerWidth-260),y:Math.min(e.clientY,window.innerHeight-420),cx:card.x,cy:card.y,cardId:card.id});}}>
+                  <CanvasRichCard type={card.type} content={card.content} onChange={content=>updateCard(card.id,{content})}/>
+                  {card.type==='contact'&&<select aria-label="Kontakt auswählen" className="w-input" value={card.contactId??''} onMouseDown={e=>e.stopPropagation()} onChange={e=>{const c=contacts.find(x=>x.id===e.target.value);if(c)updateCard(card.id,{contactId:c.id,title:c.name,content:[c.company,c.email].filter(Boolean).join('\n')});}}><option value="">Kontakt auswählen …</option>{contacts.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select>}
+                  </div>
+                  {card.type!=='table'&&<textarea
                     value={card.content}
                     onChange={e => updateCard(card.id, { content: e.target.value })}
-                    placeholder={t('Inhalt eingeben…')}
+                    placeholder={card.type==='chart'?'Bezeichnung: Zahl (eine Zeile je Balken)':t('Inhalt eingeben…')}
                     className="w-full flex-1 min-h-[24px] bg-transparent text-[11px] text-anth-300 resize-none outline-none placeholder:text-anth-700 leading-relaxed"
                     onMouseDown={e => e.stopPropagation()}
-                  />
+                  />}
+                  <div className="s-actions" onMouseDown={e=>e.stopPropagation()}><button title="Als PDF exportieren" onClick={()=>void exportCanvasCard(card,'pdf').catch(e=>setExportError(String(e)))}>PDF ↗</button><button title="Als Word-Dokument exportieren" onClick={()=>void exportCanvasCard(card,'docx').catch(e=>setExportError(String(e)))}>Word ↗</button></div>
                 </div>
 
                 {/* Publish → Tasks — unten links */}

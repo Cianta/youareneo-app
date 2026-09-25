@@ -1,63 +1,17 @@
 "use client";
 import { useState } from "react";
 import { Plus, Minus, Search, RotateCcw } from "lucide-react";
-import { SIDEBAR_NAV_LINKS } from "@/components/layout/Sidebar";
+import { core, directoryLinks, categoriesFor, categoriesOf } from "@/lib/workspace/directory";
+import { AppLogo } from "@/components/workspace/AppLogo";
 import { usePersonal, safeLink, type Shortcut } from "@/lib/workspace/personal";
 import { Modal } from "@/components/ui/Modal";
-const core: Shortcut[] = [
-  ["today", "Mein Tag", "/dashboard", "☀", "Fokus"],
-  ["tasks", "Aufgaben & Projekte", "/dashboard/vision/tasks", "▤", "Fokus"],
-  ["calendar", "Kalender & Liveplan", "/dashboard/calendar", "▦", "Fokus"],
-  ["ideas", "Ideenraum", "/dashboard/eden", "✧", "Fokus"],
-  ["soul", "Mein Geburtsprofil", "/dashboard/soul", "☾", "Identität & Seele"],
-  ["goals", "Ziele & Warum", "/dashboard/goals", "◎", "Identität & Seele"],
-  [
-    "brain",
-    "Second Brain",
-    "/dashboard/second-brain",
-    "⌘",
-    "Identität & Seele",
-  ],
-  ["notes", "Mein Notizbuch", "/dashboard/kanban", "▱", "Identität & Seele"],
-  ["team", "Mein Team", "/dashboard/ninjas", "♧", "Gemeinsam"],
-  [
-    "friends",
-    "Digital Friends",
-    "/dashboard/agents/agent-overview",
-    "✦",
-    "Gemeinsam",
-  ],
-  [
-    "chat",
-    "Team-Kommunikation",
-    "/dashboard/communication/kchat",
-    "◌",
-    "Gemeinsam",
-  ],
-  ["apps", "Meine Apps", "/dashboard/apps", "▦", "Meine Welt"],
-  ["music", "Meditation & Musik", "/dashboard/meditation", "♫", "Meine Welt"],
-].map(([id, label, href, icon, category]) => ({
-  id,
-  label,
-  href,
-  icon,
-  category,
-}));
-const old = SIDEBAR_NAV_LINKS.filter(
-  (l) => !core.some((c) => c.href === l.href) && l.id !== "hero",
-).map((l) => ({
-  ...l,
-  category: l.category === "ORGANISATION" ? "Gemeinsam" : l.category,
-  icon: "↗",
-}));
-export const directoryLinks = [...core, ...old];
 export default function ToolsPage() {
   const s = usePersonal(),
     [query, setQuery] = useState(""),
     [adding, setAdding] = useState<string | null>(null),
-    [error, setError] = useState("");
+    [error, setError] = useState(""), [categorizing,setCategorizing]=useState<Shortcut|null>(null);
   const all = [...directoryLinks, ...s.customLinks],
-    categories = Array.from(new Set(all.map((l) => l.category)));
+    categories = categoriesOf(all,s.linkCategories);
   return (
     <div className="w-page">
       <div className="w-page-heading">
@@ -87,7 +41,7 @@ export default function ToolsPage() {
         {categories.map((category) => {
           const links = all.filter(
             (l) =>
-              l.category === category &&
+              categoriesFor(l,s.linkCategories).includes(category) &&
               !s.hiddenLinks.includes(l.id) &&
               `${l.label} ${category}`
                 .toLowerCase()
@@ -95,7 +49,7 @@ export default function ToolsPage() {
           );
           if (query && !links.length) return null;
           return (
-            <section className="w-card" key={category}>
+            <section id={encodeURIComponent(category)} className="w-card" key={category}>
               <div className="w-section-head">
                 <span className="w-eyebrow">{category}</span>
                 <button
@@ -115,10 +69,10 @@ export default function ToolsPage() {
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
                     >
-                      <span className="s-app-symbol">{l.icon}</span>
+                      <AppLogo label={l.label} href={l.href} fallback={l.icon}/>
                       {l.label}
                     </a>
-                    <button
+                    <button className="w-icon" aria-label={`${l.label} zuordnen`} onClick={()=>setCategorizing(l)}>⋮</button><button
                       className="w-icon"
                       aria-label={`${l.label} ausblenden`}
                       onClick={() =>
@@ -139,6 +93,7 @@ export default function ToolsPage() {
           );
         })}
       </div>
+      <Modal open={!!categorizing} onClose={()=>setCategorizing(null)} title="Mehreren Bereichen zuordnen">{categorizing&&<div className="s-form">{categories.map(category=><label key={category}><input type="checkbox" checked={categoriesFor(categorizing,s.linkCategories).includes(category)} onChange={e=>{const current=categoriesFor(categorizing,s.linkCategories); const next=e.target.checked?[...current,category]:current.filter(c=>c!==category); if(next.length)s.set({linkCategories:{...s.linkCategories,[categorizing.id]:next}});}}/> {category}</label>)}<p className="w-muted">Mindestens ein Bereich bleibt zugeordnet.</p></div>}</Modal>
       <Modal
         open={!!adding}
         onClose={() => setAdding(null)}

@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Search, Plus, Download, Link2, Trash2, Pencil } from "lucide-react";
 import { zipSync, strToU8 } from "fflate";
 import {
-  usePersonal,
+  usePersonal, inWorkspace, type Workspace,
   AREAS,
   AREA_COLORS,
   type BrainNote,
@@ -27,6 +27,8 @@ import {
 } from "@/lib/workspace/brain";
 import { ShareWithAgents } from "@/components/workspace/McpControls";
 import { Modal } from "@/components/ui/Modal";
+import { ObsidianSync } from '@/components/workspace/ObsidianSync';
+import { WorkspaceChoice } from '@/components/workspace/WorkspaceChoice';
 export default function SecondBrain() {
   const s = usePersonal(),
     profile = useSelfStore((x) => x.profile),
@@ -58,7 +60,7 @@ export default function SecondBrain() {
         links: [],
       },
     ];
-    s.goals.forEach((g) =>
+    s.goals.filter(g=>inWorkspace(g,s.workspace)).forEach((g) =>
       n.push({
         id: `goal:${g.id}`,
         title: g.title,
@@ -70,7 +72,7 @@ export default function SecondBrain() {
       }),
     );
     board.projects
-      .filter((p) => visibleTo(p, user?.name ?? null))
+      .filter((p) => s.workspace === "organization" && visibleTo(p, user?.name ?? null))
       .forEach((p) =>
         n.push({
           id: `project:${p.id}`,
@@ -94,7 +96,7 @@ export default function SecondBrain() {
           links: [],
         }),
       );
-    members.forEach((m) =>
+    (s.workspace === "organization" ? members : []).forEach((m) =>
       n.push({
         id: `person:${m.id}`,
         title: m.name,
@@ -140,7 +142,7 @@ export default function SecondBrain() {
         links: [],
       }),
     );
-    s.notes.forEach((x) =>
+    s.notes.filter(n=>inWorkspace(n,s.workspace)).forEach((x) =>
       n.push({
         id: `note:${x.id}`,
         title: x.title,
@@ -156,6 +158,7 @@ export default function SecondBrain() {
     }
     return n;
   }, [
+    s.workspace,
     s.goals,
     s.notes,
     s.relations,
@@ -239,7 +242,7 @@ export default function SecondBrain() {
           </button>
         </div>
       </div>
-      <section className="s-brain-panel">
+      <ObsidianSync key={s.workspace} nodes={nodes}/><section className="s-brain-panel">
         <div className="s-brain-controls">
           <div className="w-apps-search">
             <Search size={16} />
@@ -590,6 +593,7 @@ export default function SecondBrain() {
               const f = new FormData(e.currentTarget),
                 note: BrainNote = {
                   id: editing.id ?? crypto.randomUUID(),
+                  workspace: String(f.get("workspace")) as Workspace,
                   title: String(f.get("title")).trim(),
                   body: String(f.get("body")),
                   area: String(f.get("area")) as Area,
@@ -635,7 +639,7 @@ export default function SecondBrain() {
                 defaultValue={editing.body}
               />
             </label>
-            <button className="w-btn w-btn-primary">Speichern</button>
+            <WorkspaceChoice value={editing.workspace}/><button className="w-btn w-btn-primary">Speichern</button>
           </form>
         )}
       </Modal>

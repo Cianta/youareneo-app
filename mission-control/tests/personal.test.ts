@@ -114,3 +114,25 @@ test("changing city queries returns independent coordinates and handles German n
   assert.match(findBirthPlaces(vienna.name)[0].name, /Vienna/);
   assert.deepEqual(findBirthPlaces("no-such-city-xyz"), []);
 });
+
+import { syncAction,parseVaultMarkdown } from '../lib/workspace/vault-sync';
+import { calculateFormula,wordDocument } from '../lib/workspace/canvas-tools';
+import { unzipSync,strFromU8 } from 'fflate';
+test('vault sync detects conflicts, imports edits, and never interprets disappearance as deletion',()=>{
+ assert.equal(syncAction('new','old','old'),'write');
+ assert.equal(syncAction('old','edited','old'),'import');
+ assert.equal(syncAction('changed','edited','old'),'conflict');
+ assert.equal(syncAction('old',null,'old'),'conflict');
+ assert.equal(syncAction('new',null),'write');
+ assert.equal(syncAction('new','foreign'),'conflict');
+ assert.deepEqual(parseVaultMarkdown('---\nid: "note:1"\ntitle: "Test"\narea: "Leben"\n---\n\n# Test\n\nChanged body\n\n## Verbindungen\n\n- [[Other]]\n','x.md'),{id:'note:1',title:'Test',area:'Leben',body:'Changed body'});
+});
+test('canvas formula rejects code and document export escapes XML',()=>{
+ assert.equal(calculateFormula('(120 + 80) * 1.2'),240);
+ assert.equal(calculateFormula('2^3+4/2'),10);
+ assert.throws(()=>calculateFormula('globalThis.alert(1)'));
+ assert.throws(()=>calculateFormula('1/0'));
+ const files=unzipSync(wordDocument('A & B','<script>\nGrüße'));
+ const xml=strFromU8(files['word/document.xml']);
+ assert.match(xml,/A &amp; B/);assert.match(xml,/&lt;script&gt;/);assert.match(xml,/Grüße/);
+});

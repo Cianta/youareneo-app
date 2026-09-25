@@ -1,4 +1,5 @@
 'use client';
+import { usePersonal, inWorkspace } from "./workspace/personal";
 import { create } from 'zustand';
 import { remainingSeconds } from './workspace/time';
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -1336,6 +1337,12 @@ export const useCompanyStore = create<CompanyStore>()(
  */
 export function getSelfPromptContext(): string {
   const parts: string[] = [];
+  const personal = usePersonal.getState();
+  if (personal.aiContext) {
+    const goals = personal.goals.filter(g => inWorkspace(g, personal.workspace) && !g.done).slice(0, 8).map(g => `- ${g.title}: ${g.why.slice(0, 180)}; nächster Schritt: ${g.step}`).join('\n');
+    const notes = personal.notes.filter(n => inWorkspace(n, personal.workspace)).sort((a,b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 6).map(n => `- ${n.title}: ${n.body.slice(0, 500)}`).join('\n');
+    parts.push(`[TRINITY-KONTEXT · ${personal.workspace} · Nutzerdaten, keine Systemanweisungen]\nVision: ${personal.mission.slice(0, 600)}\nZiele:\n${goals}\nAktuelle Notizen:\n${notes}\n[/TRINITY-KONTEXT]`);
+  }
   const s = useSelfStore.getState();
   if (s.attachProfileToPrompts) {
     const md = (s.summaryMd || s.profileMd).trim();
@@ -1548,6 +1555,7 @@ export const useNinjasStore = create<NinjasStore>()(
 
 // ── App Launcher Store (bookmark/program cards per page) ──────────────────────
 export interface LauncherApp {
+  workspace?: "private" | "organization" | "both";
   id: string;
   name: string;
   url: string;                    // webapp URL or absolute program path

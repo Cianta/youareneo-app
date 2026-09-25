@@ -1,6 +1,12 @@
 "use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+export type Workspace = "private" | "organization" | "both";
+export const inWorkspace = (
+  item: { workspace?: Workspace },
+  current: Workspace,
+) =>
+  item.workspace === "both" || (item.workspace ?? "organization") === current;
 export type Area =
   | "Leben"
   | "Gesundheit"
@@ -33,6 +39,7 @@ export type Shortcut = {
   category: string;
 };
 export type SoulGoal = {
+  workspace?: Workspace;
   id: string;
   title: string;
   why: string;
@@ -43,6 +50,7 @@ export type SoulGoal = {
   projectId: string;
 };
 export type BrainNote = {
+  workspace?: Workspace;
   id: string;
   title: string;
   body: string;
@@ -51,6 +59,20 @@ export type BrainNote = {
   updatedAt: string;
 };
 export type PersonalState = {
+  workspace: "private" | "organization";
+  aiContext: boolean;
+  linkCategories: Record<string, string[]>;
+  reasons: Record<string, string[]>;
+  days: Record<
+    string,
+    {
+      top: string[];
+      opportunity: string;
+      gratitude: string;
+      learned: string;
+      goal: string;
+    }
+  >;
   bookmarks: Shortcut[];
   customLinks: Shortcut[];
   hiddenLinks: string[];
@@ -68,6 +90,11 @@ export type PersonalState = {
 export const usePersonal = create<PersonalState>()(
   persist(
     (set) => ({
+      workspace: "organization",
+      aiContext: false,
+      linkCategories: {},
+      reasons: {},
+      days: {},
       bookmarks: [],
       customLinks: [],
       hiddenLinks: [],

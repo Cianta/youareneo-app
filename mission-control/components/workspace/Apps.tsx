@@ -12,8 +12,14 @@ import {
 import { useLauncherStore } from "@/lib/store";
 import { validWebUrl } from "@/lib/workspace/time";
 import { Modal } from "@/components/ui/Modal";
+import { usePersonal, inWorkspace, type Workspace } from '@/lib/workspace/personal';
+import { WorkspaceChoice } from './WorkspaceChoice';
+import { EcosystemApps } from './EcosystemApps';
+import { AppLogo } from './AppLogo';
 export function Apps() {
   const store = useLauncherStore();
+  const personal=usePersonal();
+  const [scope,setScope]=useState<Workspace>(personal.workspace);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState<{ key: string; id: string } | null>(null);
@@ -23,7 +29,7 @@ export function Apps() {
   const [error, setError] = useState("");
   const apps = Object.entries(store.apps)
     .flatMap(([key, items]) => items.map((app) => ({ ...app, key })))
-    .filter((a) => a.kind === "webapp");
+    .filter((a) => a.kind === "webapp" && inWorkspace(a,personal.workspace));
   function save(e: FormEvent) {
     e.preventDefault();
     const safe = validWebUrl(url);
@@ -32,6 +38,7 @@ export function Apps() {
       return;
     }
     const data = {
+      workspace: new FormData(e.currentTarget as HTMLFormElement).get("workspace") as Workspace,
       name: name.trim(),
       url: safe,
       description: description.trim(),
@@ -63,7 +70,7 @@ export function Apps() {
         <button
           className="w-btn w-btn-primary"
           onClick={() => {
-            setEdit(null);
+            setEdit(null); setScope(personal.workspace);
             setName("");
             setUrl("");
             setDescription("");
@@ -75,7 +82,7 @@ export function Apps() {
           App hinzufügen
         </button>
       </div>
-      <div className="w-apps-search">
+      <EcosystemApps/><div className="w-apps-search">
         <Search size={18} />
         <input
           aria-label="Apps suchen"
@@ -96,7 +103,7 @@ export function Apps() {
             <article className="w-card w-app-tile" key={app.id}>
               <div className="w-section-head">
                 <span className="w-app-letter">
-                  {app.name.slice(0, 1).toUpperCase()}
+                  <AppLogo label={app.name} href={app.url} />
                 </span>
                 <span className="w-tag">
                   <Link2 size={12} />
@@ -126,7 +133,7 @@ export function Apps() {
                   className="w-icon"
                   aria-label={`${app.name} bearbeiten`}
                   onClick={() => {
-                    setEdit({ key: app.key, id: app.id });
+                    setEdit({ key: app.key, id: app.id }); setScope(app.workspace??"organization");
                     setName(app.name);
                     setUrl(app.url);
                     setDescription(app.description);
@@ -188,7 +195,7 @@ export function Apps() {
               placeholder="https://…"
             />
           </label>
-          <label>
+          <WorkspaceChoice key={String(open)+scope} value={scope}/><label>
             Wofür nutzt du sie?
             <input
               maxLength={240}

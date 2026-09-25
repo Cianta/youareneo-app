@@ -30,3 +30,8 @@ npm-debug.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Private MCP grants, tokens, shared documents and SQLite sidecars
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

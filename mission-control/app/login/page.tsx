@@ -21,6 +21,8 @@ export default function LoginPage() {
   const [info, setInfo] = useState('');
 
   const onSubmit = async (e: FormEvent) => {
+    const next = new URLSearchParams(window.location.search).get('next');
+    const redirectPath = next?.startsWith('/') && !next.startsWith('//') && !next.includes('\\') ? next : '/dashboard';
     e.preventDefault();
     setError('');
     setInfo('');
@@ -30,7 +32,7 @@ export default function LoginPage() {
         const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, redirectPath: '/dashboard' }),
+          body: JSON.stringify({ email, password, redirectPath }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.success) {
@@ -47,7 +49,7 @@ export default function LoginPage() {
         } catch {
           /* store optional */
         }
-        router.replace(data.redirectPath || '/dashboard');
+        router.replace(redirectPath);
         return;
       }
 
@@ -71,7 +73,7 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/magic-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, redirectPath: '/dashboard' }),
+        body: JSON.stringify({ email, redirectPath }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.success) {

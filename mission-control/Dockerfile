@@ -6,8 +6,8 @@
 # Stage 1: Dependencies
 FROM node:22-alpine AS deps
 WORKDIR /app
-COPY package.json ./
-RUN npm install --frozen-lockfile 2>/dev/null || npm install
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
 
 # Stage 2: Builder
 FROM node:22-alpine AS builder

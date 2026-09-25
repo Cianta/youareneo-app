@@ -9,6 +9,8 @@ import {
   sessionCookieOptions,
 } from '@/lib/fusebase/session';
 
+const safeRedirect=(value:unknown)=>typeof value==='string'&&value.startsWith('/')&&!value.startsWith('//')&&!value.includes('\\')?value:'/dashboard';
+
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
@@ -32,7 +34,7 @@ export async function POST(req: Request) {
     const result = await loginTrinityUser({
       email,
       password,
-      redirectPath: body.redirectPath ?? '/dashboard',
+      redirectPath: safeRedirect(body.redirectPath),
     });
 
     if (result.status === 'challenge_required') {
@@ -63,7 +65,7 @@ export async function POST(req: Request) {
       success: true,
       email: email.toLowerCase(),
       userId: result.session?.userId ?? null,
-      redirectPath: result.redirectPath || '/dashboard',
+      redirectPath: safeRedirect(body.redirectPath),
       // appAuth handoff available for FuseBase-hosted apps; MC uses own cookie
       hasAppAuth: Boolean(result.appAuth),
     });

@@ -14,9 +14,10 @@ import {
   buildAssistantSystemPrompt, parseAssistantActions, executeAssistantActions,
 } from '@/lib/assistantActions';
 import { assistantAddKanbanCard, assistantAddEdenCard } from '@/lib/crossPublish';
+import { readAgentStream } from '@/lib/workspace/stream';
 import type { ChatMessage } from '@/types';
 
-const MINT = '#11CAA0';
+const MINT = 'var(--w-accent)';
 
 // SSE-Stream eines Agenten lesen und inkrementell in eine Nachricht schreiben.
 async function streamAgent(
@@ -33,24 +34,7 @@ async function streamAgent(
     body: JSON.stringify({ messages }),
   });
   if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let full = '';
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    for (const line of decoder.decode(value).split('\n').filter(l => l.startsWith('data: '))) {
-      const payload = line.slice(6).trim();
-      if (payload === '[DONE]') continue;
-      try {
-        const d = JSON.parse(payload);
-        if (d.error) throw new Error(d.error);
-        const chunk = d.text ?? d.delta;
-        if (chunk) { full += chunk; onChunk(full); }
-      } catch { /* skip */ }
-    }
-  }
-  return full;
+  return readAgentStream(res.body, onChunk);
 }
 
 export function FloatingAgentWidget() {
@@ -177,7 +161,7 @@ export function FloatingAgentWidget() {
     setAddMenuFor(null);
   };
 
-  const dims = expanded ? { width: 'min(560px, 92vw)', height: 'min(720px, 82vh)' } : { width: 'min(384px, 92vw)', height: 520 };
+  const dims = expanded ? { width: 'min(560px, 92vw)', height: 'min(720px, 82vh)' } : { width: 'min(384px, 92vw)', height: 'min(520px, 78dvh)' };
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
@@ -192,7 +176,7 @@ export function FloatingAgentWidget() {
             style={dims}
           >
             {/* Header */}
-            <div className="px-3 py-2.5 border-b border-border/60 flex items-center gap-2" style={{ background: 'rgba(17,202,160,0.06)' }}>
+            <div className="px-3 py-2.5 border-b border-border/60 flex items-center gap-2" style={{ background: 'var(--w-soft)' }}>
               <div className="relative flex-1 min-w-0">
                 <button onClick={() => setTargetOpen(v => !v)}
                   className="flex items-center gap-2 text-xs font-semibold text-mint-300 min-w-0">
@@ -243,14 +227,14 @@ export function FloatingAgentWidget() {
               <button onClick={clearMessages} title="Verlauf leeren" className="p-1 text-anth-500 hover:text-anth-300 transition-colors">
                 <Trash2 size={12} />
               </button>
-              <button onClick={toggle} className="p-1 text-anth-500 hover:text-anth-300 transition-colors"><X size={13} /></button>
+              <button aria-label="Assistent schließen" onClick={toggle} className="p-1 text-anth-500 hover:text-anth-300 transition-colors"><X size={13} /></button>
             </div>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-3 space-y-2.5 scrollbar-thin">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center gap-3 py-8">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl border border-mint-500/30" style={{ background: 'rgba(17,202,160,0.08)' }}>
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl border border-mint-500/30" style={{ background: 'var(--w-soft)' }}>
                     <Sparkles size={18} className="text-mint-400" />
                   </div>
                   <p className="text-xs text-anth-400 max-w-[220px]">Ich kann Aufgaben & Canvas-Karten anlegen, Self/Company ausfüllen, Programme verknüpfen und AI-Teams bauen. Sag einfach, was du brauchst.</p>
@@ -308,7 +292,7 @@ export function FloatingAgentWidget() {
                 onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                 placeholder={`Nachricht an ${resolved.label}…`}
                 className="flex-1 mc-input text-xs py-2" disabled={isLoading} />
-              <button onClick={sendMessage} disabled={!input.trim() || isLoading}
+              <button aria-label="Nachricht senden" onClick={sendMessage} disabled={!input.trim() || isLoading}
                 className={cn('p-2 rounded-xl border shrink-0 transition-colors',
                   input.trim() && !isLoading ? 'bg-mint-500/15 border-mint-500/40 text-mint-500 hover:bg-mint-500/25'
                     : 'text-anth-600 border-anth-700 cursor-not-allowed')}>
@@ -324,9 +308,9 @@ export function FloatingAgentWidget() {
         className="rounded-2xl border-2 flex items-center justify-center shadow-lg transition-all duration-300"
         style={{
           width: 52, height: 52,
-          background: isOpen ? '#1a2b22' : 'linear-gradient(135deg, #0a1a14 0%, #1a3a28 100%)',
-          borderColor: 'rgba(17,202,160,0.4)', color: MINT,
-          boxShadow: '0 0 20px rgba(17,202,160,0.25), 0 4px 24px rgba(0,0,0,0.5)',
+          background: 'var(--w-surface)',
+          borderColor: 'var(--w-border)', color: MINT,
+          boxShadow: 'var(--w-shadow)',
         }}
         title={isOpen ? 'Assistent schließen' : 'Assistent öffnen'}>
         <AnimatePresence mode="wait">

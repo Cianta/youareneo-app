@@ -1,4 +1,5 @@
 "use client";
+import { VoiceSettings } from "@/components/voice/VoiceSettings";
 import Link from "next/link";
 import { usePersonal } from "@/lib/workspace/personal";
 import { McpControls } from "./McpControls";
@@ -9,6 +10,7 @@ export function PersonalSettings() {
     ui = useUIExtStore();
   return (
     <>
+      <VoiceSettings />
       <McpControls /><section className="w-card"><h2>Trinity kennt deinen Arbeitskontext</h2><label><input type="checkbox" checked={s.aiContext} onChange={e=>s.set({aiContext:e.target.checked})}/> Aktuelle Ziele, Vision und letzte Notizen an meine ausgewählte KI mitsenden</label><p className="w-muted">Pro Anfrage eine begrenzte Zusammenfassung aus dem aktuellen Bereich. Diese Inhalte gehen an den KI-Anbieter des gewählten Agenten. Kein Hintergrundzugriff auf andere Apps.</p></section>
       <section className="w-card s-stack">
         <span className="w-eyebrow">DEIN PERSÖNLICHER RAUM</span>

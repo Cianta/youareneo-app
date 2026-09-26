@@ -1,4 +1,5 @@
 'use client';
+import { requestDictation, useVoiceRuntime } from '@/lib/voice/preferences';
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, MicOff, Paperclip, Bot, X, Image as ImageIcon, FileText, Film, Music, File } from 'lucide-react';
 import { cn, AGENT_COLORS, STATUS_COLORS, generateId } from '@/lib/utils';
@@ -56,10 +57,9 @@ export default function DigitaleBegleiterPage() {
   const [messages, setMessages] = useState<RichChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
+  const isRecording = useVoiceRuntime(s=>s.phase==='recording');
   const [pendingFiles, setPendingFiles] = useState<FileAttachment[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recognRef = useRef<any>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -69,21 +69,7 @@ export default function DigitaleBegleiterPage() {
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const w = window as any;
-    const SR = w.SpeechRecognition ?? w.webkitSpeechRecognition;
-    if (!SR) return;
-    const recog = new SR();
-    recog.continuous = false; recog.interimResults = false; recog.lang = 'de-DE';
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    recog.onresult = (e: any) => {
-      const t: string = e.results[0]?.[0]?.transcript ?? '';
-      if (t) setInput(prev => prev + (prev ? ' ' : '') + t);
-    };
-    recog.onend = () => setIsRecording(false);
-    recognRef.current = recog;
-  }, []);
+
 
   // ── File upload handler ──────────────────────────────────────────────────────
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,11 +146,7 @@ export default function DigitaleBegleiterPage() {
     } finally { setIsLoading(false); inputRef.current?.focus(); }
   };
 
-  const toggleRecording = () => {
-    if (!recognRef.current) return;
-    if (isRecording) { recognRef.current.stop(); setIsRecording(false); }
-    else { recognRef.current.start(); setIsRecording(true); }
-  };
+  const toggleRecording = () => requestDictation(inputRef.current);
 
   return (
     <div className="h-full flex gap-2 fade-in overflow-hidden">
@@ -281,7 +263,7 @@ export default function DigitaleBegleiterPage() {
         {/* Input */}
         <div className="shrink-0 border-t border-border/60 px-3 py-2.5 flex gap-2 items-end">
           {/* Voice input */}
-          <button onClick={toggleRecording}
+          <button aria-label="Spracheingabe" onClick={toggleRecording}
             className={cn('p-2 rounded-xl border transition-all shrink-0',
               isRecording ? 'bg-red-900/30 border-red-700/50 text-red-400 animate-pulse' : 'bg-surface border-border text-anth-500 hover:text-mint-light hover:border-mint-500/30'
             )}>

@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { VoiceDock } from '@/components/voice/VoiceDock';
 import { NotebookPanel } from '@/components/layout/NotebookPanel';
 import { FloatingAgentWidget } from '@/components/layout/FloatingAgentWidget';
 import { CompletionDialog } from '@/components/layout/CompletionDialog';
@@ -60,6 +61,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <WorkspaceShell>{children}</WorkspaceShell>
       <NotebookPanel />
       <FloatingAgentWidget />
+      <VoiceDock />
       <CompletionDialog />
     </>
   );

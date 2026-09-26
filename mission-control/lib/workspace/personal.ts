@@ -1,6 +1,7 @@
 "use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { PlannerDay, PlannerWeek, PlannerMonth } from "./planner";
 export type Workspace = "private" | "organization" | "both";
 export const inWorkspace = (
   item: { workspace?: Workspace },
@@ -63,16 +64,9 @@ export type PersonalState = {
   aiContext: boolean;
   linkCategories: Record<string, string[]>;
   reasons: Record<string, string[]>;
-  days: Record<
-    string,
-    {
-      top: string[];
-      opportunity: string;
-      gratitude: string;
-      learned: string;
-      goal: string;
-    }
-  >;
+  days: Record<string, PlannerDay>;
+  weeks: Record<string, PlannerWeek>;
+  months: Record<string, PlannerMonth>;
   bookmarks: Shortcut[];
   customLinks: Shortcut[];
   hiddenLinks: string[];
@@ -95,6 +89,8 @@ export const usePersonal = create<PersonalState>()(
       linkCategories: {},
       reasons: {},
       days: {},
+      weeks: {},
+      months: {},
       bookmarks: [],
       customLinks: [],
       hiddenLinks: [],

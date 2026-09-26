@@ -104,7 +104,7 @@ export default function LoginPage() {
           <Sparkles className="text-mint-400" size={18} />
           <div>
             <h1 className="text-lg font-semibold text-forest-100">TRINITY OS</h1>
-            <p className="text-[11px] text-anth-500">FuseBase Gate Login · YOU ARE NEO</p>
+            <p className="text-[11px] text-anth-500">Dein Arbeitsplatz · YOU ARE NEO</p>
           </div>
         </div>
 
@@ -136,8 +136,8 @@ export default function LoginPage() {
 
         {mode === 'forgot' && (
           <p className="text-[11px] text-anth-500 leading-relaxed">
-            Passwort vergessen? Gib deine E-Mail ein. FuseBase sendet einen Reset-Link
-            (nur wenn ein Konto existiert — die Antwort bleibt bewusst generisch).
+            Noch kein Passwort oder Passwort vergessen? Gib die E-Mail-Adresse
+            deines Kontos ein. Über den Link in der E-Mail kannst du dein Passwort festlegen.
           </p>
         )}
 
@@ -181,7 +181,7 @@ export default function LoginPage() {
                 }}
                 className="text-[11px] text-mint-400/90 hover:text-mint-300 underline-offset-2 hover:underline"
               >
-                Passwort vergessen?
+                Passwort festlegen oder zurücksetzen
               </button>
             </div>
           )}
@@ -224,8 +224,8 @@ export default function LoginPage() {
         </a>
 
         <p className="text-[10px] text-anth-600 leading-relaxed">
-          Gleiche FuseBase-Identität wie Freigeist. Service-Token bleibt serverseitig.
-          Gate-Login für Trinity — getrennt von Portal-Embeds.
+          Verwende die E-Mail-Adresse deines NEO- bzw. FuseBase-Kontos.
+          Du hast noch kein Passwort? Wähle „Passwort festlegen oder zurücksetzen“.
         </p>
       </div>
     </div>

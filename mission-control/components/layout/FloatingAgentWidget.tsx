@@ -1,5 +1,6 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { requestDictation, useVoiceRuntime } from '@/lib/voice/preferences';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -42,14 +43,13 @@ export function FloatingAgentWidget() {
     isOpen, toggle, expanded, setExpanded,
     target, setTarget,
     messages, addMessage, updateMessage, input, setInput,
-    isRecording, setRecording, isLoading, setLoading, clearMessages,
+    isLoading, setLoading, clearMessages,
   } = useFloatingAgentStore();
 
   const { agents } = useAgentStore();
   const { roles, pa, templates } = useAiCompanyStore();
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const recognRef = useRef<any>(null);
   const [targetOpen, setTargetOpen] = useState(false);
   const [addMenuFor, setAddMenuFor] = useState<string | null>(null);
 
@@ -58,7 +58,7 @@ export function FloatingAgentWidget() {
   // Aktuelles Ziel auflösen → Label + Rolle
   const resolved = useMemo(() => {
     if (target.kind === 'pa') {
-      return { label: pa.name || 'Persönliche Assistenz', sub: 'PA', icon: '🎧', roleName: 'Persönliche Assistenz' };
+      return { label: (!pa.name || pa.name === 'Persönliche Assistenz') ? 'Trinity' : pa.name, sub: 'PA', icon: '🎧', roleName: 'Persönliche Assistenz' };
     }
     if (target.kind === 'team') {
       const tpl = templates.find(t => t.id === target.templateId);
@@ -71,26 +71,8 @@ export function FloatingAgentWidget() {
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isOpen]);
 
-  // Web Speech API
-  useEffect(() => {
-    const w = window as any;
-    const SR = w.SpeechRecognition ?? w.webkitSpeechRecognition;
-    if (!SR) return;
-    const recog = new SR();
-    recog.continuous = false; recog.interimResults = false; recog.lang = 'de-DE';
-    recog.onresult = (e: any) => {
-      const tr: string = e.results[0]?.[0]?.transcript ?? '';
-      if (tr) setInput(useFloatingAgentStore.getState().input + (useFloatingAgentStore.getState().input ? ' ' : '') + tr);
-    };
-    recog.onend = () => setRecording(false);
-    recognRef.current = recog;
-  }, [setInput, setRecording]);
-
-  const toggleRecording = () => {
-    if (!recognRef.current) return;
-    if (isRecording) { recognRef.current.stop(); setRecording(false); }
-    else { recognRef.current.start(); setRecording(true); }
-  };
+  const isRecording = useVoiceRuntime(s=>s.phase==='recording');
+  const toggleRecording = () => requestDictation(inputRef.current);
 
   // Antwort eines Agenten in eigener Nachricht streamen + Aktionen ausführen
   const runOne = async (
@@ -198,7 +180,7 @@ export function FloatingAgentWidget() {
                       className="absolute top-full left-0 mt-2 w-64 glass-dark border border-border rounded-xl shadow-panel z-20 py-1.5 max-h-80 overflow-y-auto scrollbar-thin"
                     >
                       {/* PA */}
-                      <TargetRow icon="🎧" label={pa.name || 'Persönliche Assistenz'} hint="PA"
+                      <TargetRow icon="🎧" label={(!pa.name || pa.name === 'Persönliche Assistenz') ? 'Trinity' : pa.name} hint="PA"
                         active={target.kind === 'pa'} onClick={() => { setTarget({ kind: 'pa' }); setTargetOpen(false); }} />
                       {/* Teams */}
                       {templates.length > 0 && <p className="px-3 pt-2 pb-1 text-[9px] uppercase tracking-widest text-anth-600 flex items-center gap-1"><Users size={9} /> Projekt-Teams</p>}
@@ -237,7 +219,7 @@ export function FloatingAgentWidget() {
                   <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl border border-mint-500/30" style={{ background: 'var(--w-soft)' }}>
                     <Sparkles size={18} className="text-mint-400" />
                   </div>
-                  <p className="text-xs text-anth-400 max-w-[220px]">Ich kann Aufgaben & Canvas-Karten anlegen, Self/Company ausfüllen, Programme verknüpfen und AI-Teams bauen. Sag einfach, was du brauchst.</p>
+                  <p className="text-xs text-anth-400 max-w-[220px]">Ich bin Trinity. Hier finden deine Gedanken, dein Wissen und deine nächsten Schritte zusammen. Was möchtest du festhalten?</p>
                 </div>
               ) : (
                 messages.slice(-24).map((msg) => (
@@ -282,7 +264,7 @@ export function FloatingAgentWidget() {
 
             {/* Input */}
             <div className="px-3 pb-3 pt-2 flex gap-2 items-center border-t border-border/60">
-              <button onClick={toggleRecording} title={isRecording ? 'Aufnahme stoppen' : 'Spracheingabe'}
+              <button aria-label="Spracheingabe" onClick={toggleRecording} title={isRecording ? 'Aufnahme stoppen' : 'Spracheingabe'}
                 className={cn('p-2 rounded-xl border transition-colors shrink-0',
                   isRecording ? 'bg-red-900/30 border-red-700/50 text-red-400 animate-pulse'
                     : 'bg-surface border-border text-anth-500 hover:text-mint-light hover:border-mint-500/30')}>

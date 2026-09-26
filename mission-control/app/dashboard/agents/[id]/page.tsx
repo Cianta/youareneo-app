@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
+import { requestDictation, useVoiceRuntime } from '@/lib/voice/preferences';
 import { useEffect, useRef, useState, use } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -147,8 +148,7 @@ export default function AgentChatPage({ params }: { params: Promise<{ id: string
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const recognRef = useRef<any>(null);
+  const isRecording = useVoiceRuntime(s=>s.phase==='recording');
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -161,21 +161,7 @@ export default function AgentChatPage({ params }: { params: Promise<{ id: string
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  useEffect(() => {
-    const w = window as any;
-    const SR = w.SpeechRecognition ?? w.webkitSpeechRecognition;
-    if (!SR) return;
-    const recog = new SR();
-    recog.continuous = false;
-    recog.interimResults = false;
-    recog.lang = 'de-DE';
-    recog.onresult = (e: any) => {
-      const t: string = e.results[0]?.[0]?.transcript ?? '';
-      if (t) setInput(prev => prev + (prev ? ' ' : '') + t);
-    };
-    recog.onend = () => setIsRecording(false);
-    recognRef.current = recog;
-  }, []);
+
 
   const switchModel = (model: string) => {
     if (!agent) return;
@@ -244,11 +230,7 @@ export default function AgentChatPage({ params }: { params: Promise<{ id: string
     }
   };
 
-  const toggleRecording = () => {
-    if (!recognRef.current) return;
-    if (isRecording) { recognRef.current.stop(); setIsRecording(false); }
-    else { recognRef.current.start(); setIsRecording(true); }
-  };
+  const toggleRecording = () => requestDictation(inputRef.current);
 
   if (!agent) {
     return (

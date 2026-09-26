@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { Plus, Check, Trash2, Pencil } from "lucide-react";
 import {
-  usePersonal, inWorkspace, type Workspace,
+  usePersonal,
+  inWorkspace,
+  type Workspace,
   AREAS,
   AREA_COLORS,
   type SoulGoal,
@@ -10,114 +12,100 @@ import {
 } from "@/lib/workspace/personal";
 import { useBoard } from "@/lib/workspace/useBoard";
 import { Modal } from "@/components/ui/Modal";
-import { DailyPlanner } from '@/components/workspace/DailyPlanner';
-import { WorkspaceChoice } from '@/components/workspace/WorkspaceChoice';
+import { DailyPlanner } from "@/components/workspace/DailyPlanner";
+import { WorkspaceChoice } from "@/components/workspace/WorkspaceChoice";
 export default function GoalsPage() {
   const s = usePersonal(),
     { board } = useBoard();
   const [editing, setEditing] = useState<Partial<SoulGoal> | null>(null);
   return (
     <div className="w-page">
-      <div className="w-page-heading">
-        <div>
-          <span className="w-eyebrow">IDENTITÄT & SEELE</span>
-          <h1>Dein Warum wird dein Weg.</h1>
-          <p>Vom inneren Kompass zum nächsten kleinen Schritt.</p>
-        </div>
-        <button className="w-btn w-btn-primary" onClick={() => setEditing({})}>
-          <Plus size={16} />
-          Ziel hinzufügen
-        </button>
-      </div>
-      <DailyPlanner/><section className="w-card s-grid s-form">
-        <label>
-          Wofür möchte ich meine Zeit einsetzen?
-          <textarea
-            className="w-input"
-            rows={4}
-            placeholder="Meine Vision …"
-            value={s.mission}
-            onChange={(e) => s.set({ mission: e.target.value })}
-          />
-        </label>
-        <label>
-          Welche Werte tragen meine Entscheidungen?
-          <textarea
-            className="w-input"
-            rows={4}
-            placeholder="Zum Beispiel Freiheit, Verbundenheit, Gesundheit …"
-            value={s.values}
-            onChange={(e) => s.set({ values: e.target.value })}
-          />
-        </label>
-      </section>
-      <div className="s-grid">
-        {s.goals.filter(g=>inWorkspace(g,s.workspace)).map((g) => (
-          <article
-            className="w-card s-goal"
-            key={g.id}
-            style={{ borderTopColor: AREA_COLORS[g.area] }}
-          >
-            <div className="w-section-head">
-              <span className="w-eyebrow">{g.area}</span>
-              <div className="s-actions">
-                <button
-                  className="w-icon"
-                  aria-label={`${g.title} bearbeiten`}
-                  onClick={() => setEditing(g)}
-                >
-                  <Pencil size={15} />
-                </button>
-                <button
-                  className="w-icon"
-                  aria-label={`${g.title} löschen`}
-                  onClick={() => {
-                    if (confirm("Dieses Ziel entfernen?"))
-                      s.set({ goals: s.goals.filter((x) => x.id !== g.id) });
-                  }}
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
+      <DailyPlanner
+        onAddGoal={() => setEditing({})}
+        renderGoals={
+          <>
+            <div className="s-grid">
+              {s.goals
+                .filter((g) => inWorkspace(g, s.workspace))
+                .map((g) => (
+                  <article
+                    className="w-card s-goal"
+                    key={g.id}
+                    style={{ borderTopColor: AREA_COLORS[g.area] }}
+                  >
+                    <div className="w-section-head">
+                      <span className="w-eyebrow">{g.area}</span>
+                      <div className="s-actions">
+                        <button
+                          className="w-icon"
+                          aria-label={`${g.title} bearbeiten`}
+                          onClick={() => setEditing(g)}
+                        >
+                          <Pencil size={15} />
+                        </button>
+                        <button
+                          className="w-icon"
+                          aria-label={`${g.title} löschen`}
+                          onClick={() => {
+                            if (confirm("Dieses Ziel entfernen?"))
+                              s.set({
+                                goals: s.goals.filter((x) => x.id !== g.id),
+                              });
+                          }}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+                    <h2
+                      style={{
+                        textDecoration: g.done ? "line-through" : undefined,
+                      }}
+                    >
+                      {g.title}
+                    </h2>
+                    <details>
+                      <summary>Mein Warum</summary>
+                      <p>{g.why || "Was trägt dieses Ziel?"}</p>
+                    </details>
+                    <p className="s-next-step">
+                      ↳{" "}
+                      {g.step ||
+                        "Welcher kleine Schritt ist als Nächstes möglich?"}
+                    </p>
+                    {g.due && (
+                      <small>
+                        Bis{" "}
+                        {new Date(g.due + "T12:00:00").toLocaleDateString(
+                          "de-AT",
+                        )}
+                      </small>
+                    )}
+                    <button
+                      className="w-btn"
+                      onClick={() =>
+                        s.set({
+                          goals: s.goals.map((x) =>
+                            x.id === g.id ? { ...x, done: !x.done } : x,
+                          ),
+                        })
+                      }
+                    >
+                      <Check size={15} />
+                      {g.done ? "Wieder öffnen" : "Als erreicht markieren"}
+                    </button>
+                  </article>
+                ))}
             </div>
-            <h2 style={{ textDecoration: g.done ? "line-through" : undefined }}>
-              {g.title}
-            </h2>
-            <p>{g.why}</p>
-            <p className="s-next-step">
-              ↳ {g.step || "Welcher kleine Schritt ist als Nächstes möglich?"}
-            </p>
-            {g.due && (
-              <small>
-                Bis {new Date(g.due + "T12:00:00").toLocaleDateString("de-AT")}
-              </small>
+            {!s.goals.filter((g) => inWorkspace(g, s.workspace)).length && (
+              <div className="s-empty">
+                ✦<h2>Platz für das, was zählt.</h2>
+                <p>Was soll in deinem Leben wachsen? Beginne mit einem Ziel.</p>
+              </div>
             )}
-            <button
-              className="w-btn"
-              onClick={() =>
-                s.set({
-                  goals: s.goals.map((x) =>
-                    x.id === g.id ? { ...x, done: !x.done } : x,
-                  ),
-                })
-              }
-            >
-              <Check size={15} />
-              {g.done ? "Wieder öffnen" : "Als erreicht markieren"}
-            </button>
-          </article>
-        ))}
-      </div>
-      {!s.goals.length && (
-        <div className="s-empty">
-          ✦<h2>Platz für das, was zählt.</h2>
-          <p>Was soll in deinem Leben wachsen? Beginne mit einem Ziel.</p>
-        </div>
-      )}
-      <p className="w-muted">
-        Wird lokal gespeichert und im Second Brain mit deinen Projekten
-        verbunden.
-      </p>
+          </>
+        }
+      />
       <Modal
         open={editing !== null}
         onClose={() => setEditing(null)}
@@ -142,7 +130,7 @@ export default function GoalsPage() {
               };
               s.set({
                 goals: editing.id
-                  ? s.goals.filter(g=>inWorkspace(g,s.workspace)).map((g) => (g.id === editing.id ? goal : g))
+                  ? s.goals.map((g) => (g.id === editing.id ? goal : g))
                   : [...s.goals, goal],
               });
               setEditing(null);
@@ -210,7 +198,8 @@ export default function GoalsPage() {
                 defaultValue={editing.due}
               />
             </label>
-            <WorkspaceChoice value={editing.workspace}/><button className="w-btn w-btn-primary">Speichern</button>
+            <WorkspaceChoice value={editing.workspace} />
+            <button className="w-btn w-btn-primary">Speichern</button>
           </form>
         )}
       </Modal>

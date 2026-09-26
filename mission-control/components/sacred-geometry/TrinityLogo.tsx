@@ -4,7 +4,7 @@ interface Props {
   size?: number;
   className?: string;
 }
-/** A golden third drop joins the separated pair before their violet bloom. */
+/** Three matching lobes form a star, turn inward together, then bloom. */
 export function TrinityLogo({ size = 36, className = "" }: Props) {
   const id = useId().replace(/:/g, "");
   return (
@@ -14,7 +14,7 @@ export function TrinityLogo({ size = 36, className = "" }: Props) {
       viewBox="-15 -15 130 130"
       className={`trinity-living-logo ${className}`}
       role="img"
-      aria-label="Trinity – Yin und Yang"
+      aria-label="Trinity – Yin, Yang und Feuer"
     >
       <defs>
         <radialGradient id={`${id}-green`}>
@@ -41,33 +41,37 @@ export function TrinityLogo({ size = 36, className = "" }: Props) {
           <stop offset="1" stopColor="#cc932b" />
         </linearGradient>
       </defs>
-      <g className="trinity-drop-a">
-        <path
-          d="M50 4 A46 46 0 0 1 50 96 A23 23 0 0 1 50 50 A23 23 0 0 0 50 4"
-          fill={`url(#${id}-green)`}
-        />
-        <circle cx="50" cy="73" r="7" fill="#465da0" />
-      </g>
-      <g className="trinity-drop-b">
-        <path
-          d="M50 96 A46 46 0 0 1 50 4 A23 23 0 0 1 50 50 A23 23 0 0 0 50 96"
-          fill={`url(#${id}-blue)`}
-        />
-        <circle cx="50" cy="27" r="7" fill="#95ceb0" />
-      </g>
-      <g className="trinity-drop-gold">
-        <path
-          d="M50 20 C47 33 34 43 34 56 A16 16 0 0 0 66 56 C66 43 53 33 50 20Z"
-          fill={`url(#${id}-gold)`}
-        />
-        <path
-          d="M47 39 C42 46 39 51 40 56"
-          fill="none"
-          stroke="#fff9df"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          opacity=".8"
-        />
+      <g className="trinity-union">
+        <g className="trinity-drop-a">
+          <path
+            d="M50 4 A46 46 0 0 1 50 96 A23 23 0 0 1 50 50 A23 23 0 0 0 50 4"
+            fill={`url(#${id}-green)`}
+          />
+          <circle cx="50" cy="73" r="7" fill="#465da0" />
+        </g>
+        <g className="trinity-drop-b">
+          <path
+            d="M50 96 A46 46 0 0 1 50 4 A23 23 0 0 1 50 50 A23 23 0 0 0 50 96"
+            fill={`url(#${id}-blue)`}
+          />
+          <circle cx="50" cy="27" r="7" fill="#95ceb0" />
+        </g>
+        <g className="trinity-drop-gold">
+          <path
+            d="M50 4 A46 46 0 0 1 50 96 A23 23 0 0 1 50 50 A23 23 0 0 0 50 4"
+            fill={`url(#${id}-gold)`}
+          />
+          <g className="trinity-fire" aria-hidden="true">
+            <path
+              d="M50 56 C54 65 60 67 59 74 C59 85 42 86 41 75 C40 69 45 66 45 63 C46 68 49 68 49 65 Z"
+              fill="#d75a20"
+            />
+            <path
+              d="M50 68 C51 74 55 75 53 79 C50 84 45 80 46 76 C47 73 49 72 50 68Z"
+              fill="#fff4bc"
+            />
+          </g>
+        </g>
       </g>
       <circle
         className="trinity-bloom"

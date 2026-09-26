@@ -6,7 +6,7 @@ export const core: Shortcut[] = [
   ["calendar", "Kalender & Liveplan", "/dashboard/calendar", "▦", "Fokus"],
   ["ideas", "Ideenraum", "/dashboard/eden", "✧", "Fokus"],
   ["soul", "Mein Geburtsprofil", "/dashboard/soul", "☾", "Identität & Seele"],
-  ["goals", "Ziele & Warum", "/dashboard/goals", "◎", "Identität & Seele"],
+  ["goals", "Chancenplaner", "/dashboard/goals", "◎", "Identität & Seele"],
   [
     "brain",
     "Second Brain",

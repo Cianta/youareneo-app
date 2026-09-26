@@ -1413,9 +1413,9 @@ interface AiCompanyStore {
 }
 
 const DEFAULT_PA: PaConfig = {
-  name: 'Persönliche Assistenz',
+  name: 'Trinity',
   personality: 'Freundlich, proaktiv, präzise. Denkt mit und schlägt nächste Schritte vor.',
-  description: 'Deine rechte Hand — koordiniert Aufgaben, beantwortet Fragen und steuert die Oberfläche.',
+  description: 'Deine zugewandte Wissensbasis — hält Gedanken fest, verbindet Wissen und bereitet nächste Schritte mit deinem Team vor.',
   agentId: 'claude-free',
 };
 

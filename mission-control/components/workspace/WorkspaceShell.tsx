@@ -80,7 +80,7 @@ export const workspaceLinks = [
     hint: "Den ganzen Kosmos entdecken",
   },
   { href: "/dashboard/soul", label: "Mein Geburtsprofil", icon: Orbit, hint: "Identität & Seele" },
-  { href: "/dashboard/goals", label: "Ziele & Warum", icon: Compass, hint: "Was dir wirklich wichtig ist" },
+  { href: "/dashboard/goals", label: "Chancenplaner", icon: Compass, hint: "Was dir wirklich wichtig ist" },
   { href: "/dashboard/second-brain", label: "Second Brain", icon: Orbit, hint: "Dein vernetztes Wissen" },
   {
     href: "/dashboard/settings",

@@ -1,6 +1,6 @@
+import { requestVpsMagicLink } from '@/lib/fusebase/vps-magic';
 import { NextResponse } from 'next/server';
 import {
-  requestTrinityMagicLink,
   FuseBaseConfigError,
 } from '@/lib/fusebase/auth';
 
@@ -20,17 +20,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'email required' }, { status: 400 });
     }
 
-    await requestTrinityMagicLink({
-      email,
-      redirectPath: body.redirectPath ?? '/dashboard',
-      host: typeof body.host === 'string' ? body.host : undefined,
-    });
+    await requestVpsMagicLink(email, body.redirectPath, req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for')?.split(',').pop()?.trim() || 'unknown');
 
     // Always generic (Gate also avoids enumeration)
     return NextResponse.json({
       success: true,
       ok: true,
-      message: 'If this email has access, a magic link was sent.',
+      message: 'Wenn diese E-Mail zu deinem NEO-Konto gehört, erhältst du einen Anmeldelink. Bitte prüfe auch den Spam-Ordner. Der Link ist 20 Minuten gültig.',
     });
   } catch (err) {
     if (err instanceof FuseBaseConfigError) {
@@ -38,6 +34,6 @@ export async function POST(req: Request) {
     }
     const message = err instanceof Error ? err.message : String(err);
     console.error('[auth/magic-link]', message);
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Der Anmeldelink konnte gerade nicht versendet werden. Bitte versuche es später erneut.' }, { status: 503 });
   }
 }

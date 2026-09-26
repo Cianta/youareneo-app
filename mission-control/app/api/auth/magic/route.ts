@@ -1,7 +1,9 @@
+import { activateVpsMagicLink } from '@/lib/fusebase/vps-magic';
 import { NextResponse } from 'next/server';
 import {
   activateTrinityMagicLink,
   FuseBaseConfigError,
+  safeAuthRedirect,
 } from '@/lib/fusebase/auth';
 import {
   encodeSession,
@@ -13,47 +15,54 @@ export const dynamic = 'force-dynamic';
 
 /**
  * Activate FuseBase app magic link (globalId) and mint MC session cookie.
- * Query: ?globalId=... or body { globalId, email? }
+ * Query: ?globalId=... or body { globalId }. Identity comes only from FuseBase.
  */
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const globalId = url.searchParams.get('globalId')?.trim() || '';
-  return activate(globalId, url.searchParams.get('email')?.trim() || undefined);
+  return activate(globalId);
 }
 
 export async function POST(req: Request) {
-  let body: { globalId?: string; email?: string } = {};
+  let body: { globalId?: string; token?: string } = {};
   try {
     body = await req.json();
   } catch {
     /* empty */
   }
+  if (typeof body.token === 'string') {
+    try {
+      const identity = await activateVpsMagicLink(body.token);
+      if (!identity) return NextResponse.json({ success: false, error: 'Dieser Link ist abgelaufen oder wurde bereits verwendet. Bitte fordere einen neuen an.' }, { status: 401 });
+      const res = NextResponse.json({ success: true, redirectPath: identity.redirectPath });
+      res.cookies.set(MC_SESSION_COOKIE, encodeSession({ email: identity.email, userId: identity.userId }), sessionCookieOptions());
+      res.headers.set('Cache-Control', 'no-store');
+      return res;
+    } catch {
+      return NextResponse.json({ success: false, error: 'Die Anmeldung ist gerade nicht möglich. Bitte fordere einen neuen Link an.' }, { status: 503 });
+    }
+  }
   return activate(
     typeof body.globalId === 'string' ? body.globalId.trim() : '',
-    typeof body.email === 'string' ? body.email.trim() : undefined,
   );
 }
 
-async function activate(globalId: string, emailHint?: string) {
+async function activate(globalId: string) {
   try {
     if (!globalId) {
       return NextResponse.json({ success: false, error: 'globalId required' }, { status: 400 });
     }
 
     const result = await activateTrinityMagicLink(globalId);
-    const email =
-      emailHint?.toLowerCase() ||
-      `user+${result.appId || 'fusebase'}@trinity.local`;
+    const email = result.user.email!.toLowerCase();
 
     const token = encodeSession({
       email,
+      userId: result.user.id,
       featureToken: result.featureToken || undefined,
     });
 
-    const redirectPath =
-      result.redirectPath && result.redirectPath.startsWith('/')
-        ? result.redirectPath
-        : '/dashboard';
+    const redirectPath = safeAuthRedirect(result.redirectPath);
 
     const res = NextResponse.json({
       success: true,

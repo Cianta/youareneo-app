@@ -1,4 +1,5 @@
 'use client';
+import { useBrand } from '@/components/voice/BrandProvider';
 
 /**
  * TrinityLogo — Animated yin-yang mark for YOU ARE NEO / TRINITY OS.
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export function TrinityLogo({ size = 36, className = '' }: Props) {
+  const {appName} = useBrand();
   return (
     <svg
       width={size}
@@ -29,7 +31,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
       viewBox="0 0 100 100"
       className={className}
       style={{ overflow: 'visible' }}
-      aria-label="TRINITY OS — YOU ARE NEO"
+      aria-label={`${appName} — YOU ARE NEO`}
     >
       <defs>
         {/* ── Green (yang) gradient ── */}

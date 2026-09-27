@@ -3,12 +3,14 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { KeyRound, Mail, Sparkles } from 'lucide-react';
+import { useBrand } from '@/components/voice/BrandProvider';
 import { FOERDER_PRODUCT_URL } from '@/lib/membership';
 
 type Mode = 'password' | 'magic' | 'forgot';
 
 export default function LoginPage() {
   const router = useRouter();
+  const {appName} = useBrand();
   const [mode, setMode] = useState<Mode>('password');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +28,7 @@ export default function LoginPage() {
         const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, redirectPath: '/dashboard' }),
+          body: JSON.stringify({ email, password, redirectPath: new URLSearchParams(window.location.search).get('next') === '/notiz' ? '/notiz' : '/dashboard' }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.success) {
@@ -67,7 +69,7 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/magic-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, redirectPath: '/dashboard' }),
+        body: JSON.stringify({ email, redirectPath: new URLSearchParams(window.location.search).get('next') === '/notiz' ? '/notiz' : '/dashboard' }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.success) {
@@ -97,11 +99,12 @@ export default function LoginPage() {
         <div className="flex items-center gap-2">
           <Sparkles className="text-mint-400" size={18} />
           <div>
-            <h1 className="text-lg font-semibold text-forest-100">TRINITY OS</h1>
+            <h1 className="text-lg font-semibold text-forest-100">{appName}</h1>
             <p className="text-[11px] text-anth-500">Dein NEO-Konto · YOU ARE NEO</p>
           </div>
         </div>
 
+        <a href="/notiz" className="text-xs underline text-forest-300">Sprach- und Textnotizen öffnen</a>
         <div className="flex gap-1">
           {(
             [
@@ -217,7 +220,7 @@ export default function LoginPage() {
         </a>
 
         <p className="text-[10px] text-anth-600 leading-relaxed">
-          Ein NEO-Konto für Trinity und dein Archiv. Neu dabei? Fordere einen Magic Link an oder lege über „Passwort vergessen“ dein Passwort fest.
+          Ein NEO-Konto für {appName} und dein Archiv. Neu dabei? Fordere einen Magic Link an oder lege über „Passwort vergessen“ dein Passwort fest.
         </p>
       </div>
     </div>

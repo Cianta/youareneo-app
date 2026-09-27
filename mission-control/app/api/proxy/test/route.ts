@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
 
     if (xfo || (csp && csp.includes('frame-ancestors'))) {
       frameable = 'proxy';
-      recommendation = 'Use TRINITY proxy (/api/proxy?url=...) — frame restrictions detected and will be stripped.';
+      recommendation = 'Use the app proxy (/api/proxy?url=...) — frame restrictions detected and will be stripped.';
     }
 
     // Domains known to break even with proxy (heavy SPA + CORS auth)

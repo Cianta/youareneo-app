@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Cormorant_Garamond, Poppins, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import { brandConfig } from '@/lib/brand';
+import { BrandProvider } from '@/components/voice/BrandProvider';
+import { VoiceLauncher } from '@/components/voice/VoiceLauncher';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,11 +34,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'TRINITY OS | Powered by YOU ARE NEO',
-  description: 'TRINITY OS — Hybrid Enterprise Agent Operating System · Powered by YOU ARE NEO Academy',
-  robots: 'noindex',
-};
+export const dynamic = 'force-dynamic';
+export function generateMetadata(): Metadata {
+  const { appName } = brandConfig();
+  return {title: `${appName} | YOU ARE NEO`, description: `${appName} – dein persönlicher Arbeitsraum`, robots:'noindex', manifest:'/manifest.webmanifest', appleWebApp:{capable:true,title:appName,statusBarStyle:'black-translucent'}, icons:{apple:'/pwa/icon-192.png'}};
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -45,18 +48,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${cormorant.variable} ${poppins.variable} ${jetbrainsMono.variable}`}>
+    <html lang="de" suppressHydrationWarning className={`${inter.variable} ${cormorant.variable} ${poppins.variable} ${jetbrainsMono.variable}`}>
       <body suppressHydrationWarning className="bg-bg antialiased overflow-hidden">
-        {children}
-        <script dangerouslySetInnerHTML={{ __html: `
-          if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-              navigator.serviceWorker.register('/sw.js', { scope: '/' })
-                .then(function(reg) { console.log('[TrinityOS] SW registered:', reg.scope); })
-                .catch(function(err) { console.warn('[TrinityOS] SW registration failed:', err); });
-            });
-          }
-        `}} />
+        <BrandProvider brand={brandConfig()}>{children}<VoiceLauncher /></BrandProvider>
       </body>
     </html>
   );

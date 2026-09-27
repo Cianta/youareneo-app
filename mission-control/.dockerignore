@@ -9,3 +9,5 @@ auth-mail.env
 dist
 data/private
 .supabase-*
+
+.voice-*

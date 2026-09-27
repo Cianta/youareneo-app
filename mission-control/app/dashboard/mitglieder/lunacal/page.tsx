@@ -33,7 +33,7 @@ export default function LunacalPage() {
           title="Lunacal Scheduler"
           configKey="NEXT_PUBLIC_LUNACAL_URL"
           description="Lunacal Calendar — Appointment Booking Dashboard"
-          fallbackMessage="Set your Lunacal dashboard URL to embed the scheduler directly inside TRINITY OS."
+          fallbackMessage="Set your Lunacal dashboard URL to embed the scheduler directly inside this app."
         />
       </div>
     </div>

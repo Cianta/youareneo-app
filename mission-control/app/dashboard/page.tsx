@@ -1,4 +1,5 @@
 'use client';
+import { useBrand } from '@/components/voice/BrandProvider';
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -348,6 +349,7 @@ function AgentsColumn({ agents, onPing, pinging, onRefresh }: {
 }
 
 export default function DashboardPage() {
+  const {appName} = useBrand();
   const t = useT();
   const { agents, setAgents, setAgentStatus } = useAgentStore();
   const [pinging, setPinging] = useState<string | null>(null);
@@ -440,7 +442,7 @@ export default function DashboardPage() {
             <div className="absolute inset-0 rounded-full bg-forest-500/10 animate-pulse-slow" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gold-gradient">TRINITY OS · Mission Control</h1>
+            <h1 className="text-2xl font-bold text-gold-gradient">{appName} · Mission Control</h1>
             <p className="text-sm text-anth-400 mt-0.5">
               {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
             </p>

@@ -125,7 +125,7 @@ const SEED_CARDS: CanvasCard[] = [
     content: '1. Education\n2. Inspiration\n3. Community\n4. Behind-the-Scenes',
     x: 40,  y: 240, w: 280, h: 160 },
   { id: 'c4', type: 'text',  title: 'Scaling Strategy',
-    content: 'Batch → Repurpose → Distribute → Automate via TRINITY OS agents.',
+    content: 'Batch → Repurpose → Distribute → Automate via your agents.',
     x: 360, y: 220, w: 280, h: 140 },
 ];
 

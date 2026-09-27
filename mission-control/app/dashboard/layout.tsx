@@ -27,10 +27,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           router.replace('/login');
           return;
         }
+        if (data.hasTrinityAccess === false) { router.replace('/access-denied'); return; }
         if (data.email) {
           setUser({
-            name: String(data.email).split('@')[0] || 'Member',
-            role: 'FuseBase',
+            name: data.displayName || String(data.email).split('@')[0] || 'Member',
+            role: 'NEO Member',
             avatar: '🔮',
           });
         }

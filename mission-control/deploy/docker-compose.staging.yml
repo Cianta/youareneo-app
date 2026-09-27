@@ -1,0 +1,39 @@
+# Build-on-VPS compose for mission-control-stg
+# Place unpacked source + this file under /docker/mission-control-stg/
+# Compatible with existing host Traefik (no nested Traefik).
+# URL: https://trinity-stg.youareneo.com
+
+services:
+  mission-control:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mission-control:stg
+    restart: unless-stopped
+    expose:
+      - "3000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`trinity-stg.youareneo.com`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`trinity-stg.youareneo.com`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-redirect
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect.redirectscheme.permanent=true
+    volumes:
+      - mc-data:/app/data
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+      DATA_DIR: /app/data
+      NEXT_PUBLIC_APP_NAME: "TRINITY OS"
+      NEXT_PUBLIC_ACADEMY_NAME: "YOU ARE NEO"
+
+volumes:
+  mc-data:

@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.env
+.env.*
+auth-mail.env
+.private
+**/*.log
+dist
+data/private
+.supabase-*

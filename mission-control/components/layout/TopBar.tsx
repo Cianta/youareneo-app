@@ -337,113 +337,26 @@ function BrainToggle() {
 
 // ── Login Button ───────────────────────────────────────────────────────────────
 function LoginButton() {
-  const { user, login, logout, setUser } = useAuthStore();
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [pw, setPw] = useState('');
+  const { user, logout, setUser } = useAuthStore();
   const [error, setError] = useState('');
-  const [authTab, setAuthTab] = useState<'fusebase' | 'team'>('fusebase');
-  const ref = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
-    document.addEventListener('mousedown', h);
-    return () => document.removeEventListener('mousedown', h);
-  }, []);
-
-  // Restore FuseBase MC session cookie → local auth store
-  useEffect(() => {
-    fetch('/api/auth/me')
-      .then(r => r.json())
-      .then(data => {
-        if (data?.authenticated && data.email) {
-          setUser({
-            name: String(data.email).split('@')[0] || 'Member',
-            role: 'FuseBase',
-            avatar: '🔮',
-          });
-        }
-      })
-      .catch(() => {});
-  }, [setUser]);
-
-  const doLogout = () => {
-    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
-    logout();
+    fetch('/api/auth/me', { cache: 'no-store' }).then(r => r.json()).then(data => {
+      if (data.authenticated) setUser({ name: data.displayName || data.email?.split('@')[0] || 'Member', role: 'NEO Member', avatar: '🔮' });
+      else logout();
+    }).catch(() => {});
+  }, [logout, setUser]);
+  const doLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', { method: 'POST' });
+      if (!response.ok) throw new Error();
+      logout();
+      window.location.assign('/login');
+    } catch { setError('Abmelden fehlgeschlagen. Bitte erneut versuchen.'); }
   };
-
-  const submit = () => {
-    if (login(name, pw)) { setOpen(false); setError(''); setName(''); setPw(''); }
-    else setError('Invalid credentials');
-  };
-
-  if (user) {
-    return (
-      <div className="relative" ref={ref}>
-        <button onClick={() => setOpen(v => !v)}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-forest-700/50 bg-forest-800/30 text-xs text-forest-200 hover:border-forest-600 transition-all">
-          <span>{user.avatar}</span>
-          <span className="hidden md:inline">{user.name}</span>
-          <ChevronDown size={10} />
-        </button>
-        {open && (
-          <div className="absolute top-full right-0 mt-2 w-48 glass-dark border border-border rounded-2xl shadow-panel z-50 p-3 space-y-2">
-            <div className="flex items-center gap-2 pb-2 border-b border-border/60">
-              <span className="text-xl">{user.avatar}</span>
-              <div>
-                <p className="text-xs font-semibold text-forest-100">{user.name}</p>
-                <p className="text-[10px] text-anth-500">{user.role}</p>
-              </div>
-            </div>
-            <button onClick={doLogout}
-              className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-red-400 hover:bg-red-900/20 transition-colors">
-              <LogOut size={12} /> Sign Out
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div className="relative" ref={ref}>
-      <button onClick={() => setOpen(v => !v)}
-        className={cn('flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-medium transition-all',
-          open ? 'bg-forest-800/40 border-forest-600/50 text-forest-200' : 'bg-anth-800/60 border-anth-700/50 text-anth-400 hover:text-forest-300 hover:border-forest-700/40'
-        )}>
-        <LogIn size={12} /> <span className="hidden sm:inline">Login</span>
-      </button>
-      {open && (
-        <div className="absolute top-full right-0 mt-2 w-72 glass-dark border border-border rounded-2xl shadow-panel z-50 p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-[9px] uppercase tracking-widest text-anth-500 flex items-center gap-1.5"><User size={10} /> {authTab === 'fusebase' ? 'FuseBase' : 'Team Login'}</p>
-            <button onClick={() => setAuthTab(v => v === 'fusebase' ? 'team' : 'fusebase')}
-              className="text-[9px] text-anth-500 hover:text-mint-400 transition-colors underline underline-offset-2">
-              {authTab === 'fusebase' ? 'Team Login' : 'FuseBase'}
-            </button>
-          </div>
-          {authTab === 'fusebase' ? (
-            <FuseBaseAuth onSuccess={() => setOpen(false)} />
-          ) : (<>
-          <select value={name} onChange={e => setName(e.target.value)}
-            className="w-full bg-surface border border-border rounded-xl px-3 py-2 text-xs text-forest-100 outline-none focus:border-forest-600 transition-colors">
-            <option value="">Select your name…</option>
-            {EMPLOYEES.map(e => <option key={e.name} value={e.name}>{e.avatar} {e.name}</option>)}
-          </select>
-          <input type="password" value={pw} onChange={e => setPw(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && submit()}
-            placeholder="Password (default: 0595)"
-            className="w-full bg-surface border border-border rounded-xl px-3 py-2 text-xs text-forest-100 placeholder-anth-600 outline-none focus:border-forest-600 transition-colors" />
-          {error && <p className="text-[10px] text-red-400">{error}</p>}
-          <button onClick={submit}
-            className="w-full py-2 rounded-xl bg-forest-700/40 border border-forest-600/40 text-xs text-forest-200 font-medium hover:bg-forest-600/40 transition-colors">
-            Sign In
-          </button>
-          </>)}
-        </div>
-      )}
-    </div>
-  );
+  return <div className="flex items-center gap-2 text-xs text-forest-200">
+    {user ? <><span>{user.avatar} {user.name}</span><button onClick={doLogout} aria-label="Abmelden"><LogOut size={14} /></button></> : <a href="/login">Anmelden</a>}
+    {error && <span role="alert">{error}</span>}
+  </div>;
 }
 
 // ── Notification Bell ──────────────────────────────────────────────────────────

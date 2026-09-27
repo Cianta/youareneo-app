@@ -6,7 +6,7 @@ Stand 27.09.2026. Ziel: FuseBase wird Ende Oktober gekündigt. Bis dahin muss Tr
 
 - Login läuft heute über FuseBase-Konten: `lib/fusebase/auth`, `lib/fusebase/session`, Routen `app/api/auth/{login,logout,magic,magic-link,me,password-restore}`.
 - Freischaltung: Make ruft `POST /api/provision/foerder` (Secret `PROVISION_WEBHOOK_SECRET`) → `inviteFoerderToPortal` → FuseBase `inviteToPortal`. Daher kommt die ungebrandete FuseBase-Mail.
-- Supabase-Projekt **`emxqoahtipbmumghlixb`** hat schon die NEO-Konten des Visual Room (Supabase Auth, Profile in `neo_profiles`). Das wird das **einzige** Kontensystem.
+- Supabase-Projekt **`emxqoahtipbmumghlixb`** enthält die Tabelle `neo_profiles` und startet bestätigt mit 0 Auth-Nutzern. Das wird das **einzige** Kontensystem.
 
 ## Was gebraucht wird
 
@@ -25,7 +25,7 @@ Stand 27.09.2026. Ziel: FuseBase wird Ende Oktober gekündigt. Bis dahin muss Tr
 
    Legt den Nutzer an, falls er fehlt (`auth.admin.inviteUserByEmail` oder `generateLink`), und schreibt die Zugänge. Muss idempotent sein: Ein zweiter Aufruf mit derselben E-Mail ist kein Fehler.
    Dazu `POST /api/provision/member/revoke` mit `{ email, products }`, setzt `revoked_at`.
-5. **Mails**: Supabase verschickt über das eigene SMTP, das der Nutzer im Dashboard einträgt (Absender „YOU ARE NEO Members“ <community@youareneo.com>, Google Workspace). Deutsche Vorlagen für Einladung, Magic Link und Passwort zurücksetzen.
+5. **Mails**: Supabase verschickt über das eigene SMTP, das der Nutzer im Dashboard einträgt (Absender „YOU ARE NEO Members“ <noreply@youareneo.com>, Infomaniak, `mail.infomaniak.com:465` (SSL/TLS)). Deutsche Vorlagen für Einladung, Magic Link und Passwort zurücksetzen.
 6. **Bestehende FuseBase-Nutzer**: Liste exportieren und in Supabase anlegen, ohne Mail. Sie melden sich danach über „Passwort vergessen“ an.
 7. **FuseBase-Abhängigkeiten entfernen**: `FUSEBASE_*`-Variablen in `.env` und `auth-mail.env` bleiben, bis der Umbau getestet ist.
 
@@ -44,7 +44,7 @@ Stand 27.09.2026, Branch `codex/trinity-supabase-login`. Die ausdrückliche Anwe
 
 - **Stille Anlage:** `/api/provision/member` verwendet ausschließlich `auth.admin.createUser({ email, email_confirm: true })`. Kein `inviteUserByEmail`, kein `generateLink`, keine Mail beim Provisionieren oder Import. `loginLink` ist die normale `/login`-Adresse der Instanz, kein Bearer-Link. Die Begrüßung bleibt bei Memberspot.
 - **Cookie-Vertrag:** Standardname `sb-emxqoahtipbmumghlixb-auth-token`, bei großen Sitzungen `.0`, `.1`, …; Format und Refresh über `@supabase/ssr`. Auf `*.youareneo.com`: `Domain=.youareneo.com; Path=/; Secure; HttpOnly; SameSite=Lax`. Claudes Portal muss die Cookies serverseitig mit demselben Supabase-Projekt und demselben Namen lesen/erneuern. Kein localStorage und kein Zugriff auf die Sitzung über `document.cookie`.
-- **Bestehendes Staging:** `https://mission-control-stg.srv1966331.hstgr.cloud` darf aus Browser-Sicherheitsgründen kein Cookie für `.youareneo.com` setzen. Dort wird ein Host-Cookie verwendet. Echte Subdomain-SSO-Abnahme benötigt einen bereits vorhandenen Staging-Host unter `youareneo.com`; DNS und Routing wurden nicht geändert.
+- **Staging-Domain (vom Nutzer freigegeben):** `https://trinity-stg.youareneo.com`, `AUTH_APP_URL` und beide Traefik-Host-Regeln der Staging-Compose-Datei verwenden diese Domain. DNS wird von Claude gepflegt. Dadurch verwendet auch Staging `Domain=.youareneo.com`. Supabase-Redirect: `https://trinity-stg.youareneo.com/auth/magic`. Traefik selbst und Produktion bleiben unverändert.
 - **`neo_access`:** Felder wie oben, Primärschlüssel `(user_id, product)`. Aktiver Zugang bedeutet `revoked_at IS NULL`. Erneute Freischaltung reaktiviert genau die genannten Produkte, erhält `granted_at` als Zeitpunkt der ersten Freischaltung und aktualisiert `source`. Wiederholter Widerruf erhält den ersten Widerrufszeitpunkt. Bestehende Profile werden nie überschrieben.
 - **Trinity-Zugang:** Aktives Produkt `foerder` ist erforderlich. Dashboard und interne `/api/*`-Routen prüfen Supabase-Identität und den aktuellen Tabellenstand serverseitig. `/api/auth/*` bleibt für Kontoanmeldung/Passwortwechsel zugänglich; `/api/provision/*` prüft das Webhook-Secret. Ein Widerruf von `foerder` sperrt Trinity beim nächsten geschützten Request, ohne andere Produkte oder das NEO-Konto zu löschen.
 - **Revoke-Antwort konkretisiert:** `POST /api/provision/member/revoke` mit `{ email, products }` liefert `200 { success: true, userId: string|null, revoked: boolean }`. Unbekannte E-Mail oder bereits widerrufene Produkte sind erfolgreiche No-ops.
@@ -54,3 +54,5 @@ Stand 27.09.2026, Branch `codex/trinity-supabase-login`. Die ausdrückliche Anwe
 - **Rückfall:** Nur mit explizitem `AUTH_PROVIDER=fusebase` wird der bisherige Code verwendet. Standard ist Supabase; Konfigurationsfehler schalten niemals automatisch auf FuseBase um. Alle bisherigen FuseBase-Dateien und Variablen bleiben erhalten. Die lokalen Demo-Team-Anmeldungen sind kein weiteres Kontensystem mehr; das UI-Profil liegt nur im Arbeitsspeicher.
 
 Die detaillierten Konfigurations- und Abnahmeschritte stehen in `SUPABASE-LOGIN-TESTPLAN.md`.
+
+- **Präzisierung durch den Nutzer:** 0 Supabase-Auth-Nutzer sind der korrekte Ausgangsstand; kein Kontenquellen-Abgleich erforderlich. SMTP ist Infomaniak (`mail.infomaniak.com`, Port `465`, SSL/TLS), Absender `noreply@youareneo.com`. Zugangsdaten werden ausschließlich vom Nutzer im Supabase-Dashboard eingetragen.

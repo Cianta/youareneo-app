@@ -15,6 +15,8 @@ import {
 import { limits, reserveUsage } from "../lib/voice/server";
 import { inspectAudio } from "../lib/voice/audio";
 import { GET, PATCH } from "../app/api/hermes/queue/route";
+import { InfomaniakTranscription } from "../lib/voice/infomaniak";
+import { transcriptionConfig } from "../lib/voice/transcription-config";
 import { transcriptionProvider } from "../lib/voice/providers";
 import { PROJECT_URL } from "../lib/supabase/config";
 import { HttpError } from "../lib/auth/http";
@@ -192,15 +194,97 @@ test("usage exhaustion fails closed before provider calls; invalid environment f
   delete process.env.VOICE_MINUTES_PER_MONTH;
   delete process.env.VOICE_REQUESTS_PER_MONTH;
 });
-test("provider selection does not invent an Amical endpoint or silently switch vendors", () => {
-  process.env.TRANSCRIBE_PROVIDER = "amical";
-  assert.throws(() => transcriptionProvider(), /Dokumentation/);
+test("Infomaniak defaults, missing config and explicit OpenAI fallback", () => {
+  delete process.env.TRANSCRIBE_PROVIDER;
+  delete process.env.INFOMANIAK_AI_PRODUCT_ID;
+  delete process.env.INFOMANIAK_AI_TOKEN;
+  assert.deepEqual(transcriptionConfig(), { provider: "infomaniak", ready: false });
+  assert.throws(() => transcriptionProvider(), HttpError);
+  process.env.INFOMANIAK_AI_PRODUCT_ID = "123";
+  process.env.INFOMANIAK_AI_TOKEN = randomUUID();
+  assert.equal(transcriptionProvider().name, "Infomaniak");
+  process.env.INFOMANIAK_AI_PRODUCT_ID = "../escape";
+  assert.equal(transcriptionConfig().ready, false);
+  assert.throws(() => transcriptionProvider(), HttpError);
   process.env.TRANSCRIBE_PROVIDER = "invalid";
   assert.throws(() => transcriptionProvider(), HttpError);
   process.env.TRANSCRIBE_PROVIDER = "openai";
   delete process.env.OPENAI_API_KEY;
   assert.throws(() => transcriptionProvider(), /eingerichtet/);
-  delete process.env.TRANSCRIBE_PROVIDER;
+  process.env.OPENAI_API_KEY = randomUUID();
+  assert.equal(transcriptionProvider().name, "OpenAI");
+  for (const key of ["TRANSCRIBE_PROVIDER", "INFOMANIAK_AI_PRODUCT_ID", "INFOMANIAK_AI_TOKEN", "OPENAI_API_KEY"]) delete process.env[key];
+});
+function infomaniakEnv(t: { after: (fn: () => void) => void }) {
+  process.env.INFOMANIAK_AI_PRODUCT_ID = "123";
+  process.env.INFOMANIAK_AI_TOKEN = randomUUID();
+  t.after(() => {
+    delete process.env.INFOMANIAK_AI_PRODUCT_ID;
+    delete process.env.INFOMANIAK_AI_TOKEN;
+  });
+}
+const sample = { bytes: Buffer.from("synthetic-test"), extension: "webm", mime: "audio/webm" };
+test("Infomaniak uploads multipart Whisper audio and polls pending batch to text", async (t) => {
+  infomaniakEnv(t);
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async (url: string, init: RequestInit) => {
+    assert.ok(url.startsWith("https://api.infomaniak.com/1/ai/123/"));
+    assert.equal(new Headers(init.headers).get("Authorization"), "Bearer " + process.env.INFOMANIAK_AI_TOKEN);
+    assert.equal(init.redirect, "error");
+    calls++;
+    if (calls === 1) {
+      assert.ok(url.endsWith("/openai/audio/transcriptions"));
+      assert.equal(init.method, "POST");
+      const form = init.body as FormData;
+      assert.equal(form.get("model"), "whisper");
+      assert.equal(form.get("response_format"), "text");
+      assert.equal(form.get("language"), "de");
+      assert.equal(await (form.get("file") as File).text(), "synthetic-test");
+      return reply({ batch_id: "test-batch" });
+    }
+    assert.ok(url.endsWith("/results/test-batch"));
+    return reply(calls === 2 ? { status: "processing" } : { status: "success", data: " Eine Testnotiz. " });
+  });
+  assert.equal(await new InfomaniakTranscription().transcribe(sample, "de"), "Eine Testnotiz.");
+  assert.equal(calls, 3);
+});
+test("Infomaniak auto-language and envelope download stay on fixed origin", async (t) => {
+  infomaniakEnv(t);
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async (url: string, init: RequestInit) => {
+    calls++;
+    if (calls === 1) {
+      assert.equal((init.body as FormData).has("language"), false);
+      return reply({ result: "success", data: { batch_id: "test-batch" } });
+    }
+    if (calls === 2) return reply({ result: "success", data: { status: "success", url: "https://untrusted.invalid/audio" } });
+    assert.equal(url, "https://api.infomaniak.com/1/ai/123/results/test-batch/download");
+    return new Response("An English test note.");
+  });
+  assert.equal(await new InfomaniakTranscription().transcribe(sample, "auto"), "An English test note.");
+});
+test("Infomaniak rejects invalid batches, failures, empty output and HTTP errors without leaking details", async (t) => {
+  infomaniakEnv(t);
+  for (const result of [
+    { batch_id: "../escape" }, { status: "failed" }, { status: "cancelled" },
+    { status: "success", data: " " }, { status: "unknown" },
+  ]) {
+    let calls = 0;
+    const mock = t.mock.method(globalThis, "fetch", async () => {
+      calls++;
+      return reply("batch_id" in result || calls > 1 ? result : { batch_id: "test-batch" });
+    });
+    await assert.rejects(() => new InfomaniakTranscription().transcribe(sample, "auto"), HttpError);
+    mock.mock.restore();
+  }
+  t.mock.method(globalThis, "fetch", async () => new Response("sensitive provider error", { status: 401 }));
+  await assert.rejects(() => new InfomaniakTranscription().transcribe(sample, "auto"), (e: unknown) => e instanceof HttpError && e.status === 502 && !e.message.includes("sensitive"));
+});
+test("Infomaniak bounds waiting and reports a timeout", async (t) => {
+  infomaniakEnv(t);
+  t.mock.method(AbortSignal, "timeout", () => AbortSignal.abort());
+  t.mock.method(globalThis, "fetch", async () => reply({ batch_id: "test-batch" }));
+  await assert.rejects(() => new InfomaniakTranscription().transcribe(sample, "auto"), (e: unknown) => e instanceof HttpError && e.status === 504);
 });
 test("actual WebM/Opus and MP4/AAC duration is measured; temporary audio is removed even on error", async () => {
   const before = (await readdir(tmpdir()))

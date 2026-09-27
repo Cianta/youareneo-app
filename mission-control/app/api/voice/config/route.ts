@@ -1,5 +1,6 @@
 import { json, failure } from "@/lib/auth/http";
 import { voiceSession, limits } from "@/lib/voice/server";
+import { transcriptionConfig } from "@/lib/voice/transcription-config";
 export async function GET() {
   try {
     const { sb, user, canSave } = await voiceSession();
@@ -17,10 +18,8 @@ export async function GET() {
       userId: user.id,
       limits: limits(),
       usage: usage ?? { voice_seconds: 0, requests: 0 },
-      provider: process.env.TRANSCRIBE_PROVIDER || "openai",
-      transcriptionReady:
-        (process.env.TRANSCRIBE_PROVIDER || "openai") === "openai" &&
-        !!process.env.OPENAI_API_KEY?.trim(),
+      provider: transcriptionConfig().provider,
+      transcriptionReady: transcriptionConfig().ready,
       classificationReady: !!process.env.ANTHROPIC_API_KEY?.trim(),
     });
   } catch (e) {

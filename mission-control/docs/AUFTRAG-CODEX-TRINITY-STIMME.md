@@ -15,8 +15,8 @@ Trinity wird die persönliche Arbeitsoberfläche („OS“) für Mitglieder: spr
 1. **Installierbar als App (PWA):** `manifest.webmanifest`, Icons, `display: standalone`, Service Worker nur für die Hülle. Manifest-`shortcuts`: „Neue Sprachnotiz“ → `/notiz?rec=1` (startet direkt die Aufnahme). So entsteht das Symbol auf dem Handy-Startbildschirm.
 2. **Aufnahme:** großer Mikrofon-Knopf, `MediaRecorder` (webm/opus, auf iOS mp4/aac), Pegelanzeige, Pause/Weiter. Im Browser Tastenkürzel `Alt+N` (Aufnahme starten/stoppen), überall in Trinity.
 3. **Umwandlung in Text:** `POST /api/voice/transcribe` (Server). Anbieter hinter einer Schnittstelle `TranscriptionProvider`, per Env wählbar (`TRANSCRIBE_PROVIDER`):
-   - `amical` (der Nutzer hat einen Zugang, API-Doku beim Nutzer anfragen),
-   - `openai` (`gpt-4o-transcribe`) als Rückfall.
+   - `infomaniak` (`whisper`) als Standard; Nutzeränderung vom 27.09.2026, siehe unten.
+   - `openai` (`gpt-4o-transcribe`) als ausdrücklich ausgewählter Rückfall.
    - Sprache Deutsch voreinstellen, Englisch erkennen.
    - **Audio nach erfolgreicher Umwandlung löschen**, außer der Nutzer hakt „Aufnahme behalten“ an (dann Supabase Storage, privater Bucket).
 4. **Einordnen:** Claude (`claude-haiku-4-5`, Anthropic-SDK, Schlüssel nur serverseitig) liefert strukturiert (Tool-Use/JSON): `title`, `summary`, `type` (aufgabe | idee | notiz | termin), `project` (aus den vorhandenen Projekten des Nutzers wählen oder `null`), `tags[]`, `due` (ISO oder null), `assignee` (optional). Der Nutzer kann alles vor dem Speichern ändern.
@@ -28,7 +28,7 @@ Trinity wird die persönliche Arbeitsoberfläche („OS“) für Mitglieder: spr
 
 - Gedrückt halten zum Sprechen (und Umschalter „Freihändig“ mit Stille-Erkennung).
 - Text → Claude (`claude-sonnet-5`, Streaming) mit Zugriff auf die eigenen Notizen als Kontext → Antwort als Text **und** Stimme.
-- **Sprachausgabe** hinter `SpeechProvider`: `vocallab` (Nutzer hat Lifetime), `elevenlabs` als Alternative; Stimme pro Nutzer wählbar. Wiedergabe abbrechbar, sobald der Nutzer wieder spricht.
+- **Sprachausgabe** hinter `SpeechProvider`: `vocallab` (Nutzer hat Lifetime; verbindlicher Anbieter laut Nutzeränderung); Stimme pro Nutzer wählbar. Wiedergabe abbrechbar, sobald der Nutzer wieder spricht.
 - Rückfall ohne Server-Kosten: Browser-`speechSynthesis`.
 
 ## Phase 3 – Avatar
@@ -40,7 +40,7 @@ Trinity wird die persönliche Arbeitsoberfläche („OS“) für Mitglieder: spr
 
 - **Kosten:** Minuten und Anfragen pro Nutzer und Monat zählen (`usage`-Tabelle), Obergrenze per Env (`VOICE_MINUTES_PER_MONTH`), freundliche Meldung bei Erreichen.
 - **Datenschutz:** keine Audios oder Transkripte in Logs. In der App kurz erklären, welcher Anbieter was verarbeitet.
-- **Schlüssel** (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `AMICAL_API_KEY`, `VOCALLAB_API_KEY`, `HERMES_API_TOKEN`) trägt der Nutzer selbst in die Staging-`.env` ein. Leere Platzhalter und eine Liste liefern, niemals Werte in Chat, Code oder Commits.
+- **Schlüssel** (`INFOMANIAK_AI_PRODUCT_ID`, `INFOMANIAK_AI_TOKEN`, `ANTHROPIC_API_KEY`, optional `OPENAI_API_KEY`, später `VOCALLAB_API_KEY`, `HERMES_API_TOKEN`) trägt der Nutzer selbst in die Staging-`.env` ein. Leere Platzhalter und eine Liste liefern, niemals Werte in Chat, Code oder Commits.
 - Die Aufnahme- und Notiz-Komponente wiederverwendbar bauen (eigene Komponente plus API). Claude nutzt sie später für Zeitstempel-Notizen im Kinoraum.
 - Nur `/docker/mission-control-stg` und das Repo anfassen. Nichts an Traefik, n8n, `archiv`, `medien`, DNS, Make oder Memberspot.
 - Deutsche Oberfläche. Tests für: Rechteprüfung (ohne `foerder` nichts speichern), RLS, Hermes-Freigabe, Kostenlimit.
@@ -54,7 +54,7 @@ Phase 1 auf `codex/trinity-voice-phase1`, aufbauend auf PR #7 (`codex/trinity-su
 - App- und Assistentinnen-Namen kommen zur Laufzeit aus `NEXT_PUBLIC_APP_NAME` und `NEXT_PUBLIC_ASSISTANT_NAME`; Fallbacks sind neutral. Bestehende Datenbank-, Cookie-, localStorage-Schlüssel und externe Integrationspfade bleiben aus Kompatibilitätsgründen stabil. Neue Entwürfe, Audio und Auth werden nicht in localStorage persistiert.
 - `manifest.webmanifest`, PNG-Icons, App-Shortcut `/notiz?rec=1` und Service Worker. Der alte Proxy-Cache wird entfernt; nur öffentliche Offline-Seite und Icons werden gecacht. Anleitung in `/notiz/hilfe`. Browser können für Mikrofon/AudioContext einen zusätzlichen Tipp verlangen; systemweite Mac-Automation wird nur dokumentiert.
 - `VoiceRecorder` und `NoteWorkspace` sind wiederverwendbare Komponenten. WebM/Opus bzw. MP4/AAC wird per `MediaRecorder.isTypeSupported` gewählt; Pause, Weiter, Pegelanzeige und Alt+N sind enthalten. Aufnahmen maximal fünf Minuten / 20 MB. Der Server prüft die wirkliche Audiozeit durch Dekodierung mit FFmpeg. Temporäre Audiodateien werden auch bei Fehlern entfernt.
-- `TranscriptionProvider`: OpenAI `gpt-4o-transcribe` implementiert. Deutsch/Englisch werden standardmäßig automatisch erkannt; Deutsch kann explizit bevorzugt werden. **Amical noch nicht implementiert:** API-Dokumentation beim Nutzer angefragt. `TRANSCRIBE_PROVIDER=amical` meldet bis dahin einen klaren Einrichtungsfehler; keine erfundene API und kein stiller Anbieterwechsel.
+- `TranscriptionProvider`: Infomaniak `whisper` und optional OpenAI `gpt-4o-transcribe` implementiert. Deutsch/Englisch werden standardmäßig automatisch erkannt; Deutsch kann explizit bevorzugt werden. Infomaniak `whisper` ist der Standard; OpenAI wird nur bei expliziter Auswahl genutzt. Amical wurde auf Nutzerwunsch entfernt, da keine Server-API existiert.
 - Anthropic-SDK mit `claude-haiku-4-5` und erzwungenem Tool-Use. Alle strukturierten Felder werden validiert und bleiben vor dem Speichern bearbeitbar. Keine automatische Ausführung von Modellvorschlägen.
 - Neue Tabellen `trinity_notes`, `hermes_queue`, `usage` und `trinity_projects`; alle mit RLS. Zusätzlich zu den beauftragten Notizfeldern: `assignee` und generierte `search_document` für deutsche Volltextsuche. `project` ist ein benutzereigener Projektname mit zusammengesetztem Fremdschlüssel. Es existierte keine benutzergebundene Projekttabelle; bisherige Browser-Boards werden daher nicht unbemerkt an KI-Anbieter übertragen. Eigene Projektnamen lassen sich ausdrücklich übernehmen. Claude darf nur aus dieser eigenen Liste auswählen.
 - Die Service-Role-exklusive View `trinity_hermes_pending` filtert freigegebene Aufträge mit aktiven Rechten vor der Seitengröße und prüft diese Bedingung beim Abschluss atomar erneut.
@@ -70,10 +70,11 @@ In `/docker/mission-control-stg/.env`. Geheimwerte trägt der Nutzer selbst ein.
 | --- | --- |
 | `NEXT_PUBLIC_APP_NAME` | Frei wählbarer App-Name; bereits vorhanden, jetzt zur Laufzeit verwendet |
 | `NEXT_PUBLIC_ASSISTANT_NAME` | Frei wählbarer Assistentinnen-Name |
-| `TRANSCRIBE_PROVIDER` | `openai`; `amical` erst nach geklärter API |
+| `TRANSCRIBE_PROVIDER` | `infomaniak` (Standard), optional ausdrücklich `openai` |
+| `INFOMANIAK_AI_PRODUCT_ID` | Numerische AI-Services-Produkt-ID; nur serverseitig |
+| `INFOMANIAK_AI_TOKEN` | Bearer-Token für das AI-Services-Produkt; nur serverseitig |
 | `OPENAI_API_KEY` | Schlüssel für Transkription, nur serverseitig |
 | `ANTHROPIC_API_KEY` | Schlüssel für Einordnung, nur serverseitig |
-| `AMICAL_API_KEY` | Reservierter leerer Platzhalter; bis zur API-Integration ungenutzt |
 | `HERMES_API_TOKEN` | Eigenes zufälliges Secret, mindestens 32 Zeichen; nur Server und Hermes |
 | `VOICE_MINUTES_PER_MONTH` | Monatslimit in ganzen Minuten, Standard `120`; `0` sperrt Audio |
 | `VOICE_REQUESTS_PER_MONTH` | Monatslimit für Transkription plus Einordnung, Standard `600`; `0` sperrt alle KI-Anfragen |
@@ -110,7 +111,7 @@ Automatisch: `npm run test:auth`, `npm run test:voice`, `npx tsc --noEmit`, `npm
 7. Quota: kleines Minuten-/Anfragenlimit setzen, parallel anfragen, Grenze prüfen. Textnotizen bleiben benutzbar. Monatswechsel in UTC.
 8. PWA: Installation auf iOS/Android, Shortcut und Offline-Hülle prüfen. Keine Auth-, Notiz- oder Audiodaten in Cache Storage/localStorage.
 
-Echte Anbieteraufrufe benötigen die vom Nutzer eingetragenen Schlüssel. Amical und physische iOS-/Android-Installation bleiben bis zu Dokumentation bzw. Gerätetest ausdrücklich unbestätigt. Phase 2 beginnt erst nach Rückmeldung zu Phase 1.
+Echte Anbieteraufrufe benötigen die vom Nutzer eingetragenen Schlüssel. Physische iOS-/Android-Installation bleibt bis zum Gerätetest ausdrücklich unbestätigt. Phase 2 beginnt erst nach Rückmeldung zu Phase 1.
 
 ### Stand der Prüfung am 27.09.2026
 
@@ -121,7 +122,7 @@ Echte Anbieteraufrufe benötigen die vom Nutzer eingetragenen Schlüssel. Amical
 - **Blocker für angemeldete HTTP-Abnahme:** Der vorhandene `SUPABASE_ANON_KEY` auf Staging wird vom Supabase-Gateway mit `Invalid API key` abgewiesen. Die per Magic-Link-Verifikation erzeugte Testsitzung ist gültig (direkt mit gültigem Service-API-Key geprüft), wird mit diesem Publishable-/Anon-Key jedoch zurückgewiesen. Nutzer wurde gebeten, nur den Schlüssel in der Staging-`.env` selbst zu korrigieren. Kein Ersatzschlüssel erzeugt oder übernommen.
 - Die für die mailfreien HTTP-Versuche erzeugten Testkonten wurden ausschließlich anhand ihrer neu erzeugten IDs entfernt. Kontrollabfrage: keine übrig gebliebenen Testkonten, Notizen, Queue-Einträge oder Audioobjekte. Bestehende Mitglieder unverändert.
 - Nach korrigiertem Login-Key kann `scripts/test-voice-staging.mjs --run` in der Staging-Containerumgebung erneut laufen. Es prüft den echten Save-/Such-/Audio-/Hermes-Freigabe-/Revoke-Fluss und entfernt seine eigenen Fixtures auch bei Fehlern. Anleitung: lokal `ssh root@76.13.137.234 'cd /docker/mission-control-stg && docker compose exec -T mission-control node --input-type=module - --run' < scripts/test-voice-staging.mjs`.
-- OpenAI-/Anthropic-Aufrufe und Hermes-Workerbetrieb benötigen Nutzerschlüssel; dafür noch keine Live-Erfolgsbehauptung. Echte Mikrofonaufnahme und Installation auf physischen iOS-/Android-Geräten ausstehend. Amical wartet auf API-Dokumentation. Phase 2 nicht begonnen; Produktion unverändert.
+- OpenAI-/Anthropic-Aufrufe und Hermes-Workerbetrieb benötigen Nutzerschlüssel; dafür noch keine Live-Erfolgsbehauptung. Echte Mikrofonaufnahme und Installation auf physischen iOS-/Android-Geräten ausstehend. Amical später auf Nutzerwunsch entfernt. Phase 2 nicht begonnen; Produktion unverändert.
 
 ### Wiederholte Staging-Abnahme nach Schlüsselmeldung
 
@@ -129,4 +130,14 @@ Der Compose-Neustart hat den gemeldeten Schlüsselwechsel noch nicht bestätigt:
 
 Das mailfreie Smoke-Skript prüft zusätzlich Passwort-Anmeldung/falsches Passwort, Magic-Link-Einmaligkeit, gemeinsame sichere Cookie-Attribute sowie bei gesetztem Hermes-Token Worker-Sichtbarkeit erst nach Freigabe und idempotenten Abschluss. Mit `--live-providers` und `VOICE_TEST_AUDIO_PATH` (WebM mit unkritischem gesprochenem Testinhalt im Container) sind echte Transkription und Einordnung ausdrücklich zuschaltbar. Keine Geheimnisse oder Anmeldelinks werden ausgegeben. Syntaxprüfung erfolgreich; diese Erweiterungen sind bis zur Konfigurationskorrektur noch nicht vollständig live durchlaufen.
 
-Handy-Test nach erfolgreicher Serverabnahme: `/login` öffnen, mit der vereinbarten Testadresse Magic Link anfordern und im selben Browser bestätigen. Danach `/notiz` öffnen, Mikrofon erlauben, kurzen Testsatz aufnehmen, pausieren/fortsetzen und umwandeln. Transkript/Felder prüfen, speichern. Einen ausdrücklich als internen Test bezeichneten Hermes-Auftrag speichern und separat freigeben; zunächst muss er auf Bestätigung warten. Auf iOS über Safari „Zum Home-Bildschirm“, auf Android über Chrome „App installieren“. Physische Mikrofon-/PWA-Abnahme bleibt Nutzertest; Amical reserviert, Phase 2 nicht begonnen.
+Handy-Test nach erfolgreicher Serverabnahme: `/login` öffnen, mit der vereinbarten Testadresse Magic Link anfordern und im selben Browser bestätigen. Danach `/notiz` öffnen, Mikrofon erlauben, kurzen Testsatz aufnehmen, pausieren/fortsetzen und umwandeln. Transkript/Felder prüfen, speichern. Einen ausdrücklich als internen Test bezeichneten Hermes-Auftrag speichern und separat freigeben; zunächst muss er auf Bestätigung warten. Auf iOS über Safari „Zum Home-Bildschirm“, auf Android über Chrome „App installieren“. Physische Mikrofon-/PWA-Abnahme bleibt Nutzertest; Amical entfernt, Phase 2 nicht begonnen.
+
+### Anbieteränderung: Infomaniak als Standard
+
+Auf ausdrücklichen Nutzerauftrag ersetzt Infomaniak den bisherigen Standard. `TRANSCRIBE_PROVIDER=infomaniak`; neue Server-Variablen `INFOMANIAK_AI_PRODUCT_ID` und `INFOMANIAK_AI_TOKEN` trägt der Nutzer selbst ein. OpenAI bleibt nur mit `TRANSCRIBE_PROVIDER=openai` und `OPENAI_API_KEY` auswählbar; kein automatischer Wechsel nach Fehlern. Amical ist als Provider und Env-Variable entfernt: lokale Desktop-App ohne Server-API. Phase 2 ist weiterhin nicht begonnen; ihre Sprachausgabe ist für VocalLab vorgesehen.
+
+Die [Transkriptions-Dokumentation](https://developer.infomaniak.com/docs/api/post/1/ai/%7Bproduct_id%7D/openai/audio/transcriptions) nennt Modell `whisper` und einen asynchronen Auftrag. Der Adapter lädt Multipart-Audio mit Bearer-Token hoch, fragt den [Batch-Status](https://developer.infomaniak.com/docs/api/get/1/ai/%7Bproduct_id%7D/results/%7Bbatch_id%7D) ab und liest das Textresultat. Bei Bedarf wird ausschließlich der dokumentierte Downloadpfad am festen API-Host verwendet. Gesamte Zeitgrenze 120 Sekunden; Fehler werden ohne Anbieterdetails/Geheimnisse ausgegeben. Vorhandene API-Antwortformate bleiben erhalten.
+
+Die Datenschutz-Info nennt beim aktiven Standard „Infomaniak, Schweiz“ für Audio und weiterhin Anthropic für die Einordnung des Texts. Sie zeigt den richtigen Provider auch vor der Anmeldung. Im OpenAI-Modus nennt sie OpenAI. Kein Datenbank-/Cookie-/Provision-Vertrag geändert.
+
+Prüfung des Anbieterwechsels: 12 Voice-Tests und 6 Auth-Tests erfolgreich, TypeScript und lokaler Produktionsbuild erfolgreich. Infomaniak-HTTP-Antworten werden in diesen Tests simuliert, einschließlich Multipart-Upload, asynchroner Statusfolge, sicherem Download, Fehlern und Zeitüberschreitung. Echte Infomaniak-Transkription bleibt bis zur Eingabe von Produkt-ID und Token und erfolgreicher angemeldeter Staging-Abnahme offen.

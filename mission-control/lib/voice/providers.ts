@@ -3,6 +3,8 @@ import Anthropic from "@anthropic-ai/sdk";
 import { HttpError } from "@/lib/auth/http";
 import { noteOf } from "./validation";
 import type { NoteDraft } from "./contracts";
+import { InfomaniakTranscription } from "./infomaniak";
+import { transcriptionConfig } from "./transcription-config";
 export interface TranscriptionProvider {
   name: string;
   transcribe(
@@ -40,23 +42,18 @@ class OpenAITranscription implements TranscriptionProvider {
   }
 }
 export function transcriptionProvider(): TranscriptionProvider {
-  const name = process.env.TRANSCRIBE_PROVIDER?.trim() || "openai";
-  if (name === "amical")
-    throw new HttpError(
-      503,
-      "Amical ist vorbereitet, benötigt aber noch die bestätigte API-Dokumentation. Bitte vorerst OpenAI auswählen.",
-    );
-  if (name !== "openai")
+  const { provider: name, ready } = transcriptionConfig();
+  if (name !== "openai" && name !== "infomaniak")
     throw new HttpError(
       503,
       "Der Transkriptionsanbieter ist noch nicht eingerichtet.",
     );
-  if (!process.env.OPENAI_API_KEY?.trim())
+  if (!ready)
     throw new HttpError(
       503,
       "Die Spracherkennung wird gerade eingerichtet. Du kannst schon Textnotizen verfassen.",
     );
-  return new OpenAITranscription();
+  return name === "infomaniak" ? new InfomaniakTranscription() : new OpenAITranscription();
 }
 export function classificationReady() {
   if (!process.env.ANTHROPIC_API_KEY?.trim())

@@ -44,7 +44,7 @@ type Config = {
   limits: { minutes: number; requests: number };
   usage: { voice_seconds: number; requests: number };
 };
-export function NoteWorkspace({ autoStart = false }: { autoStart?: boolean }) {
+export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak" }: { autoStart?: boolean; initialProvider?: string }) {
   const { appName, assistantName } = useBrand();
   const [titleEdited, setTitleEdited] = useState(false);
   const [draft, setDraft] = useState<NoteDraft>(emptyDraft),
@@ -505,7 +505,10 @@ export function NoteWorkspace({ autoStart = false }: { autoStart?: boolean }) {
               <p>
                 Die Aufnahme bleibt zunächst in diesem Tab. Beim Umwandeln
                 verarbeitet{" "}
-                {config?.provider === "amical" ? "Amical" : "OpenAI"} das Audio;
+                {(config?.provider ?? initialProvider) === "infomaniak"
+                  ? "Infomaniak, Schweiz,"
+                  : (config?.provider ?? initialProvider) === "openai"
+                    ? "OpenAI" : "der konfigurierte Transkriptionsanbieter"} das Audio;
                 Anthropic erhält beim Einordnen den Text und deine Projektnamen.
                 Ohne „Aufnahme behalten“ wird das Audio nach erfolgreicher
                 Umwandlung verworfen. Mit Häkchen und Speichern liegt es privat

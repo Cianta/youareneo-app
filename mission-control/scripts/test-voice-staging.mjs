@@ -6,6 +6,7 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { readFile } from "node:fs/promises";
 if (!process.argv.includes("--run"))
   throw new Error("Use --run for the staging test.");
 const origin = process.env.AUTH_APP_URL,
@@ -35,14 +36,28 @@ async function supa(path, method = "GET", body) {
 }
 async function fixture() {
   const email = `voice-test-${randomUUID()}@example.test`;
+  const password = randomUUID() + randomUUID();
   const user = await supa("/auth/v1/admin/users", "POST", {
     email,
     email_confirm: true,
+    password,
     user_metadata: { purpose: "temporary-voice-smoke-test" },
   });
   const id = user.id;
   assert.ok(id);
   users.push(id);
+  const passwordLogin = await fetch(origin + "/api/auth/login", {
+    method: "POST",
+    headers: { Origin: origin, "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  assert.equal(passwordLogin.status, 200);
+  const wrongPassword = await fetch(origin + "/api/auth/login", {
+    method: "POST",
+    headers: { Origin: origin, "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password: randomUUID() }),
+  });
+  assert.equal(wrongPassword.status, 401);
   const link = await supa("/auth/v1/admin/generate_link", "POST", {
     type: "magiclink",
     email,
@@ -53,12 +68,39 @@ async function fixture() {
     body: JSON.stringify({ token_hash: link.hashed_token, type: "email" }),
   });
   assert.equal(r.status, 200);
+  const sessionCookies = r.headers.getSetCookie().filter((v) =>
+    v.startsWith("sb-emxqoahtipbmumghlixb-auth-token"),
+  );
+  assert.ok(sessionCookies.length);
+  for (const value of sessionCookies) {
+    assert.match(value, /Domain=\.youareneo\.com/i);
+    assert.match(value, /HttpOnly/i);
+    assert.match(value, /Secure/i);
+    assert.match(value, /SameSite=lax/i);
+  }
+  const reuse = await fetch(origin + "/api/auth/magic", {
+    method: "POST",
+    headers: { Origin: origin, "Content-Type": "application/json" },
+    body: JSON.stringify({ token_hash: link.hashed_token, type: "email" }),
+  });
+  assert.equal(reuse.status, 400);
   const cookie = r.headers
     .getSetCookie()
     .map((item) => item.split(";")[0])
     .join("; ");
   assert.ok(cookie);
   return { id, cookie: () => cookie };
+}
+async function worker(method = "GET", body, token = process.env.HERMES_API_TOKEN) {
+  const r = await fetch(origin + "/api/hermes/queue", {
+    method,
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  return { status: r.status, data: await r.json() };
 }
 async function call(user, path, method = "GET", body) {
   checks++;
@@ -200,6 +242,16 @@ try {
   r = await call(a, "/api/notes/queue");
   assert.equal(r.data.queue.length, 1);
   assert.equal(r.data.queue[0].status, "wartet_auf_bestaetigung");
+  const testWorker = !!process.env.HERMES_API_TOKEN?.trim();
+  if (testWorker) {
+    assert.equal((await worker("GET", undefined, "invalid")).status, 401);
+    const waiting = await worker();
+    assert.equal(waiting.status, 200);
+    assert.ok(!waiting.data.queue.some((item) => item.note_id === id));
+    assert.equal((await worker("PATCH", {
+      note_id: id, status: "erledigt", result: "Interner Test ohne Außenwirkung.",
+    })).status, 409);
+  }
   assert.equal(
     (
       await call(b, "/api/notes/queue", "PATCH", {
@@ -236,6 +288,34 @@ try {
     ).status,
     400,
   );
+  if (testWorker) {
+    const approved = await worker();
+    assert.equal(approved.status, 200);
+    assert.ok(approved.data.queue.some((item) => item.note_id === id));
+    const completion = { note_id: id, status: "erledigt", result: "Interner Test ohne Außenwirkung." };
+    assert.equal((await worker("PATCH", completion)).status, 200);
+    assert.equal((await worker("PATCH", completion)).status, 409);
+    assert.ok(!(await worker()).data.queue.some((item) => item.note_id === id));
+  }
+  if (process.argv.includes("--live-providers")) {
+    // Explicit opt-in: a non-sensitive spoken fixture is sent to the configured
+    // transcription provider; its transcript then goes to Anthropic.
+    const audioPath = process.env.VOICE_TEST_AUDIO_PATH;
+    assert.ok(audioPath, "VOICE_TEST_AUDIO_PATH required");
+    const form = new FormData();
+    form.set("audio", new File([await readFile(audioPath)], "acceptance.webm", { type: "audio/webm" }));
+    form.set("language", "de");
+    const transcript = await call(a, "/api/voice/transcribe", "POST", form);
+    assert.equal(transcript.status, 200);
+    assert.ok(transcript.data.transcript.length > 20);
+    const classified = await call(a, "/api/voice/classify", "POST", {
+      transcript: transcript.data.transcript, source: "voice",
+    });
+    assert.equal(classified.status, 200);
+    assert.ok(classified.data.note.title);
+    assert.equal(classified.data.note.source, "voice");
+    console.log(JSON.stringify({ liveTranscription: true, liveClassification: true, seconds: transcript.data.seconds }));
+  }
   await supa("/rest/v1/neo_access?user_id=eq." + a.id, "PATCH", {
     revoked_at: new Date().toISOString(),
   });

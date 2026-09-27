@@ -102,3 +102,11 @@ Aktueller Stand nach Domainwechsel:
 - `https://trinity-stg.youareneo.com/auth/magic` im Supabase-Dashboard als Redirect gespeichert und in der Liste verifiziert. Die allgemeine Site URL wurde nicht verändert; alle Trinity-Mailanfragen setzen `redirectTo` ausdrücklich.
 - 6 exportierte Mitglieder ohne Mail importiert; zweiter vollständiger Durchlauf: 6 wiederverwendet, 0 neu, 0 Fehler. Keine Accounts oder Profile gelöscht.
 - Deutsche Vorlagen im Repository und auf dem Server auf die neue Domain angepasst. Das Supabase-Dashboard sperrt ihre Aktivierung, bis Custom SMTP eingerichtet ist. Infomaniak-Zugangsdaten bleiben Nutzereingabe; danach Vorlagen speichern und Mail-/Browserabnahme abschließen.
+
+## Erneute Abnahme nach Schlüsselmeldung
+
+- Staging mit `docker compose up -d --build` neu geladen. Die tatsächliche `/docker/mission-control-stg/.env` enthält weiter leere OpenAI-/Anthropic-/Hermes-Werte; der laufende Container bestätigt diese fehlenden Werte. Der konfigurierte Anon-Key liefert direkt an `/auth/v1/settings` weiterhin HTTP 401. Keine Schlüsselwerte protokolliert; Rückfrage zur gespeicherten Datei läuft.
+- Angemeldeter Smoke-Test weiterhin bei `/api/voice/config` mit 401 blockiert. Beide ausschließlich hierfür angelegten temporären Konten entfernt.
+- Einladung, Magic Link und Passwort-Reset im Supabase-Dashboard auf die versionierten deutschen HTML-Vorlagen und Betreffzeilen umgestellt. Magic-Link-Speicherung bestätigt; Reset-Vorlage nach Neuladen vollständig mit Solltext verglichen. Infomaniak-SMTP im Dashboard aktiv. Versand und Zustellung sind damit noch nicht getestet.
+- Vom Nutzer benannte Testadresse still mit Förderzugang angelegt; zwei identische Provision-Aufrufe lieferten 200, zuerst `created:true`, danach `created:false` und dieselbe Nutzer-ID. Keine Einladungsmail verschickt. Das Konto bleibt für den vereinbarten Handy-Test bestehen.
+- Die vollständige Abnahme und die Freigabe von PR #7 bleiben offen. Keine Produktionsänderung.

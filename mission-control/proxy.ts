@@ -7,7 +7,9 @@ export async function proxy(request: NextRequest) {
   if (!usesSupabase()) return NextResponse.next();
   const path = request.nextUrl.pathname;
   // Auth routes perform their own verification and cookie writes. Webhooks use their secret.
-  if (path.startsWith('/api/auth/') || path.startsWith('/api/provision/')) return NextResponse.next();
+  if (path.startsWith('/api/auth/') || path.startsWith('/api/provision/')
+    || path.startsWith('/api/voice/') || path === '/api/notes' || path.startsWith('/api/notes/')
+    || path === '/api/hermes/queue') return NextResponse.next();
   const isApi = path.startsWith('/api/');
   let response = NextResponse.next({ request });
   response.headers.set('Cache-Control', 'private, no-store');

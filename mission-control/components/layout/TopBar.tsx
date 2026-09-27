@@ -1,4 +1,5 @@
 'use client';
+import { useBrand } from '@/components/voice/BrandProvider';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -1195,6 +1196,7 @@ function TemporalHub() {
 
 // ── TopBar ─────────────────────────────────────────────────────────────────────
 export function TopBar() {
+  const {appName} = useBrand();
   const t = useT();
   const pathname = usePathname();
   const { toggle } = useNotebookStore();
@@ -1328,7 +1330,7 @@ export function TopBar() {
     const agent = agents.find(a => a.id === agentId);
     page = { title: agent?.displayName ?? 'Agent Chat', subtitle: `${agent?.model ?? 'AI'} · Direct Interface` };
   }
-  page ??= { title: 'TRINITY OS', subtitle: 'Powered by YOU ARE NEO' };
+  page ??= { title: appName, subtitle: 'Powered by YOU ARE NEO' };
   const onlineAgents = agents.filter(a => a.status === 'online');
 
   // Meditation BG videos

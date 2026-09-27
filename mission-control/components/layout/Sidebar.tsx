@@ -1,4 +1,5 @@
 'use client';
+import { useBrand } from '@/components/voice/BrandProvider';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -533,6 +534,7 @@ function AddIframeModal({ categoryId, onClose }: { categoryId: string; onClose: 
 
 // ── Sidebar Component ──────────────────────────────────────────────────────────
 export function Sidebar() {
+  const {appName} = useBrand();
   const t = useT();
   const pathname = usePathname();
   const { sidebarCollapsed, toggleSidebar, expandedSections, toggleSection, expandedSubFolders, toggleSubFolder } = useUIStore();
@@ -1079,7 +1081,7 @@ export function Sidebar() {
                 exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.16 }}
                 className="overflow-hidden min-w-0"
               >
-                <p className="text-[11px] font-extrabold leading-tight tracking-wide whitespace-nowrap" style={{ color: '#11CAA0' }}>TRINITY OS</p>
+                <p className="text-[11px] font-extrabold leading-tight tracking-wide whitespace-nowrap" style={{ color: '#11CAA0' }}>{appName}</p>
                 <p className="text-[9px] text-anth-500 tracking-widest whitespace-nowrap mt-0.5">Powered by YOU ARE NEO</p>
               </motion.div>
             )}

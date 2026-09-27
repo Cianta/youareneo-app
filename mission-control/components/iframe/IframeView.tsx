@@ -333,7 +333,7 @@ export function IframeView({ src, title, fallbackMessage, className, configKey, 
           {/* Mode toggle */}
           {mode === 'direct' ? (
             <button onClick={() => { setUserOverride(true); setMode('proxy'); setKey(k => k + 1); setLoading(true); }}
-              title="Load via TRINITY proxy (strips X-Frame headers)"
+              title="Load via app proxy (strips X-Frame headers)"
               className="p-1.5 rounded-lg text-anth-500 hover:text-violet-400 hover:bg-violet-900/20 transition-colors">
               <Zap size={11} />
             </button>

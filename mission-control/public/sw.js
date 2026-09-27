@@ -1,70 +1,11 @@
-/**
- * TRINITY OS · Service Worker v1
- * ──────────────────────────────
- * Caches proxied responses for performance and offline continuity.
- * Intercepts /api/proxy requests to serve stale-while-revalidate.
- */
-
-const CACHE_NAME    = 'trinity-os-proxy-v1';
-const STATIC_CACHE  = 'trinity-os-static-v1';
-
-const PROXY_PATH   = '/api/proxy';
-const CACHE_SECS   = 300; // 5 min for proxy responses
-
-// ── Install ─────────────────────────────────────────────────────────────────
-self.addEventListener('install', (event) => {
-  console.log('[TrinityOS SW] Installed');
-  self.skipWaiting();
-});
-
-// ── Activate ────────────────────────────────────────────────────────────────
-self.addEventListener('activate', (event) => {
-  console.log('[TrinityOS SW] Activated');
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(k => k !== CACHE_NAME && k !== STATIC_CACHE)
-          .map(k => caches.delete(k))
-      )
-    ).then(() => self.clients.claim())
-  );
-});
-
-// ── Fetch Intercept ──────────────────────────────────────────────────────────
-self.addEventListener('fetch', (event) => {
-  const url = event.request.url;
-
-  // Only handle GET proxy requests for caching
-  if (event.request.method === 'GET' && url.includes(PROXY_PATH)) {
-    event.respondWith(staleWhileRevalidate(event.request));
-    return;
-  }
-
-  // All other requests pass through
-});
-
-async function staleWhileRevalidate(request) {
-  const cache = await caches.open(CACHE_NAME);
-  const cached = await cache.match(request);
-
-  const fetchPromise = fetch(request).then(response => {
-    if (response.ok) {
-      const clone = response.clone();
-      cache.put(request, clone);
-    }
-    return response;
-  }).catch(() => cached);
-
-  // Serve stale immediately if available, refresh in background
-  return cached || fetchPromise;
-}
-
-// ── Message handler (allow manual cache clear from app) ──────────────────────
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'CLEAR_CACHE') {
-    caches.delete(CACHE_NAME).then(() => {
-      event.ports[0]?.postMessage({ ok: true });
-    });
-  }
+/* Public shell only. Never store navigations, APIs, audio, notes or sessions. */
+const SHELL='neo-public-shell-v2';
+const ASSETS=['/offline.html','/pwa/icon-192.png','/pwa/icon-512.png','/pwa/maskable-512.png'];
+self.addEventListener('install',event=>{event.waitUntil(caches.open(SHELL).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key==='trinity-os-proxy-v1'||key==='trinity-os-static-v1'||(key.startsWith('neo-public-shell-')&&key!==SHELL)).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',event=>{
+  const url=new URL(event.request.url);
+  if(event.request.method!=='GET'||url.origin!==self.location.origin)return;
+  if(ASSETS.includes(url.pathname)) {event.respondWith(caches.match(url.pathname).then(cached=>cached||fetch(event.request)));return;}
+  if(event.request.mode==='navigate' && !url.pathname.startsWith('/api/'))event.respondWith(fetch(event.request).catch(()=>caches.match('/offline.html')));
 });

@@ -64,7 +64,7 @@ export function buildAssistantContext(): string {
 // ── System-Prompt ──────────────────────────────────────────────────────────────
 export function buildAssistantSystemPrompt(roleContext?: string): string {
   return [
-    'Du bist der zentrale Assistent von TRINITY OS und kannst die gesamte Oberfläche steuern.',
+    'Du bist der zentrale Assistent dieser App und kannst die gesamte Oberfläche steuern.',
     roleContext ? `Deine aktuelle Rolle: ${roleContext}` : '',
     'Antworte natürlich auf Deutsch. Wenn der Nutzer etwas anlegen, ausfüllen oder ändern möchte,',
     'führe es aus, indem du AM ENDE deiner Antwort GENAU EINEN Aktionsblock anhängst:',

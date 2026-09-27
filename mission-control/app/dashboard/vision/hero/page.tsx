@@ -228,8 +228,8 @@ function GoalsTab() {
   const sendTo = async (g: GoalEntry, target: 'todoist' | 'trello') => {
     setSendStatus(s => ({ ...s, [g.id]: '…' }));
     const body = target === 'todoist'
-      ? { provider: 'todoist', token: todoistToken, action: 'addTask', content: g.text, description: 'Lebensziel aus TRINITY OS Self' }
-      : { provider: 'trello', key: trelloKey, token: trelloToken, action: 'addCard', listId: trelloListId, name: g.text, desc: 'Lebensziel aus TRINITY OS Self' };
+      ? { provider: 'todoist', token: todoistToken, action: 'addTask', content: g.text, description: 'Lebensziel aus dem persönlichen Arbeitsraum' }
+      : { provider: 'trello', key: trelloKey, token: trelloToken, action: 'addCard', listId: trelloListId, name: g.text, desc: 'Lebensziel aus dem persönlichen Arbeitsraum' };
     try {
       const r = await fetch('/api/integrations', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const d = await r.json();

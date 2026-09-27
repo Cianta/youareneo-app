@@ -56,3 +56,11 @@ Stand 27.09.2026, Branch `codex/trinity-supabase-login`. Die ausdrückliche Anwe
 Die detaillierten Konfigurations- und Abnahmeschritte stehen in `SUPABASE-LOGIN-TESTPLAN.md`.
 
 - **Präzisierung durch den Nutzer:** 0 Supabase-Auth-Nutzer sind der korrekte Ausgangsstand; kein Kontenquellen-Abgleich erforderlich. SMTP ist Infomaniak (`mail.infomaniak.com`, Port `465`, SSL/TLS), Absender `noreply@youareneo.com`. Zugangsdaten werden ausschließlich vom Nutzer im Supabase-Dashboard eingetragen.
+
+### Ergänzung Phase 1 Sprachnotizen
+
+Eigener Folgebranch `codex/trinity-voice-phase1` baut auf PR #7 auf. Auth-Pfade, Provision-Formate, Profile und Cookie-Vertrag bleiben unverändert. Neue Notiz-/Voice-Routen prüfen ihre Sitzung selbst: KI-Nutzung für angemeldete Konten ohne Produktpflicht, Speichern nur mit einem aktiven Produkt aus `['foerder','app']` in API und RLS. Hermes verwendet einen eigenen Bearer-Token, keine Nutzersitzung. Neue Tabellen/Storage/APIs/Env stehen in `docs/AUFTRAG-CODEX-TRINITY-STIMME.md` unter „Änderungen durch Codex“. Das bisherige Dashboard und FuseBase-Rückfallverhalten bleiben erhalten. Produktion wird nicht deployed.
+
+### Anbieterwechsel für Phase 1
+
+Transkription standardmäßig über `TRANSCRIBE_PROVIDER=infomaniak`, serverseitig `INFOMANIAK_AI_PRODUCT_ID` und `INFOMANIAK_AI_TOKEN`. `openai` bleibt ausdrücklich auswählbar; Amical entfernt. Auth-Endpunkte, Tabellenfelder und Cookie-Namen bleiben unverändert. `/api/voice/config` meldet nun standardmäßig `provider:"infomaniak"`; `/api/voice/transcribe` meldet `provider:"Infomaniak"`. Details in `AUFTRAG-CODEX-TRINITY-STIMME.md`. Phase 2: VocalLab, weiterhin Freigabe erforderlich.

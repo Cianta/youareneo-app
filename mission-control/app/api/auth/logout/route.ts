@@ -1,16 +1,7 @@
-import { NextResponse } from 'next/server';
-import { MC_SESSION_COOKIE } from '@/lib/fusebase/session';
-
+import { usesSupabase } from '@/lib/supabase/config';
+import { logout } from '@/lib/auth/handlers';
+import * as legacy from '@/lib/auth/legacy/logout';
 export const dynamic = 'force-dynamic';
-
-export async function POST() {
-  const res = NextResponse.json({ success: true });
-  res.cookies.set(MC_SESSION_COOKIE, '', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 0,
-  });
-  return res;
+export async function POST(req: Request) {
+  return usesSupabase() ? logout(req) : legacy.POST();
 }

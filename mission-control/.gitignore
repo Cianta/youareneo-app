@@ -30,3 +30,8 @@ npm-debug.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Private migration exports and legacy mail secrets
+.private/
+auth-mail.env
+supabase/.temp/

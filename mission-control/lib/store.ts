@@ -700,14 +700,14 @@ export const useNotificationStore = create<NotificationStore>()(
 export interface AuthUser { name: string; role: string; avatar: string }
 
 const EMPLOYEES_DATA = [
-  { name: 'Cianta',            role: 'Founder',        avatar: '🥷', password: '0595' },
-  { name: 'Norbert',           role: 'Expert',         avatar: '🎯', password: '0595' },
-  { name: 'Damiana',           role: 'Creative',       avatar: '🌸', password: '0595' },
-  { name: 'Thomas B.',         role: 'Technology',     avatar: '💡', password: '0595' },
-  { name: 'Gabba',             role: 'Wellness Coach', avatar: '🌊', password: '0595' },
-  { name: 'Infinite Flow',     role: 'Movement',       avatar: '♾️', password: '0595' },
-  { name: 'Elfi',              role: 'Healing Arts',   avatar: '✨', password: '0595' },
-  { name: 'Crystal Bear Heart',role: 'Sacred Arts',    avatar: '🐻', password: '0595' },
+  { name: 'Cianta',            role: 'Founder',        avatar: '🥷' },
+  { name: 'Norbert',           role: 'Expert',         avatar: '🎯' },
+  { name: 'Damiana',           role: 'Creative',       avatar: '🌸' },
+  { name: 'Thomas B.',         role: 'Technology',     avatar: '💡' },
+  { name: 'Gabba',             role: 'Wellness Coach', avatar: '🌊' },
+  { name: 'Infinite Flow',     role: 'Movement',       avatar: '♾️' },
+  { name: 'Elfi',              role: 'Healing Arts',   avatar: '✨' },
+  { name: 'Crystal Bear Heart',role: 'Sacred Arts',    avatar: '🐻' },
 ];
 export const EMPLOYEES = EMPLOYEES_DATA;
 
@@ -719,21 +719,13 @@ interface AuthStore {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>()(
-  persist(
-    (set) => ({
-      user: null,
-      login: (name, password) => {
-        const emp = EMPLOYEES_DATA.find(e => e.name === name && e.password === password);
-        if (emp) { set({ user: { name: emp.name, role: emp.role, avatar: emp.avatar } }); return true; }
-        return false;
-      },
-      setUser: (u) => set({ user: u }),
-      logout: () => set({ user: null }),
-    }),
-    { name: 'trinity-auth' }
-  )
-);
+export const useAuthStore = create<AuthStore>()((set) => ({
+  user: null,
+  // Legacy UI callers cannot authenticate independently of the server session.
+  login: () => false,
+  setUser: (user) => set({ user }),
+  logout: () => set({ user: null }),
+}));
 
 // ── UI Extension Store ─────────────────────────────────────────────────────────
 export interface MusicTrack {

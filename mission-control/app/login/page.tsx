@@ -7,10 +7,6 @@ import { FOERDER_PRODUCT_URL } from '@/lib/membership';
 
 type Mode = 'password' | 'magic' | 'forgot';
 
-/**
- * Trinity / Mission Control login via FuseBase Gate helpers
- * (same identity as Freigeist; Gate service token stays server-side).
- */
 export default function LoginPage() {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>('password');
@@ -41,7 +37,7 @@ export default function LoginPage() {
           const { useAuthStore } = await import('@/lib/store');
           useAuthStore.getState().setUser({
             name: data.email?.split('@')[0] || 'Member',
-            role: 'FuseBase',
+            role: 'NEO Member',
             avatar: '🔮',
           });
         } catch {
@@ -102,7 +98,7 @@ export default function LoginPage() {
           <Sparkles className="text-mint-400" size={18} />
           <div>
             <h1 className="text-lg font-semibold text-forest-100">TRINITY OS</h1>
-            <p className="text-[11px] text-anth-500">FuseBase Gate Login · YOU ARE NEO</p>
+            <p className="text-[11px] text-anth-500">Dein NEO-Konto · YOU ARE NEO</p>
           </div>
         </div>
 
@@ -134,8 +130,7 @@ export default function LoginPage() {
 
         {mode === 'forgot' && (
           <p className="text-[11px] text-anth-500 leading-relaxed">
-            Passwort vergessen? Gib deine E-Mail ein. FuseBase sendet einen Reset-Link
-            (nur wenn ein Konto existiert — die Antwort bleibt bewusst generisch).
+            Passwort vergessen? Gib deine E-Mail ein. Du erhältst einen Link, mit dem du ein neues Passwort festlegen kannst.
           </p>
         )}
 
@@ -222,8 +217,7 @@ export default function LoginPage() {
         </a>
 
         <p className="text-[10px] text-anth-600 leading-relaxed">
-          Gleiche FuseBase-Identität wie Freigeist. Service-Token bleibt serverseitig.
-          Gate-Login für Trinity — getrennt von Portal-Embeds.
+          Ein NEO-Konto für Trinity und dein Archiv. Neu dabei? Fordere einen Magic Link an oder lege über „Passwort vergessen“ dein Passwort fest.
         </p>
       </div>
     </div>

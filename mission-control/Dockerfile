@@ -6,8 +6,8 @@
 # Stage 1: Dependencies
 FROM node:22-alpine AS deps
 WORKDIR /app
-COPY package.json ./
-RUN npm install --frozen-lockfile 2>/dev/null || npm install
+COPY package.json package-lock.json ./
+RUN npm ci
 
 # Stage 2: Builder
 FROM node:22-alpine AS builder
@@ -40,6 +40,7 @@ COPY --from=builder /app/.next/static ./.next/static
 
 # Copy data directory (mutable — mount as volume in prod)
 COPY --from=builder /app/data ./data
+COPY --from=builder /app/scripts ./scripts
 
 # Ensure data directory is writable
 RUN chown -R nextjs:nodejs /app/data

@@ -1,0 +1,165 @@
+{
+  "route": "/notiz",
+  "requestedUrl": "https://trinity-stg.youareneo.com/notiz",
+  "finalDisplayedUrl": "https://trinity-stg.youareneo.com/notiz",
+  "fetchTime": "2026-09-30T03:41:37.437Z",
+  "lighthouseVersion": "13.5.0",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+  "warnings": [],
+  "performance": 0.96,
+  "accessibility": 1,
+  "metrics": {
+    "first-contentful-paint": 1109.0657999999999,
+    "largest-contentful-paint": 2759.0658,
+    "total-blocking-time": 2,
+    "cumulative-layout-shift": 0.0111156853339417,
+    "speed-index": 1109.0657999999999
+  },
+  "js": [
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/310vm2bl3xxpt.js",
+      "transferSize": 2060,
+      "resourceSize": 5364,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/19jzi9vtz3_eh.js",
+      "transferSize": 8787,
+      "resourceSize": 30836,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/3n7dm2ojtyzwn.js",
+      "transferSize": 71119,
+      "resourceSize": 227537,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/153mnvfs8r8kg.js",
+      "transferSize": 37654,
+      "resourceSize": 138009,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/27jktro2p5rq9.js",
+      "transferSize": 9298,
+      "resourceSize": 44414,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/turbopack-3t79h-2-1fo-n.js",
+      "transferSize": 4227,
+      "resourceSize": 10613,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/3pf0g_a7enyqy.js",
+      "transferSize": 4700,
+      "resourceSize": 11412,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/031d4hdncmqdj.js",
+      "transferSize": 12939,
+      "resourceSize": 54646,
+      "statusCode": 200
+    },
+    {
+      "url": "https://trinity-stg.youareneo.com/_next/static/chunks/1xixifs4gho8j.js",
+      "transferSize": 7550,
+      "resourceSize": 22212,
+      "statusCode": 200
+    }
+  ],
+  "settings": {
+    "formFactor": "mobile",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    },
+    "throttlingMethod": "simulate",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    }
+  },
+  "cachePolicy": "Network.clearBrowserCache before each route; auth cookies and local application state retained",
+  "consoleErrorCount": 0,
+  "consoleErrors": [],
+  "consoleAudit": {
+    "id": "errors-in-console",
+    "title": "No browser errors logged to the console",
+    "score": 1
+  },
+  "findings": [
+    {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "score": 0.99,
+      "displayValue": "1.1 s",
+      "nodes": []
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "score": 0.84,
+      "displayValue": "2.8 s",
+      "nodes": []
+    },
+    {
+      "id": "interactive",
+      "title": "Time to Interactive",
+      "score": 0.97,
+      "displayValue": "2.8 s",
+      "nodes": []
+    },
+    {
+      "id": "unused-css-rules",
+      "title": "Reduce unused CSS",
+      "score": 0,
+      "displayValue": "Est savings of 17 KiB",
+      "nodes": []
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Reduce unused JavaScript",
+      "score": 0,
+      "displayValue": "Est savings of 26 KiB",
+      "nodes": []
+    },
+    {
+      "id": "bf-cache",
+      "title": "Page prevented back/forward cache restoration",
+      "score": 0,
+      "displayValue": "2 failure reasons",
+      "nodes": []
+    },
+    {
+      "id": "legacy-javascript-insight",
+      "title": "Legacy JavaScript",
+      "score": 0,
+      "displayValue": "Est savings of 13 KiB",
+      "nodes": []
+    },
+    {
+      "id": "network-dependency-tree-insight",
+      "title": "Network dependency tree",
+      "score": 0,
+      "nodes": []
+    },
+    {
+      "id": "render-blocking-insight",
+      "title": "Render-blocking requests",
+      "score": 0,
+      "displayValue": "Est savings of 220 ms",
+      "nodes": []
+    }
+  ]
+}

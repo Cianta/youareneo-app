@@ -62,7 +62,9 @@ export default function Graph3D({
       cooldownTime={5000}
       showNavInfo={false}
       onNodeClick={onSelect}
-      onEngineStop={() => ref.current?.zoomToFit(500, 40)}
+      onEngineStop={() => {
+        if (!selected) ref.current?.zoomToFit(500, 40);
+      }}
     />
   );
 }

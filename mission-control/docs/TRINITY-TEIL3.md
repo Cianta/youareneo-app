@@ -16,13 +16,13 @@ Freigabe am 01.10.2026; aufbauend auf Teil 2 / PR #10. Staging: https://trinity-
 
 Migration `20261001123355_trinity_brain_snapshot.sql` ergänzt ausschließlich `trinity_brain_snapshot()`. Ein RPC liest die bestehenden Tabellen in einer Abfrage als **SECURITY INVOKER** unter RLS und explizitem `auth.uid()`. Kein Service-Role-Aufruf und kein Benutzerparameter. Anon/PUBLIC erhalten kein EXECUTE. Bestehende Konten, Tabellen, Profile, Policies und Indizes bleiben unverändert. Die additive Funktion wurde im bestehenden Projekt angewendet.
 
-Maximal 1.000 aktuelle Notizen, 200 Projekte und zugehörige Hermes-Zeilen. Der Server baut höchstens 2.000 Knoten und meldet einen Ausschnitt. Vollständige Notiztexte werden nur auf dem Server zur Verbindungserkennung verwendet; Vorschauen maximal 600 Zeichen. Cache 30 Sekunden je verifiziertem Benutzer, pro Prozess maximal 32 Einträge. Authentifizierung/Rechte werden vor jedem Cachezugriff geprüft. Neue Daten erscheinen spätestens nach Ablauf oder über „Aktualisieren“.
+Maximal 1.000 aktuelle Notizen, 200 Projekte und zugehörige Hermes-Zeilen. Der Server baut höchstens 2.000 Knoten und 10.000 Kanten und meldet einen Ausschnitt. Vollständige Notiztexte werden nur auf dem Server zur Verbindungserkennung verwendet; Vorschauen maximal 600 Zeichen. Cache 30 Sekunden je verifiziertem Benutzer, pro Prozess maximal 32 Einträge. Authentifizierung/Rechte werden vor jedem Cachezugriff geprüft. Neue Daten erscheinen spätestens nach Ablauf oder über „Aktualisieren“.
 
 Keine neuen Env-Variablen. Cookie-, Login-, Provision- und Hermes-Verträge unverändert.
 
 ## Technische Prüfung
 
-- TypeScript und Produktionsbuild erfolgreich; 6 Graph-Tests und 8 Workspace-Regressionstests bestanden.
+- TypeScript und Produktionsbuild erfolgreich; 7 Graph-Tests und 8 Workspace-Regressionstests bestanden.
 - Graph-Tests: Eigentümertrennung, keine verwaisten Kanten, Tags/Erwähnungen/Zuständigkeit/Hermes, RegEx-Sonderzeichen, Datums-/Typfilter, 2.000-Knoten-Grenze, HTML-Escaping und benutzergetrennter Cache.
 - Lokaler Browser-Test mit 2.000 fiktiven Knoten bei 390 px und reduzierter Bewegung: 2D-Rückfall, Suche, Vorschau-Link, Fehler/Retry und leerer Bestand; kein horizontaler Überlauf und keine JavaScript-Seitenfehler. Der Lauf ist keine FPS-Messung oder physische Geräteabnahme.
 - Reale read-only SQL-Kontrolle ohne neue Konten/Notizen: fremde Testidentität liefert leere Arrays, Funktion verwendet Aufruferrechte, Anon darf nicht ausführen. Zwei-Konten-Abnahme steht als vollständig zurückrollendes `supabase/tests/brain_rls.sql` für später bereit; noch nicht ausgeführt.

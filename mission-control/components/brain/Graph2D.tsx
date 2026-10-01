@@ -49,7 +49,9 @@ export default function Graph2D({
       warmupTicks={reduced ? 100 : 40}
       cooldownTicks={reduced ? 0 : 100}
       cooldownTime={4000}
-      onEngineStop={() => ref.current?.zoomToFit(reduced ? 0 : 400, 35)}
+      onEngineStop={() => {
+        if (!selected) ref.current?.zoomToFit(reduced ? 0 : 400, 35);
+      }}
       onNodeClick={onSelect}
       enableNodeDrag={!reduced}
     />

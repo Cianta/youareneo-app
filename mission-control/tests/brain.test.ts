@@ -137,3 +137,27 @@ test("tooltip escapes user HTML and links encode note IDs", () => {
   assert(!tooltip(g.nodes[0]).includes("<img"));
   assert.equal(g.nodes[0].href, "/notiz?note=a");
 });
+test("dense mentions cap edge count without incorrect degrees", () => {
+  const projects = Array.from({ length: 200 }, (_, i) => ({
+    name: "Projekt" + i,
+    user_id: "a",
+    created_at: "2026-01-01",
+  }));
+  const s: Snapshot = {
+    notes: Array.from({ length: 1000 }, (_, i) => ({
+      ...note(String(i)),
+      transcript: projects.map((p) => "@" + p.name).join(" "),
+      tags: [],
+      assignee: null,
+    })),
+    projects,
+    queue: [],
+  };
+  const g = buildGraph(s, "a");
+  assert.equal(g.links.length, 10000);
+  assert(g.truncated);
+  assert.equal(
+    g.nodes.reduce((n, x) => n + x.degree, 0),
+    20000,
+  );
+});

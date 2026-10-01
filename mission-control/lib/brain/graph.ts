@@ -71,6 +71,10 @@ export function buildGraph(
     if (source === target || !nodes.has(source) || !nodes.has(target)) return;
     const id = source + "\0" + target + "\0" + kind;
     if (!links.has(id)) {
+      if (links.size >= 10000) {
+        truncated = true;
+        return;
+      }
       links.set(id, { source, target, kind });
       nodes.get(source)!.degree++;
       nodes.get(target)!.degree++;

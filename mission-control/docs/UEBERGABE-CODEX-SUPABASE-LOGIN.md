@@ -64,3 +64,9 @@ Eigener Folgebranch `codex/trinity-voice-phase1` baut auf PR #7 auf. Auth-Pfade,
 ### Anbieterwechsel für Phase 1
 
 Transkription standardmäßig über `TRANSCRIBE_PROVIDER=infomaniak`, serverseitig `INFOMANIAK_AI_PRODUCT_ID` und `INFOMANIAK_AI_TOKEN`. `openai` bleibt ausdrücklich auswählbar; Amical entfernt. Auth-Endpunkte, Tabellenfelder und Cookie-Namen bleiben unverändert. `/api/voice/config` meldet nun standardmäßig `provider:"infomaniak"`; `/api/voice/transcribe` meldet `provider:"Infomaniak"`. Details in `AUFTRAG-CODEX-TRINITY-STIMME.md`. Phase 2: VocalLab, weiterhin Freigabe erforderlich.
+
+## Änderungen durch Codex – 01.10.2026, Bedienbarkeit Teil 2
+
+Interne Ergänzungen: `GET /api/search?q=...` sucht ausschließlich eigene Supabase-Notizen/Aufgaben/Projekte/Tags; Antwort `{ success, userId, items }`. `POST /api/onboarding` nimmt `{ name?: string, complete?: true }` an und setzt ausschließlich eigene Anzeige-Metadaten `trinity_display_name` / `trinity_onboarding_complete` im Auth-Benutzer. Diese Metadaten steuern **keine Rechte** und verändern keine Zeilen in `neo_profiles`. `displayName` in `/api/auth/me` bevorzugt einen so gesetzten Namen; Form der Antwort unverändert. `GET /api/notes` akzeptiert zusätzlich den optionalen, eigentumsgeprüften Filter `id=<UUID>`.
+
+Der alte Konfigurations-Endpunkt `GET/POST /api/settings/env` ist bewusst geschlossen (HTTP 410), ohne Keys/Dateien zu lesen oder zu schreiben. Secrets werden weiterhin ausschließlich vom Nutzer in der Server-`.env` eingetragen. Bestehende Auth-/Provision-/Hermes-Verträge, Cookie-Name und `.youareneo.com`-Domain bleiben unverändert; keine Tabellenänderung und keine neuen Server-Env-Variablen. Vollständige interne Verträge und späterer Testplan: [TRINITY-TEIL2.md](TRINITY-TEIL2.md). Nur Staging; Live-/Infomaniak-/Mail-/Handy-Abnahme auf Nutzerwunsch verschoben.

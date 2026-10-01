@@ -100,7 +100,7 @@ export function AppLauncher({ pageKey, title, subtitle }: Props) {
   };
 
   return (
-    <div className="h-full flex gap-4 fade-in">
+    <div className="app-launcher h-full flex gap-4 fade-in">
       {/* ── Main area ── */}
       <div className="flex-1 min-w-0 flex flex-col">
         <div className="shrink-0 mb-4">
@@ -116,7 +116,7 @@ export function AppLauncher({ pageKey, title, subtitle }: Props) {
                 className={cn('group relative rounded-2xl border p-3 flex flex-col gap-2 transition-all',
                   descId === app.id ? 'border-mint-500/50 bg-mint-500/5' : 'border-border bg-surface/40 hover:border-forest-600/50')}>
                 {/* Delete */}
-                <button onClick={() => { removeApp(pageKey, app.id); if (descId === app.id) setDescId(null); }}
+                <button aria-label="Verknüpfung entfernen" onClick={() => { removeApp(pageKey, app.id); if (descId === app.id) setDescId(null); }}
                   className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 rounded-md text-anth-600 hover:text-red-400 transition-all">
                   <Trash2 size={11} />
                 </button>
@@ -173,7 +173,7 @@ export function AppLauncher({ pageKey, title, subtitle }: Props) {
                   <p className="text-sm font-semibold text-forest-100 truncate">{descApp.name}</p>
                   <p className="text-[9px] text-anth-600 truncate">{descApp.url}</p>
                 </div>
-                <button onClick={() => setDescId(null)} className="p-1 text-anth-600 hover:text-anth-300"><X size={13} /></button>
+                <button aria-label="Beschreibung schließen" onClick={() => setDescId(null)} className="p-1 text-anth-600 hover:text-anth-300"><X size={13} /></button>
               </div>
               <p className="text-[9px] uppercase tracking-widest text-anth-600 shrink-0">{t('Beschreibung · automatisch geladen, editierbar')}</p>
               <textarea
@@ -204,7 +204,7 @@ export function AppLauncher({ pageKey, title, subtitle }: Props) {
               className="w-[420px] glass-dark rounded-3xl border border-border p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-bold text-forest-100">{t('Programm verknüpfen')}</h3>
-                <button onClick={resetForm} className="p-1 text-anth-600 hover:text-anth-300"><X size={14} /></button>
+                <button aria-label="Verknüpfung anlegen abbrechen" onClick={resetForm} className="p-1 text-anth-600 hover:text-anth-300"><X size={14} /></button>
               </div>
 
               {/* Kind toggle */}

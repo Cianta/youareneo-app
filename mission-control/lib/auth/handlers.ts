@@ -37,7 +37,7 @@ export async function me() {
     if (profileError) throw profileError;
     const { data: claims } = await sb.auth.getClaims();
     return json({ success: true, authenticated: true, email: user.email, userId: user.id,
-      exp: claims?.claims.exp, displayName: profile?.display_name ?? null,
+      exp: claims?.claims.exp, displayName: (typeof user.user_metadata.trinity_display_name === 'string' ? user.user_metadata.trinity_display_name.slice(0,80) : '') || profile?.display_name || null,
       avatarUrl: profile?.avatar_url ?? null, products, hasTrinityAccess: trinityAllowed(products) });
   } catch (error) { return failure(error); }
 }

@@ -13,6 +13,8 @@ export async function GET(req: Request) {
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(50);
+    const selectedId = params.get("id");
+    if (selectedId) query=query.eq("id",uuid(selectedId));
     const before = params.get("before");
     if (before) query = query.lt("created_at", before);
     const q = params.get("q")?.slice(0, 200);

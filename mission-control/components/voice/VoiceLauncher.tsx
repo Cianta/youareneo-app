@@ -24,7 +24,7 @@ export function VoiceLauncher() {
         .register("/sw.js", { scope: "/" })
         .catch(() => {});
   }, []);
-  if (path === "/notiz") return null;
+  if (path === "/notiz" || path.startsWith("/dashboard")) return null;
   return (
     <Link
       href="/notiz"

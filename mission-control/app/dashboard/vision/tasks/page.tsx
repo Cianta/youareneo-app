@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useKanbanStore, useLauncherStore } from '@/lib/store';
-import { KanbanBoard } from '@/components/kanban/KanbanBoard';
+import dynamic from 'next/dynamic';
+import {LoadingState} from '@/components/workspace/States';
+const KanbanBoard=dynamic(()=>import('@/components/kanban/KanbanBoard').then(m=>m.KanbanBoard),{loading:()=> <LoadingState/>});
 import { IframeView } from '@/components/iframe/IframeView';
 import { ExternalLink, Loader2, Archive, RotateCcw, Trash2, Plus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -79,11 +81,11 @@ function TrelloWorkspaces() {
           </button>
         )}
 
-        {/* Open Trello — tab/popup choice */}
+        {/* Trello öffnen — tab/popup choice */}
         <div className="relative ml-auto">
           <button onClick={() => setOpenMenu(v => !v)}
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-900/30 border border-sky-700/40 text-sky-300 text-xs font-semibold hover:bg-sky-900/50 transition-all">
-            <ExternalLink size={12} /> Open Trello
+            <ExternalLink size={12} /> Trello öffnen
           </button>
           {openMenu && (
             <>
@@ -131,16 +133,9 @@ export default function TasksPage() {
   const t = useT();
   const { setTasks, tasks } = useKanbanStore();
   const { archivedGoals, archivedJournalEntries, restoreGoal, deleteArchivedGoal, deleteArchivedJournalEntry } = useNeuralNotebookStore();
-  const [loading, setLoading] = useState(true);
+  const loading=false;
   const [activeTab, setActiveTab] = useState<TaskTab>('kanban');
 
-  useEffect(() => {
-    fetch('/api/kanban')
-      .then(r => r.json())
-      .then(data => { setTasks(data.data?.tasks ?? []); })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [setTasks]);
 
   const tabs: { id: TaskTab; label: string; emoji: string }[] = [
     { id: 'kanban', label: 'Eigenes Kanban', emoji: '📋' },
@@ -149,7 +144,8 @@ export default function TasksPage() {
   ];
 
   return (
-    <div className="h-full flex flex-col fade-in">
+    <div className="h-full flex flex-col fade-in tasks-page">
+      <p className="workspace-muted">Bisherige Boards auf diesem Gerät · <a className="underline" href="/notiz?type=aufgabe">Eigene gespeicherte Aufgaben öffnen</a></p>
 
       {/* ── Sub-Navigation Tab Bar ── */}
       <div className="shrink-0 flex items-center gap-1 mb-3 p-1 rounded-2xl bg-anth-900/60 border border-anth-700/30 backdrop-blur-sm"
@@ -174,7 +170,7 @@ export default function TasksPage() {
                   ? 'bg-mint-500/20 text-mint-light'
                   : 'bg-anth-700/50 text-anth-500'
               )}>
-                {tasks.length}
+                Lokal
               </span>
             )}
           </button>

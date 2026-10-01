@@ -4,7 +4,8 @@ export const dynamic = "force-dynamic";
 export default async function NotePage({
   searchParams,
 }: {
-  searchParams: Promise<{ rec?: string }>;
+  searchParams: Promise<{ rec?: string; note?: string; project?: string; tag?: string; type?: string }>;
 }) {
-  return <NoteWorkspace autoStart={(await searchParams).rec === "1"} initialProvider={transcriptionConfig().provider} />;
+  const params=await searchParams;
+  return <NoteWorkspace initialNote={params.note} initialProject={params.project} initialTag={params.tag} initialType={params.type} autoStart={params.rec === "1"} initialProvider={transcriptionConfig().provider} />;
 }

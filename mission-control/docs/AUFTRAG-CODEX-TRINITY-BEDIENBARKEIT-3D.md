@@ -69,3 +69,9 @@ Route `/gehirn`, im Menü als „Gehirn“:
 30.09.2026 – Teil 1 auf PR #8 erstellt: [TRINITY-INVENTAR.md](TRINITY-INVENTAR.md) enthält alle 73 Seiten und 40 API-Routen, Navigation, Zustände, Datenquellen, Alt-/FuseBase-Reste, fünf angemeldete bzw. zugängliche mobile Lighthouse-Messungen auf Staging sowie JS- und Konsolenbefunde. Reduzierte, von Auth-/DOM-Inhalten bereinigte Messauszüge liegen unter `docs/audits/2026-09-30/`.
 
 Nur Dokumentation, keine Umbauten oder Deployments. Keine Änderungen an Schnittstellen, Tabellenfeldern, Cookie-Namen, Umgebungswerten oder Produktion. Teil 2/3 und Sprach-Phase 2 bleiben bis zur jeweiligen Nutzerfreigabe offen. Die Bestandsaufnahme ersetzt nicht die noch offene Funktionsabnahme von PR #7/#8.
+
+### 01.10.2026 – Teil 2 auf Staging, Live-Abnahme verschoben
+
+Nutzerfreigabe „einfach weiter“ nach Eintrag des Infomaniak-Schlüssels; echte Tests sollen später stattfinden. Umsetzung auf eigenem Branch `codex/trinity-bedienbarkeit`: neue gemeinsame Navigation und mobile Tabs, Befehlspalette, eigene Projektsicht, dreistufige Einrichtung, Zustände/Fehlergrenzen, responsive Aufgaben-/Notebook-Seiten und bedarfsgeladene Widgets. Alte Übersicht unter `/dashboard/labor/uebersicht`, Alt-Daten unverändert; private Suche ausschließlich auf eigenen Supabase-Daten. Env-Editor gesperrt. Details, Grenzen, neue interne Endpunkte und Prüfstand: [TRINITY-TEIL2.md](TRINITY-TEIL2.md).
+
+Keine neuen Server-Env-Variablen, keine Schemaänderung, keine Produktionsänderung. Lighthouse-Zielwerte und vollständige Live-Abnahme bleiben unbestätigt, bis der Nutzer wieder testen möchte. Teil 3 und Sprach-Phase 2 nicht begonnen.

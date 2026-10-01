@@ -232,7 +232,7 @@ function SortableProject({
       onClick={() => !editing && onSelect()}
     >
       {/* Drag handle */}
-      <span {...attributes} {...listeners}
+      <span {...attributes} {...listeners} aria-label={`Projekt verschieben: ${project.name}`}
         className="shrink-0 text-anth-700 hover:text-anth-400 cursor-grab active:cursor-grabbing"
         onClick={e => e.stopPropagation()}>
         <GripVertical size={12} />
@@ -244,11 +244,11 @@ function SortableProject({
             onKeyDown={e => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') { setName(project.name); setEditing(false); } }}
             autoFocus
             className="flex-1 bg-surface border border-forest-700/50 rounded-lg px-2 py-0.5 text-xs text-forest-100 outline-none" />
-          <button onClick={commit} className="text-forest-400 p-0.5"><Check size={10} /></button>
-          <button onClick={() => { setName(project.name); setEditing(false); }} className="text-anth-500 p-0.5"><X size={10} /></button>
+          <button aria-label="Namen speichern" onClick={commit} className="text-forest-400 p-0.5"><Check size={10} /></button>
+          <button aria-label="Umbenennen abbrechen" onClick={() => { setName(project.name); setEditing(false); }} className="text-anth-500 p-0.5"><X size={10} /></button>
         </div>
       ) : (
-        <span className="flex-1 text-sm font-medium truncate">{project.name}</span>
+        <button className="flex-1 text-left text-sm font-medium truncate" aria-pressed={isActive} onClick={e=>{e.stopPropagation();onSelect();}}>{project.name}</button>
       )}
 
       {!editing && (
@@ -260,12 +260,12 @@ function SortableProject({
             iconSize={9}
             className={cn('p-0.5 bg-transparent', !project.sharedWith && 'opacity-0 group-hover:opacity-100')}
           />
-          <button onClick={e => { e.stopPropagation(); setEditing(true); }}
+          <button aria-label="Projekt umbenennen" onClick={e => { e.stopPropagation(); setEditing(true); }}
             className="opacity-0 group-hover:opacity-100 p-0.5 text-anth-600 hover:text-forest-300 transition-all">
             <Pencil size={9} />
           </button>
           {canDelete && (
-            <button onClick={e => { e.stopPropagation(); onDelete(); }}
+            <button aria-label="Projekt löschen" onClick={e => { e.stopPropagation(); onDelete(); }}
               className="opacity-0 group-hover:opacity-100 p-0.5 text-anth-600 hover:text-red-400 transition-all">
               <Trash2 size={9} />
             </button>
@@ -358,7 +358,7 @@ function SortableColumn({
       {/* ── Column Header ── */}
       <div className="flex items-center gap-1.5 mb-2.5 px-1 pt-0.5">
         {/* Drag handle for column */}
-        <span {...attributes} {...listeners}
+        <span {...attributes} {...listeners} aria-label={`Spalte verschieben: ${col.label}`}
           className="text-anth-700 hover:text-anth-400 cursor-grab active:cursor-grabbing shrink-0">
           <GripHorizontal size={12} />
         </span>
@@ -369,12 +369,12 @@ function SortableColumn({
               onKeyDown={e => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') { setLabel(col.label); setEditing(false); } }}
               autoFocus
               className="flex-1 bg-surface border border-border rounded-lg px-2 py-0.5 text-xs text-forest-100 outline-none" />
-            <button onClick={commit} className="text-forest-400 p-0.5"><Check size={10} /></button>
-            <button onClick={() => { setLabel(col.label); setEditing(false); }} className="text-anth-500 p-0.5"><X size={10} /></button>
+            <button aria-label="Namen speichern" onClick={commit} className="text-forest-400 p-0.5"><Check size={10} /></button>
+            <button aria-label="Umbenennen abbrechen" onClick={() => { setLabel(col.label); setEditing(false); }} className="text-anth-500 p-0.5"><X size={10} /></button>
           </div>
         ) : (
           <button className="flex items-center gap-1.5 flex-1 min-w-0"
-            onDoubleClick={() => setEditing(true)}>
+            onClick={() => setEditing(true)}>
             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: accent, boxShadow: `0 0 8px ${accent}80` }} />
             <span className={cn('text-xs font-bold uppercase tracking-wider truncate', col.color)}>{t(col.label)}</span>
             <span className="text-[10px] rounded-full w-5 h-5 flex items-center justify-center shrink-0 font-semibold"
@@ -387,7 +387,7 @@ function SortableColumn({
         {!editing && (
           <div className="flex items-center gap-1 shrink-0">
             {canDelete && (
-              <button onClick={onDeleteCol}
+              <button aria-label="Spalte löschen" onClick={onDeleteCol}
                 className="p-1 rounded text-anth-700 hover:text-red-400 transition-colors">
                 <Trash2 size={10} />
               </button>
@@ -439,7 +439,7 @@ function SortableColumn({
                       <div className="ml-auto flex items-center gap-1">
                         {/* Move group */}
                         {(allColumns ?? []).filter(c => c.id !== col.id).length > 0 && (
-                          <select
+                          <select aria-label="Auswahl"
                             className="text-[9px] bg-transparent text-anth-500 outline-none cursor-pointer"
                             onChange={e => { if (e.target.value) onMoveGroup?.(cardGroup.id, e.target.value); e.target.value = ''; }}
                             defaultValue=""
@@ -1069,12 +1069,12 @@ export function KanbanBoard() {
   if (!activeProject) return null;
 
   return (
-    <div className="h-full flex gap-0 overflow-hidden">
+    <div className="kanban-workspace h-full flex gap-0 overflow-hidden">
 
       {/* ══════════════════════════════════════════════════════════════════════
           LEFT: PROJECTS PANEL (250px)
       ══════════════════════════════════════════════════════════════════════ */}
-      <div className="w-[250px] shrink-0 flex flex-col bg-anth-950/40 overflow-hidden"
+      <div className="kanban-projects w-[250px] shrink-0 flex flex-col bg-anth-950/40 overflow-hidden"
         style={{ borderRight: '1px solid rgba(255,255,255,0.10)', boxShadow: '2px 0 16px rgba(0,0,0,0.5), inset -1px 0 0 rgba(17,202,160,0.06)' }}>
         {/* Header */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border/40 shrink-0">
@@ -1110,8 +1110,8 @@ export function KanbanBoard() {
                 onKeyDown={e => { if (e.key === 'Enter') addProject(); if (e.key === 'Escape') { setShowNewProj(false); setNewProjName(''); } }}
                 placeholder={t('Projektname…')} autoFocus
                 className="flex-1 bg-surface border border-forest-700/40 rounded-xl px-3 py-2 text-xs text-forest-100 placeholder-anth-600 outline-none" />
-              <button onClick={addProject} className="text-forest-400 p-1.5"><Check size={12} /></button>
-              <button onClick={() => { setShowNewProj(false); setNewProjName(''); }} className="text-anth-500 p-1.5"><X size={12} /></button>
+              <button aria-label="Projekt hinzufügen" onClick={addProject} className="text-forest-400 p-1.5"><Check size={12} /></button>
+              <button aria-label="Projekt anlegen abbrechen" onClick={() => { setShowNewProj(false); setNewProjName(''); }} className="text-anth-500 p-1.5"><X size={12} /></button>
             </div>
           ) : (
             <button
@@ -1346,7 +1346,7 @@ export function KanbanBoard() {
                         className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-xl bg-forest-700/40 border border-forest-600/40 text-xs text-forest-300 hover:bg-forest-600/40 transition-colors">
                         <Check size={11} /> {t('Hinzufügen')}
                       </button>
-                      <button onClick={() => { setShowNewCol(false); setNewColLabel(''); }}
+                      <button aria-label="Spalte anlegen abbrechen" onClick={() => { setShowNewCol(false); setNewColLabel(''); }}
                         className="p-1.5 rounded-xl text-anth-500 hover:text-anth-300 transition-colors">
                         <X size={12} />
                       </button>
@@ -1401,7 +1401,7 @@ export function KanbanBoard() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-anth-400 mb-1.5 block">{t('Priorität')}</label>
-              <select value={form.priority} onChange={e => setForm(f => ({ ...f, priority: e.target.value as TCard['priority'] }))} className="mc-input">
+              <select aria-label="Priorität" value={form.priority} onChange={e => setForm(f => ({ ...f, priority: e.target.value as TCard['priority'] }))} className="mc-input">
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
@@ -1410,7 +1410,7 @@ export function KanbanBoard() {
             </div>
             <div>
               <label className="text-xs text-anth-400 mb-1.5 block">{t('Typ')}</label>
-              <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))} className="mc-input">
+              <select aria-label="Aufgabentyp" value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))} className="mc-input">
                 <option value="content">Content</option>
                 <option value="technical">Technical</option>
                 <option value="seo">SEO</option>
@@ -1422,7 +1422,7 @@ export function KanbanBoard() {
           </div>
           <div>
             <label className="text-xs text-anth-400 mb-1.5 block">{t('Agent zuweisen')}</label>
-            <select value={form.assignedAgent} onChange={e => setForm(f => ({ ...f, assignedAgent: e.target.value }))} className="mc-input">
+            <select aria-label="Zugewiesener Agent" value={form.assignedAgent} onChange={e => setForm(f => ({ ...f, assignedAgent: e.target.value }))} className="mc-input">
               <option value="">{t('Nicht zugewiesen')}</option>
               <option value="hermes">Hermes</option>
               <option value="claude">Claude</option>

@@ -27,6 +27,7 @@ export const primary: Destination[] = [
     href: "/dashboard/projekte",
     group: "Arbeiten",
   },
+  { id: "brain", label: "Gehirn", href: "/gehirn", group: "Arbeiten", keywords: "wissen graph second brain verbindungen" },
   {
     id: "notebooks",
     label: "Notebooks & Ziele",

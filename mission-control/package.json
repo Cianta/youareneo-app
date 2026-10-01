@@ -1,7 +1,7 @@
 {
   "name": "mission-control",
   "version": "1.0.0",
-  "description": "AI Agent Operating System \u2014 Academy Mission Control Dashboard",
+  "description": "AI Agent Operating System — Academy Mission Control Dashboard",
   "private": true,
   "main": "electron/main.js",
   "scripts": {
@@ -14,7 +14,9 @@
     "test:auth": "tsx --test tests/auth.test.ts",
     "test:voice": "tsx --test tests/voice.test.ts",
     "test:workspace": "tsx --test tests/workspace.test.ts",
-    "test:workspace:browser": "node scripts/test-workspace-browser.mjs"
+    "test:workspace:browser": "node scripts/test-workspace-browser.mjs",
+    "test:brain": "tsx --test tests/brain.test.ts",
+    "test:brain:browser": "node scripts/test-brain-browser.mjs"
   },
   "build": {
     "appId": "com.youareneo.mission-control",
@@ -66,8 +68,11 @@
     "openai": "^4.55.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-force-graph-2d": "1.29.2",
+    "react-force-graph-3d": "1.29.2",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.4.0",
+    "three": "0.186.1",
     "uuid": "^10.0.0",
     "zustand": "^4.5.4"
   },
@@ -75,6 +80,7 @@
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/three": "0.186.0",
     "@types/uuid": "^10",
     "autoprefixer": "^10.4.19",
     "electron": "^42.3.3",

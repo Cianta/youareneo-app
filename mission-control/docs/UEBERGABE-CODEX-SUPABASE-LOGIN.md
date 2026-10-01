@@ -74,3 +74,7 @@ Der alte Konfigurations-Endpunkt `GET/POST /api/settings/env` ist bewusst geschl
 ### 01.10.2026 – Wissensgraph
 
 Teil 3 ergänzt `GET /api/brain` und den read-only RLS-RPC `trinity_brain_snapshot()` (Security Invoker, nur authenticated). Er liest ausschließlich eigene bestehende Notizen/Projekte/Hermes-Zeilen, keine Profile oder Portal-Bestände. Einzelheiten: [TRINITY-TEIL3.md](TRINITY-TEIL3.md). Cookie-/Provision-/Auth-Verträge und vorhandene Felder unverändert.
+
+### 01.10.2026 – Sprachchat Phase 2
+
+Neue interne Endpunkte unter `/api/voice/chat` und `/api/voice/speech` (inkl. `/voices`, `/preferences`) sind in [TRINITY-SPRACHE-PHASE2.md](TRINITY-SPRACHE-PHASE2.md) beschrieben. Stimmpräferenz nur in eigenen User-Metadaten, kein neues Kontensystem oder neue Tabelle. Bestehendes `usage` zählt zusätzlich Chat/TTS; alle Auth-/Provision-/Cookie-Verträge und `neo_profiles` bleiben unverändert. Keine Portal-/n8n-Abhängigkeit geändert.

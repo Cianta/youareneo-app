@@ -141,3 +141,9 @@ Die [Transkriptions-Dokumentation](https://developer.infomaniak.com/docs/api/pos
 Die Datenschutz-Info nennt beim aktiven Standard „Infomaniak, Schweiz“ für Audio und weiterhin Anthropic für die Einordnung des Texts. Sie zeigt den richtigen Provider auch vor der Anmeldung. Im OpenAI-Modus nennt sie OpenAI. Kein Datenbank-/Cookie-/Provision-Vertrag geändert.
 
 Prüfung des Anbieterwechsels: 12 Voice-Tests und 6 Auth-Tests erfolgreich, TypeScript und lokaler Produktionsbuild erfolgreich. Infomaniak-HTTP-Antworten werden in diesen Tests simuliert, einschließlich Multipart-Upload, asynchroner Statusfolge, sicherem Download, Fehlern und Zeitüberschreitung. Echte Infomaniak-Transkription bleibt bis zur Eingabe von Produkt-ID und Token und erfolgreicher angemeldeter Staging-Abnahme offen.
+
+### 01.10.2026 – Phase 2 freigegeben und umgesetzt
+
+Nach „freigabe erteilt“: `/sprechen` mit Gedrückthalten, optionaler Stille-Erkennung, abbrechbarer Claude-Sonnet-5-Textantwort, optionalem ausschließlich eigenem Notizkontext, VocalLab-`SpeechProvider` und Browser-Stimme. Gespräch flüchtig, Speichern ausdrücklich über bestehende zugangsgeschützte Notiz-API. Kein Avatar, keine externen Aktionen, keine Produktion.
+
+Neu: `VOCALLAB_API_KEY`, optional `SPEECH_PROVIDER` und `VOCALLAB_MODEL`. Neue interne Chat-/Sprachausgabe-Endpunkte, eigene Stimmpräferenz in `user_metadata.trinity_speech_voice`; `neo_profiles`, Login, Cookies und Provision unverändert. Die bestehenden Monatslimits zählen zusätzlich Chat-Anfragen und TTS-Anfragen samt Zeichen-Zeitbudget. Vollständige Verträge, Referenz, Datenschutzgrenzen und Prüfstand: [TRINITY-SPRACHE-PHASE2.md](TRINITY-SPRACHE-PHASE2.md). Echte Anbieter-/Handy-Abnahme bleibt auf Nutzerwunsch später; VocalLab-Lifetime/API-Zuordnung noch zu bestätigen.

@@ -15,6 +15,7 @@ const browser = await puppeteer.launch({
 const page = await browser.newPage();
 const errors = [];
 let failSearch = true;
+const authRequests = [];
 page.on("pageerror", (e) => errors.push(e.message));
 await page.setRequestInterception(true);
 const userId = "00000000-0000-4000-8000-000000000001";
@@ -49,7 +50,12 @@ page.on("request", async (r) => {
     }
     let body = { success: true },
       status = 200;
-    if (u.pathname === "/api/auth/me")
+    if (["/api/auth/login", "/api/auth/magic-link", "/api/auth/password-restore"].includes(u.pathname)) {
+      authRequests.push({ path: u.pathname, body: JSON.parse(r.postData()) });
+      // An opaque failed password response exercises the translated fallback.
+      if (u.pathname === "/api/auth/login") { status = 401; body = {}; }
+      else body = { success: true };
+    } else if (u.pathname === "/api/auth/me")
       body = {
         authenticated: true,
         hasTrinityAccess: true,
@@ -218,9 +224,43 @@ try {
     path: "/tmp/trinity-part2-mobile.png",
     fullPage: false,
   });
+  await page.$eval('[aria-label="Neues Ziel"]', e => { e.focus(); });
+  assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Neues Ziel');
+  await page.locator('::-p-text(Journal)').click();
+  await page.waitForSelector('[aria-label="Journaleintrag"]');
+
+  // Small landscape / keyboard-sized viewport: the complete login remains scrollable.
+  await page.setViewport({ width: 390, height: 360 });
+  await page.goto(base + '/login', { waitUntil: 'networkidle0' });
+  assert.equal(await page.$$eval('main', es => es.length), 1);
+  const reachable = await page.$eval('main a[target="_blank"]', e => {
+    e.scrollIntoView({ block: 'end', behavior: 'instant' });
+    const rect = e.getBoundingClientRect();
+    return rect.top >= -1 && rect.bottom <= innerHeight + 1 && e.closest('main').scrollTop > 0;
+  });
+  assert(reachable, 'Bottom of login must be reachable in a short viewport.');
+  assert(await page.$$eval('main button', es => es.every(e => e.getBoundingClientRect().height >= 44)), 'Login touch targets');
+  await page.type('[aria-label="E-Mail"]', 'fixture@example.invalid');
+  await page.type('[aria-label="Passwort"]', 'local-fixture-only');
+  await page.locator('button[type=submit]').click();
+  await page.waitForSelector('[role=alert]');
+  assert.match(await page.$eval('[role=alert]', e => e.textContent), /Die Anmeldung/);
+  await page.locator('::-p-text(Magic Link)').click();
+  assert.equal(await page.$eval('button[aria-pressed=true]', e => e.textContent.trim()), 'Magic Link');
+  await page.locator('button[type=submit]').click();
+  await page.waitForSelector('[role=status]');
+  assert.match(await page.$eval('[role=status]', e => e.textContent), /Bitte prüfe dein Postfach/);
+  await page.locator('button::-p-text(Passwort)').click();
+  await page.locator('::-p-text(Passwort vergessen?)').click();
+  await page.locator('button[type=submit]').click();
+  await page.waitForSelector('[role=status]');
+  assert.match(await page.$eval('[role=status]', e => e.textContent), /Zurücksetzen/);
+  assert.deepEqual(authRequests.map(r => r.path), ['/api/auth/login', '/api/auth/magic-link', '/api/auth/password-restore']);
+  assert.deepEqual(authRequests[1].body, { email: 'fixture@example.invalid', redirectPath: '/dashboard' });
+  assert.deepEqual(authRequests[2].body, { email: 'fixture@example.invalid' });
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: palette keyboard/search/navigation/error retry/race, note deep link, help, four 44px mobile tabs and three mobile core routes; no page errors.",
+    "PASS: palette/search/retry/race, note deep link, help, mobile navigation, notebook labels, scrollable login and three local auth-form fixtures; no page errors.",
   );
 } finally {
   await browser.close();

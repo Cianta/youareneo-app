@@ -79,3 +79,7 @@ Keine neuen Server-Env-Variablen, keine Schemaänderung, keine Produktionsänder
 ### 01.10.2026 – Teil 3 freigegeben und umgesetzt
 
 Nach „freigabe erteilt“: `/gehirn`, eigene Graph-Daten über neuen RLS-RPC, Suche aus der Palette, Typ-/Datumsfilter, Vorschau, begrenzte 3D-Simulation, automatischer 2D-Rückfall und Liste. Details und offene GPU-/Live-Abnahme: [TRINITY-TEIL3.md](TRINITY-TEIL3.md). Neuer Endpunkt `GET /api/brain`, additive Funktion `trinity_brain_snapshot()`, keine bestehenden Daten-/Auth-Verträge verändert. Keine neuen Env-Variablen.
+
+### 01.10.2026 – Lokale Qualitätsprüfung im Automodus
+
+Fortsetzung auf PR #14: benannter, scrollbarer Login-Hauptinhalt, 44-px-Buttons, vorgelesene Formularmeldungen und eindeutige deutsche Ziel-/Journalfelder. Wiederholbare lokale Lighthouse-Prüfung der fünf Kernseiten mit gesperrten externen Requests und fiktiven API-Antworten: je drei kalte Läufe, Median Performance 95–97 / Barrierefreiheit 100, keine Konsolenfehler und kein 3D-Renderer auf Kernseiten. **Keine angemeldete Staging-/Provider-/Handy-Abnahme**, weiterhin auf Nutzerwunsch später. Details und Belege: [TRINITY-QUALITAET-LOCAL.md](TRINITY-QUALITAET-LOCAL.md). Eigener Branch `codex/trinity-tempo-a11y`; keine Schnittstellen- oder Env-Änderung.

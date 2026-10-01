@@ -83,3 +83,7 @@ Nach „freigabe erteilt“: `/gehirn`, eigene Graph-Daten über neuen RLS-RPC, 
 ### 01.10.2026 – Lokale Qualitätsprüfung im Automodus
 
 Fortsetzung auf PR #14: benannter, scrollbarer Login-Hauptinhalt, 44-px-Buttons, vorgelesene Formularmeldungen und eindeutige deutsche Ziel-/Journalfelder. Wiederholbare lokale Lighthouse-Prüfung der fünf Kernseiten mit gesperrten externen Requests und fiktiven API-Antworten: je drei kalte Läufe, Median Performance 95–97 / Barrierefreiheit 100, keine Konsolenfehler und kein 3D-Renderer auf Kernseiten. **Keine angemeldete Staging-/Provider-/Handy-Abnahme**, weiterhin auf Nutzerwunsch später. Details und Belege: [TRINITY-QUALITAET-LOCAL.md](TRINITY-QUALITAET-LOCAL.md). Eigener Branch `codex/trinity-tempo-a11y`; keine Schnittstellen- oder Env-Änderung.
+
+### 01.10.2026 – Notizlisten-Zustände und Filterwechsel
+
+Nach „ok weiter“: verspätete Antworten/Fehler und alte Aktualisierungs-Callbacks können keine neue Notizsuche überschreiben. Lade-/Fehler-/Leerzustände direkt an der Liste, Filter zurücksetzen mit erhaltenem Entwurf, gezieltes Wiederholen beim Nachladen und Schutz gegen doppelte/überholte Seiten. Lokal reproduziert und mit gesperrten externen Requests geprüft. Details: [TRINITY-NOTIZLISTE.md](TRINITY-NOTIZLISTE.md). Branch `codex/trinity-notes-states` auf PR #15; ausschließlich Staging, keine Schnittstellen-/Env-Änderung und keine echte Anbieter-/Handy-Abnahme.

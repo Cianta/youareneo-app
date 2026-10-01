@@ -1,6 +1,7 @@
 "use client";
 import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -12,7 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import dynamic from "next/dynamic";
-import {LoadingState} from "@/components/workspace/States";
+import {ErrorState, LoadingState} from "@/components/workspace/States";
 const VoiceRecorder=dynamic(()=>import("./VoiceRecorder").then(m=>m.VoiceRecorder),{ssr:false,loading:()=> <LoadingState label="Mikrofon wird vorbereitet …"/>});
 import { useBrand } from "./BrandProvider";
 import {
@@ -48,6 +49,7 @@ type Config = {
   usage: { voice_seconds: number; requests: number };
 };
 export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak", initialNote, initialProject="", initialTag="", initialType="" }: { autoStart?: boolean; initialProvider?: string; initialNote?: string; initialProject?: string; initialTag?: string; initialType?: string }) {
+  const router = useRouter();
   const { appName, assistantName } = useBrand();
   const [titleEdited, setTitleEdited] = useState(false);
   const [draft, setDraft] = useState<NoteDraft>(emptyDraft),
@@ -76,6 +78,23 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     [playId, setPlayId] = useState<string | null>(null),
     [hasMore, setHasMore] = useState(false);
   const [notesLoading,setNotesLoading]=useState(false);
+  const [notesLoaded, setNotesLoaded] = useState(false);
+  const [notesError, setNotesError] = useState<{ message: string; before?: string } | null>(null);
+  const notesScope = JSON.stringify([config?.userId, q, type, project, tag, initialNote]);
+  const latestNotesScope = useRef(notesScope);
+  latestNotesScope.current = notesScope;
+  const latestLoadNotes = useRef<((before?: string) => Promise<void>) | null>(null);
+  const notesMounted = useRef(false);
+  const notesRequest = useRef({ version: 0, controller: null as AbortController | null });
+  const cancelNotes = useCallback(() => {
+    notesRequest.current.version++;
+    notesRequest.current.controller?.abort();
+    notesRequest.current.controller = null;
+  }, []);
+  useEffect(() => {
+    notesMounted.current = true;
+    return () => { notesMounted.current = false; cancelNotes(); };
+  }, [cancelNotes]);
   useEffect(()=>{setQ("");},[initialNote]);
   useEffect(()=>{setProject(initialProject);setTag(initialTag);setType(initialType);},[initialProject,initialTag,initialType]);
   useEffect(()=>{if(initialProject)setDraft(d=>({...d,project:initialProject}));},[initialProject]);
@@ -84,19 +103,53 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     setMessage("");
   };
   const loadNotes = useCallback(
-    async (before?: string) => {
+    async (before?: string): Promise<void> => {
+      if (!notesMounted.current) return;
+      // A write started before a filter change may finish with an old callback.
+      // Refresh the current first page, rather than using its old filters/cursor.
+      if (latestNotesScope.current !== notesScope) return latestLoadNotes.current?.();
+      cancelNotes();
+      const controller = new AbortController();
+      const version = notesRequest.current.version;
+      notesRequest.current.controller = controller;
+      const current = () => notesMounted.current && version === notesRequest.current.version &&
+        latestNotesScope.current === notesScope && !controller.signal.aborted;
       const params = new URLSearchParams({ q, type, project, tag });
       if (before) params.set("before", before);
       if (initialNote) params.set("id",initialNote);
       setNotesLoading(true);
+      setNotesError(null);
+      if (!before) {
+        setNotes([]);
+        setHasMore(false);
+        setNotesLoaded(false);
+      }
       try {
-      const data = await api("/api/notes?" + params);
-      setNotes((old) => (before ? [...old, ...data.notes] : data.notes));
-      setHasMore(data.notes.length === 50);
-      } finally {setNotesLoading(false);}
+        const data = await api("/api/notes?" + params, { signal: controller.signal });
+        if (!current()) return;
+        setNotes((old) => {
+          if (!before) return data.notes;
+          const ids = new Set(old.map(note => note.id));
+          return [...old, ...data.notes.filter((note: SavedNote) => !ids.has(note.id))];
+        });
+        setHasMore(data.notes.length === 50);
+        setNotesLoaded(true);
+      } catch (error) {
+        if (current()) setNotesError({
+          message: error instanceof Error && !(error instanceof TypeError) && !(error instanceof SyntaxError)
+            ? error.message : "Die Notizen konnten nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.",
+          before,
+        });
+      } finally {
+        if (current()) {
+          notesRequest.current.controller = null;
+          setNotesLoading(false);
+        }
+      }
     },
-    [q, type, project, tag, initialNote],
+    [q, type, project, tag, initialNote, notesScope, cancelNotes],
   );
+  latestLoadNotes.current = loadNotes;
   const refresh = useCallback(async () => {
     const c = await api("/api/voice/config");
     setConfig(c);
@@ -113,13 +166,25 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
       .finally(() => setLoaded(true));
   }, [refresh]);
   useEffect(() => {
+    cancelNotes();
+    setNotes([]);
+    setHasMore(false);
+    setNotesLoaded(false);
+    setNotesError(null);
+    setNotesLoading(!!config);
     if (!config) return;
     const timer = setTimeout(
-      () => void loadNotes().catch((e) => setError(e.message)),
+      () => void loadNotes(),
       250,
     );
-    return () => clearTimeout(timer);
-  }, [config?.userId, loadNotes]);
+    return () => { clearTimeout(timer); cancelNotes(); };
+  }, [config?.userId, loadNotes, cancelNotes]);
+  function clearFilters() {
+    setQ(""); setType(""); setProject(""); setTag("");
+    if (initialNote || initialProject || initialTag || initialType)
+      router.replace("/notiz", { scroll: false });
+  }
+  const filtered = !!(q.trim() || type || project || tag.trim() || initialNote);
   useEffect(() => {
     if (!audio) {
       setAudioUrl("");
@@ -541,16 +606,18 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
               </p>
             )}
           </section>
-          <aside className="voice-library">
+          <aside className="voice-library" aria-busy={notesLoading || !loaded}>
             <div className="voice-tabs">
               <button
                 className={tab === "notes" ? "selected" : ""}
+                aria-pressed={tab === "notes"}
                 onClick={() => setTab("notes")}
               >
                 Meine Notizen
               </button>
               <button
                 className={tab === "queue" ? "selected" : ""}
+                aria-pressed={tab === "queue"}
                 onClick={() => setTab("queue")}
               >
                 Hermes{" "}
@@ -616,17 +683,24 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
                     onChange={(e) => setTag(e.target.value)}
                   />
                 </div>
-                {notesLoading&&<LoadingState/>}
-                {!notesLoading && notes.length === 0 && (
+                {(notesLoading || !loaded)&&<LoadingState label="Notizen werden geladen …"/>}
+                {notesError && <ErrorState message={notesError.message} retry={() => void loadNotes(notesError.before)}/>}
+                {!notesLoading && !notesError && (notesLoaded || (loaded && !config)) && notes.length === 0 && (
                   <div className="voice-empty">
                     <Headphones size={32} />
-                    <h2>Platz für deine Gedanken.</h2>
-                    <a className="voice-secondary" href="#note-composer">Gedanken festhalten</a>
-                    <p>
-                      {config
-                        ? "Deine gespeicherten Notizen erscheinen hier."
-                        : "Nach der Anmeldung findest du hier deine Notizen."}
-                    </p>
+                    {!config ? <>
+                      <h2>Deine Notizen warten auf dich.</h2>
+                      <p>Nach der Anmeldung findest du hier deine gespeicherten Notizen.</p>
+                      <Link className="voice-secondary" href="/login?next=/notiz">Anmelden</Link>
+                    </> : filtered ? <>
+                      <h2>{initialNote ? "Diese Notiz ist nicht verfügbar." : "Keine passenden Notizen."}</h2>
+                      <p>Zeige alle Notizen an oder ändere deine Suche und Filter.</p>
+                      <button className="voice-secondary" onClick={clearFilters}>Alle Notizen anzeigen</button>
+                    </> : <>
+                      <h2>Platz für deine Gedanken.</h2>
+                      <p>Deine gespeicherten Notizen erscheinen hier.</p>
+                      <a className="voice-secondary" href="#note-composer">Gedanken festhalten</a>
+                    </>}
                   </div>
                 )}
                 {notes.map((n) => (
@@ -674,12 +748,11 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
                       ))}
                   </article>
                 ))}
-                {hasMore && (
+                {hasMore && !notesError && (
                   <button
                     className="voice-secondary"
-                    onClick={() =>
-                      action("Laden", () => loadNotes(notes.at(-1)?.created_at))
-                    }
+                    disabled={notesLoading}
+                    onClick={() => void loadNotes(notes.at(-1)?.created_at)}
                   >
                     Weitere laden
                   </button>

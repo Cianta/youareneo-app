@@ -15,6 +15,7 @@
     "test:voice": "tsx --test tests/voice.test.ts",
     "test:workspace": "tsx --test tests/workspace.test.ts",
     "test:workspace:browser": "node scripts/test-workspace-browser.mjs",
+    "test:notes:browser": "node scripts/test-notes-browser.mjs",
     "audit:workspace:local": "node scripts/audit-workspace-local.mjs",
     "test:brain": "tsx --test tests/brain.test.ts",
     "test:brain:browser": "node scripts/test-brain-browser.mjs",

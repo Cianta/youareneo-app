@@ -1,4 +1,5 @@
 "use client";
+import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import {
   Component,
   useCallback,
@@ -189,6 +190,7 @@ export default function BrainWorkspace({
         >
           Suchen · ⌘K
         </button>
+        <AssistantAvatar />
       </header>
       <div className="brain-toolbar">
         <label>

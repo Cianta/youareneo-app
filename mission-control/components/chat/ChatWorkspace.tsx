@@ -1,10 +1,12 @@
 "use client";
+import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useBrand } from "@/components/voice/BrandProvider";
 import { type ChatMessage, speechChunks } from "@/lib/chat/contracts";
 import { readChat } from "@/lib/chat/client";
 import type { SpeechVoice } from "@/lib/chat/speech";
+import { observePlayback } from "@/lib/chat/playback-meter";
 import { useChatMicrophone } from "./useChatMicrophone";
 import "./chat.css";
 type Turn = ChatMessage & {
@@ -40,6 +42,8 @@ export default function ChatWorkspace({
     [saving, setSaving] = useState(false),
     [retry, setRetry] = useState(0),
     [busy, setBusy] = useState(false);
+  const [playing, setPlaying] = useState(false),
+    [outputLevel, setOutputLevel] = useState(0);
   const session = useRef(0),
     controller = useRef<AbortController | null>(null),
     audio = useRef<HTMLAudioElement | null>(null),
@@ -68,6 +72,8 @@ export default function ChatWorkspace({
     window.speechSynthesis?.cancel();
     if (mounted.current) {
       setBusy(false);
+      setPlaying(false);
+      setOutputLevel(0);
       setStatus("Bereit");
     }
   }, []);
@@ -169,7 +175,13 @@ export default function ChatWorkspace({
   async function playText(answer: string, token: number, signal: AbortSignal) {
     const pref = settings.current;
     if (pref.provider === "off") return;
-    setStatus("Spricht");
+    const playback = (active: boolean) => {
+      if (mounted.current && token === session.current) {
+        setPlaying(active);
+        setOutputLevel(0);
+        setStatus(active ? "Spricht" : "Denkt");
+      }
+    };
     for (const chunk of speechChunks(answer)) {
       if (signal.aborted || token !== session.current) return;
       if (pref.provider === "browser") {
@@ -184,8 +196,13 @@ export default function ChatWorkspace({
             window.speechSynthesis
               .getVoices()
               .find((v) => v.voiceURI === pref.browserVoice) || null;
-          speech.onend = () => resolve();
+          speech.onstart = () => playback(true);
+          speech.onend = () => {
+            playback(false);
+            resolve();
+          };
           speech.onerror = (e) => {
+            playback(false);
             if (
               signal.aborted ||
               e.error === "canceled" ||
@@ -200,6 +217,7 @@ export default function ChatWorkspace({
               );
           };
           stopPlayback.current = () => {
+            speech.onstart = null;
             speech.onend = null;
             speech.onerror = null;
             window.speechSynthesis.cancel();
@@ -224,6 +242,16 @@ export default function ChatWorkspace({
         objectURL.current = url;
         const player = new Audio(url);
         audio.current = player;
+        let stopMeter: (() => void) | undefined;
+        player.onplaying = () => {
+          if (signal.aborted || token !== session.current) return;
+          playback(true);
+          stopMeter ??= observePlayback(player, (level) => {
+            if (mounted.current && token === session.current)
+              setOutputLevel(level);
+          });
+        };
+        player.onwaiting = () => playback(false);
         try {
           await new Promise<void>((resolve, reject) => {
             player.onended = () => resolve();
@@ -231,6 +259,7 @@ export default function ChatWorkspace({
               reject(Error("Audio konnte nicht abgespielt werden."));
             stopPlayback.current = () => {
               player.pause();
+              stopMeter?.();
               resolve();
             };
             void player
@@ -244,7 +273,13 @@ export default function ChatWorkspace({
               );
           });
         } finally {
+          player.onplaying = null;
+          player.onwaiting = null;
+          player.onended = null;
+          player.onerror = null;
           player.pause();
+          stopMeter?.();
+          playback(false);
           player.src = "";
           URL.revokeObjectURL(url);
           if (objectURL.current === url) objectURL.current = "";
@@ -438,6 +473,25 @@ export default function ChatWorkspace({
         >
           Suchen · ⌘K
         </button>
+        <AssistantAvatar
+          state={
+            mic.state === "recording"
+              ? "listening"
+              : playing
+                ? "speaking"
+                : busy
+                  ? "thinking"
+                  : mic.state === "listening"
+                    ? "listening"
+                    : "idle"
+          }
+          level={
+            mic.state === "recording" ||
+            (!busy && !playing && mic.state === "listening")
+              ? mic.level
+              : outputLevel
+          }
+        />
       </header>
       <p className="workspace-muted">
         Audio: {providerLabel}. Gespräch und optional ausgewählte eigene

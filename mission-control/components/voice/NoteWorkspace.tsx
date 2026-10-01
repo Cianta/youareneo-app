@@ -1,4 +1,5 @@
 "use client";
+import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
@@ -57,6 +58,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     [language, setLanguage] = useState("auto");
   const [config, setConfig] = useState<Config | null>(null),
     [loaded, setLoaded] = useState(false),
+    [recordingLevel, setRecordingLevel] = useState<number | null>(null),
     [busy, setBusy] = useState(""),
     [error, setError] = useState(""),
     [message, setMessage] = useState("");
@@ -239,6 +241,10 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
           <Link href="/notiz/hilfe">
             Als App installieren <ArrowUpRight size={15} />
           </Link>
+          <AssistantAvatar
+            state={recordingLevel !== null ? "listening" : busy ? "thinking" : "idle"}
+            level={recordingLevel ?? 0}
+          />
         </header>
         <div className="voice-heading">
           <div>
@@ -268,6 +274,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
         <div className="voice-columns">
           <section className="voice-card voice-compose">
             <VoiceRecorder
+              onMeter={setRecordingLevel}
               autoStart={autoStart}
               disabled={!!busy}
               onActiveChange={setActive}

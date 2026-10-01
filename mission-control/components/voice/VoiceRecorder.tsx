@@ -7,12 +7,14 @@ type Props = {
   disabled?: boolean;
   onRecording: (blob: Blob) => void;
   onActiveChange?: (active: boolean) => void;
+  onMeter?: (level: number | null) => void;
 };
 export function VoiceRecorder({
   autoStart = false,
   disabled = false,
   onRecording,
   onActiveChange,
+  onMeter,
 }: Props) {
   const [status, setStatus] = useState<
     "idle" | "recording" | "paused" | "requesting"
@@ -20,6 +22,14 @@ export function VoiceRecorder({
   const [seconds, setSeconds] = useState(0),
     [level, setLevel] = useState(0),
     [error, setError] = useState("");
+  const meterRef = useRef(onMeter);
+  meterRef.current = onMeter;
+  const displayLevel =
+    status === "recording" ? Math.round(level * 20) / 20 : null;
+  useEffect(() => {
+    meterRef.current?.(displayLevel);
+  }, [displayLevel]);
+  useEffect(() => () => meterRef.current?.(null), []);
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
     context = useRef<AudioContext | null>(null);

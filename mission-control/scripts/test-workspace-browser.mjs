@@ -122,11 +122,12 @@ try {
     "command-query",
   );
   await query("Projekt anlegen");
-  await page.waitForFunction(
-    () =>
-      document.querySelectorAll("#command-results [role=option]").length === 1,
+  await page.waitForFunction(() =>
+    Array.from(
+      document.querySelectorAll("#command-results [role=option] span"),
+    ).some((e) => e.textContent === "Projekt anlegen"),
   );
-  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Home");
   await page.keyboard.press("Enter");
   await page.waitForFunction(() => location.pathname === "/dashboard/projekte");
   await page.waitForSelector("#project-name");
@@ -137,6 +138,13 @@ try {
       e.textContent.includes("Eigene Aufgaben"),
     ),
   );
+  // The graph-search action is also present; choose the own-note result by label.
+  const noteIndex = await page.$$eval("#command-results [role=option]", (es) =>
+    es.findIndex((e) => e.querySelector("span").textContent === "Atelier"),
+  );
+  assert(noteIndex >= 0);
+  await page.keyboard.press("Home");
+  for (let i = 0; i < noteIndex; i++) await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
   await page.waitForFunction(
     () => location.pathname === "/notiz" && location.search.includes("note="),

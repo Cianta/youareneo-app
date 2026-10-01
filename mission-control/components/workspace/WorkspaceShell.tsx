@@ -1,4 +1,5 @@
 "use client";
+import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -157,6 +158,7 @@ export function WorkspaceShell({
             Notizbuch
           </button>
           <button onClick={() => void logout()}>Abmelden</button>
+          <AssistantAvatar />
         </header>
         <main
           id="workspace-content"

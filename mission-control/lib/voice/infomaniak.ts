@@ -1,4 +1,5 @@
 import { setTimeout as delay } from "node:timers/promises";
+import { infomaniakToken } from "./infomaniak-config";
 import { HttpError } from "@/lib/auth/http";
 import type { TranscriptionProvider } from "./providers";
 
@@ -11,7 +12,7 @@ export class InfomaniakTranscription implements TranscriptionProvider {
     language: "de" | "auto",
   ) {
     const product = process.env.INFOMANIAK_AI_PRODUCT_ID?.trim() || "";
-    const token = process.env.INFOMANIAK_AI_TOKEN?.trim();
+    const token = infomaniakToken();
     if (!/^[1-9]\d*$/.test(product) || !token)
       throw new HttpError(503, "Die Spracherkennung mit Infomaniak wird gerade eingerichtet.");
     const base = `https://api.infomaniak.com/1/ai/${product}`;

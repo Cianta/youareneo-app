@@ -40,7 +40,7 @@ Trinity wird die persönliche Arbeitsoberfläche („OS“) für Mitglieder: spr
 
 - **Kosten:** Minuten und Anfragen pro Nutzer und Monat zählen (`usage`-Tabelle), Obergrenze per Env (`VOICE_MINUTES_PER_MONTH`), freundliche Meldung bei Erreichen.
 - **Datenschutz:** keine Audios oder Transkripte in Logs. In der App kurz erklären, welcher Anbieter was verarbeitet.
-- **Schlüssel** (`INFOMANIAK_AI_PRODUCT_ID`, `INFOMANIAK_AI_TOKEN`, `ANTHROPIC_API_KEY`, optional `OPENAI_API_KEY`, später `VOCALLAB_API_KEY`, `HERMES_API_TOKEN`) trägt der Nutzer selbst in die Staging-`.env` ein. Leere Platzhalter und eine Liste liefern, niemals Werte in Chat, Code oder Commits.
+- **Schlüssel** (`INFOMANIAK_AI_PRODUCT_ID`, `INFOMANIAK_API_TOKEN`, `ANTHROPIC_API_KEY`, optional `OPENAI_API_KEY`, später `VOCALLAB_API_KEY`, `HERMES_API_TOKEN`) trägt der Nutzer selbst in die Staging-`.env` ein. Leere Platzhalter und eine Liste liefern, niemals Werte in Chat, Code oder Commits.
 - Die Aufnahme- und Notiz-Komponente wiederverwendbar bauen (eigene Komponente plus API). Claude nutzt sie später für Zeitstempel-Notizen im Kinoraum.
 - Nur `/docker/mission-control-stg` und das Repo anfassen. Nichts an Traefik, n8n, `archiv`, `medien`, DNS, Make oder Memberspot.
 - Deutsche Oberfläche. Tests für: Rechteprüfung (ohne `foerder` nichts speichern), RLS, Hermes-Freigabe, Kostenlimit.
@@ -72,7 +72,7 @@ In `/docker/mission-control-stg/.env`. Geheimwerte trägt der Nutzer selbst ein.
 | `NEXT_PUBLIC_ASSISTANT_NAME` | Frei wählbarer Assistentinnen-Name |
 | `TRANSCRIBE_PROVIDER` | `infomaniak` (Standard), optional ausdrücklich `openai` |
 | `INFOMANIAK_AI_PRODUCT_ID` | Numerische AI-Services-Produkt-ID; nur serverseitig |
-| `INFOMANIAK_AI_TOKEN` | Bearer-Token für das AI-Services-Produkt; nur serverseitig |
+| `INFOMANIAK_API_TOKEN` | Bearer-Token für das AI-Services-Produkt; nur serverseitig |
 | `OPENAI_API_KEY` | Schlüssel für Transkription, nur serverseitig |
 | `ANTHROPIC_API_KEY` | Schlüssel für Einordnung, nur serverseitig |
 | `HERMES_API_TOKEN` | Eigenes zufälliges Secret, mindestens 32 Zeichen; nur Server und Hermes |
@@ -134,7 +134,7 @@ Handy-Test nach erfolgreicher Serverabnahme: `/login` öffnen, mit der vereinbar
 
 ### Anbieteränderung: Infomaniak als Standard
 
-Auf ausdrücklichen Nutzerauftrag ersetzt Infomaniak den bisherigen Standard. `TRANSCRIBE_PROVIDER=infomaniak`; neue Server-Variablen `INFOMANIAK_AI_PRODUCT_ID` und `INFOMANIAK_AI_TOKEN` trägt der Nutzer selbst ein. OpenAI bleibt nur mit `TRANSCRIBE_PROVIDER=openai` und `OPENAI_API_KEY` auswählbar; kein automatischer Wechsel nach Fehlern. Amical ist als Provider und Env-Variable entfernt: lokale Desktop-App ohne Server-API. Phase 2 ist weiterhin nicht begonnen; ihre Sprachausgabe ist für VocalLab vorgesehen.
+Auf ausdrücklichen Nutzerauftrag ersetzt Infomaniak den bisherigen Standard. `TRANSCRIBE_PROVIDER=infomaniak`; neue Server-Variablen `INFOMANIAK_AI_PRODUCT_ID` und `INFOMANIAK_API_TOKEN` trägt der Nutzer selbst ein. OpenAI bleibt nur mit `TRANSCRIBE_PROVIDER=openai` und `OPENAI_API_KEY` auswählbar; kein automatischer Wechsel nach Fehlern. Amical ist als Provider und Env-Variable entfernt: lokale Desktop-App ohne Server-API. Phase 2 ist weiterhin nicht begonnen; ihre Sprachausgabe ist für VocalLab vorgesehen.
 
 Die [Transkriptions-Dokumentation](https://developer.infomaniak.com/docs/api/post/1/ai/%7Bproduct_id%7D/openai/audio/transcriptions) nennt Modell `whisper` und einen asynchronen Auftrag. Der Adapter lädt Multipart-Audio mit Bearer-Token hoch, fragt den [Batch-Status](https://developer.infomaniak.com/docs/api/get/1/ai/%7Bproduct_id%7D/results/%7Bbatch_id%7D) ab und liest das Textresultat. Bei Bedarf wird ausschließlich der dokumentierte Downloadpfad am festen API-Host verwendet. Gesamte Zeitgrenze 120 Sekunden; Fehler werden ohne Anbieterdetails/Geheimnisse ausgegeben. Vorhandene API-Antwortformate bleiben erhalten.
 
@@ -147,3 +147,7 @@ Prüfung des Anbieterwechsels: 12 Voice-Tests und 6 Auth-Tests erfolgreich, Type
 Nach „freigabe erteilt“: `/sprechen` mit Gedrückthalten, optionaler Stille-Erkennung, abbrechbarer Claude-Sonnet-5-Textantwort, optionalem ausschließlich eigenem Notizkontext, VocalLab-`SpeechProvider` und Browser-Stimme. Gespräch flüchtig, Speichern ausdrücklich über bestehende zugangsgeschützte Notiz-API. Kein Avatar, keine externen Aktionen, keine Produktion.
 
 Neu: `VOCALLAB_API_KEY`, optional `SPEECH_PROVIDER` und `VOCALLAB_MODEL`. Neue interne Chat-/Sprachausgabe-Endpunkte, eigene Stimmpräferenz in `user_metadata.trinity_speech_voice`; `neo_profiles`, Login, Cookies und Provision unverändert. Die bestehenden Monatslimits zählen zusätzlich Chat-Anfragen und TTS-Anfragen samt Zeichen-Zeitbudget. Vollständige Verträge, Referenz, Datenschutzgrenzen und Prüfstand: [TRINITY-SPRACHE-PHASE2.md](TRINITY-SPRACHE-PHASE2.md). Echte Anbieter-/Handy-Abnahme bleibt auf Nutzerwunsch später; VocalLab-Lifetime/API-Zuordnung noch zu bestätigen.
+
+### 01.10.2026 – Infomaniak-Variablennamen abgeglichen
+
+Nutzerkorrektur gemäß `.env.example`: verbindlich `INFOMANIAK_API_TOKEN` und `INFOMANIAK_AI_PRODUCT_ID`. Bereitschaftsprüfung und alle Infomaniak-HTTP-Aufrufe verwenden denselben serverseitigen Token-Leser. `INFOMANIAK_API_TOKEN` hat Vorrang; der bisherige Name `INFOMANIAK_AI_TOKEN` bleibt vorläufig als Rückfall lesbar, damit vorhandene Staging-Konfigurationen weiterlaufen. Vorlagen dokumentieren nur den neuen Namen. Keine echten Werte gelesen, kopiert oder geändert; keine echten Anbieteraufrufe. Infomaniak bleibt Transkriptionsanbieter, Anthropic für Chat/Einordnung unverändert.

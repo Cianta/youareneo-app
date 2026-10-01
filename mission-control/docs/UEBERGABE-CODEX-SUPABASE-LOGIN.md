@@ -63,7 +63,7 @@ Eigener Folgebranch `codex/trinity-voice-phase1` baut auf PR #7 auf. Auth-Pfade,
 
 ### Anbieterwechsel für Phase 1
 
-Transkription standardmäßig über `TRANSCRIBE_PROVIDER=infomaniak`, serverseitig `INFOMANIAK_AI_PRODUCT_ID` und `INFOMANIAK_AI_TOKEN`. `openai` bleibt ausdrücklich auswählbar; Amical entfernt. Auth-Endpunkte, Tabellenfelder und Cookie-Namen bleiben unverändert. `/api/voice/config` meldet nun standardmäßig `provider:"infomaniak"`; `/api/voice/transcribe` meldet `provider:"Infomaniak"`. Details in `AUFTRAG-CODEX-TRINITY-STIMME.md`. Phase 2: VocalLab, weiterhin Freigabe erforderlich.
+Transkription standardmäßig über `TRANSCRIBE_PROVIDER=infomaniak`, serverseitig `INFOMANIAK_AI_PRODUCT_ID` und `INFOMANIAK_API_TOKEN`. `openai` bleibt ausdrücklich auswählbar; Amical entfernt. Auth-Endpunkte, Tabellenfelder und Cookie-Namen bleiben unverändert. `/api/voice/config` meldet nun standardmäßig `provider:"infomaniak"`; `/api/voice/transcribe` meldet `provider:"Infomaniak"`. Details in `AUFTRAG-CODEX-TRINITY-STIMME.md`. Phase 2: VocalLab, weiterhin Freigabe erforderlich.
 
 ## Änderungen durch Codex – 01.10.2026, Bedienbarkeit Teil 2
 
@@ -78,3 +78,7 @@ Teil 3 ergänzt `GET /api/brain` und den read-only RLS-RPC `trinity_brain_snapsh
 ### 01.10.2026 – Sprachchat Phase 2
 
 Neue interne Endpunkte unter `/api/voice/chat` und `/api/voice/speech` (inkl. `/voices`, `/preferences`) sind in [TRINITY-SPRACHE-PHASE2.md](TRINITY-SPRACHE-PHASE2.md) beschrieben. Stimmpräferenz nur in eigenen User-Metadaten, kein neues Kontensystem oder neue Tabelle. Bestehendes `usage` zählt zusätzlich Chat/TTS; alle Auth-/Provision-/Cookie-Verträge und `neo_profiles` bleiben unverändert. Keine Portal-/n8n-Abhängigkeit geändert.
+
+### 01.10.2026 – Infomaniak-Tokenname
+
+Serverseitiger Standardname jetzt `INFOMANIAK_API_TOKEN`, gemeinsam mit `INFOMANIAK_AI_PRODUCT_ID`; alter Name `INFOMANIAK_AI_TOKEN` vorläufig als nachrangiger Rückfall. Neue Vorlagen verwenden den Standardnamen. Keine Änderungen an HTTP-Endpunkten, Tabellen, Cookies oder Provision-Verträgen, keine Server-Secrets verändert.

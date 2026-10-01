@@ -195,13 +195,14 @@ test("usage exhaustion fails closed before provider calls; invalid environment f
   delete process.env.VOICE_REQUESTS_PER_MONTH;
 });
 test("Infomaniak defaults, missing config and explicit OpenAI fallback", () => {
+  delete process.env.INFOMANIAK_AI_TOKEN;
   delete process.env.TRANSCRIBE_PROVIDER;
   delete process.env.INFOMANIAK_AI_PRODUCT_ID;
-  delete process.env.INFOMANIAK_AI_TOKEN;
+  delete process.env.INFOMANIAK_API_TOKEN;
   assert.deepEqual(transcriptionConfig(), { provider: "infomaniak", ready: false });
   assert.throws(() => transcriptionProvider(), HttpError);
   process.env.INFOMANIAK_AI_PRODUCT_ID = "123";
-  process.env.INFOMANIAK_AI_TOKEN = randomUUID();
+  process.env.INFOMANIAK_API_TOKEN = randomUUID();
   assert.equal(transcriptionProvider().name, "Infomaniak");
   process.env.INFOMANIAK_AI_PRODUCT_ID = "../escape";
   assert.equal(transcriptionConfig().ready, false);
@@ -213,14 +214,14 @@ test("Infomaniak defaults, missing config and explicit OpenAI fallback", () => {
   assert.throws(() => transcriptionProvider(), /eingerichtet/);
   process.env.OPENAI_API_KEY = randomUUID();
   assert.equal(transcriptionProvider().name, "OpenAI");
-  for (const key of ["TRANSCRIBE_PROVIDER", "INFOMANIAK_AI_PRODUCT_ID", "INFOMANIAK_AI_TOKEN", "OPENAI_API_KEY"]) delete process.env[key];
+  for (const key of ["TRANSCRIBE_PROVIDER", "INFOMANIAK_AI_PRODUCT_ID", "INFOMANIAK_API_TOKEN", "OPENAI_API_KEY"]) delete process.env[key];
 });
 function infomaniakEnv(t: { after: (fn: () => void) => void }) {
   process.env.INFOMANIAK_AI_PRODUCT_ID = "123";
-  process.env.INFOMANIAK_AI_TOKEN = randomUUID();
+  process.env.INFOMANIAK_API_TOKEN = randomUUID();
   t.after(() => {
     delete process.env.INFOMANIAK_AI_PRODUCT_ID;
-    delete process.env.INFOMANIAK_AI_TOKEN;
+    delete process.env.INFOMANIAK_API_TOKEN;
   });
 }
 const sample = { bytes: Buffer.from("synthetic-test"), extension: "webm", mime: "audio/webm" };
@@ -229,7 +230,7 @@ test("Infomaniak uploads multipart Whisper audio and polls pending batch to text
   let calls = 0;
   t.mock.method(globalThis, "fetch", async (url: string, init: RequestInit) => {
     assert.ok(url.startsWith("https://api.infomaniak.com/1/ai/123/"));
-    assert.equal(new Headers(init.headers).get("Authorization"), "Bearer " + process.env.INFOMANIAK_AI_TOKEN);
+    assert.equal(new Headers(init.headers).get("Authorization"), "Bearer " + process.env.INFOMANIAK_API_TOKEN);
     assert.equal(init.redirect, "error");
     calls++;
     if (calls === 1) {
@@ -326,4 +327,29 @@ test("actual WebM/Opus and MP4/AAC duration is measured; temporary audio is remo
     (await readdir(tmpdir())).filter((n) => n.startsWith("neo-audio-")).sort(),
     before,
   );
+});
+
+test("canonical Infomaniak token takes precedence; legacy config remains a temporary rollback", async (t) => {
+  const keys = ["INFOMANIAK_API_TOKEN", "INFOMANIAK_AI_TOKEN", "INFOMANIAK_AI_PRODUCT_ID", "TRANSCRIBE_PROVIDER"];
+  const before = keys.map(key => process.env[key]);
+  t.after(() => keys.forEach((key, i) => { if (before[i] === undefined) delete process.env[key]; else process.env[key] = before[i]; }));
+  process.env.TRANSCRIBE_PROVIDER = "infomaniak";
+  process.env.INFOMANIAK_AI_PRODUCT_ID = "123";
+  const canonical = randomUUID(), legacy = randomUUID();
+  process.env.INFOMANIAK_API_TOKEN = " " + canonical + " ";
+  process.env.INFOMANIAK_AI_TOKEN = legacy;
+  let expected = canonical;
+  t.mock.method(globalThis, "fetch", async (url: string, init: RequestInit) => {
+    assert.equal(new Headers(init.headers).get("Authorization"), "Bearer " + expected);
+    return reply(url.endsWith("/openai/audio/transcriptions")
+      ? { batch_id: "fixture" } : { status: "success", data: "Test" });
+  });
+  assert.equal(transcriptionConfig().ready, true);
+  assert.equal(await new InfomaniakTranscription().transcribe(sample, "auto"), "Test");
+  delete process.env.INFOMANIAK_API_TOKEN;
+  expected = legacy;
+  assert.equal(transcriptionConfig().ready, true);
+  assert.equal(await new InfomaniakTranscription().transcribe(sample, "auto"), "Test");
+  delete process.env.INFOMANIAK_AI_TOKEN;
+  assert.equal(transcriptionConfig().ready, false);
 });

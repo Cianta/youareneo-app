@@ -9,7 +9,7 @@ import { Dialog } from "./Dialog";
 const Palette = dynamic(() => import("./CommandPalette"), { ssr: false });
 export function AppControls() {
   const path = usePathname();
-  const enabled = path.startsWith("/dashboard") || path === "/notiz" || path === "/gehirn";
+  const enabled = path.startsWith("/dashboard") || path === "/notiz" || (path === "/gehirn" || path === "/sprechen");
   const [palette, setPalette] = useState(false),
     [help, setHelp] = useState(false);
   useEffect(() => {
@@ -85,7 +85,7 @@ export function AppControls() {
             aria-current={
               path === t.href ||
               (t.id === "more" &&
-                (path.startsWith("/dashboard/") || path === "/gehirn") &&
+                (path.startsWith("/dashboard/") || (path === "/gehirn" || path === "/sprechen")) &&
                 path !== "/dashboard/vision/tasks")
                 ? "page"
                 : undefined

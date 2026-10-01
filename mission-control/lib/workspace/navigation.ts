@@ -27,6 +27,7 @@ export const primary: Destination[] = [
     href: "/dashboard/projekte",
     group: "Arbeiten",
   },
+  { id: "voice-chat", label: "Sprachchat", href: "/sprechen", group: "Arbeiten", keywords: "reden sprechen stimme assistentin" },
   { id: "brain", label: "Gehirn", href: "/gehirn", group: "Arbeiten", keywords: "wissen graph second brain verbindungen" },
   {
     id: "notebooks",

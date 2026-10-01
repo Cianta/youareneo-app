@@ -71,7 +71,8 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
     };
   }, [q, retry]);
   // Server full-text results already match German word stems; do not filter them again.
-  const local = rankItems([...actions, ...destinations], q, recent);
+  const graphAction: SearchItem[] = q.trim() ? [{ id: "search-brain", label: `Im Gehirn suchen: ${q.trim()}`, href: "/gehirn?q=" + encodeURIComponent(q.trim()), group: "Aktionen" }] : [];
+  const local = [...rankItems([...actions, ...destinations], q, recent), ...graphAction];
   const items = [...local, ...remote].sort((a, b) => {
     const rank = (id: string) => {
       const i = recent.indexOf(id);

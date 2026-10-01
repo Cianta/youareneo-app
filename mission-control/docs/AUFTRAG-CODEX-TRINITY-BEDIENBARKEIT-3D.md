@@ -75,3 +75,7 @@ Nur Dokumentation, keine Umbauten oder Deployments. Keine Änderungen an Schnitt
 Nutzerfreigabe „einfach weiter“ nach Eintrag des Infomaniak-Schlüssels; echte Tests sollen später stattfinden. Umsetzung auf eigenem Branch `codex/trinity-bedienbarkeit`: neue gemeinsame Navigation und mobile Tabs, Befehlspalette, eigene Projektsicht, dreistufige Einrichtung, Zustände/Fehlergrenzen, responsive Aufgaben-/Notebook-Seiten und bedarfsgeladene Widgets. Alte Übersicht unter `/dashboard/labor/uebersicht`, Alt-Daten unverändert; private Suche ausschließlich auf eigenen Supabase-Daten. Env-Editor gesperrt. Details, Grenzen, neue interne Endpunkte und Prüfstand: [TRINITY-TEIL2.md](TRINITY-TEIL2.md).
 
 Keine neuen Server-Env-Variablen, keine Schemaänderung, keine Produktionsänderung. Lighthouse-Zielwerte und vollständige Live-Abnahme bleiben unbestätigt, bis der Nutzer wieder testen möchte. Teil 3 und Sprach-Phase 2 nicht begonnen.
+
+### 01.10.2026 – Teil 3 freigegeben und umgesetzt
+
+Nach „freigabe erteilt“: `/gehirn`, eigene Graph-Daten über neuen RLS-RPC, Suche aus der Palette, Typ-/Datumsfilter, Vorschau, begrenzte 3D-Simulation, automatischer 2D-Rückfall und Liste. Details und offene GPU-/Live-Abnahme: [TRINITY-TEIL3.md](TRINITY-TEIL3.md). Neuer Endpunkt `GET /api/brain`, additive Funktion `trinity_brain_snapshot()`, keine bestehenden Daten-/Auth-Verträge verändert. Keine neuen Env-Variablen.

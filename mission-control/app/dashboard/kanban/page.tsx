@@ -75,16 +75,16 @@ export default function NotebooksPage() {
   };
 
   return (
-    <div className="h-full flex gap-3 fade-in">
+    <div className="h-full flex gap-3 fade-in notebooks-page">
       {/* ── Column 1: Rich Daily Notebook ── */}
       <div className="flex-1 min-w-0 flex flex-col gap-2 overflow-hidden">
         <div className="shrink-0">
-          <p className="text-xs uppercase tracking-widest text-anth-500 mb-1">{t('Daily Notebook')}</p>
+          <p className="text-xs uppercase tracking-widest text-anth-500 mb-1">{t('Notebooks & Ziele · auf diesem Gerät')}</p>
         </div>
 
         {/* Tab switcher */}
         <div className="flex gap-1 shrink-0">
-          {([{ id: 'goals' as const, label: 'Goals', icon: Target }, { id: 'journal' as const, label: 'Journal', icon: StickyNote }]).map(t => (
+          {([{ id: 'goals' as const, label: 'Ziele', icon: Target }, { id: 'journal' as const, label: 'Journal', icon: StickyNote }]).map(t => (
             <button key={t.id} onClick={() => setActiveTab(t.id)}
               className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all',
                 activeTab === t.id ? 'bg-forest-700/50 text-mint-light border border-forest-600/50' : 'text-anth-400 hover:text-anth-200 border border-transparent'
@@ -102,11 +102,11 @@ export default function NotebooksPage() {
               <input value={goalInput} onChange={e => setGoalInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addNewGoal()}
                 placeholder="New goal..." className="flex-1 mc-input py-2 text-xs" />
-              <select value={goalFolder} onChange={e => setGoalFolder(e.target.value as GoalFolder)}
+              <select aria-label="Zielbereich" value={goalFolder} onChange={e => setGoalFolder(e.target.value as GoalFolder)}
                 className="bg-surface border border-border rounded-xl px-2 text-[10px] text-forest-100 outline-none">
                 {GOAL_FOLDERS.map(f => <option key={f.id} value={f.id}>{t(f.label)}</option>)}
               </select>
-              <button onClick={addNewGoal} className="p-2 rounded-xl bg-mint-500/15 border border-mint-500/30 text-mint-500 hover:bg-mint-500/25 transition-colors">
+              <button aria-label="Ziel hinzufügen" onClick={addNewGoal} className="p-2 rounded-xl bg-mint-500/15 border border-mint-500/30 text-mint-500 hover:bg-mint-500/25 transition-colors">
                 <Plus size={12} />
               </button>
             </div>
@@ -121,7 +121,7 @@ export default function NotebooksPage() {
                   <div className="space-y-1">
                     {folderGoals.map(goal => (
                       <div key={goal.id} className="relative group flex items-start gap-2 px-3 py-2 rounded-xl bg-surface/40 border border-border/50 hover:border-forest-700/50 transition-all">
-                        <input type="checkbox" checked={goal.completed}
+                        <input aria-label={`Ziel erledigt: ${goal.text}`} type="checkbox" checked={goal.completed}
                           onChange={() => {
                             if (!goal.completed) {
                               // Checking off → show "erledigt / archivieren / löschen" dialog
@@ -152,7 +152,7 @@ export default function NotebooksPage() {
                               </div>
                             )}
                           </div>
-                          <button onClick={() => deleteGoal(goal.id)}
+                          <button aria-label={`Ziel löschen: ${goal.text}`} onClick={() => deleteGoal(goal.id)}
                             className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-anth-600 hover:text-red-400 transition-all">
                             <Trash2 size={10} />
                           </button>
@@ -173,7 +173,7 @@ export default function NotebooksPage() {
               <textarea value={journalInput} onChange={e => setJournalInput(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addJournal(); } }}
                 placeholder="Quick thought..." rows={2} className="flex-1 mc-input py-2 text-xs resize-none" />
-              <button onClick={addJournal} className="p-2 rounded-xl bg-mint-500/15 border border-mint-500/30 text-mint-500 hover:bg-mint-500/25 transition-colors self-end">
+              <button aria-label="Journaleintrag speichern" onClick={addJournal} className="p-2 rounded-xl bg-mint-500/15 border border-mint-500/30 text-mint-500 hover:bg-mint-500/25 transition-colors self-end">
                 <Plus size={12} />
               </button>
             </div>
@@ -194,7 +194,7 @@ export default function NotebooksPage() {
       </div>
 
       {/* ── Column 2: Verknüpfte Programme (NotebookLM & eigene) ── */}
-      <div className="w-[38%] min-w-[320px] min-h-0">
+      <div className="notebooks-tools w-[38%] min-w-[320px] min-h-0">
         <AppLauncher pageKey="notebooks" title="Programme" subtitle="Notebook-Tools & Web-Apps verknüpfen." />
       </div>
     </div>

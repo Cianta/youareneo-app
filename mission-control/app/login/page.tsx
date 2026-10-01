@@ -100,7 +100,7 @@ export default function LoginPage() {
           <Sparkles className="text-mint-400" size={18} />
           <div>
             <h1 className="text-lg font-semibold text-forest-100">{appName}</h1>
-            <p className="text-[11px] text-anth-500">Dein NEO-Konto · YOU ARE NEO</p>
+            <p className="text-[11px] text-anth-300">Dein NEO-Konto · YOU ARE NEO</p>
           </div>
         </div>
 
@@ -123,7 +123,7 @@ export default function LoginPage() {
               className={`flex-1 py-1.5 rounded-lg border text-xs transition-all ${
                 mode === m
                   ? 'bg-forest-800/50 border-forest-600/50 text-forest-200'
-                  : 'bg-anth-800/40 border-anth-700/40 text-anth-500'
+                  : 'bg-anth-800/40 border-anth-700/40 text-anth-300'
               }`}
             >
               {label}
@@ -132,15 +132,16 @@ export default function LoginPage() {
         </div>
 
         {mode === 'forgot' && (
-          <p className="text-[11px] text-anth-500 leading-relaxed">
+          <p className="text-[11px] text-anth-300 leading-relaxed">
             Passwort vergessen? Gib deine E-Mail ein. Du erhältst einen Link, mit dem du ein neues Passwort festlegen kannst.
           </p>
         )}
 
         <form onSubmit={onSubmit} className="space-y-3">
           <div className="relative">
-            <Mail size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-anth-600" />
+            <Mail size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-anth-300" />
             <input
+              aria-label="E-Mail"
               type="email"
               required
               autoComplete="email"
@@ -153,8 +154,9 @@ export default function LoginPage() {
 
           {mode === 'password' && (
             <div className="relative">
-              <KeyRound size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-anth-600" />
+              <KeyRound size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-anth-300" />
               <input
+                aria-label="Passwort"
                 type="password"
                 required
                 autoComplete="current-password"
@@ -191,7 +193,7 @@ export default function LoginPage() {
                   setError('');
                   setInfo('');
                 }}
-                className="text-[11px] text-anth-500 hover:text-anth-400 underline-offset-2 hover:underline"
+                className="text-[11px] text-anth-300 hover:text-anth-400 underline-offset-2 hover:underline"
               >
                 Zurück zur Anmeldung
               </button>
@@ -219,7 +221,7 @@ export default function LoginPage() {
           Noch kein Konto? Fördermitglied werden – 3,33 €
         </a>
 
-        <p className="text-[10px] text-anth-600 leading-relaxed">
+        <p className="text-[10px] text-anth-300 leading-relaxed">
           Ein NEO-Konto für {appName} und dein Archiv. Neu dabei? Fordere einen Magic Link an oder lege über „Passwort vergessen“ dein Passwort fest.
         </p>
       </div>

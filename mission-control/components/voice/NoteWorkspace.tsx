@@ -10,7 +10,9 @@ import {
   Search,
   Sparkles,
 } from "lucide-react";
-import { VoiceRecorder } from "./VoiceRecorder";
+import dynamic from "next/dynamic";
+import {LoadingState} from "@/components/workspace/States";
+const VoiceRecorder=dynamic(()=>import("./VoiceRecorder").then(m=>m.VoiceRecorder),{ssr:false,loading:()=> <LoadingState label="Mikrofon wird vorbereitet …"/>});
 import { useBrand } from "./BrandProvider";
 import {
   emptyDraft,
@@ -44,7 +46,7 @@ type Config = {
   limits: { minutes: number; requests: number };
   usage: { voice_seconds: number; requests: number };
 };
-export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak" }: { autoStart?: boolean; initialProvider?: string }) {
+export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak", initialNote, initialProject="", initialTag="", initialType="" }: { autoStart?: boolean; initialProvider?: string; initialNote?: string; initialProject?: string; initialTag?: string; initialType?: string }) {
   const { appName, assistantName } = useBrand();
   const [titleEdited, setTitleEdited] = useState(false);
   const [draft, setDraft] = useState<NoteDraft>(emptyDraft),
@@ -64,13 +66,17 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     [queue, setQueue] = useState<QueueEntry[]>([]),
     [tab, setTab] = useState<"notes" | "queue">("notes");
   const [q, setQ] = useState(""),
-    [type, setType] = useState(""),
-    [project, setProject] = useState(""),
-    [tag, setTag] = useState("");
+    [type, setType] = useState(initialType),
+    [project, setProject] = useState(initialProject),
+    [tag, setTag] = useState(initialTag);
   const [noteId, setNoteId] = useState(""),
     [confirm, setConfirm] = useState<string | null>(null),
     [playId, setPlayId] = useState<string | null>(null),
     [hasMore, setHasMore] = useState(false);
+  const [notesLoading,setNotesLoading]=useState(false);
+  useEffect(()=>{setQ("");},[initialNote]);
+  useEffect(()=>{setProject(initialProject);setTag(initialTag);setType(initialType);},[initialProject,initialTag,initialType]);
+  useEffect(()=>{if(initialProject)setDraft(d=>({...d,project:initialProject}));},[initialProject]);
   const field = <K extends keyof NoteDraft>(key: K, value: NoteDraft[K]) => {
     setDraft((d) => ({ ...d, [key]: value }));
     setMessage("");
@@ -79,11 +85,15 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     async (before?: string) => {
       const params = new URLSearchParams({ q, type, project, tag });
       if (before) params.set("before", before);
+      if (initialNote) params.set("id",initialNote);
+      setNotesLoading(true);
+      try {
       const data = await api("/api/notes?" + params);
       setNotes((old) => (before ? [...old, ...data.notes] : data.notes));
       setHasMore(data.notes.length === 50);
+      } finally {setNotesLoading(false);}
     },
-    [q, type, project, tag],
+    [q, type, project, tag, initialNote],
   );
   const refresh = useCallback(async () => {
     const c = await api("/api/voice/config");
@@ -97,7 +107,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
   }, []);
   useEffect(() => {
     void refresh()
-      .catch(() => {})
+      .catch((e) => { if (!String(e.message).includes("melde dich")) setError(e.message); })
       .finally(() => setLoaded(true));
   }, [refresh]);
   useEffect(() => {
@@ -220,6 +230,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     <main className="voice-page">
       <div className="voice-wrap">
         <header className="voice-header">
+          <button className="voice-secondary" onClick={()=>window.dispatchEvent(new Event("neo-open-search"))}>Suchen</button>
           <Link href="/dashboard" className="voice-back">
             <ArrowLeft size={16} />
             {appName}
@@ -496,9 +507,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
               {busy ? `${busy} …` : message}
             </p>
             {error && (
-              <p role="alert" className="voice-error">
-                {error}
-              </p>
+              <div role="alert" className="voice-error">{error}<button className="voice-secondary" onClick={()=>void action("Laden",async()=>{await refresh();await loadNotes();})}>Erneut versuchen</button></div>
             )}
             <details className="voice-privacy">
               <summary>Was mit deinen Worten passiert</summary>
@@ -600,10 +609,12 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
                     onChange={(e) => setTag(e.target.value)}
                   />
                 </div>
-                {notes.length === 0 && (
+                {notesLoading&&<LoadingState/>}
+                {!notesLoading && notes.length === 0 && (
                   <div className="voice-empty">
                     <Headphones size={32} />
                     <h2>Platz für deine Gedanken.</h2>
+                    <a className="voice-secondary" href="#note-composer">Gedanken festhalten</a>
                     <p>
                       {config
                         ? "Deine gespeicherten Notizen erscheinen hier."
@@ -612,7 +623,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
                   </div>
                 )}
                 {notes.map((n) => (
-                  <article className="voice-note" key={n.id}>
+                  <article className="voice-note" id={`note-${n.id}`} key={n.id}>
                     <div className="voice-note-meta">
                       <span>{labels[n.type]}</span>
                       <time>

@@ -7,49 +7,6 @@ import { Card } from '@/components/ui/Card';
 import { Save, Eye, EyeOff, ExternalLink, Monitor, Mouse, Globe, ShieldAlert, Check, ToggleLeft, ToggleRight, Volume2, CalendarDays } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// ── API Key Manager ───────────────────────────────────────────────────────────
-const API_KEY_GROUPS = [
-  {
-    label: 'AI Models',
-    color: 'text-purple-300',
-    keys: [
-      { key: 'ANTHROPIC_API_KEY',   label: 'Anthropic',         url: 'https://console.anthropic.com/keys',              placeholder: 'sk-ant-...' },
-      { key: 'OPENAI_API_KEY',      label: 'OpenAI',            url: 'https://platform.openai.com/api-keys',            placeholder: 'sk-...' },
-      { key: 'OPENROUTER_API_KEY',  label: 'OpenRouter',        url: 'https://openrouter.ai/keys',                      placeholder: 'sk-or-...' },
-      { key: 'GEMINI_API_KEY',      label: 'Google AI',         url: 'https://aistudio.google.com/app/apikey',          placeholder: 'AIza...' },
-      { key: 'XAI_API_KEY',         label: 'xAI (Grok)',        url: 'https://console.x.ai',                            placeholder: 'xai-...' },
-      { key: 'KIMI_API_KEY',        label: 'Kimi (Moonshot)',   url: 'https://platform.moonshot.cn',                    placeholder: 'sk-...' },
-      { key: 'ABACUS_API_KEY',      label: 'Abacus AI',         url: 'https://abacus.ai/app/profile/apiKeys',           placeholder: 'abacus-...' },
-    ],
-  },
-  {
-    label: 'Commerce & Tools',
-    color: 'text-emerald-300',
-    keys: [
-      { key: 'SHOPIFY_STORE_DOMAIN',    label: 'Shopify Domain',        url: null,                                                   placeholder: 'store.myshopify.com' },
-      { key: 'SHOPIFY_ADMIN_API_TOKEN', label: 'Shopify Admin Token',   url: 'https://admin.shopify.com/settings/apps/development',   placeholder: 'shpat_...' },
-      { key: 'TRELLO_API_KEY',          label: 'Trello API Key',        url: 'https://trello.com/app-key',                            placeholder: '' },
-      { key: 'TRELLO_TOKEN',            label: 'Trello Token',          url: 'https://trello.com/app-key',                            placeholder: '' },
-      { key: 'MEMBERSPOT_API_KEY',      label: 'Memberspot API',        url: 'https://app.memberspot.de',                             placeholder: '' },
-      { key: 'MEMBERSPOT_WEBHOOK_URL',  label: 'Memberspot Webhook',    url: 'https://app.memberspot.de/settings/webhooks',           placeholder: 'https://...' },
-      { key: 'APOLLO_API_KEY',          label: 'Apollo.io API',         url: 'https://app.apollo.io/#/settings/integrations/api',     placeholder: 'apollo-...' },
-      { key: 'POSTIZ_API_KEY',          label: 'Postiz API',            url: 'https://postiz.com/settings/api',                       placeholder: '' },
-      { key: 'POSTIZ_WEBHOOK_SECRET',   label: 'Postiz Webhook Secret', url: null,                                                   placeholder: 'whsec_...' },
-      { key: 'GHL_API_KEY',             label: 'GoHighLevel API',       url: 'https://app.gohighlevel.com/settings/api',              placeholder: '' },
-    ],
-  },
-  {
-    label: 'Media & Creative',
-    color: 'text-sky-300',
-    keys: [
-      { key: 'ELEVENLABS_API_KEY',  label: 'ElevenLabs',        url: 'https://elevenlabs.io/app/settings/api-keys',     placeholder: 'el-...' },
-      { key: 'SERP_API_KEY',        label: 'SERP API',          url: 'https://serpapi.com/manage-api-key',              placeholder: '' },
-      { key: 'NOTION_API_KEY',      label: 'Notion',            url: 'https://www.notion.so/my-integrations',           placeholder: 'secret_...' },
-      { key: 'NOTION_DATABASE_ID',  label: 'Notion DB ID',      url: null,                                              placeholder: '' },
-    ],
-  },
-];
-
 // ── Hardware Permission Tri-State ─────────────────────────────────────────────
 type HwState = 'on' | 'off' | 'ask';
 const HW_CYCLE: HwState[] = ['off', 'ask', 'on'];
@@ -60,18 +17,6 @@ const HW_LABELS: Record<HwState, { label: string; color: string; bg: string }> =
 };
 
 function cycle(s: HwState): HwState { return HW_CYCLE[(HW_CYCLE.indexOf(s) + 1) % 3]; }
-
-const LS_KEY = 'trinity-api-keys';
-
-function loadSavedKeys(): Record<string, string> {
-  if (typeof window === 'undefined') return {};
-  try { return JSON.parse(localStorage.getItem(LS_KEY) ?? '{}'); } catch { return {}; }
-}
-
-function persistKeys(keys: Record<string, string>) {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(LS_KEY, JSON.stringify(keys));
-}
 
 function AudioSettings() {
   const { workSoundUrl, breakSoundUrl, setWorkSound, setBreakSound, volume, setVolume } = useGlobalAudioStore();
@@ -180,44 +125,10 @@ function CalendarSettings() {
 export default function SettingsPage() {
   const { agents } = useAgentStore();
 
-  // API Key Manager state — hydrated from localStorage
-  const [keyValues, setKeyValues]   = useState<Record<string, string>>(() => loadSavedKeys());
-  const [showKeys, setShowKeys]     = useState<Record<string, boolean>>({});
-  const [saved, setSaved]           = useState(false);
-  const [saving, setSaving]         = useState(false);
-
   // Hardware permissions
   const [screenMirror, setScreenMirror] = useState<HwState>('off');
   const [browserNode,  setBrowserNode]  = useState<HwState>('off');
   const [mouseControl, setMouseControl] = useState<HwState>('off');
-
-  // Persist to localStorage on every keystroke
-  const updateKey = (key: string, value: string) => {
-    setKeyValues(prev => {
-      const next = { ...prev, [key]: value };
-      persistKeys(next);
-      return next;
-    });
-  };
-
-  const saveKeys = async () => {
-    setSaving(true);
-    persistKeys(keyValues);
-    try {
-      await fetch('/api/settings/env', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ keys: keyValues }),
-      });
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
-    } catch {
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
-    } finally {
-      setSaving(false);
-    }
-  };
 
   const HwToggle = ({ label, icon: Icon, state, setState }: {
     label: string; icon: React.ElementType; state: HwState; setState: (s: HwState) => void;
@@ -247,84 +158,13 @@ export default function SettingsPage() {
   return (
     <div className="max-w-4xl space-y-8 fade-in">
 
-      {/* ── Secure API Key Manager ── */}
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xs uppercase tracking-widest text-anth-500">API Key Manager</h2>
-          <button
-            onClick={saveKeys}
-            disabled={saving}
-            className={cn(
-              'flex items-center gap-1.5 px-4 py-2 rounded-xl border text-xs font-medium transition-all',
-              saved
-                ? 'bg-mint-500/15 border-mint-500/40 text-mint-500'
-                : 'bg-forest-800/40 border-forest-700/40 text-forest-300 hover:bg-forest-700/40'
-            )}
-          >
-            {saved ? <Check size={13} /> : <Save size={13} />}
-            {saved ? 'Saved!' : saving ? 'Saving…' : 'Save Keys'}
-          </button>
-        </div>
-        <div className="glass rounded-2xl border border-border overflow-hidden">
-          <div className="p-4 border-b border-border/60 bg-amber-900/10 flex items-center gap-2">
-            <ShieldAlert size={14} className="text-amber-400 shrink-0" />
-            <p className="text-xs text-anth-400">
-              Keys are saved to <code className="text-gold">.env.local</code> via the runtime API.
-              They are never committed to git. Restart dev server after major changes.
-            </p>
-          </div>
-
-          {API_KEY_GROUPS.map(group => (
-            <div key={group.label} className="border-b border-border/40 last:border-0">
-              <p className={cn('text-[9px] uppercase tracking-widest font-semibold px-5 py-2 border-b border-border/30', group.color)}>
-                {group.label}
-              </p>
-              {group.keys.map(({ key, label, url, placeholder }) => (
-                <div key={key} className="flex items-center gap-3 px-5 py-3 border-b border-border/20 last:border-0">
-                  <div className="w-36 shrink-0">
-                    <p className="text-xs font-medium text-anth-200">{label}</p>
-                    <code className="text-[9px] text-anth-600">{key}</code>
-                  </div>
-                  <div className="flex-1 relative">
-                    <input
-                      type={showKeys[key] ? 'text' : 'password'}
-                      value={keyValues[key] ?? ''}
-                      onChange={e => updateKey(key, e.target.value)}
-                      placeholder={placeholder || '(not set)'}
-                      className={cn(
-                        'w-full bg-surface border rounded-xl px-3 py-2 text-xs text-forest-100 placeholder-anth-600 outline-none focus:border-forest-600 pr-10 font-mono transition-all',
-                        keyValues[key] ? 'border-forest-700/60' : 'border-border'
-                      )}
-                    />
-                    {keyValues[key] && (
-                      <span className="absolute right-9 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-mint-500" title="Key saved locally" />
-                    )}
-                    <button
-                      onClick={() => setShowKeys(p => ({ ...p, [key]: !p[key] }))}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-anth-500 hover:text-anth-300 transition-colors"
-                    >
-                      {showKeys[key] ? <EyeOff size={12} /> : <Eye size={12} />}
-                    </button>
-                  </div>
-                  {url && (
-                    <a href={url} target="_blank" rel="noopener noreferrer"
-                      className="p-1.5 text-anth-600 hover:text-forest-400 transition-colors shrink-0">
-                      <ExternalLink size={11} />
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
-
+      <section className="workspace-notice"><h1 className="text-xl mb-2">Einstellungen</h1><p>Die Verbindungen werden zentral verwaltet. In der App werden keine Zugangsschlüssel eingegeben oder gespeichert.</p></section>
       {/* ── Global Hardware Permissions ── */}
       <section>
         <h2 className="text-xs uppercase tracking-widest text-anth-500 mb-4">Global Hardware Permissions · All Claude Models</h2>
         <div className="glass rounded-2xl border border-border p-5">
           <p className="text-xs text-anth-400 mb-4">
-            These tri-state toggles govern system-level access for ALL Claude agents simultaneously.
+            Experimentelle Anzeige: Diese Schalter ändern derzeit keine Browser- oder Systemberechtigungen.
             <span className="text-mint-500 font-medium"> ON</span> = always allow ·
             <span className="text-gold font-medium"> ASK</span> = prompt each time ·
             <span className="text-anth-500 font-medium"> OFF</span> = always deny.

@@ -1,0 +1,1683 @@
+{
+  "scope": "Local production build with intercepted API fixtures, no live authentication or provider calls",
+  "baselineCommit": "07b4ec1d17b490aec9eb24f4babe352c832235b3",
+  "summary": [
+    {
+      "route": "/login",
+      "runs": 3,
+      "performance": 97,
+      "accessibility": 100,
+      "lcp": 2631.274,
+      "cls": 0,
+      "tbt": 25.931499999999915,
+      "consoleErrors": 0,
+      "jsBytes": 543428
+    },
+    {
+      "route": "/notiz",
+      "runs": 3,
+      "performance": 95,
+      "accessibility": 100,
+      "lcp": 2780.4115,
+      "cls": 0.02777730794575787,
+      "tbt": 13,
+      "consoleErrors": 0,
+      "jsBytes": 606911
+    },
+    {
+      "route": "/dashboard",
+      "runs": 3,
+      "performance": 97,
+      "accessibility": 100,
+      "lcp": 2628.9095,
+      "cls": 0,
+      "tbt": 12,
+      "consoleErrors": 0,
+      "jsBytes": 582143
+    },
+    {
+      "route": "/dashboard/vision/tasks",
+      "runs": 3,
+      "performance": 96,
+      "accessibility": 100,
+      "lcp": 2709.3225,
+      "cls": 0,
+      "tbt": 20.5,
+      "consoleErrors": 0,
+      "jsBytes": 885249
+    },
+    {
+      "route": "/dashboard/kanban",
+      "runs": 3,
+      "performance": 95,
+      "accessibility": 100,
+      "lcp": 2905.6844999999994,
+      "cls": 0.01717310887352258,
+      "tbt": 11,
+      "consoleErrors": 0,
+      "jsBytes": 762233
+    }
+  ],
+  "runs": [
+    {
+      "route": "/dashboard",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:27.158Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 97,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2628.9095,
+        "total-blocking-time": 12,
+        "cumulative-layout-shift": 0,
+        "speed-index": 903.2729999999999
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        },
+        {
+          "path": "/_next/static/chunks/068uh3hqikk1k.js",
+          "transferSize": 1907,
+          "resourceSize": 3257
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard",
+      "run": 2,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:32.846Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 97,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2628.2540000000004,
+        "total-blocking-time": 12,
+        "cumulative-layout-shift": 0,
+        "speed-index": 902.836
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        },
+        {
+          "path": "/_next/static/chunks/068uh3hqikk1k.js",
+          "transferSize": 1907,
+          "resourceSize": 3257
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard",
+      "run": 3,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:38.493Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 97,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2629.6670000000004,
+        "total-blocking-time": 12,
+        "cumulative-layout-shift": 0,
+        "speed-index": 903.778
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        },
+        {
+          "path": "/_next/static/chunks/068uh3hqikk1k.js",
+          "transferSize": 1907,
+          "resourceSize": 3257
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard/kanban",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:26:01.914Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 95,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2905.6844999999994,
+        "total-blocking-time": 0.5,
+        "cumulative-layout-shift": 0.01717310887352258,
+        "speed-index": 903.123
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/2zujmjdbob4kw.js",
+          "transferSize": 3297,
+          "resourceSize": 7835
+        },
+        {
+          "path": "/_next/static/chunks/2qglcgg268rcu.js",
+          "transferSize": 16064,
+          "resourceSize": 42347
+        },
+        {
+          "path": "/_next/static/chunks/2jeeotszqzsd7.js",
+          "transferSize": 8389,
+          "resourceSize": 24358
+        },
+        {
+          "path": "/_next/static/chunks/3aysnek4g3gku.js",
+          "transferSize": 35901,
+          "resourceSize": 108807
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 2,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard/kanban",
+      "run": 2,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:26:07.603Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 96,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2702.866,
+        "total-blocking-time": 24.5,
+        "cumulative-layout-shift": 0.01717310887352258,
+        "speed-index": 902.866
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/2zujmjdbob4kw.js",
+          "transferSize": 3297,
+          "resourceSize": 7835
+        },
+        {
+          "path": "/_next/static/chunks/2qglcgg268rcu.js",
+          "transferSize": 16064,
+          "resourceSize": 42347
+        },
+        {
+          "path": "/_next/static/chunks/2jeeotszqzsd7.js",
+          "transferSize": 8389,
+          "resourceSize": 24358
+        },
+        {
+          "path": "/_next/static/chunks/3aysnek4g3gku.js",
+          "transferSize": 35901,
+          "resourceSize": 108807
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 2,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard/kanban",
+      "run": 3,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:26:13.255Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 95,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2925.7590000000005,
+        "total-blocking-time": 11,
+        "cumulative-layout-shift": 0.01717310887352258,
+        "speed-index": 902.5060000000001
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/2zujmjdbob4kw.js",
+          "transferSize": 3297,
+          "resourceSize": 7835
+        },
+        {
+          "path": "/_next/static/chunks/2qglcgg268rcu.js",
+          "transferSize": 16064,
+          "resourceSize": 42347
+        },
+        {
+          "path": "/_next/static/chunks/2jeeotszqzsd7.js",
+          "transferSize": 8389,
+          "resourceSize": 24358
+        },
+        {
+          "path": "/_next/static/chunks/3aysnek4g3gku.js",
+          "transferSize": 35901,
+          "resourceSize": 108807
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 2,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard/vision/tasks",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:44.112Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 94,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3095.180500000001,
+        "total-blocking-time": 20.5,
+        "cumulative-layout-shift": 0,
+        "speed-index": 902.787
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/17eq7-7qj592t.js",
+          "transferSize": 18137,
+          "resourceSize": 52459
+        },
+        {
+          "path": "/_next/static/chunks/2jeeotszqzsd7.js",
+          "transferSize": 8389,
+          "resourceSize": 24358
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        },
+        {
+          "path": "/_next/static/chunks/139-1iq982315.js",
+          "transferSize": 7472,
+          "resourceSize": 20041
+        },
+        {
+          "path": "/_next/static/chunks/3aysnek4g3gku.js",
+          "transferSize": 35901,
+          "resourceSize": 108807
+        },
+        {
+          "path": "/_next/static/chunks/0lzzxnl0mctfh.js",
+          "transferSize": 29829,
+          "resourceSize": 100698
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard/vision/tasks",
+      "run": 2,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:49.851Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 96,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2708.475,
+        "total-blocking-time": 10.500000000000227,
+        "cumulative-layout-shift": 0,
+        "speed-index": 903.3900000000001
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/17eq7-7qj592t.js",
+          "transferSize": 18137,
+          "resourceSize": 52459
+        },
+        {
+          "path": "/_next/static/chunks/2jeeotszqzsd7.js",
+          "transferSize": 8389,
+          "resourceSize": 24358
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        },
+        {
+          "path": "/_next/static/chunks/139-1iq982315.js",
+          "transferSize": 7472,
+          "resourceSize": 20041
+        },
+        {
+          "path": "/_next/static/chunks/3aysnek4g3gku.js",
+          "transferSize": 35901,
+          "resourceSize": 108807
+        },
+        {
+          "path": "/_next/static/chunks/0lzzxnl0mctfh.js",
+          "transferSize": 29829,
+          "resourceSize": 100698
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/dashboard/vision/tasks",
+      "run": 3,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:56.149Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 96,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2709.3225,
+        "total-blocking-time": 23.5,
+        "cumulative-layout-shift": 0,
+        "speed-index": 903.729
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/17eq7-7qj592t.js",
+          "transferSize": 18137,
+          "resourceSize": 52459
+        },
+        {
+          "path": "/_next/static/chunks/2jeeotszqzsd7.js",
+          "transferSize": 8389,
+          "resourceSize": 24358
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        },
+        {
+          "path": "/_next/static/chunks/139-1iq982315.js",
+          "transferSize": 7472,
+          "resourceSize": 20041
+        },
+        {
+          "path": "/_next/static/chunks/3aysnek4g3gku.js",
+          "transferSize": 35901,
+          "resourceSize": 108807
+        },
+        {
+          "path": "/_next/static/chunks/0lzzxnl0mctfh.js",
+          "transferSize": 29829,
+          "resourceSize": 100698
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/login",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:24:51.805Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 97,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2606.732,
+        "total-blocking-time": 2.0670000000000073,
+        "cumulative-layout-shift": 0,
+        "speed-index": 903.732
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/2yelvyish64o_.js",
+          "transferSize": 3280,
+          "resourceSize": 7172
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/login",
+      "run": 2,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:24:57.578Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 97,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2631.274,
+        "total-blocking-time": 25.931499999999915,
+        "cumulative-layout-shift": 0,
+        "speed-index": 904.2739999999999
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/2yelvyish64o_.js",
+          "transferSize": 3280,
+          "resourceSize": 7172
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/login",
+      "run": 3,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:03.198Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 97,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2633.866,
+        "total-blocking-time": 30.283500000000004,
+        "cumulative-layout-shift": 0,
+        "speed-index": 902.866
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/2yelvyish64o_.js",
+          "transferSize": 3280,
+          "resourceSize": 7172
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/notiz",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:08.773Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 95,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2778.5769999999998,
+        "total-blocking-time": 11.5,
+        "cumulative-layout-shift": 0.02777730794575787,
+        "speed-index": 1505.577
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/37im6428jig0a.js",
+          "transferSize": 955,
+          "resourceSize": 1342
+        },
+        {
+          "path": "/_next/static/chunks/19r15iaqaao_8.js",
+          "transferSize": 7607,
+          "resourceSize": 21056
+        },
+        {
+          "path": "/_next/static/chunks/010kpkmepv9wa.js",
+          "transferSize": 2819,
+          "resourceSize": 5627
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/notiz",
+      "run": 2,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:14.717Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 96,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2780.4115,
+        "total-blocking-time": 13,
+        "cumulative-layout-shift": 0.02777730794575787,
+        "speed-index": 1354.4115000000002
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/37im6428jig0a.js",
+          "transferSize": 955,
+          "resourceSize": 1342
+        },
+        {
+          "path": "/_next/static/chunks/19r15iaqaao_8.js",
+          "transferSize": 7607,
+          "resourceSize": 21056
+        },
+        {
+          "path": "/_next/static/chunks/010kpkmepv9wa.js",
+          "transferSize": 2819,
+          "resourceSize": 5627
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    },
+    {
+      "route": "/notiz",
+      "run": 3,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-01T13:25:20.739Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 95,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 2848.1945,
+        "total-blocking-time": 25.5,
+        "cumulative-layout-shift": 0.02777730794575787,
+        "speed-index": 1397.1945
+      },
+      "console": [],
+      "js": [
+        {
+          "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+          "transferSize": 2366,
+          "resourceSize": 5364
+        },
+        {
+          "path": "/_next/static/chunks/1jj9yzto91j5u.js",
+          "transferSize": 9229,
+          "resourceSize": 31304
+        },
+        {
+          "path": "/_next/static/chunks/153mnvfs8r8kg.js",
+          "transferSize": 37964,
+          "resourceSize": 138009
+        },
+        {
+          "path": "/_next/static/chunks/3n7dm2ojtyzwn.js",
+          "transferSize": 71452,
+          "resourceSize": 227537
+        },
+        {
+          "path": "/_next/static/chunks/0paxexg6-m0de.js",
+          "transferSize": 9566,
+          "resourceSize": 43946
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-2dmflgu0suv0n.js",
+          "transferSize": 4562,
+          "resourceSize": 10613
+        },
+        {
+          "path": "/_next/static/chunks/0krdr1ajjg01_.js",
+          "transferSize": 8909,
+          "resourceSize": 24837
+        },
+        {
+          "path": "/_next/static/chunks/14mrh2-p_w84d.js",
+          "transferSize": 13272,
+          "resourceSize": 54646
+        },
+        {
+          "path": "/_next/static/chunks/37im6428jig0a.js",
+          "transferSize": 955,
+          "resourceSize": 1342
+        },
+        {
+          "path": "/_next/static/chunks/19r15iaqaao_8.js",
+          "transferSize": 7607,
+          "resourceSize": 21056
+        },
+        {
+          "path": "/_next/static/chunks/010kpkmepv9wa.js",
+          "transferSize": 2819,
+          "resourceSize": 5627
+        },
+        {
+          "path": "/_next/static/chunks/40o79r55_h4lq.js",
+          "transferSize": 3504,
+          "resourceSize": 7992
+        },
+        {
+          "path": "/_next/static/chunks/0ip07hu9m524s.js",
+          "transferSize": 10851,
+          "resourceSize": 34390
+        },
+        {
+          "path": "/_next/static/chunks/04o11zb3rfhl2.js",
+          "transferSize": 594,
+          "resourceSize": 248
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/06zn3mud22c98.js"
+      ],
+      "warnings": []
+    }
+  ]
+}

@@ -32,14 +32,14 @@ export default function LoginPage() {
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.success) {
-          throw new Error(data.error || `Login failed (${res.status})`);
+          throw new Error(data.error || 'Die Anmeldung ist gerade nicht möglich. Bitte erneut versuchen.');
         }
         // Sync local TopBar store lightly
         try {
           const { useAuthStore } = await import('@/lib/store');
           useAuthStore.getState().setUser({
-            name: data.email?.split('@')[0] || 'Member',
-            role: 'NEO Member',
+            name: data.email?.split('@')[0] || 'Mitglied',
+            role: 'NEO Mitglied',
             avatar: '🔮',
           });
         } catch {
@@ -57,7 +57,7 @@ export default function LoginPage() {
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.success) {
-          throw new Error(data.error || `Password restore failed (${res.status})`);
+          throw new Error(data.error || 'Der Link konnte nicht angefordert werden. Bitte erneut versuchen.');
         }
         setInfo(
           data.message ||
@@ -73,9 +73,9 @@ export default function LoginPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.success) {
-        throw new Error(data.error || `Magic link failed (${res.status})`);
+        throw new Error(data.error || 'Der Anmeldelink konnte nicht angefordert werden. Bitte erneut versuchen.');
       }
-      setInfo(data.message || 'Magic link sent — check your inbox.');
+      setInfo(data.message || 'Der Anmeldelink wurde angefordert. Bitte prüfe dein Postfach.');
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -94,12 +94,12 @@ export default function LoginPage() {
         : 'Magic Link senden';
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg p-6">
-      <div className="w-full max-w-md glass-dark border border-border rounded-3xl p-6 shadow-panel space-y-4">
+    <main className="h-dvh overflow-y-auto flex bg-bg p-6" aria-labelledby="login-title">
+      <div className="w-full max-w-md m-auto shrink-0 glass-dark border border-border rounded-3xl p-6 shadow-panel space-y-4">
         <div className="flex items-center gap-2">
           <Sparkles className="text-mint-400" size={18} />
           <div>
-            <h1 className="text-lg font-semibold text-forest-100">{appName}</h1>
+            <h1 id="login-title" className="text-lg font-semibold text-forest-100">{appName}</h1>
             <p className="text-[11px] text-anth-300">Dein NEO-Konto · YOU ARE NEO</p>
           </div>
         </div>
@@ -115,12 +115,13 @@ export default function LoginPage() {
             <button
               key={m}
               type="button"
+              aria-pressed={mode === m}
               onClick={() => {
                 setMode(m);
                 setError('');
                 setInfo('');
               }}
-              className={`flex-1 py-1.5 rounded-lg border text-xs transition-all ${
+              className={`flex-1 min-h-[44px] py-1.5 rounded-lg border text-xs transition-all ${
                 mode === m
                   ? 'bg-forest-800/50 border-forest-600/50 text-forest-200'
                   : 'bg-anth-800/40 border-anth-700/40 text-anth-300'
@@ -177,7 +178,7 @@ export default function LoginPage() {
                   setError('');
                   setInfo('');
                 }}
-                className="text-[11px] text-mint-400/90 hover:text-mint-300 underline-offset-2 hover:underline"
+                className="min-h-[44px] px-2 text-[11px] text-mint-400/90 hover:text-mint-300 underline-offset-2 hover:underline"
               >
                 Passwort vergessen?
               </button>
@@ -193,20 +194,20 @@ export default function LoginPage() {
                   setError('');
                   setInfo('');
                 }}
-                className="text-[11px] text-anth-300 hover:text-anth-400 underline-offset-2 hover:underline"
+                className="min-h-[44px] px-2 text-[11px] text-anth-300 hover:text-anth-400 underline-offset-2 hover:underline"
               >
                 Zurück zur Anmeldung
               </button>
             </div>
           )}
 
-          {error && <p className="text-xs text-red-400">{error}</p>}
-          {info && <p className="text-xs text-mint-400">{info}</p>}
+          {error && <p role="alert" className="text-xs text-red-400">{error}</p>}
+          {info && <p role="status" className="text-xs text-mint-400">{info}</p>}
 
           <button
             type="submit"
             disabled={busy}
-            className="w-full py-2.5 rounded-xl bg-forest-700/50 border border-forest-600/40 text-sm text-forest-100 font-medium hover:bg-forest-600/40 transition-colors disabled:opacity-50"
+            className="w-full min-h-[44px] py-2.5 rounded-xl bg-forest-700/50 border border-forest-600/40 text-sm text-forest-100 font-medium hover:bg-forest-600/40 transition-colors disabled:opacity-50"
           >
             {busy ? '…' : submitLabel}
           </button>
@@ -225,6 +226,6 @@ export default function LoginPage() {
           Ein NEO-Konto für {appName} und dein Archiv. Neu dabei? Fordere einen Magic Link an oder lege über „Passwort vergessen“ dein Passwort fest.
         </p>
       </div>
-    </div>
+    </main>
   );
 }

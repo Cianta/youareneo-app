@@ -99,9 +99,9 @@ export default function NotebooksPage() {
           <div className="flex-1 overflow-y-auto space-y-3">
             {/* Add Goal */}
             <div className="flex gap-2">
-              <input value={goalInput} onChange={e => setGoalInput(e.target.value)}
+              <input aria-label="Neues Ziel" value={goalInput} onChange={e => setGoalInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addNewGoal()}
-                placeholder="New goal..." className="flex-1 mc-input py-2 text-xs" />
+                placeholder="Neues Ziel …" className="flex-1 mc-input py-2 text-xs" />
               <select aria-label="Zielbereich" value={goalFolder} onChange={e => setGoalFolder(e.target.value as GoalFolder)}
                 className="bg-surface border border-border rounded-xl px-2 text-[10px] text-forest-100 outline-none">
                 {GOAL_FOLDERS.map(f => <option key={f.id} value={f.id}>{t(f.label)}</option>)}
@@ -170,9 +170,9 @@ export default function NotebooksPage() {
         {activeTab === 'journal' && (
           <div className="flex-1 overflow-y-auto space-y-3">
             <div className="flex gap-2">
-              <textarea value={journalInput} onChange={e => setJournalInput(e.target.value)}
+              <textarea aria-label="Journaleintrag" value={journalInput} onChange={e => setJournalInput(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addJournal(); } }}
-                placeholder="Quick thought..." rows={2} className="flex-1 mc-input py-2 text-xs resize-none" />
+                placeholder="Ein Gedanke …" rows={2} className="flex-1 mc-input py-2 text-xs resize-none" />
               <button aria-label="Journaleintrag speichern" onClick={addJournal} className="p-2 rounded-xl bg-mint-500/15 border border-mint-500/30 text-mint-500 hover:bg-mint-500/25 transition-colors self-end">
                 <Plus size={12} />
               </button>

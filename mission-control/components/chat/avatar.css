@@ -1,0 +1,111 @@
+.assistant-avatar {
+  --voice-level: 0;
+  flex: 0 0 64px;
+  width: 64px;
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--mandala-green-light) !important;
+  text-decoration: none;
+  line-height: 1;
+}
+.assistant-avatar svg {
+  width: 48px;
+  height: 48px;
+  overflow: visible;
+}
+.assistant-avatar span {
+  font-size: 10px;
+  padding-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+.assistant-avatar:hover {
+  border-color: currentColor;
+}
+.assistant-avatar:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
+.assistant-avatar[data-state="thinking"] {
+  color: var(--gold-bright) !important;
+}
+.assistant-avatar[data-state="speaking"] {
+  color: var(--mandala-blue-light) !important;
+}
+.avatar-energy,
+.avatar-orbit {
+  transform-origin: 32px 30px;
+}
+.avatar-voice {
+  transform-origin: 32px 34px;
+}
+.assistant-avatar:is([data-state="listening"], [data-state="speaking"])
+  .avatar-energy {
+  transform: scale(calc(1 + var(--voice-level) * 0.12));
+}
+.assistant-avatar:is([data-state="listening"], [data-state="speaking"])
+  .avatar-voice {
+  transform: scaleY(calc(1 + var(--voice-level) * 1.5));
+}
+.assistant-avatar[data-state="thinking"] .avatar-orbit {
+  animation: avatar-thinking 5s linear infinite;
+}
+@keyframes avatar-thinking {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* State and its text stay visible; both CSS motion AND audio-driven movement stop. */
+@media (prefers-reduced-motion: reduce) {
+  .assistant-avatar * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+.workspace-topbar:has(.assistant-avatar) {
+  height: 88px;
+}
+.voice-header .assistant-avatar {
+  gap: 0;
+}
+.chat-workspace header h1 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 767px) {
+  .chat-workspace header:has(.assistant-avatar),
+  .brain-workspace header:has(.assistant-avatar),
+  .voice-header:has(.assistant-avatar) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 64px;
+    align-items: start;
+    gap: 12px;
+  }
+  .chat-workspace header > :not(.assistant-avatar),
+  .brain-workspace header > :not(.assistant-avatar),
+  .voice-header:has(.assistant-avatar) > :not(.assistant-avatar) {
+    grid-column: 1;
+    justify-self: start;
+  }
+  .chat-workspace header > .assistant-avatar,
+  .brain-workspace header > .assistant-avatar,
+  .voice-header > .assistant-avatar {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+  .workspace-topbar:has(.assistant-avatar) {
+    gap: 6px;
+  }
+  .workspace-topbar .assistant-avatar {
+    flex-basis: 56px;
+    width: 56px;
+  }
+}

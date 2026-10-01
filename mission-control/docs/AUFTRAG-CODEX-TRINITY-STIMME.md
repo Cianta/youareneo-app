@@ -151,3 +151,7 @@ Neu: `VOCALLAB_API_KEY`, optional `SPEECH_PROVIDER` und `VOCALLAB_MODEL`. Neue i
 ### 01.10.2026 – Infomaniak-Variablennamen abgeglichen
 
 Nutzerkorrektur gemäß `.env.example`: verbindlich `INFOMANIAK_API_TOKEN` und `INFOMANIAK_AI_PRODUCT_ID`. Bereitschaftsprüfung und alle Infomaniak-HTTP-Aufrufe verwenden denselben serverseitigen Token-Leser. `INFOMANIAK_API_TOKEN` hat Vorrang; der bisherige Name `INFOMANIAK_AI_TOKEN` bleibt vorläufig als Rückfall lesbar, damit vorhandene Staging-Konfigurationen weiterlaufen. Vorlagen dokumentieren nur den neuen Namen. Keine echten Werte gelesen, kopiert oder geändert; keine echten Anbieteraufrufe. Infomaniak bleibt Transkriptionsanbieter, Anthropic für Chat/Einordnung unverändert.
+
+### 01.10.2026 – Phase 3 im Automodus
+
+Auf Nutzerfreigabe: Energielinien-Avatar in den Kopfzeilen von Übersicht, Notizen, Gehirn und Sprachchat. Vier Zustände, Mikrofonpegel aus dem vorhandenen Analyser, VocalLab-Ausgabepegel aus lokaler Web-Audio-Messung. Browser-Stimme zeigt den tatsächlichen Sprechzustand ohne simulierten Lautstärkepegel. Klick öffnet `/sprechen`, dort Fokus aufs Textfeld; reduzierte Bewegung vollständig berücksichtigt. Optionaler `onMeter`-Callback für die wiederverwendbare Aufnahme-Komponente. Keine neuen Env-Variablen oder Änderungen an HTTP-/Datenbank-/Cookie-Verträgen. Eigener Branch `codex/trinity-avatar` auf PR #13; nur Staging. Details und späterer Handytest: [TRINITY-AVATAR-PHASE3.md](TRINITY-AVATAR-PHASE3.md).

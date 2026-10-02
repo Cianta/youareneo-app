@@ -79,7 +79,7 @@ try{
   await page.screenshot({path:'/tmp/trinity-assistant-screens/brain-dark.png'});
   await page.click('[aria-label="Trinity Einstellungen öffnen"]');await text('Stimme & Erscheinungsbild');
   await page.$eval('input[aria-label="Helligkeit"]',e=>{const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(e,'100');e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});
-  await page.waitForFunction(()=>getComputedStyle(document.documentElement).getPropertyValue('--theme-bg').includes('244'));
+  await page.waitForFunction(()=>getComputedStyle(document.documentElement).getPropertyValue('--theme-bg').includes('248'));
   assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('trinity-display-voice')).brightness),100);
   await page.screenshot({path:'/tmp/trinity-assistant-screens/settings-light.png'});
   await page.click('[aria-label="Trinity schließen"]');

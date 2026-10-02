@@ -17,6 +17,8 @@ import { useBrand } from "@/components/voice/BrandProvider";
 import { Dialog } from "./Dialog";
 import { FocusRuntime } from "./FocusRuntime";
 import { ErrorState, LoadingState } from "./States";
+const FocusSpace = dynamic(()=>import("./FocusSpace").then(m=>m.FocusSpace),{ssr:false});
+const Bookmarks = dynamic(()=>import("./Bookmarks").then(m=>m.Bookmarks),{ssr:false});
 const Notebook = dynamic(
   () =>
     import("@/components/layout/NotebookPanel").then((m) => m.NotebookPanel),
@@ -49,9 +51,11 @@ export function WorkspaceShell({
   const path = usePathname();
   const [notebook, setNotebook] = useState(false),
     [error, setError] = useState("");
+  const [agentError,setAgentError] = useState("");
   const [authenticated, setAuthenticated] = useState(!!identity);
   const setUser = useAuthStore((s) => s.setUser);
   const [notebookMounted, setNotebookMounted] = useState(false);
+  const focusOpen = useFocusStore(s=>s.isOpen);
   const running = useFocusStore((s) => s.pomodoroRunning);
   const playing = useGlobalAudioStore((s) => s.activeMode !== "off");
   const completion = useUIExtStore((s) => s.completionDialog);
@@ -81,6 +85,7 @@ export function WorkspaceShell({
   useEffect(() => {
     if (!path.startsWith("/dashboard/agents") && path !== "/dashboard/eden")
       return;
+    setAgentError("");
     const abort = new AbortController();
     void fetch("/api/agents", { signal: abort.signal })
       .then(async (r) => {
@@ -91,7 +96,7 @@ export function WorkspaceShell({
       })
       .catch(() => {
         if (!abort.signal.aborted)
-          setError(
+          setAgentError(
             "Die Agenten konnten nicht geladen werden. Lade die Seite bitte erneut.",
           );
       });
@@ -119,11 +124,12 @@ export function WorkspaceShell({
         <nav aria-label="Hauptnavigation">
           {primary.map((p) => (
             <Link
+              prefetch={false}
               key={p.id}
               href={p.href}
               aria-current={path === p.href || (p.id === "my-apps" && path.startsWith("/dashboard/apps/")) ? "page" : undefined}
             >
-              {p.label}
+              <span className={`workspace-nav-mark nav-${p.id}`} aria-hidden="true" />{p.label}
             </Link>
           ))}
           <a
@@ -134,7 +140,7 @@ export function WorkspaceShell({
             Archiv der Lebenskünste ↗
           </a>
         </nav>
-        <button
+        <Bookmarks/><button
           className="workspace-button"
           onClick={() => window.dispatchEvent(new Event("neo-open-help"))}
         >
@@ -176,7 +182,7 @@ export function WorkspaceShell({
               retry={() => window.location.reload()}
             />
           ) : (
-            children
+            <>{agentError && <p role="status" className="workspace-muted">{agentError} Deine Inhalte bleiben verfügbar.</p>}{children}</>
           )}
         </main>
       </div>
@@ -189,7 +195,7 @@ export function WorkspaceShell({
           <Notebook />
         </Dialog>
       )}
-      <FocusRuntime />
+      <FocusRuntime />{focusOpen && <FocusSpace/>}
       {(playing || running) && <Audio />}
       {completion && <Completion />}
     </div>

@@ -36,6 +36,11 @@ export const primary: Destination[] = [
     group: "Arbeiten",
     keywords: "journal tagebuch fokus",
   },
+  {id:"ideas",label:"Ideenboard",href:"/dashboard/eden",group:"Arbeiten",keywords:"eden canvas ideen sammeln tabellen formeln"},
+  {id:"planner",label:"Tagesplan & Ziele",href:"/dashboard/goals",group:"Arbeiten",keywords:"wochenplan monat 100 gründe pyramide"},
+  {id:"calendar",label:"Kalender",href:"/dashboard/calendar",group:"Arbeiten",keywords:"termine heute"},
+  {id:"soul",label:"Astrologie & Identität",href:"/dashboard/soul",group:"Entdecken",keywords:"himmelskompass mond westlich vedisch chinesisch maya tzolkin keltisch human design"},
+  {id:"meditation",label:"Fokus & Meditation",href:"/dashboard/meditation",group:"Entdecken",keywords:"ruhe visual room musik gong"},
   { id: "my-apps", label: "Meine Apps", href: "/dashboard/apps", group: "Entdecken", keywords: "radio kochbuch kino visual frequency atelier good news living arts" },
   {
     id: "lab",
@@ -404,7 +409,7 @@ export const laboratory: Destination[] = [
   },
 ];
 
-export const destinations = [...primary, ...laboratory];
+export const destinations = [...primary, ...laboratory.filter(l => !primary.some(p => p.href === l.href))];
 export const actions: Destination[] = [
   {
     id: "new-note",

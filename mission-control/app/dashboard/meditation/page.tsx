@@ -1,4 +1,6 @@
 'use client';
+import {MediaLibrary} from '@/components/workspace/MediaLibrary';
+import {FocusCard} from '@/components/workspace/FocusSpace';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -324,7 +326,7 @@ export default function MeditationPage() {
   const useCustomVideo = !!selectedCustom;
 
   return (
-    <div className="space-y-8 fade-in">
+    <div className="space-y-8 fade-in"><FocusCard/><MediaLibrary/>
       <div>
         <h1 className="text-xl font-bold text-gold-gradient mb-1">Meditation</h1>
         <p className="text-xs text-anth-500">Focus backgrounds · Healing frequencies · Pause loops</p>

@@ -5,7 +5,7 @@ export type AssistantPreferences = {
   browserVoice: string; voice: string;
 };
 export const defaultPreferences: AssistantPreferences = {
-  brightness: 0, sound: true, microphone: true, volume: .8,
+  brightness: 100, sound: true, microphone: true, volume: .8,
   rate: 1, pitch: 1, provider: "browser", browserVoice: "", voice: "",
 };
 const bounded = (v: unknown, min: number, max: number, fallback: number) =>
@@ -13,7 +13,7 @@ const bounded = (v: unknown, min: number, max: number, fallback: number) =>
 export function preferencesOf(value: unknown): AssistantPreferences {
   const p = value && typeof value === "object" ? value as Partial<AssistantPreferences> : {};
   return {
-    brightness: bounded(p.brightness, 0, 100, 0), sound: p.sound !== false, microphone: p.microphone !== false,
+    brightness: bounded(p.brightness, 0, 100, 100), sound: p.sound !== false, microphone: p.microphone !== false,
     volume: bounded(p.volume, 0, 1, .8), rate: bounded(p.rate, .5, 2, 1), pitch: bounded(p.pitch, .5, 2, 1),
     provider: ["browser", "vocallab", "off"].includes(p.provider || "") ? p.provider! : "browser",
     browserVoice: typeof p.browserVoice === "string" ? p.browserVoice.slice(0, 300) : "",
@@ -21,23 +21,26 @@ export function preferencesOf(value: unknown): AssistantPreferences {
   };
 }
 export function themePalette(brightness: number) {
-  const amount = bounded(brightness, 0, 100, 0) / 100;
+  const amount = bounded(brightness, 0, 100, 100) / 100;
   const mix = (dark: number[], light: number[]) => dark.map((v, i) => Math.round(v + (light[i] - v) * amount));
   const rgb = (color: number[]) => `rgb(${color.join(", ")})`;
-  const background = mix([15, 20, 18], [244, 247, 242]);
+  const background = mix([19, 20, 30], [248, 248, 247]);
   // Pick the higher-contrast foreground even at intermediate slider positions.
   const luminance = background.map(v => v / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4)
     .reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
   const lightText = luminance < .18;
   return {
-    "--theme-bg": rgb(background), "--theme-surface": rgb(mix([25, 34, 28], [231, 238, 229])),
-    "--theme-sidebar": rgb(mix([18, 34, 24], [222, 233, 218])),
-    "--theme-panel": rgb(mix([30, 41, 34], [235, 242, 232])),
+    "--theme-bg": rgb(background), "--theme-surface": rgb(mix([28, 29, 42], [255, 254, 251])),
+    "--theme-sidebar": rgb(mix([22, 24, 37], [241, 244, 246])),
+    "--theme-panel": rgb(mix([33, 35, 50], [237, 242, 245])),
     "--theme-text": lightText ? "#ffffff" : "#000000",
-    "--theme-muted": luminance > .08 && luminance < .3 ? (lightText ? "#ffffff" : "#000000") : lightText ? "#c1d4c7" : "#253d2c",
-    "--theme-border": lightText ? "#667d6b" : "#677866",
-    "--theme-accent": lightText ? "#b5dfbb" : "#23552c",
-    "--theme-active": rgb(mix([27, 61, 39], [197, 221, 193])),
+    "--theme-muted": luminance > .08 && luminance < .3 ? (lightText ? "#ffffff" : "#000000") : lightText ? "#c7cbdc" : "#394957",
+    "--theme-border": lightText ? "#75788f" : "#858c99",
+    "--theme-accent": lightText ? "#94ded8" : "#075e64",
+    "--theme-purple": lightText ? "#dac2f5" : "#513170",
+    "--theme-pink": lightText ? "#f0b5d0" : "#963461",
+    "--theme-green": lightText ? "#b5dfbb" : "#23552c",
+    "--theme-active": rgb(mix([40, 34, 61], [234, 228, 245])),
   };
 }
 export function isCaptureShortcut(event: Pick<KeyboardEvent, "code" | "ctrlKey" | "shiftKey" | "altKey" | "metaKey" | "isComposing">) {

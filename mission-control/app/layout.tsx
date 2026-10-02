@@ -8,6 +8,7 @@ import { BrandProvider } from '@/components/voice/BrandProvider';
 import { VoiceLauncher } from '@/components/voice/VoiceLauncher';
 import { AppFrame } from '@/components/workspace/AppFrame';
 import { AssistantPreferencesProvider } from '@/components/assistant/Preferences';
+import '@/components/workspace/restored.css';
 import '@/components/assistant/assistant.css';
 
 const inter = Inter({
@@ -45,13 +46,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const dynamic = 'force-dynamic';
 export function generateMetadata(): Metadata {
   const { appName } = brandConfig();
-  return {title: `${appName} | YOU ARE NEO`, description: `${appName} – dein persönlicher Arbeitsraum`, robots:'noindex', manifest:'/manifest.webmanifest', appleWebApp:{capable:true,title:appName,statusBarStyle:'black-translucent'}, icons:{icon:'/pwa/icon-192.png',apple:'/pwa/icon-192.png'}};
+  return {title: `${appName} | YOU ARE NEO`, description: `${appName} – dein persönlicher Arbeitsraum`, robots:'noindex', manifest:'/manifest.webmanifest', appleWebApp:{capable:true,title:appName,statusBarStyle:'black-translucent'}, icons:{icon:[{url:'/pwa/purple-sun-favicon.ico',sizes:'any'},{url:'/pwa/purple-sun-32.png',sizes:'32x32',type:'image/png'}],apple:'/pwa/purple-sun-180.png'}};
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0A110D',
+  themeColor: '#f8f8f7',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

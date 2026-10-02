@@ -38,6 +38,10 @@ export default async function Dashboard() {
         Inhalte. Werkzeuge und Experimente findest du im Labor.
       </p>
       <div className="workspace-grid">
+        <Link className="workspace-card" href="/dashboard/apps" prefetch={false}>
+          Meine Apps
+          <small>Radio, Kochbuch und deine kreativen Räume →</small>
+        </Link>
         <Link className="workspace-card" href="/dashboard/labor">
           Labor entdecken
           <small>Bisherige Arbeitsbereiche und externe Werkzeuge →</small>

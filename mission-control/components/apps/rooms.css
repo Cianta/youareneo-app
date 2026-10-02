@@ -1,0 +1,67 @@
+.room-heading { position:relative; margin:20px 0 30px; text-align:center; }
+.garden-vines { position:absolute; inset:0; width:100%; height:100%; color:#829866; pointer-events:none; opacity:.65; }
+.room-heading h1 { font:400 clamp(42px,7vw,74px)/1.1 Georgia,serif; }
+.room-heading > p:last-child { color:#d6c9aa; }
+.radio-room { max-width:1000px; --app-gold:#dec48b; }
+.radio-cabinet { display:grid; grid-template-columns:1fr 1fr; gap:28px; padding:30px; background:repeating-linear-gradient(2deg,#62402b 0,#734c30 3px,#62402b 7px,#654329 11px); border:5px solid #8f6541; border-radius:30px; box-shadow:0 12px 32px #0004,inset 0 0 0 2px #b39160; }
+.radio-speaker { min-height:210px; display:grid; place-items:center; text-align:center; border-radius:15px; border:4px solid #4e3526; background:repeating-linear-gradient(0deg,#ad9974 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,#ad9974 0 1px,#564b38 1px 4px); }
+.radio-speaker > span { color:#f6e3b8; background:#252a20; border:1px solid #c9a16c; padding:16px 22px; font:400 27px/1.2 Georgia,serif; letter-spacing:.18em; border-radius:50%; }
+.radio-speaker small { font:10px/1.5 system-ui; letter-spacing:0; }
+.radio-controls { min-width:0; }
+.radio-dial { position:relative; display:flex; justify-content:space-between; padding:20px 12px; border:3px solid #b89862; border-radius:5px; color:#48321d; font-size:12px; background:repeating-linear-gradient(90deg,transparent 0 12px,#a2804660 12px 13px),linear-gradient(#deb969,#f5dba0); }
+.radio-dial i { position:absolute; left:58%; top:4px; bottom:4px; width:2px; background:#9d372c; }
+.radio-current { position:relative; padding-left:20px; margin:22px 0; min-height:64px; }
+.radio-current strong { display:block; color:#fff0d0; font:400 23px/1.3 Georgia,serif; overflow-wrap:anywhere; }
+.radio-current small { display:block; color:#f2ddbb; font-size:12px; margin-top:8px; }
+.radio-lamp { position:absolute; left:0; top:8px; width:9px; height:9px; border-radius:50%; background:#553f29; border:1px solid #cfa36a; }
+.radio-lamp.is-on { background:#f4cb69; box-shadow:0 0 7px #f4cb69; }
+.radio-knobs { display:flex; gap:25px; align-items:center; }
+.radio-power { flex-shrink:0; width:56px; height:56px; border-radius:50%; border:4px solid #bc9c69; background:radial-gradient(#434637,#161d16); color:#f0ddb5; font-size:21px; }
+.radio-power:disabled { opacity:.5; }
+.radio-knobs label { display:grid; gap:8px; font-size:12px; color:#fff0d0; flex:1; }
+.workspace-content .radio-knobs input[type="range"] { padding:0; width:100%; background:none; border:0; accent-color:#e5c27c; }
+.room-search { display:flex; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-top:32px; }
+.room-search label { flex:1 1 150px; display:grid; gap:8px; }
+.room-search label:first-child { flex:2 1 230px; }
+.neo-apps input,.neo-apps select,.neo-apps textarea { width:100%; color:#ece9dc; border:1px solid #788066; background:#1c2c21; border-radius:7px; padding:12px; min-height:44px; font:14px/1.6 system-ui; }
+.room-button { display:inline-flex; justify-content:center; align-items:center; min-height:44px; border-radius:7px; padding:10px 18px; background:#3e452c; color:#fff5df; border:1px solid #af945a; font:14px/1.5 system-ui; }
+.room-button:disabled { opacity:.5; cursor:wait; }
+.radio-presets { display:flex; gap:8px; flex-wrap:wrap; margin:20px 0; }
+.radio-presets button { min-height:44px; padding:10px 16px; border:1px solid #788066; color:#e9e1cb; border-radius:24px; }
+.radio-presets button[aria-pressed="true"] { background:#d7be87; color:#293023; }
+.room-state { padding:22px; border:1px dashed #7b8068; border-radius:8px; margin:16px 0; }
+.room-error { padding:18px; border:1px solid #e6b194; border-radius:8px; margin:16px 0; color:#ffddc4; background:#442d26; }
+.radio-stations { list-style:none; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px; }
+.radio-station { display:flex; min-width:0; border:1px solid #59634b; background:#222f23; border-radius:10px; }
+.radio-tune { flex:1; display:flex; gap:12px; min-width:0; align-items:center; padding:14px; text-align:left; }
+.radio-tune > span:last-child { min-width:0; }
+.radio-tune strong { display:block; font-size:14px; overflow-wrap:anywhere; }
+.radio-tune small { display:block; color:#c2c8b2; font-size:11px; margin-top:5px; overflow-wrap:anywhere; }
+.radio-tune[aria-pressed="true"] { background:#3e4a2a; border-radius:10px 0 0 10px; }
+.radio-station-symbol { flex-shrink:0; font-size:27px; color:#dec48b; }
+.radio-remember { flex-shrink:0; width:44px; min-height:44px; align-self:center; font-size:22px; color:#e0c98e; }
+.radio-remember:disabled { opacity:.55; }
+.cookbook-room { max-width:1100px; }
+.book-cover { position:relative; background:radial-gradient(ellipse at center,#34503b,#19392c); border:1px solid #ac935e; outline:1px solid #ac935e; outline-offset:-12px; border-radius:12px; text-align:center; padding:30px 24px; box-shadow:inset 8px 0 0 #0f2a1d; }
+.book-cover h1 { margin:12px 0; font:400 clamp(34px,5vw,66px)/1.03 Georgia,serif; color:#ecd29b; }
+.book-cover > p:last-of-type { color:#e3d6b5; }
+.book-ornament { color:#c4a973; font:42px/1 Georgia,serif; margin:12px; }
+.book-pages { display:grid; grid-template-columns:1fr 1fr; margin:26px 0; border:1px solid #beaa7c; border-radius:8px; background:#efe6cd; color:#343d2a; }
+.book-page { padding:30px; min-width:0; }
+.book-page + .book-page { border-left:1px solid #cbb88d; box-shadow:inset 9px 0 10px -9px #826f39; }
+.book-page h2 { margin:12px 0 24px; font:400 28px/1.2 Georgia,serif; }
+.book-chapter { font:11px/1.6 system-ui; letter-spacing:.12em; text-transform:uppercase; color:#67532f; }
+.book-page label { display:grid; gap:6px; margin:16px 0; font-size:13px; color:#434b34; }
+.workspace-content .book-page :is(input,textarea,select) { color:#303724; background:#faf5e6; border:1px solid #8a805b; font:15px/1.6 Georgia,serif; padding:12px; }
+.book-page textarea { resize:vertical; }
+.book-page fieldset { border:0; margin:0; padding:0; min-width:0; }
+.book-page .room-state { color:#434b34; }
+.book-page .room-error { color:#672c21; background:#f6d9c5; border-color:#9f5747; }
+.book-small { color:#585b41; font-size:12px; margin:22px 0 0; }
+.recipe-entry { border-bottom:1px solid #b6a376; padding:6px 0; }
+.recipe-entry summary { cursor:pointer; min-height:44px; padding:12px 0; font:400 20px/1.3 Georgia,serif; overflow-wrap:anywhere; }
+.recipe-text { white-space:pre-wrap; overflow-wrap:anywhere; font:16px/1.8 Georgia,serif; }
+.recipe-entry a { display:inline-flex; align-items:center; min-height:44px; color:#405435; text-decoration:underline; font-size:13px; }
+.cookbook-room .book-page :is(button,a,input,select,textarea,summary):focus-visible { outline-color:#527841; }
+@media(max-width:760px) { .book-pages { grid-template-columns:1fr; } .book-page + .book-page { border-left:0; border-top:1px solid #cbb88d; } }
+@media(max-width:540px) { .radio-cabinet { gap:14px; padding:18px; grid-template-columns:1fr; border-radius:20px; } .radio-speaker { min-height:105px; } .radio-speaker > span { padding:12px 26px; font-size:22px; } .radio-dial { margin-top:6px; } .book-page { padding:22px 18px; } .radio-stations { grid-template-columns:1fr; } }

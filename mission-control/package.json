@@ -1,7 +1,7 @@
 {
   "name": "mission-control",
   "version": "1.0.0",
-  "description": "AI Agent Operating System — Academy Mission Control Dashboard",
+  "description": "AI Agent Operating System \u2014 Academy Mission Control Dashboard",
   "private": true,
   "main": "electron/main.js",
   "scripts": {
@@ -20,7 +20,10 @@
     "test:brain": "tsx --test tests/brain.test.ts",
     "test:brain:browser": "node scripts/test-brain-browser.mjs",
     "test:chat": "tsx --test tests/chat.test.ts",
-    "test:chat:browser": "node scripts/test-chat-browser.mjs"
+    "test:chat:browser": "node scripts/test-chat-browser.mjs",
+    "test:apps": "tsx --test tests/apps.test.ts",
+    "test:apps:browser": "node scripts/test-apps-browser.mjs",
+    "audit:apps:local": "node scripts/audit-apps-local.mjs"
   },
   "build": {
     "appId": "com.youareneo.mission-control",

@@ -87,3 +87,10 @@ Fortsetzung auf PR #14: benannter, scrollbarer Login-Hauptinhalt, 44-px-Buttons,
 ### 01.10.2026 – Notizlisten-Zustände und Filterwechsel
 
 Nach „ok weiter“: verspätete Antworten/Fehler und alte Aktualisierungs-Callbacks können keine neue Notizsuche überschreiben. Lade-/Fehler-/Leerzustände direkt an der Liste, Filter zurücksetzen mit erhaltenem Entwurf, gezieltes Wiederholen beim Nachladen und Schutz gegen doppelte/überholte Seiten. Lokal reproduziert und mit gesperrten externen Requests geprüft. Details: [TRINITY-NOTIZLISTE.md](TRINITY-NOTIZLISTE.md). Branch `codex/trinity-notes-states` auf PR #15; ausschließlich Staging, keine Schnittstellen-/Env-Änderung und keine echte Anbieter-/Handy-Abnahme.
+
+
+## Änderungen durch Codex · Meine Apps (02.10.2026)
+
+Auf ausdrücklichen erweiterten Nutzerauftrag: neuer Einstieg `/dashboard/apps`, native Räume `/dashboard/apps/radio` und `/dashboard/apps/kochbuch`, sechs Detailseiten unter `/dashboard/apps/[slug]`. Neuer Navigationseintrag „Meine Apps“; vorhandene Labor-Routen bleiben erhalten. Einzelheiten, Umzugsbefunde und Gestaltungsideen in [TRINITY-APPS.md](TRINITY-APPS.md).
+
+Keine API-, Cookie-, Tabellenfeld- oder Env-Änderung. Neue private Sammlungen nutzen die vorhandene Notiz-API: Tag `kochbuch` für lesbare Rezeptnotizen mit Jahreszeit-Tag; Tag `radiofavorit` für Radio-Merkungen mit validiertem Sender-JSON in `transcript`. Bestehende Alt-Sammlungen werden nicht automatisch migriert. Die sechs öffentlich geprüften Alt-App-Domains leiten noch nach FuseBase weiter; eine gemeinsame Kontoübernahme ist dadurch nicht erledigt. Produktion, DNS, Traefik, Portal, n8n, Medien und externe Einstellungen bleiben unverändert.

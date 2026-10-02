@@ -3,7 +3,7 @@
   --theme-panel: #1e2922; --theme-text: #eff7f0; --theme-muted: #c1d4c7;
   --theme-border: #667d6b; --theme-accent: #b5dfbb; --theme-active: #1b3d27;
 }
-html[data-trinity-theme] { --bg: var(--theme-bg); --surface: var(--theme-surface); --panel: var(--theme-panel); --border: var(--theme-border); }
+.workspace-shell { --bg: var(--theme-bg); --surface: var(--theme-surface); --panel: var(--theme-panel); --border: var(--theme-border); }
 .workspace-shell, .workspace-shell .workspace-topbar { background: var(--theme-bg); color: var(--theme-text); }
 .workspace-shell .workspace-sidebar, .workspace-mobile-tabs { background: var(--theme-sidebar); color: var(--theme-text); }
 .workspace-shell .workspace-sidebar { border-color: var(--theme-border); }

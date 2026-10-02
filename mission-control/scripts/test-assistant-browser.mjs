@@ -134,5 +134,12 @@ try{
   await page.click('[aria-label="Trinity Einstellungen öffnen"]');await page.screenshot({path:'/tmp/trinity-assistant-screens/mobile-settings.png'});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   assert.equal(await page.evaluate(()=>window.fixtureMedia.active),0);assert.deepEqual(errors,[]);
+  await page.goto(base+'/login',{waitUntil:'networkidle0'});
+  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('trinity-display-voice')).brightness),100);
+  const loginContrast=await page.$eval('[aria-label="E-Mail"]',e=>{
+    const s=getComputedStyle(e),lum=c=>c.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+    const a=lum(s.backgroundColor),b=lum(s.color);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+  });
+  assert(loginContrast>=4.5,'A saved light workspace preference must keep login fields readable');
   console.log(JSON.stringify({passed:true,fixture:true,simulatedWrites:writes.length,transcriptions:requests.filter(r=>r.path==='/api/voice/transcribe').length,screenshots:'/tmp/trinity-assistant-screens',errors}));
 }finally{await browser.close();}

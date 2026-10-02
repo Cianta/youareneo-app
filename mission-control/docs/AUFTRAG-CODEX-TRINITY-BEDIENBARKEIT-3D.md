@@ -94,3 +94,8 @@ Nach „ok weiter“: verspätete Antworten/Fehler und alte Aktualisierungs-Call
 Auf ausdrücklichen erweiterten Nutzerauftrag: neuer Einstieg `/dashboard/apps`, native Räume `/dashboard/apps/radio` und `/dashboard/apps/kochbuch`, sechs Detailseiten unter `/dashboard/apps/[slug]`. Neuer Navigationseintrag „Meine Apps“; vorhandene Labor-Routen bleiben erhalten. Einzelheiten, Umzugsbefunde und Gestaltungsideen in [TRINITY-APPS.md](TRINITY-APPS.md).
 
 Keine API-, Cookie-, Tabellenfeld- oder Env-Änderung. Neue private Sammlungen nutzen die vorhandene Notiz-API: Tag `kochbuch` für lesbare Rezeptnotizen mit Jahreszeit-Tag; Tag `radiofavorit` für Radio-Merkungen mit validiertem Sender-JSON in `transcript`. Bestehende Alt-Sammlungen werden nicht automatisch migriert. Die sechs öffentlich geprüften Alt-App-Domains leiten noch nach FuseBase weiter; eine gemeinsame Kontoübernahme ist dadurch nicht erledigt. Produktion, DNS, Traefik, Portal, n8n, Medien und externe Einstellungen bleiben unverändert.
+
+
+## Änderungen durch Codex · guiding.space
+
+Produktname guiding.space, Assistentin Trinity. Sprachchat über das gemeinsame Dock; alter Seitenpfad bleibt gültig. Astrologie & Human Design vereint Geburt, Tagesenergien/Mondkalender/Portaltage und Menschen & Team unter /dashboard/soul. Keine Domainänderung. Quellenvergleich und Bedienung: [GUIDING-SPACE-WIDGET.md](GUIDING-SPACE-WIDGET.md).

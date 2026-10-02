@@ -1773,3 +1773,26 @@
 @keyframes voice-pulse{50%{opacity:.35}}
 @media(max-width:900px){:where(.workspace-shell) .v-dock{left:18px;bottom:18px}:where(.workspace-shell) .v-panel{width:330px}:where(.workspace-shell) .v-label small{max-width:175px}}
 @media(prefers-reduced-motion:reduce){:where(.workspace-shell) .v-pill.is-recording>button:first-child{animation:none}}
+.workspace-shell .astro-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0;}
+.workspace-shell .astro-tabs [aria-selected=true]{background:var(--theme-active);color:var(--theme-purple);border-color:var(--theme-purple);}
+.workspace-shell .astro-legacy{display:grid;gap:18px;}
+.workspace-shell .hd-details{margin-top:20px;}
+.workspace-shell .hd-layout{display:grid;grid-template-columns:minmax(240px,1fr) minmax(240px,1fr);gap:22px;margin:20px 0;}
+.workspace-shell .hd-centers{width:100%;max-height:440px;}
+.workspace-shell .hd-center-list{padding:0;list-style:none;}
+.workspace-shell .hd-center-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--theme-border);font-size:12px;}
+.workspace-shell .hd-center-list strong{color:var(--theme-purple);font-weight:500;}
+.workspace-shell .hd-details details{margin-top:20px;}
+.workspace-shell .hd-details summary{min-height:44px;cursor:pointer;}
+.workspace-shell .hd-gates{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;}
+.workspace-shell .hd-gates span{border:1px solid var(--theme-border);border-radius:10px;text-align:center;padding:10px 4px;font:12px var(--font-jetbrains),monospace;}
+.workspace-shell .hd-gates [data-personality]{border-color:var(--theme-purple);background:var(--theme-active);}
+.workspace-shell .hd-gates [data-design]{border-color:var(--theme-pink);box-shadow:inset 0 -4px 0 var(--theme-pink);}
+.workspace-shell .hd-table-scroll{overflow:auto;}
+.workspace-shell .hd-table-scroll table{border-collapse:collapse;width:100%;}
+.workspace-shell .hd-table-scroll :is(th,td){padding:10px;text-align:left;border-bottom:1px solid var(--theme-border);font-size:12px;}
+@media(max-width:650px){.workspace-shell .hd-layout{grid-template-columns:1fr}.workspace-shell .astro-tabs .w-btn{flex:1 1 130px}.workspace-shell .hd-gates{gap:4px}}
+.workspace-shell .astro-moon-month{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:16px 0;}
+.workspace-shell .astro-moon-month>div{display:grid;place-items:center;padding:10px 3px;border-radius:10px;background:var(--theme-panel);font-size:12px;}
+.workspace-shell .astro-moon-month span{font-size:21px;}
+.workspace-shell .astro-moon-month [data-today]{outline:2px solid var(--theme-purple);}

@@ -27,7 +27,6 @@ export const primary: Destination[] = [
     href: "/dashboard/projekte",
     group: "Arbeiten",
   },
-  { id: "voice-chat", label: "Sprachchat", href: "/sprechen", group: "Arbeiten", keywords: "reden sprechen stimme assistentin" },
   { id: "brain", label: "Gehirn", href: "/gehirn", group: "Arbeiten", keywords: "wissen graph second brain verbindungen" },
   {
     id: "notebooks",
@@ -39,7 +38,7 @@ export const primary: Destination[] = [
   {id:"ideas",label:"Ideenboard",href:"/dashboard/eden",group:"Arbeiten",keywords:"eden canvas ideen sammeln tabellen formeln"},
   {id:"planner",label:"Tagesplan & Ziele",href:"/dashboard/goals",group:"Arbeiten",keywords:"wochenplan monat 100 gründe pyramide"},
   {id:"calendar",label:"Kalender",href:"/dashboard/calendar",group:"Arbeiten",keywords:"termine heute"},
-  {id:"soul",label:"Astrologie & Identität",href:"/dashboard/soul",group:"Entdecken",keywords:"himmelskompass mond westlich vedisch chinesisch maya tzolkin keltisch human design"},
+  {id:"soul",label:"Astrologie & Human Design",href:"/dashboard/soul",group:"Entdecken",keywords:"himmelskompass mond westlich vedisch chinesisch maya tzolkin keltisch human design"},
   {id:"meditation",label:"Fokus & Meditation",href:"/dashboard/meditation",group:"Entdecken",keywords:"ruhe visual room musik gong"},
   { id: "my-apps", label: "Meine Apps", href: "/dashboard/apps", group: "Entdecken", keywords: "radio kochbuch kino visual frequency atelier good news living arts" },
   {
@@ -65,6 +64,7 @@ export const mobileTabs = [
 
 // Existing tools retain their routes and data; experiments live behind Labor.
 export const laboratory: Destination[] = [
+  {id:"voice-chat",label:"Trinity Gespräch",href:"/sprechen",group:"Assistentin",keywords:"reden sprechen stimme prompt widget"},
   {
     id: "legacy-overview",
     label: "Bisherige Gesamtübersicht",

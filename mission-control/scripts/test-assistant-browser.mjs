@@ -66,9 +66,9 @@ page.on('request',async r=>{
     return r.respond({status,contentType:'application/json',body:JSON.stringify(d)});
   }catch{/* canceled requests */}
 });
-async function clickText(text){await page.evaluate(t=>{const b=[...document.querySelectorAll('.assistant-panel button')].find(e=>e.textContent.trim()===t);if(!b)throw Error('Missing button '+t);b.click();},text);}
-async function text(text){await page.waitForFunction(t=>document.querySelector('.assistant-panel')?.textContent.includes(t),{},text);}
-async function hold(expected='Vorschlag bereit'){const b=await page.$('[aria-label="Sprachnotiz aufnehmen: gedrückt halten"]'),p=await b.boundingBox();await page.mouse.move(p.x+p.width/2,p.y+p.height/2);await page.mouse.down();await page.waitForFunction(()=>window.fixtureMedia.active===1);await page.waitForFunction(()=>document.querySelector('.assistant-panel')?.textContent.includes('Ich höre zu'));await page.mouse.up();await text(expected);}
+async function clickText(text){await page.evaluate(t=>{const b=[...document.querySelectorAll('.assistant-panel:not([hidden]) button')].find(e=>e.textContent.trim()===t);if(!b)throw Error('Missing button '+t);b.click();},text);}
+async function text(text){await page.waitForFunction(t=>document.querySelector('.assistant-panel:not([hidden])')?.textContent.includes(t),{},text);}
+async function hold(expected='Vorschlag bereit'){const b=await page.$('[aria-label="Sprachnotiz aufnehmen: gedrückt halten"]'),p=await b.boundingBox();await page.mouse.move(p.x+p.width/2,p.y+p.height/2);await page.mouse.down();await page.waitForFunction(()=>window.fixtureMedia.active===1);await page.waitForFunction(()=>document.querySelector('.assistant-panel:not([hidden])')?.textContent.includes('Ich höre zu'));await page.mouse.up();await text(expected);}
 try{
   await page.setViewport({width:1360,height:940});await page.goto(base+'/notiz',{waitUntil:'networkidle0'});
   assert(await page.$('.workspace-sidebar'));assert.equal(await page.$$('.workspace-shell').then(e=>e.length),1);
@@ -82,7 +82,7 @@ try{
   await page.waitForFunction(()=>getComputedStyle(document.documentElement).getPropertyValue('--theme-bg').includes('248'));
   assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('trinity-display-voice')).brightness),100);
   await page.screenshot({path:'/tmp/trinity-assistant-screens/settings-light.png'});
-  await page.click('[aria-label="Trinity schließen"]');
+  await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
   // Releasing before permission resolves must not start recording or send audio.
   await page.evaluate(()=>window.fixtureMedia.wait=true);
   const mic=await page.$('[aria-label="Sprachnotiz aufnehmen: gedrückt halten"]'),box=await mic.boundingBox();
@@ -97,10 +97,10 @@ try{
   await clickText('Am gewählten Ort speichern');await text('Speichern unterbrochen');
   assert(await page.$('.assistant-draft'));await clickText('Am gewählten Ort speichern');await text('Gespeichert am gewählten Ort');
   assert.equal(writes[0].id,writes[1].id,'Retry must reuse the exact submission id');assert.equal(writes[1].note.project,'Eden');
-  await page.click('[aria-label="Trinity schließen"]');
+  await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
   // The global hold chord also works without switching route.
   await page.keyboard.down('Control');await page.keyboard.down('Shift');await page.keyboard.down('Space');
-  await page.waitForFunction(()=>document.querySelector('.assistant-panel')?.textContent.includes('Ich höre zu'));
+  await page.waitForFunction(()=>document.querySelector('.assistant-panel:not([hidden])')?.textContent.includes('Ich höre zu'));
   await page.evaluate(()=>document.querySelector('.workspace-sidebar a[href="/notiz"]').click());await page.waitForSelector('.voice-page');
   assert.equal(await page.evaluate(()=>window.sidebarOriginal===document.querySelector('.workspace-sidebar')),true);
   await page.keyboard.up('Space');await page.keyboard.up('Shift');await page.keyboard.up('Control');await text('Vorschlag bereit');
@@ -108,26 +108,57 @@ try{
   const writesBeforeOwnerChange=writes.length;owner='second-fixture-owner';
   await clickText('Am gewählten Ort speichern');await text('Das Konto hat gewechselt');
   assert.equal(writes.length,writesBeforeOwnerChange,'An old draft must never be saved by another account');assert.equal(await page.$('.assistant-draft'),null);
-  owner='fixture-owner';await page.click('[aria-label="Trinity schließen"]');
-  await page.click('[aria-label="Trinity Einstellungen öffnen"]');await text('Das Konto hat gewechselt');await page.click('[aria-label="Trinity schließen"]');
+  owner='fixture-owner';await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
+  await page.click('[aria-label="Trinity Einstellungen öffnen"]');await text('Das Konto hat gewechselt');await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
   // Starting the dock recording stops the note recorder without submitting its audio.
   await page.click('.voice-recorder [aria-label="Aufnahme starten"]');await page.waitForFunction(()=>!!document.querySelector('.voice-recorder .is-recording'));
   const transcriptionsBeforeClaim=requests.filter(r=>r.path==='/api/voice/transcribe').length;
   await hold();assert.equal(requests.filter(r=>r.path==='/api/voice/transcribe').length,transcriptionsBeforeClaim+1);
   assert.equal(await page.$('.voice-recorder .is-recording'),null);assert.equal(await page.evaluate(()=>window.fixtureMedia.active),0);
-  await clickText('Entwurf verwerfen');await page.click('[aria-label="Trinity schließen"]');
+  await clickText('Entwurf verwerfen');await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
   failClassify=true;await hold('Einordnung vorübergehend');
   assert.equal(await page.$eval('.assistant-draft textarea',e=>e.value),'Bitte ordne meine Gartenidee bei Eden ein.');
   await clickText('Entwurf verwerfen');failClassify=false;
-  await page.click('[aria-label="Trinity schließen"]');await page.click('[aria-label="Trinity Einstellungen öffnen"]');
+  await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');await page.click('[aria-label="Trinity Einstellungen öffnen"]');
   await page.click('.assistant-settings details summary');await page.select('.assistant-settings details select','Eden');await text('Die neueste Version');
   await page.waitForFunction(()=>document.querySelector('.assistant-settings details textarea')?.value.startsWith('Rezepte'));
   await clickText('Ortsregeln speichern');await text('Ortsregeln als private Projektnotiz');
   assert.deepEqual(writes.at(-1).note.tags,['projektregeln']);assert.equal(writes.at(-1).note.project,'Eden');
-  await clickText('Sprachchat starten');await page.waitForSelector('#chat-text');
-  await page.click('[aria-label="Ton ausschalten"]');await page.type('#chat-text','Hallo');
-  await page.evaluate(()=>document.querySelector('#chat-text').closest('form').requestSubmit());await text('Hallo aus dem Test.');
-  await page.click('[aria-label="Trinity schließen"]');
+  await clickText('Sprachchat starten');await page.waitForSelector('#assistant-chat-text');
+  await page.click('[aria-label="Ton ausschalten"]');await page.type('#assistant-chat-text','Hallo');
+  await page.evaluate(()=>document.querySelector('#assistant-chat-text').closest('form').requestSubmit());await text('Hallo aus dem Test.');
+  await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
+  // Widget shortcuts retain an editable prompt and never submit a transcription automatically.
+  assert.equal(await page.$('.workspace-sidebar a[href="/sprechen"]'),null);
+  await page.keyboard.down('Alt');await page.keyboard.press('y');await page.keyboard.up('Alt');
+  await page.waitForFunction(()=>document.activeElement?.id==='assistant-chat-text');
+  await page.$eval('#assistant-chat-text',e=>{const set=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set;set.call(e,'Mein Anfang.');e.dispatchEvent(new Event('input',{bubbles:true}));e.setSelectionRange(e.value.length,e.value.length)});
+  const chatRequestsBefore=requests.filter(r=>r.path==='/api/voice/chat').length;
+  await page.keyboard.down('Alt');await page.keyboard.down('h');await page.waitForFunction(()=>window.fixtureMedia.active===1);
+  await page.keyboard.up('h');await page.keyboard.up('Alt');await text('Transkription bereit');
+  assert.equal(await page.$eval('#assistant-chat-text',e=>e.value),'Mein Anfang.\nBitte ordne meine Gartenidee bei Eden ein.');
+  assert.equal(requests.filter(r=>r.path==='/api/voice/chat').length,chatRequestsBefore,'Release transcribes without sending');
+  await page.type('#assistant-chat-text',' Noch ändern.');
+  const editedPrompt=await page.$eval('#assistant-chat-text',e=>e.value);
+  await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
+  await page.click('[aria-label="Trinity Menü öffnen"]');await page.waitForFunction(()=>document.activeElement?.id==='assistant-chat-text');
+  assert.equal(await page.$eval('#assistant-chat-text',e=>e.value),editedPrompt,'Close/reopen retains prompt in memory');
+  const explicitReply=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/voice/chat');
+  await page.keyboard.down('Alt');await page.keyboard.press('c');await page.keyboard.up('Alt');await text('Hallo aus dem Test.');await explicitReply;
+  assert.equal(requests.filter(r=>r.path==='/api/voice/chat').length,chatRequestsBefore+1);
+  // Permission delay: releasing the chord must prevent a late microphone start.
+  await page.evaluate(()=>{window.fixtureMedia.wait=true;window.fixtureMedia.resolve=null});
+  const startsBefore=await page.evaluate(()=>window.fixtureMedia.starts);
+  await page.keyboard.down('Alt');await page.keyboard.down('x');await page.waitForFunction(()=>window.fixtureMedia.resolve!==null);
+  await page.keyboard.up('x');await page.keyboard.up('Alt');await page.evaluate(()=>{window.fixtureMedia.resolve();window.fixtureMedia.wait=false;window.fixtureMedia.resolve=null});
+  await page.waitForFunction(()=>window.fixtureMedia.active===0);assert.equal(await page.evaluate(()=>window.fixtureMedia.starts),startsBefore);
+  await page.type('#assistant-chat-text','Darf nicht in ein anderes Konto gelangen.');
+  const beforeAccountChange=requests.filter(r=>r.path==='/api/voice/chat').length;owner='another-widget-owner';
+  await page.keyboard.down('Alt');await page.keyboard.press('c');await page.keyboard.up('Alt');await text('Das Konto hat gewechselt');
+  assert.equal(requests.filter(r=>r.path==='/api/voice/chat').length,beforeAccountChange,'Account change must never send the previous prompt or history');
+  assert.equal(await page.$eval('#assistant-chat-text',e=>e.value),'');assert.equal(await page.$$('.assistant-chat-panel .chat-conversation article').then(a=>a.length),0);owner='fixture-owner';
+  await page.screenshot({path:'/tmp/trinity-assistant-screens/guiding-widget.png'});
+  await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');
   await page.setViewport({width:390,height:844});await page.goto(base+'/notiz',{waitUntil:'networkidle0'});
   assert(await page.$('.workspace-mobile-tabs'));const dock=await page.$eval('.assistant-dock',e=>({y:e.getBoundingClientRect().bottom,w:e.getBoundingClientRect().width}));
   const tabs=await page.$eval('.workspace-mobile-tabs',e=>e.getBoundingClientRect().top);assert(dock.y<tabs,'Dock must not cover mobile navigation');assert(dock.w<390);

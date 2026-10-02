@@ -2,8 +2,8 @@
 import { createContext, useContext } from "react";
 import type { Brand } from "@/lib/brand";
 const BrandContext = createContext<Brand>({
-  appName: "NEO",
-  assistantName: "Assistentin",
+  appName: "guiding.space",
+  assistantName: "Trinity",
 });
 export const useBrand = () => useContext(BrandContext);
 export function BrandProvider({

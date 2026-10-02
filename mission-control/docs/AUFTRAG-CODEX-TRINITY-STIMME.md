@@ -155,3 +155,8 @@ Nutzerkorrektur gemäß `.env.example`: verbindlich `INFOMANIAK_API_TOKEN` und `
 ### 01.10.2026 – Phase 3 im Automodus
 
 Auf Nutzerfreigabe: Energielinien-Avatar in den Kopfzeilen von Übersicht, Notizen, Gehirn und Sprachchat. Vier Zustände, Mikrofonpegel aus dem vorhandenen Analyser, VocalLab-Ausgabepegel aus lokaler Web-Audio-Messung. Browser-Stimme zeigt den tatsächlichen Sprechzustand ohne simulierten Lautstärkepegel. Klick öffnet `/sprechen`, dort Fokus aufs Textfeld; reduzierte Bewegung vollständig berücksichtigt. Optionaler `onMeter`-Callback für die wiederverwendbare Aufnahme-Komponente. Keine neuen Env-Variablen oder Änderungen an HTTP-/Datenbank-/Cookie-Verträgen. Eigener Branch `codex/trinity-avatar` auf PR #13; nur Staging. Details und späterer Handytest: [TRINITY-AVATAR-PHASE3.md](TRINITY-AVATAR-PHASE3.md).
+
+
+## Änderungen durch Codex · guiding.space
+
+Das globale Trinity-Menü öffnet ein kompaktes Widget. Alt+Y öffnet/fokussiert, Alt+X hält Diktat, Alt+H ergänzt Diktat, Alt+C sendet. Loslassen und Sprechpause fügen ausschließlich bearbeitbaren Text ein; kein automatisches Absenden. /sprechen bleibt verfügbar, entfällt aber im linken Menü. Bestehende Notiz-/Hermes-Freigabe bleibt erhalten. Details: [GUIDING-SPACE-WIDGET.md](GUIDING-SPACE-WIDGET.md).

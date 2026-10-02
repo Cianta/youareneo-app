@@ -38,7 +38,7 @@ function LangSwitcher() {
 
 // ── Page title registry ────────────────────────────────────────────────────────
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
-  '/dashboard':                        { title: 'Mission Control',      subtitle: 'Agent Operating System Overview' },
+  '/dashboard':                        { title: 'Guiding Space',      subtitle: 'Deine Orientierung' },
   '/dashboard/vision/verein':          { title: 'Company',              subtitle: 'Firmenprofil · Brand · Struktur · Ziele' },
   '/dashboard/vision/hero':            { title: 'Self',                 subtitle: 'Profil · Lebensziele · Visionboard · Brainstorm' },
   '/dashboard/vision/tasks':           { title: 'Tasks',                subtitle: 'Team Trello Board' },

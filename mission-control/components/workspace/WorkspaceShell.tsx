@@ -120,7 +120,7 @@ export function WorkspaceShell({
         <Link href="/dashboard" className="workspace-brand">
           {appName}
         </Link>
-        <p className="workspace-muted">Dein Arbeitsraum</p>
+        <p className="workspace-muted">Dein Guiding Space</p>
         <nav aria-label="Hauptnavigation">
           {primary.map((p) => (
             <Link

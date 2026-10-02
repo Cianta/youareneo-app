@@ -7,7 +7,7 @@ export async function GET() {
       id: "/notiz",
       name: appName,
       short_name: appName.slice(0, 24),
-      description: "Deine persönlichen Sprach- und Textnotizen",
+      description: "Dein Guiding Space mit Trinity, Gedanken und Projekten",
       lang: "de",
       start_url: "/notiz",
       scope: "/",

@@ -133,7 +133,7 @@ app.whenReady().then(async () => {
   } catch (err) {
     console.error('[electron] Failed to start:', err);
     dialog.showErrorBox(
-      'Mission Control – Startfehler',
+      'guiding.space – Startfehler',
       `Der interne Server konnte nicht gestartet werden.\n\n${err.message}\n\nBitte die App neu starten.`
     );
     app.quit();

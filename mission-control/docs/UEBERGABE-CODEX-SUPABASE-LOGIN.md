@@ -105,3 +105,8 @@ Keine neuen Tabellenfelder, Migrationen oder Env-Variablen. Alle Auth-/Provision
 ### Änderungen durch Codex · frühere Räume und Astrologie (2. Oktober 2026)
 
 Zusätzliche interne, vom vorhandenen Proxy für angemeldete Trinity-Mitglieder geschützte Routen: `GET /api/birth-places?q=<Ort>` liefert `{places:[{name,lat,lng,timezone}]}` aus einem lokalen Städteverzeichnis; `POST /api/birth-chart` nimmt `{date:"YYYY-MM-DD",time:"HH:MM"|"",timezone:"IANA",city?:string,lat?:number,lng?:number}` an. Das Ergebnis enthält `western`, `moon`, `vedic`, `vedicMoon`, `chinese`, `maya`, `celtic`, `hd`, `utc`, `meta`, `ascendant`, `ascendantVedic`. Validierungsfehler liefern `400 {success:false,error}`, übergroße Eingaben `413`; Auth-/Zugriffsfehler weiterhin `401/403`. Geburtsdaten werden hier nicht in Supabase gespeichert, die Berechnung ruft keinen externen Anbieter auf. Antworten sind `private, no-store`. Keine Änderung an Login/Provision, Tabellen, Cookie-Name oder Cookie-Domain. Lokale alte Arbeitsbereiche und Einschränkungen stehen in `TRINITY-WIEDERHERSTELLUNG.md`.
+
+
+## Änderungen durch Codex · guiding.space
+
+Produktname jetzt guiding.space; Trinity bleibt Assistentin. Auth-, Provision-, Tabellen- und Cookie-Verträge unverändert. Bestehende Vereinsdomains bleiben aktiv; guiding.space-Domainumzug erst nach Kauf und gesondertem Auftrag. Neutrale YOU ARE NEO-Kontomails bleiben für alle angebundenen Produkte bestehen. Details: [GUIDING-SPACE-WIDGET.md](GUIDING-SPACE-WIDGET.md).

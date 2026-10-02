@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Mic, Pause, Play, Square } from "lucide-react";
 import { MAX_RECORDING_SECONDS } from "@/lib/voice/contracts";
 type Props = {
@@ -16,6 +16,7 @@ export function VoiceRecorder({
   onActiveChange,
   onMeter,
 }: Props) {
+  const microphoneId = useId(), generation = useRef(0);
   const [status, setStatus] = useState<
     "idle" | "recording" | "paused" | "requesting"
   >("idle");
@@ -67,6 +68,8 @@ export function VoiceRecorder({
     )
       return;
     busy.current = true;
+    const token = ++generation.current;
+    window.dispatchEvent(new CustomEvent("neo-microphone-claim",{detail:microphoneId}));
     setError("");
     setStatus("requesting");
     try {
@@ -78,7 +81,7 @@ export function VoiceRecorder({
         audio: { echoCancellation: true, noiseSuppression: true },
         video: false,
       });
-      if (!mounted.current) {
+      if (!mounted.current || token !== generation.current) {
         input.getTracks().forEach((t) => t.stop());
         return;
       }
@@ -100,9 +103,11 @@ export function VoiceRecorder({
       recorder.current = r;
       chunks.current = [];
       r.ondataavailable = (e) => {
+        if (token !== generation.current) return;
         if (e.data.size) chunks.current.push(e.data);
       };
       r.onerror = () => {
+        if (token !== generation.current) return;
         release();
         if (mounted.current) {
           setError("Die Aufnahme wurde unterbrochen. Bitte erneut versuchen.");
@@ -110,6 +115,7 @@ export function VoiceRecorder({
         }
       };
       r.onstop = () => {
+        if (token !== generation.current) return;
         const blob = new Blob(chunks.current, { type: r.mimeType });
         chunks.current = [];
         release();
@@ -171,6 +177,7 @@ export function VoiceRecorder({
       }, 1000);
       tick();
     } catch (e) {
+      if (token !== generation.current || !mounted.current) return;
       release();
       if (mounted.current) {
         setStatus("idle");
@@ -185,7 +192,7 @@ export function VoiceRecorder({
     } finally {
       busy.current = false;
     }
-  }, [disabled, release, stop]);
+  }, [disabled, release, stop, microphoneId]);
   const toggle = useCallback(() => {
     if (
       recorder.current?.state === "recording" ||
@@ -196,14 +203,30 @@ export function VoiceRecorder({
   }, [start, stop]);
   useEffect(() => {
     mounted.current = true;
+    const claim=(e:Event)=>{
+      if((e as CustomEvent).detail===microphoneId)return;
+      generation.current++;
+      if(recorder.current?.state!=="inactive")recorder.current?.stop();
+      recorder.current=null;chunks.current=[];release();setStatus("idle");setLevel(0);
+    };
+    window.addEventListener("neo-microphone-claim",claim);
     return () => {
       mounted.current = false;
+      generation.current++;
       if (recorder.current?.state !== "inactive") recorder.current?.stop();
       chunks.current = [];
       release();
+      window.removeEventListener("neo-microphone-claim",claim);
     };
-  }, [release]);
+  }, [release, microphoneId]);
   const attempted = useRef(false);
+  useEffect(() => {
+    if (!disabled) return;
+    generation.current++;
+    if (recorder.current?.state !== "inactive") recorder.current?.stop();
+    recorder.current = null; chunks.current = []; release();
+    setStatus("idle"); setLevel(0);
+  }, [disabled, release]);
   useEffect(() => {
     if (autoStart && !attempted.current) {
       attempted.current = true;

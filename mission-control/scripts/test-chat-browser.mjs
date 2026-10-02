@@ -12,6 +12,7 @@ const browser = await puppeteer.launch({
 });
 try {
   const page = await browser.newPage();
+  page.on("dialog", dialog => dialog.accept()); // Only disposable localhost drafts.
   await page.setViewport({ width: 390, height: 844 });
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -367,8 +368,10 @@ try {
   vocalReady = true;
   await page.reload({ waitUntil: "networkidle0" });
   await page.waitForFunction(
-    () => document.querySelector(".chat-settings select").value === "vocallab",
+    () => !document.querySelector('.chat-settings option[value="vocallab"]').disabled,
   );
+  assert.equal(await page.$eval('.chat-settings select', e => e.value), 'browser', 'Provider availability must preserve the selected browser voice');
+  await page.select('.chat-settings select', 'vocallab');
   await page.type("#chat-text", "Lautstärke testen");
   await submit();
   await avatarState("thinking");
@@ -492,8 +495,10 @@ try {
   await page.click('button[aria-label="Aufnahme stoppen"]');
   await avatarState("idle");
   await page.click(".assistant-avatar");
-  await page.waitForFunction(() => location.pathname === "/sprechen");
-  // Narrow/mobile and desktop: no controls overlap, avatar remains in the header.
+  await page.waitForSelector('.assistant-panel[aria-label="Trinity Sprachchat"] #chat-text');
+  assert.equal(new URL(page.url()).pathname, "/notiz", "Global chat preserves the current workspace route");
+  await page.click('[aria-label="Trinity schließen"]');
+  // Narrow/mobile and desktop: the single global dock remains usable without overlap.
   for (const width of [320, 390, 1280]) {
     await page.setViewport({ width, height: 844 });
     for (const route of ["/dashboard", "/notiz", "/gehirn", "/sprechen"]) {
@@ -548,7 +553,7 @@ try {
         "output context cleanup on completion, interruption and navigation",
         "native audio fallback without Web Audio",
         "note recording pause/resume avatar",
-        "four headers at 320/390/1280px without overlap",
+        "global dock at 320/390/1280px without overlap",
         "text stream",
         "optional own context",
         "free save disabled",

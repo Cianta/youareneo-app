@@ -1,5 +1,4 @@
 "use client";
-import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -40,14 +39,17 @@ const Completion = dynamic(
 export function WorkspaceShell({
   identity,
   children,
+  allowGuest = false,
 }: {
   identity: WorkspaceIdentity | null;
   children: React.ReactNode;
+  allowGuest?: boolean;
 }) {
   const { appName } = useBrand();
   const path = usePathname();
   const [notebook, setNotebook] = useState(false),
     [error, setError] = useState("");
+  const [authenticated, setAuthenticated] = useState(!!identity);
   const setUser = useAuthStore((s) => s.setUser);
   const [notebookMounted, setNotebookMounted] = useState(false);
   const running = useFocusStore((s) => s.pomodoroRunning);
@@ -59,19 +61,23 @@ export function WorkspaceShell({
   }, [identity, setUser]);
   useEffect(() => {
     if (identity) return;
-    void fetch("/api/auth/me")
+    const abort = new AbortController();
+    void fetch("/api/auth/me", {signal: abort.signal, cache: "no-store"})
       .then((r) => r.json())
       .then((d) => {
+        if (abort.signal.aborted) return;
+        setAuthenticated(!!d.authenticated);
         if (d.authenticated)
           setUser({
             name: d.displayName || "Mitglied",
             role: "Mitglied",
             avatar: "🔮",
           });
-        else window.location.assign("/login");
+        else if (!allowGuest) window.location.assign("/login");
       })
-      .catch(() => setError("Die Anmeldung konnte nicht geprüft werden."));
-  }, [identity, setUser]);
+      .catch(() => {if (!abort.signal.aborted) setError("Die Anmeldung konnte nicht geprüft werden.");});
+    return () => abort.abort();
+  }, [identity, setUser, allowGuest]);
   useEffect(() => {
     if (!path.startsWith("/dashboard/agents") && path !== "/dashboard/eden")
       return;
@@ -157,8 +163,7 @@ export function WorkspaceShell({
           >
             Notizbuch
           </button>
-          <button onClick={() => void logout()}>Abmelden</button>
-          <AssistantAvatar />
+          {authenticated ? <button onClick={() => void logout()}>Abmelden</button> : <Link href="/login" className="workspace-button">Anmelden</Link>}
         </header>
         <main
           id="workspace-content"

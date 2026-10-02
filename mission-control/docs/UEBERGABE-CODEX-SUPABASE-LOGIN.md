@@ -95,3 +95,9 @@ Der Nutzer hat ausdrücklich die Veröffentlichung der fertigen Version auf `tri
 - Build-Kontext schließt zusätzlich Deployment-Sicherungen, `.mcp.json` und Host-`data/` aus. Der Dockerfile legt das leere Datenverzeichnis an; das bestehende Produktionsvolumen liefert die Nutzerdaten.
 
 Deployment, Prüfung und Rückfall: [TRINITY-PRODUKTION.md](TRINITY-PRODUKTION.md).
+
+## Änderungen durch Codex – 02.10.2026, globaler Trinity-Assistent
+
+Additive interne Einordnung: `POST /api/voice/classify` akzeptiert optional `project: string|null` als eigentumsgeprüften Zielort und ergänzt `rulesApplied: boolean`. `GET /api/notes/projects?rulesFor=<Projekt>` ergänzt zur bisherigen Antwort `rules: string`; ohne Parameter bleibt die Antwort unverändert. Ortsregeln sind gewöhnliche eigene Notizen mit Tag `projektregeln`, Projekt und neuester `created_at`, begrenzt auf 2.000 Zeichen. Nur Einordnung, keine Ausführung oder automatische Hermes-Freigabe. Bei automatisch erkanntem Ort mit Regeln zählen beide KI-Aufrufe gegen das bestehende Limit.
+
+Keine neuen Tabellenfelder, Migrationen oder Env-Variablen. Alle Auth-/Provision-/Cookie-Verträge, `neo_profiles` und Portal-/n8n-Verträge bleiben erhalten. Gerätepräferenzen für Anzeige/Stimme dürfen im localStorage liegen; Sitzungen und Notizen weiterhin nicht. Navigation und Assistent sind nun über die Arbeitsraum-Routen hinweg persistent. Bedienung und Prüfung: [TRINITY-ASSISTENT-BEDIENUNG.md](TRINITY-ASSISTENT-BEDIENUNG.md).

@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mission-control:release-b36e157
+    image: mission-control:global-assistant-20261002
     pull_policy: never
     restart: unless-stopped
     expose:

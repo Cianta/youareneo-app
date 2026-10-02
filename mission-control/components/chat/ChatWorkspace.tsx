@@ -1,5 +1,4 @@
 "use client";
-import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useBrand } from "@/components/voice/BrandProvider";
@@ -9,6 +8,7 @@ import type { SpeechVoice } from "@/lib/chat/speech";
 import { observePlayback } from "@/lib/chat/playback-meter";
 import { useChatMicrophone } from "./useChatMicrophone";
 import "./chat.css";
+import { useAssistantPreferences } from "@/components/assistant/Preferences";
 type Turn = ChatMessage & {
   id: string;
   complete: boolean;
@@ -16,10 +16,18 @@ type Turn = ChatMessage & {
 };
 export default function ChatWorkspace({
   providerLabel,
+  embedded = false,
 }: {
   providerLabel: string;
+  embedded?: boolean;
 }) {
   const { assistantName } = useBrand();
+  const {preferences, update} = useAssistantPreferences();
+  const preferencesRef = useRef(preferences); preferencesRef.current = preferences;
+  const {provider, voice, browserVoice} = preferences;
+  const setProvider = (value: typeof provider) => update({provider:value});
+  const setVoice = (value:string) => update({voice:value});
+  const setBrowserVoice = (value:string | ((old:string)=>string)) => update({browserVoice:typeof value === "function" ? value(preferencesRef.current.browserVoice) : value});
   const [turns, setTurns] = useState<Turn[]>([]),
     [text, setText] = useState(""),
     [includeNotes, setIncludeNotes] = useState(false),
@@ -30,14 +38,9 @@ export default function ChatWorkspace({
     [canSave, setCanSave] = useState(false),
     [transcriptionReady, setTranscriptionReady] = useState(false),
     [chatReady, setChatReady] = useState(false);
-  const [provider, setProvider] = useState<"vocallab" | "browser" | "off">(
-      "browser",
-    ),
-    [vocalReady, setVocalReady] = useState(false),
+  const [vocalReady, setVocalReady] = useState(false),
     [voices, setVoices] = useState<SpeechVoice[]>([]),
-    [voice, setVoice] = useState(""),
-    [browserVoices, setBrowserVoices] = useState<SpeechSynthesisVoice[]>([]),
-    [browserVoice, setBrowserVoice] = useState("");
+    [browserVoices, setBrowserVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [notice, setNotice] = useState(""),
     [saving, setSaving] = useState(false),
     [retry, setRetry] = useState(0),
@@ -82,8 +85,8 @@ export default function ChatWorkspace({
     onAudio: (blob) => audioTurn.current(blob),
     onSpeechStart: interrupt,
   });
-  const settings = useRef({ provider, voice, browserVoice });
-  settings.current = { provider, voice, browserVoice };
+  const settings = useRef(preferences);
+  settings.current = preferences;
   useEffect(() => {
     const abort = new AbortController();
     fetch("/api/voice/config", { signal: abort.signal, cache: "no-store" })
@@ -125,9 +128,8 @@ export default function ChatWorkspace({
             v.languages.some((l) => l.startsWith("de")),
           ) ||
           d.voices?.[0];
-        setVoice(chosen?.id || "");
-        if (d.ready && chosen) setProvider("vocallab");
-        else
+        if (!preferencesRef.current.voice) setVoice(chosen?.id || "");
+        if (!d.ready)
           setNotice(
             "VocalLab ist noch nicht eingerichtet. Die Browser-Stimme steht als Rückfall bereit.",
           );
@@ -170,11 +172,23 @@ export default function ChatWorkspace({
     };
   }, [interrupt]);
   useEffect(() => {
+    const stop=()=>{mic.cancel();interrupt();};
+    const mute=()=>{stopPlayback.current?.();stopPlayback.current=null;audio.current?.pause();window.speechSynthesis?.cancel();setPlaying(false);setOutputLevel(0);};
+    window.addEventListener("neo-stop-chat",stop);window.addEventListener("neo-stop-speech",mute);
+    return()=>{window.removeEventListener("neo-stop-chat",stop);window.removeEventListener("neo-stop-speech",mute);};
+  },[interrupt,mic.cancel]);
+  useEffect(()=>{if(!preferences.microphone)mic.cancel();},[preferences.microphone,mic.cancel]);
+  const pulseLevel=Math.round((playing ? outputLevel : mic.state === "recording" || mic.state === "listening" ? mic.level : 0)*20)/20;
+  useEffect(()=>{
+    window.dispatchEvent(new CustomEvent("neo-assistant-state",{detail:{state:playing ? "speaking" : busy ? "thinking" : mic.state==="recording" || mic.state==="listening" ? "listening" : "idle",level:pulseLevel}}));
+  },[mic.state,playing,busy,pulseLevel]);
+  useEffect(()=>()=>{window.dispatchEvent(new CustomEvent("neo-assistant-state",{detail:{state:"idle",level:0}}));},[]);
+  useEffect(() => {
     bottom.current?.scrollIntoView({ block: "nearest" });
   }, [turns.length]);
   async function playText(answer: string, token: number, signal: AbortSignal) {
     const pref = settings.current;
-    if (pref.provider === "off") return;
+    if (pref.provider === "off" || !pref.sound) return;
     const playback = (active: boolean) => {
       if (mounted.current && token === session.current) {
         setPlaying(active);
@@ -183,7 +197,7 @@ export default function ChatWorkspace({
       }
     };
     for (const chunk of speechChunks(answer)) {
-      if (signal.aborted || token !== session.current) return;
+      if (signal.aborted || token !== session.current || !settings.current.sound) return;
       if (pref.provider === "browser") {
         if (!window.speechSynthesis)
           throw Error(
@@ -192,6 +206,8 @@ export default function ChatWorkspace({
         await new Promise<void>((resolve, reject) => {
           const speech = new SpeechSynthesisUtterance(chunk);
           speech.lang = "de-DE";
+          speech.volume = settings.current.volume;
+          speech.rate = pref.rate; speech.pitch = pref.pitch;
           speech.voice =
             window.speechSynthesis
               .getVoices()
@@ -237,10 +253,11 @@ export default function ChatWorkspace({
           throw Error(d.error || "Sprachausgabe nicht verfügbar.");
         }
         const blob = await r.blob();
-        if (signal.aborted || token !== session.current) return;
+        if (signal.aborted || token !== session.current || !settings.current.sound) return;
         const url = URL.createObjectURL(blob);
         objectURL.current = url;
         const player = new Audio(url);
+        player.volume = settings.current.volume;
         audio.current = player;
         let stopMeter: (() => void) | undefined;
         player.onplaying = () => {
@@ -463,7 +480,7 @@ export default function ChatWorkspace({
     .reverse()
     .find((t) => t.role === "assistant" && t.complete);
   return (
-    <main className="chat-workspace">
+    <section className="chat-workspace" data-embedded={embedded || undefined}>
       <header>
         <Link href="/dashboard">← Übersicht</Link>
         <h1>Mit {assistantName} sprechen</h1>
@@ -473,25 +490,6 @@ export default function ChatWorkspace({
         >
           Suchen · ⌘K
         </button>
-        <AssistantAvatar
-          state={
-            mic.state === "recording"
-              ? "listening"
-              : playing
-                ? "speaking"
-                : busy
-                  ? "thinking"
-                  : mic.state === "listening"
-                    ? "listening"
-                    : "idle"
-          }
-          level={
-            mic.state === "recording" ||
-            (!busy && !playing && mic.state === "listening")
-              ? mic.level
-              : outputLevel
-          }
-        />
       </header>
       <p className="workspace-muted">
         Audio: {providerLabel}. Gespräch und optional ausgewählte eigene
@@ -611,7 +609,7 @@ export default function ChatWorkspace({
         {handsFree ? (
           <button
             className="chat-record"
-            disabled={!authenticated || !transcriptionReady || !chatReady}
+            disabled={!authenticated || !transcriptionReady || !chatReady || !preferences.microphone}
             onClick={() =>
               mic.state === "idle" ? void mic.start(true) : stopAll()
             }
@@ -624,7 +622,7 @@ export default function ChatWorkspace({
           <button
             className="chat-record"
             style={{ touchAction: "none" }}
-            disabled={!authenticated || !transcriptionReady || !chatReady}
+            disabled={!authenticated || !transcriptionReady || !chatReady || !preferences.microphone}
             onPointerDown={(e) => {
               e.preventDefault();
               e.currentTarget.setPointerCapture(e.pointerId);
@@ -781,6 +779,6 @@ export default function ChatWorkspace({
         temporäre Audiodateien; wir fordern deren Löschung nach Übernahme an.
         Bei einem Anbieterfehler kann dort eine Kopie verbleiben.
       </p>
-    </main>
+    </section>
   );
 }

@@ -6,6 +6,9 @@ import {AppControls} from '@/components/workspace/AppControls';
 import { brandConfig } from '@/lib/brand';
 import { BrandProvider } from '@/components/voice/BrandProvider';
 import { VoiceLauncher } from '@/components/voice/VoiceLauncher';
+import { AppFrame } from '@/components/workspace/AppFrame';
+import { AssistantPreferencesProvider } from '@/components/assistant/Preferences';
+import '@/components/assistant/assistant.css';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -55,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de" suppressHydrationWarning className={`${inter.variable} ${cormorant.variable} ${poppins.variable} ${jetbrainsMono.variable}`}>
       <body suppressHydrationWarning className="bg-bg antialiased overflow-hidden">
-        <BrandProvider brand={brandConfig()}>{children}<VoiceLauncher /><AppControls /></BrandProvider>
+        <BrandProvider brand={brandConfig()}><AssistantPreferencesProvider><AppFrame>{children}</AppFrame><VoiceLauncher /><AppControls /></AssistantPreferencesProvider></BrandProvider>
       </body>
     </html>
   );

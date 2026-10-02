@@ -12,6 +12,8 @@
     "setup": "node scripts/setup.mjs",
     "electron:build": "node scripts/electron-build.js",
     "test:auth": "tsx --test tests/auth.test.ts",
+    "test:assistant": "tsx --test tests/assistant.test.ts",
+    "test:assistant:browser": "node scripts/test-assistant-browser.mjs",
     "test:voice": "tsx --test tests/voice.test.ts",
     "test:workspace": "tsx --test tests/workspace.test.ts",
     "test:workspace:browser": "node scripts/test-workspace-browser.mjs",

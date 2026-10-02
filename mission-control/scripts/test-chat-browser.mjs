@@ -12,6 +12,7 @@ const browser = await puppeteer.launch({
 });
 try {
   const page = await browser.newPage();
+  page.on("dialog", dialog => dialog.accept()); // Only disposable localhost drafts.
   await page.setViewport({ width: 390, height: 844 });
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));

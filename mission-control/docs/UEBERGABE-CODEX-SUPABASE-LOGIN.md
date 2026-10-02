@@ -82,3 +82,16 @@ Neue interne Endpunkte unter `/api/voice/chat` und `/api/voice/speech` (inkl. `/
 ### 01.10.2026 – Infomaniak-Tokenname
 
 Serverseitiger Standardname jetzt `INFOMANIAK_API_TOKEN`, gemeinsam mit `INFOMANIAK_AI_PRODUCT_ID`; alter Name `INFOMANIAK_AI_TOKEN` vorläufig als nachrangiger Rückfall. Neue Vorlagen verwenden den Standardnamen. Keine Änderungen an HTTP-Endpunkten, Tabellen, Cookies oder Provision-Verträgen, keine Server-Secrets verändert.
+
+## Änderungen durch Codex – 02.10.2026, Produktionsfreigabe
+
+Der Nutzer hat ausdrücklich die Veröffentlichung der fertigen Version auf `trinity.youareneo.com` freigegeben. Produktionscode: `b36e1575dbc76e42faeb1425b300d8d7492ae631` (PR #17 einschließlich der Vorgänger). Die zuvor auf Nutzerwunsch verschobenen echten Mail-/Login-/KI-/Handy-Abnahmen bleiben offen; die Freigabe ersetzt keinen Testnachweis.
+
+- Nur `/docker/mission-control` aktualisiert; Deployment mit `docker compose up -d --build`. Staging, Traefik und andere Dienste nicht verändert. Bestehendes Produktionsvolumen, Netzwerk und Host-Labels erhalten.
+- `AUTH_PROVIDER=supabase`, `AUTH_APP_URL=https://trinity.youareneo.com`, `TRANSCRIBE_PROVIDER=infomaniak` als nicht geheime Compose-Einstellungen. Versionierte Konfiguration: `deploy/docker-compose.production.yml`.
+- Bereits vom Nutzer eingetragene Supabase-/Anthropic-/Hermes-Werte werden über `/docker/mission-control-stg/.env` eingebunden; danach überschreiben die bestehenden Produktionsdateien `.env` und `auth-mail.env` gleichnamige Werte. Dadurch bleiben die bereits in Produktion eingetragenen Infomaniak-Werte und alle FuseBase-Rückfallwerte erhalten. Beide Produktions-Schlüsseldateien und die Staging-`.env` unverändert; keine neuen Schlüssel eingetragen oder kopiert. Diese Einbindung ist bewusst eine Abhängigkeit von der Staging-Datei: Änderungen dort gelten beim nächsten Produktionsstart. Eine spätere Trennung der Schlüsseldateien nimmt der Nutzer selbst vor.
+- In Supabase den exakten Redirect `https://trinity.youareneo.com/auth/magic` ergänzt und im Dashboard verifiziert. Staging-Redirect und allgemeine Site URL erhalten. Die bereits gespeicherten deutschen Vorlagen unterstützen beide Trinity-Origins. Keine neue Domain oder DNS-Änderung.
+- Konten, Profile, RLS und Datenbank unverändert. Auth-/Provision-/Cookie-Verträge unverändert; gemeinsamer HttpOnly-Cookie weiterhin `.youareneo.com`. Die sechs externen alten App-Einstiege benötigen weiterhin ihre bisherige Anmeldung.
+- Build-Kontext schließt zusätzlich Deployment-Sicherungen, `.mcp.json` und Host-`data/` aus. Der Dockerfile legt das leere Datenverzeichnis an; das bestehende Produktionsvolumen liefert die Nutzerdaten.
+
+Deployment, Prüfung und Rückfall: [TRINITY-PRODUKTION.md](TRINITY-PRODUKTION.md).

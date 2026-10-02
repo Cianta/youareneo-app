@@ -11,3 +11,8 @@ data/private
 .supabase-*
 
 .voice-*
+
+# Keep deployment backups and existing data out of build context
+.codex-*
+.mcp.json
+data/

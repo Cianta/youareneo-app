@@ -37,10 +37,11 @@ export const primary: Destination[] = [
   },
   {id:"ideas",label:"Ideenboard",href:"/dashboard/eden",group:"Arbeiten",keywords:"eden canvas ideen sammeln tabellen formeln"},
   {id:"planner",label:"Tagesplan & Ziele",href:"/dashboard/goals",group:"Arbeiten",keywords:"wochenplan monat 100 gründe pyramide"},
+  {id:"inbox",label:"Postfach",href:"/dashboard/communication/email",group:"Arbeiten",keywords:"email mail kommunikation"},
   {id:"calendar",label:"Kalender",href:"/dashboard/calendar",group:"Arbeiten",keywords:"termine heute"},
   {id:"soul",label:"Astrologie & Human Design",href:"/dashboard/soul",group:"Entdecken",keywords:"himmelskompass mond westlich vedisch chinesisch maya tzolkin keltisch human design"},
   {id:"meditation",label:"Fokus & Meditation",href:"/dashboard/meditation",group:"Entdecken",keywords:"ruhe visual room musik gong"},
-  { id: "my-apps", label: "Meine Apps", href: "/dashboard/apps", group: "Entdecken", keywords: "radio kochbuch kino visual frequency atelier good news living arts" },
+  { id: "my-apps", label: "Meine Apps", href: "/dashboard/apps", group: "Entdecken", keywords: "buzz chat radio kochbuch kino visual frequency atelier good news living arts" },
   {
     id: "lab",
     label: "Labor",

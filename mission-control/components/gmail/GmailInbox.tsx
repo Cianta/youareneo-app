@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Inbox, Mail, Star, AlertTriangle, Send, Archive,
   RefreshCw, Search, MoreHorizontal, ExternalLink,
@@ -79,20 +79,31 @@ function senderColor(email: string): string {
 
 // ── Component ────────────────────────────────────────────────────────────────
 export function GmailInbox() {
+  const [connection,setConnection]=useState('');
   const [threads, setThreads] = useState<GmailThread[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterId>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedThread, setSelectedThread] = useState<GmailThread | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const requestId = useRef(0);
+  const owner = useRef<string | null>(null);
 
   const fetchThreads = useCallback(async (f: FilterId) => {
+    const generation = ++requestId.current;
     try {
-      const res = await fetch(`/api/gmail/threads?filter=${f}&limit=30`);
+      const res = await fetch(`/api/gmail/threads?filter=${f}&limit=30`, {cache:'no-store'});
       const data = await res.json();
-      if (data.ok) setThreads(data.threads);
-    } catch { /* silently fail */ }
-    finally { setLoading(false); setRefreshing(false); }
+      if(generation !== requestId.current)return;
+      if(!res.ok)throw Error(res.status===401?'Bitte melde dich für dein Postfach an.':'Postfach gerade nicht erreichbar.');
+      if(!data.ok || !data.userScoped || typeof data.userId !== 'string')throw Error('Persönliches Postfach nicht verfügbar.');
+      if(owner.current !== data.userId){setSelectedThread(null);setSearchQuery('');owner.current=data.userId;}
+      else setSelectedThread(current=>current ? data.threads.find((t:GmailThread)=>t.id===current.id) ?? null : null);
+      if (data.ok) {setThreads(data.threads);setConnection(data.available===false?'Dein persönliches Postfach ist noch nicht verbunden. Bestehende Mails werden keinem Konto automatisch zugeordnet.':'');
+        window.dispatchEvent(new CustomEvent('neo-mail-activity',{detail:{unread:data.available&&data.userScoped?data.totalUnread:null,userId:data.userId}}));}
+
+    } catch(e) {if(generation !== requestId.current)return;owner.current=null;setSelectedThread(null);setConnection(e instanceof Error?e.message:'Postfach nicht erreichbar.');setThreads([]);window.dispatchEvent(new CustomEvent('neo-mail-activity',{detail:{unread:null}}));}
+    finally { if(generation===requestId.current){setLoading(false); setRefreshing(false);} }
   }, []);
 
   useEffect(() => {
@@ -100,10 +111,19 @@ export function GmailInbox() {
     fetchThreads(filter);
   }, [filter, fetchThreads]);
 
+  useEffect(() => {
+    // Another tab may have changed the shared session while this view was hidden.
+    const refresh = () => {setSelectedThread(null);setThreads([]);fetchThreads(filter);};
+    const visibility = () => {if(document.visibilityState==='hidden'){requestId.current++;setSelectedThread(null);setThreads([]);}else refresh();};
+    window.addEventListener('focus',refresh);
+    document.addEventListener('visibilitychange',visibility);
+    return () => {requestId.current++;window.removeEventListener('focus',refresh);document.removeEventListener('visibilitychange',visibility);};
+  }, [filter,fetchThreads]);
+
   // Auto-poll for fresh emails every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchThreads(filter);
+      if(document.visibilityState==='visible')fetchThreads(filter);
     }, 30000);
     return () => clearInterval(interval);
   }, [filter, fetchThreads]);
@@ -188,6 +208,7 @@ export function GmailInbox() {
   return (
     <div className="h-full flex flex-col bg-surface/30 rounded-xl border border-border overflow-hidden">
       {/* Top toolbar */}
+      {connection&&<p role="status" className="p-4 text-sm">{connection}</p>}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-surface/50 shrink-0">
         {/* Search */}
         <div className="relative flex-1 max-w-md">

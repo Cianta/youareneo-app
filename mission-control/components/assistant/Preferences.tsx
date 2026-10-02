@@ -14,6 +14,7 @@ export function AssistantPreferencesProvider({ children }: { children: React.Rea
     const root = document.documentElement;
     for (const [name, value] of Object.entries(themePalette(preferences.brightness))) root.style.setProperty(name, value);
     root.dataset.trinityTheme = "adjustable";
+    root.dataset.guidingMotion = String(preferences.companionMotion);
     root.style.colorScheme = preferences.brightness >= 50 ? "light" : "dark";
     if (loaded) try { localStorage.setItem("trinity-display-voice", JSON.stringify({...preferences, appearanceVersion: 2})); } catch {}
   }, [preferences, loaded]);

@@ -19,7 +19,8 @@ import {
 import { DEFAULT_WORK, DEFAULT_REST } from "@/lib/workspace/media";
 import { formatCountdown } from "@/lib/workspace/time";
 import { playGong } from "@/lib/gong";
-import { Modal } from "@/components/ui/Modal";
+import dynamic from "next/dynamic";
+const Modal = dynamic(() => import("@/components/ui/Modal").then(m => m.Modal));
 import Link from "next/link";
 import {useAssistantPreferences} from "@/components/assistant/Preferences";
 const labels = {

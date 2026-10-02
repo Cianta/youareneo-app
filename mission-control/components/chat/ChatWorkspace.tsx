@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {Send, Mic, Square, ArrowUpRight, Sparkles} from "lucide-react";
+import {openMicrophoneSettings} from "@/lib/assistant/microphone";
 import {insertDictation} from "@/lib/assistant/widget";
 export type ChatControls = {focus:()=>void; start:(append:boolean)=>Promise<void>; finish:()=>void; cancel:()=>void; send:()=>void};
 import { useBrand } from "@/components/voice/BrandProvider";
@@ -331,7 +332,7 @@ export default function ChatWorkspace({
     const token=session.current,abort=new AbortController();controller.current=abort;
     setStatus("Mikrofon wird vorbereitet …");
     try {const c=await checkSession(abort.signal);if(!c.transcriptionReady)throw Error("Spracherkennung ist noch nicht bereit. Du kannst deinen Prompt schreiben.");
-      if(held.current && token===session.current && !abort.signal.aborted){recordingOwner.current=c.userId;await mic.start(free);}
+      if(held.current && token===session.current && !abort.signal.aborted){recordingOwner.current=c.userId;const started=await mic.start(free);if(!started)held.current=false;}
     } catch(e){if(!abort.signal.aborted && token===session.current){held.current=false;setError(e instanceof Error?e.message:"Aufnahme nicht möglich.");}}
   }
   function finishDictation(){held.current=false;mic.finish();}
@@ -531,22 +532,14 @@ export default function ChatWorkspace({
       {!turns.length && <div className="chat-welcome"><Sparkles size={25}/><h2>Was bewegt dich?</h2><p>Ein Gedanke, eine Frage, ein nächster Schritt.</p><div className="chat-suggestions">{["Hilf mir, meinen Tag zu ordnen.","Lass uns eine Idee weiterdenken."].map(t=><button key={t} onClick={()=>{setText(t);textarea.current?.focus()}}>{t}</button>)}</div></div>}
       {turns.map(t=><article key={t.id} data-role={t.role}><strong>{t.role==="user" ? "Du" : assistantName}</strong><p>{t.content || (t.complete ? "Keine Textantwort." : "Trinity denkt …")}</p>{!t.complete && t.content && <small>Antwort läuft oder wurde unterbrochen.</small>}{!!t.sources?.length && <details><summary>Eigene Notizen im Kontext</summary>{t.sources.map(n=><Link key={n.id} href={"/notiz?note="+encodeURIComponent(n.id)}>{n.title}<ArrowUpRight size={12}/></Link>)}</details>}</article>)}<div ref={bottom}/>
     </section>
-    <div className="chat-feedback"><p role="status">{mic.state==="requesting" ? "Mikrofon wird angefragt …" : recording ? "Ich höre zu. Loslassen übernimmt den Text." : status}</p>{(error||mic.error)&&<p role="alert">{error||mic.error} <button onClick={()=>setRetry(n=>n+1)}>Erneut prüfen</button></p>}{notice&&<p role="status">{notice}</p>}{!authenticated&&<p><Link href="/login">Anmelden</Link> für KI und Transkription. Deinen Prompt kannst du bereits schreiben.</p>}</div>
+    <div className="chat-feedback"><p role="status">{mic.state==="requesting" ? "Mikrofon wird angefragt …" : recording ? "Ich höre zu. Loslassen übernimmt den Text." : status}</p>{(error||mic.error)&&<p role="alert">{error||mic.error} {mic.error&&<button type="button" onClick={openMicrophoneSettings}>Mikrofon einrichten</button>} <button onClick={()=>setRetry(n=>n+1)}>Erneut prüfen</button></p>}{notice&&<p role="status">{notice}</p>}{!authenticated&&<p><Link href="/login">Anmelden</Link> für KI und Transkription. Deinen Prompt kannst du bereits schreiben.</p>}</div>
     <form className="chat-composer" onSubmit={e=>{e.preventDefault();void send(textRef.current)}}>
       <label htmlFor={inputId}>Dein Prompt</label><textarea ref={textarea} id={inputId} placeholder="Schreib Trinity, was du vorhast …" maxLength={4000} value={text} onChange={e=>setText(e.target.value)} rows={3}/>
-      <div className="chat-composer-tools"><button type="button" className={recording ? "chat-record is-recording" : "chat-record"} aria-label="Prompt diktieren: gedrückt halten" aria-pressed={recording} disabled={(busy&&status==="Wandelt Sprache um")||!preferences.microphone} style={{touchAction:"none"}} onPointerDown={e=>{if(e.button!==0)return;e.preventDefault();e.currentTarget.setPointerCapture(e.pointerId);void startDictation(true)}} onPointerUp={finishDictation} onPointerCancel={()=>{held.current=false;mic.cancel()}} onLostPointerCapture={()=>{if(held.current)finishDictation()}} onKeyDown={e=>{if([" ","Enter"].includes(e.key)&&!e.repeat){e.preventDefault();void startDictation(true)}}} onKeyUp={e=>{if([" ","Enter"].includes(e.key)){e.preventDefault();finishDictation()}}}>{recording ? <Square size={18}/> : <Mic size={18}/>}<span>Diktieren</span></button><meter min={0} max={1} value={mic.level} aria-label="Mikrofonpegel"/><button className="chat-send" type="submit" disabled={!authenticated||!chatReady||busy||recording||!text.trim()||text.length>4000}><Send size={17}/>Senden <kbd>Alt+C</kbd></button></div>
+      <div className="chat-composer-tools"><button type="button" className={recording ? "chat-record is-recording" : "chat-record"} aria-label="Prompt diktieren: gedrückt halten" aria-pressed={recording} disabled={(busy&&status==="Wandelt Sprache um")||!preferences.microphone} style={{touchAction:"none"}} onPointerDown={e=>{if(e.button!==0)return;e.preventDefault();e.currentTarget.setPointerCapture(e.pointerId);void startDictation(true)}} onPointerUp={finishDictation} onPointerCancel={()=>{held.current=false;mic.cancel()}} onLostPointerCapture={()=>{if(held.current)finishDictation()}} onKeyDown={e=>{if([" ","Enter"].includes(e.key)&&!e.repeat){e.preventDefault();void startDictation(true)}}} onKeyUp={e=>{if([" ","Enter"].includes(e.key)){e.preventDefault();finishDictation()}}}>{recording ? <Square size={18}/> : <Mic size={18}/>}<span>Diktieren</span></button><button type="button" className="chat-record-toggle" aria-label={recording?"Diktat stoppen":"Diktat mit Klick starten"} disabled={!preferences.microphone||(busy&&status==="Wandelt Sprache um")} onClick={()=>recording||held.current?finishDictation():void startDictation(true)}>{recording?"Stopp":"Klick statt Halten"}</button><button type="button" className="chat-mic-settings" onClick={openMicrophoneSettings} aria-label="Mikrofon einrichten">⚙</button><meter min={0} max={1} value={mic.level} aria-label="Mikrofonpegel"/><button className="chat-send" type="submit" disabled={!authenticated||!chatReady||busy||recording||!text.trim()||text.length>4000}><Send size={17}/>Senden <kbd>Alt+C</kbd></button></div>
       {text.length>4000&&<p role="alert">Bitte kürze den Text auf 4.000 Zeichen. Dein Text bleibt vollständig im Entwurf.</p>}
       <div className="chat-shortcuts"><span><kbd>Alt+Y</kbd> Öffnen</span><span><kbd>Alt+X</kbd> Halten</span><span><kbd>Alt+H</kbd> Ergänzen</span></div>
     </form>
     <details className="chat-options"><summary>Kontext, Gespräch & Datenschutz</summary><label><input type="checkbox" checked={includeNotes} onChange={e=>setIncludeNotes(e.target.checked)}/>Passende eigene Notizen als Kontext verwenden</label>      <div className="chat-settings">
-        <label>
-          <input
-            type="checkbox"
-            checked={includeNotes}
-            onChange={(e) => setIncludeNotes(e.target.checked)}
-          />
-          Passende eigene Notizen als Kontext verwenden
-        </label>
         <label>
           Sprachausgabe
           <select

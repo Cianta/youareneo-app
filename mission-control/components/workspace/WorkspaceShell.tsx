@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
+import {Atmosphere} from "./Atmosphere";
+import {useNavAttention} from "./NavAttention";
+import {Home,NotebookPen,CheckSquare,FolderOpen,Network,BookOpen,Lightbulb,CalendarDays,Orbit,Leaf,Grid2X2,FlaskConical,Settings,Mail} from "lucide-react";
+import {TrinityLogo} from "@/components/sacred-geometry/TrinityLogo";
 import { primary } from "@/lib/workspace/navigation";
 import type { WorkspaceIdentity } from "@/lib/workspace/session";
 import {
@@ -38,6 +42,7 @@ const Completion = dynamic(
     ),
   { ssr: false },
 );
+const navIcons:Record<string,typeof Home>={home:Home,notes:NotebookPen,tasks:CheckSquare,projects:FolderOpen,brain:Network,notebooks:BookOpen,ideas:Lightbulb,planner:CalendarDays,calendar:CalendarDays,soul:Orbit,meditation:Leaf,"my-apps":Grid2X2,lab:FlaskConical,settings:Settings,inbox:Mail};
 export function WorkspaceShell({
   identity,
   children,
@@ -49,6 +54,7 @@ export function WorkspaceShell({
 }) {
   const { appName } = useBrand();
   const path = usePathname();
+  const attention=useNavAttention();
   const [notebook, setNotebook] = useState(false),
     [error, setError] = useState("");
   const [agentError,setAgentError] = useState("");
@@ -118,20 +124,24 @@ export function WorkspaceShell({
       </a>
       <aside className="workspace-sidebar">
         <Link href="/dashboard" className="workspace-brand">
-          {appName}
+          <TrinityLogo size={36}/><span>{appName}</span>
         </Link>
         <p className="workspace-muted">Dein Guiding Space</p>
         <nav aria-label="Hauptnavigation">
-          {primary.map((p) => (
+          {primary.map((p,i) => {const Icon=navIcons[p.id]||FolderOpen;const notice=attention[p.id as keyof typeof attention];return (
+            <div key={p.id} className="workspace-nav-entry">
+            {(i===0 || primary[i-1].group!==p.group) && <span className="workspace-nav-group">{p.group}</span>}
             <Link
               prefetch={false}
               key={p.id}
               href={p.href}
+              data-attention={!!notice?.count}
+              title={notice?.count?notice.label:undefined}
               aria-current={path === p.href || (p.id === "my-apps" && path.startsWith("/dashboard/apps/")) ? "page" : undefined}
             >
-              <span className={`workspace-nav-mark nav-${p.id}`} aria-hidden="true" />{p.label}
-            </Link>
-          ))}
+              <Icon className="workspace-nav-icon" aria-hidden="true"/><span>{p.label}</span>{!!notice?.count&&<span className="nav-attention" aria-label={notice.label}>{notice.count}</span>}
+            </Link></div>
+          );})}
           <a
             href="https://archiv.youareneo.com"
             target="_blank"
@@ -147,10 +157,10 @@ export function WorkspaceShell({
           Hilfe & Tastenkürzel
         </button>
       </aside>
-      <div className="workspace-body">
+      <div className="workspace-body"><Atmosphere/>
         <header className="workspace-topbar">
           <Link href="/dashboard" className="workspace-mobile-brand">
-            {appName}
+            <TrinityLogo size={28}/><span>{appName}</span>
           </Link>
           <button
             className="workspace-search-trigger"

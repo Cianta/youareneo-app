@@ -208,7 +208,7 @@ try {
     await page.locator("button[type=submit]").click();
   };
   const avatarState = async (state) =>
-    page.waitForSelector(`.assistant-avatar[data-state="${state}"]`);
+    page.waitForSelector(`.trinity-sun[data-state="${state}"]`);
   await avatarState("idle");
   delayChat = 400;
   await page.evaluate(() => {
@@ -223,7 +223,7 @@ try {
       .innerText.includes("Eine kurze Antwort."),
   );
   await avatarState("speaking");
-  await page.click(".assistant-avatar");
+  await page.click(".trinity-sun");
   assert.equal(
     await page.evaluate(() => document.activeElement?.id),
     "chat-text",
@@ -288,7 +288,7 @@ try {
     () =>
       Number(
         document
-          .querySelector(".assistant-avatar")
+          .querySelector(".trinity-sun")
           .style.getPropertyValue("--voice-level"),
       ) > 0,
   );
@@ -322,7 +322,7 @@ try {
   await page.waitForFunction(n => window.fixtureSynthCanceled > n, {}, before);
   await page.$$eval(".chat-actions button", es => es.find(e => e.textContent.trim() === "Antwort stoppen").click());
   await page.waitForFunction(() => window.fixtureTracks.every(t => t.readyState === "ended"));
-  await page.click(".chat-settings input[type=checkbox]");
+  await page.click(".chat-options > label input[type=checkbox]");
   await page.type("#chat-text", "Nutze meine Notizen");
   await submit();
   await page.waitForSelector(".chat-conversation details a");
@@ -366,17 +366,17 @@ try {
     () =>
       Number(
         document
-          .querySelector(".assistant-avatar")
+          .querySelector(".trinity-sun")
           .style.getPropertyValue("--voice-level"),
       ) > 0.1,
   );
   await page.waitForFunction(
     () =>
-      document.querySelector(".assistant-avatar").dataset.state ===
+      document.querySelector(".trinity-sun").dataset.state ===
         "speaking" &&
       Number(
         document
-          .querySelector(".assistant-avatar")
+          .querySelector(".trinity-sun")
           .style.getPropertyValue("--voice-level"),
       ) === 0,
   );
@@ -384,7 +384,7 @@ try {
     () =>
       Number(
         document
-          .querySelector(".assistant-avatar")
+          .querySelector(".trinity-sun")
           .style.getPropertyValue("--voice-level"),
       ) > 0.1,
   );
@@ -392,11 +392,11 @@ try {
     { name: "prefers-reduced-motion", value: "reduce" },
   ]);
   assert.equal(
-    await page.$eval(".avatar-energy", (e) => getComputedStyle(e).transform),
+    await page.$eval(".energy-breath", (e) => getComputedStyle(e).transform),
     "none",
   );
   assert.equal(
-    await page.$eval(".avatar-orbit", (e) => getComputedStyle(e).animationName),
+    await page.$eval(".energy-orbits", (e) => getComputedStyle(e).animationName),
     "none",
   );
   await avatarState("idle"); // Natural audio completion cleans up its context.
@@ -409,7 +409,7 @@ try {
   await submit();
   await avatarState("thinking");
   assert.equal(
-    await page.$eval(".avatar-orbit", (e) => getComputedStyle(e).animationName),
+    await page.$eval(".energy-orbits", (e) => getComputedStyle(e).animationName),
     "none",
   );
   await avatarState("speaking");
@@ -437,7 +437,7 @@ try {
   await submit();
   await avatarState("speaking");
   assert.equal(
-    await page.$eval(".assistant-avatar", (e) =>
+    await page.$eval(".trinity-sun", (e) =>
       Number(e.style.getPropertyValue("--voice-level")),
     ),
     0,
@@ -466,7 +466,7 @@ try {
     () =>
       Number(
         document
-          .querySelector(".assistant-avatar")
+          .querySelector(".trinity-sun")
           .style.getPropertyValue("--voice-level"),
       ) > 0,
   );
@@ -480,7 +480,7 @@ try {
   await avatarState("listening");
   await page.click('button[aria-label="Aufnahme stoppen"]');
   await avatarState("idle");
-  await page.click(".assistant-avatar");
+  await page.click(".trinity-sun");
   await page.waitForSelector('.assistant-chat-panel #assistant-chat-text');
   assert.equal(new URL(page.url()).pathname, "/notiz", "Global chat preserves the current workspace route");
   await page.click('.assistant-chat-panel [aria-label="Trinity schließen"]');
@@ -490,7 +490,7 @@ try {
     for (const route of ["/dashboard", "/notiz", "/gehirn", "/sprechen"]) {
       await page.goto(base + route, { waitUntil: "networkidle0" });
       const layout = await page.evaluate(() => {
-        const avatar = document.querySelector(".assistant-avatar"),
+        const avatar = document.querySelector(".trinity-sun"),
           a = avatar.getBoundingClientRect();
         const siblings = [...avatar.parentElement.children]
           .filter((e) => e !== avatar && getComputedStyle(e).display !== "none")
@@ -559,7 +559,7 @@ try {
   console.error(
     await page.evaluate(() => ({
       url: location.pathname,
-      state: document.querySelector(".assistant-avatar")?.dataset.state,
+      state: document.querySelector(".trinity-sun")?.dataset.state,
       alerts: [...document.querySelectorAll('[role="alert"]')].map(
         (e) => e.textContent,
       ),

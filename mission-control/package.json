@@ -1,7 +1,7 @@
 {
   "name": "mission-control",
   "version": "1.0.0",
-  "description": "guiding.space – persönliches Guiding System",
+  "description": "guiding.space \u2013 pers\u00f6nliches Guiding System",
   "private": true,
   "main": "electron/main.js",
   "scripts": {
@@ -27,7 +27,9 @@
     "test:apps:browser": "node scripts/test-apps-browser.mjs",
     "audit:apps:local": "node scripts/audit-apps-local.mjs",
     "test:restored": "tsx --test tests/restored.test.ts",
-    "test:restored:browser": "node scripts/test-restored-browser.mjs"
+    "test:restored:browser": "node scripts/test-restored-browser.mjs",
+    "test:companion": "tsx --test tests/companion.test.ts tests/mail-cache.test.ts",
+    "test:companion:browser": "node scripts/test-companion-browser.mjs"
   },
   "build": {
     "appId": "com.youareneo.mission-control",

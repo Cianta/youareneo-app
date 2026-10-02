@@ -2,17 +2,22 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Mic, MicOff, Volume2, VolumeX, Settings, X, Square, Sun, Moon, Menu } from "lucide-react";
-import { AssistantAvatar, type AvatarState } from "@/components/chat/AssistantAvatar";
+import { type AvatarState } from "@/components/chat/AssistantAvatar";
 import { useChatMicrophone } from "@/components/chat/useChatMicrophone";
 import { useBrand } from "@/components/voice/BrandProvider";
 import { emptyDraft, NOTE_TYPES, type NoteDraft } from "@/lib/voice/contracts";
 import type { ChatControls } from "@/components/chat/ChatWorkspace";
 import {widgetShortcut} from "@/lib/assistant/widget";
 import { isCaptureShortcut } from "@/lib/assistant/preferences";
+import {EnergyCompanion} from "./EnergyCompanion";
 import { useAssistantPreferences } from "./Preferences";
 const Chat = dynamic(() => import("@/components/chat/ChatWorkspace"), {ssr:false, loading:() => <p role="status">Sprachchat wird geöffnet …</p>});
+const MicrophoneSettings = dynamic(() => import("./MicrophoneSettings").then(m=>m.MicrophoneSettings));
+const AppearanceSettings = dynamic(() => import("./AppearanceSettings").then(m=>m.AppearanceSettings));
+const WorkspaceSync = dynamic(() => import("./WorkspaceSync").then(m=>m.WorkspaceSync));
 type Config = {userId:string; canSave:boolean; transcriptionReady:boolean; classificationReady:boolean; provider:string};
 const typeLabels = {notiz:"Notiz", aufgabe:"Aufgabe", idee:"Idee", termin:"Termin"};
 async function api(path:string, init?:RequestInit) {
@@ -24,6 +29,7 @@ async function api(path:string, init?:RequestInit) {
 export default function AssistantDock() {
   const path = usePathname(), {appName,assistantName} = useBrand(), {preferences, update} = useAssistantPreferences();
   const [panel, setPanel] = useState<"capture"|"chat"|"settings"|null>(null);
+  const [settingsTab,setSettingsTab]=useState<"microphone"|"companion"|"appearance"|"sync">("microphone");
   const [chatMounted,setChatMounted]=useState(false);
   const chatControls=useRef<ChatControls|null>(null), pendingDictation=useRef<{append:boolean;held:boolean}|null>(null), focusPrompt=useRef(false);
   const receiveControls=useCallback((controls:ChatControls|null)=>{chatControls.current=controls;if(controls && focusPrompt.current){controls.focus();focusPrompt.current=false;}if(controls && pendingDictation.current?.held)void controls.start(pendingDictation.current.append);},[]);
@@ -102,7 +108,7 @@ export default function AssistantDock() {
       const c=await session(abort.signal);
       if (!c.transcriptionReady) throw Error("Spracherkennung ist noch nicht bereit. Du kannst im Notizraum schreiben.");
       if (!intent.current || token!==version.current || !mounted.current) return;
-      setPhase(""); await micRef.current.start(false);
+      setPhase(""); if(!await micRef.current.start(false))intent.current=false;
     } catch(e) {if (!abort.signal.aborted && mounted.current && token===version.current) setError(e instanceof Error ? e.message : "Aufnahme nicht möglich.");intent.current=false;}
     finally {if (token===version.current && mounted.current) {setPhase("");controller.current=null;}}
   };
@@ -174,13 +180,19 @@ export default function AssistantDock() {
     catch(e){if(!abort.signal.aborted)setError(e instanceof Error ? e.message : "Einordnung nicht möglich.");}
     finally{if(token===version.current){setPhase("");controller.current=null;}}
   }
+  function openSettings(tab:typeof settingsTab="microphone") {
+    if(pendingDictation.current)pendingDictation.current.held=false;chatControls.current?.cancel();cancel();setError("");setNotice("");setSettingsTab(tab);setPanel("settings");
+  }
+  const settingsAction=useRef(openSettings);settingsAction.current=openSettings;
+  useEffect(()=>{const open=(e:Event)=>{const tab=(e as CustomEvent).detail;settingsAction.current(["microphone","companion","appearance","sync"].includes(tab)?tab:"microphone");};window.addEventListener("neo-assistant-settings",open);return()=>window.removeEventListener("neo-assistant-settings",open);},[]);
   function close() {if(pendingDictation.current)pendingDictation.current.held=false;chatControls.current?.cancel();setPanel(null);cancel();window.dispatchEvent(new Event("neo-stop-chat"));}
   const active=mic.state==="recording" || mic.state==="requesting";
   const avatarState:AvatarState=active ? "listening" : phase ? "thinking" : chatPulse.state;
   return <>
+    <div className="companion-presence" hidden={panel!=="chat"}><EnergyCompanion state={avatarState} level={active ? mic.level : chatPulse.level} onSettings={()=>openSettings("companion")}/></div>
     {chatMounted && <aside id="assistant-chat-panel" className="assistant-panel assistant-chat-panel" hidden={panel!=="chat"} role="dialog" aria-label={`${assistantName} · Guiding Space`}><header className="assistant-panel-heading"><div><span className="assistant-wordmark">{appName}</span><h2>{assistantName}</h2></div><button aria-label="Trinity schließen" onClick={close}><X size={20}/></button></header><div className="assistant-panel-body"><Chat embedded providerLabel="Infomaniak, Schweiz" onControlsReady={receiveControls}/></div></aside>}
     {panel && panel!=="chat" && <aside className="assistant-panel" role="dialog" aria-label={panel==="settings" ? "Trinity Einstellungen" : "Trinity Einordnung"}>
-      <header className="assistant-panel-heading"><h2>{panel==="settings" ? "Stimme & Erscheinungsbild" : `${assistantName} · Gedanke einordnen`}</h2><button aria-label="Trinity schließen" onClick={close}><X size={20}/></button></header>
+      <header className="assistant-panel-heading"><h2>{panel==="settings" ? "Deine Trinity" : `${assistantName} · Gedanke einordnen`}</h2><button aria-label="Trinity schließen" onClick={close}><X size={20}/></button></header>
       <div className="assistant-panel-body">
         <>
           {phase && <p role="status">{phase}</p>}{notice && <p role="status">{notice}</p>}{(error||mic.error)&&<p role="alert">{error||mic.error} {!config&&<Link href="/login">Anmelden</Link>}</p>}
@@ -201,8 +213,16 @@ export default function AssistantDock() {
             <Link href="/notiz">Notizen öffnen</Link> · <Link href="/gehirn">Guiding Map öffnen</Link>
           </>}
           {panel==="settings" && <div className="assistant-settings">
-            <label><span><Moon size={16}/> Dunkel · Hell <Sun size={16}/></span><input aria-label="Helligkeit" type="range" min={0} max={100} step={.1} value={preferences.brightness} onChange={e=>update({brightness:Number(e.target.value)})}/></label>
-            <label><input type="checkbox" checked={preferences.microphone} onChange={e=>update({microphone:e.target.checked})}/>Mikrofon aktivieren</label>
+            <div className="assistant-settings-tabs" role="tablist" aria-label="Trinity Einstellungen">{([["microphone","Mikrofon"],["companion","Begleiter & Stimme"],["appearance","Darstellung"],["sync","Geräte & Sync"]] as const).map(([id,label])=><button type="button" key={id} role="tab" aria-selected={settingsTab===id} onClick={()=>setSettingsTab(id)}>{label}</button>)}</div>
+            {settingsTab==="microphone"&&<MicrophoneSettings/>}
+            {settingsTab==="appearance"&&<AppearanceSettings/>}
+            {settingsTab==="sync"&&<WorkspaceSync/>}
+            {settingsTab==="companion"&&<>
+            <label>Dein Begleiter<select value={preferences.companion} onChange={e=>update({companion:e.target.value as typeof preferences.companion})}><option value="dragon">Energiedrache</option><option value="human">Lichtgestalt</option><option value="tree">Lebensbaum</option><option value="off">Nur die Sonne</option></select></label>
+            <label>Energiefarbe<select value={preferences.energyColor} onChange={e=>update({energyColor:e.target.value as typeof preferences.energyColor})}><option value="violet">Lila · Sternenlicht</option><option value="teal">Türkis · Waldquelle</option><option value="rose">Rosa · Morgenlicht</option></select></label>
+            <label><input type="checkbox" checked={preferences.companionMotion} onChange={e=>update({companionMotion:e.target.checked})}/>Sanfte Bewegung</label>
+            <label><input type="checkbox" checked={preferences.adaptiveMood} onChange={e=>update({adaptiveMood:e.target.checked})}/>Auf erledigte Aufgaben und aktive Zeit reagieren</label>
+            <p>Dein Begleiter feiert Schritte und erinnert nach längerer Aktivität an Ruhe. Es gibt keinen Leistungsdruck. E-Mail-Reaktionen beziehen sich nur auf ein verbundenes persönliches Postfach. Ohne Verbindung bleiben sie aus.</p>
             <label><input type="checkbox" checked={preferences.sound} onChange={e=>update({sound:e.target.checked})}/>Sprachausgabe aktivieren</label>
             <label>Lautstärke<input aria-label="Lautstärke" type="range" min={0} max={1} step={.01} value={preferences.volume} onChange={e=>update({volume:Number(e.target.value)})}/></label>
             <label>Sprachausgabe<select value={preferences.provider} onChange={e=>update({provider:e.target.value as typeof preferences.provider})}><option value="browser">Browser-Stimme</option><option value="vocallab" disabled={!voiceCatalog.ready}>VocalLab{!voiceCatalog.ready ? " (noch nicht bereit)" : ""}</option><option value="off">Nur Text</option></select></label>
@@ -212,14 +232,15 @@ export default function AssistantDock() {
               <label>Tonhöhe<input aria-label="Tonhöhe" type="range" min={.5} max={2} step={.05} value={preferences.pitch} onChange={e=>update({pitch:Number(e.target.value)})}/></label>
             </>}
             {preferences.provider==="vocallab"&&<label>VocalLab-Stimme<select value={preferences.voice} onChange={e=>update({voice:e.target.value})}><option value="">Standard</option>{voiceCatalog.voices.map(v=><option key={v.id} value={v.id}>{v.name}</option>)}</select></label>}
+            </>}
             <p>Alt+Y öffnet deinen Prompt. Alt+X halten: diktieren; Alt+H halten: ergänzen; Alt+C: senden. Ctrl+Shift+Leertaste bleibt für eine neue Notiz verfügbar. Die Kürzel gelten im aktiven App-Fenster.</p>
             <button onClick={()=>{openChat();setError("");}}>Sprachchat starten</button>
-            <details><summary>Regeln für einen Ort</summary><p>Private Projektnotizen mit dem Tag „projektregeln“. Die neueste Version gilt für die Einordnung; sie startet keine Aktionen.</p>
+            {settingsTab==="companion"&&<details><summary>Regeln für einen Ort</summary><p>Private Projektnotizen mit dem Tag „projektregeln“. Die neueste Version gilt für die Einordnung; sie startet keine Aktionen.</p>
               <label>Projekt<select value={ruleProject} disabled={!!phase} onChange={e=>setRuleProject(e.target.value)}><option value="">Ort auswählen</option>{projects.map(p=><option key={p}>{p}</option>)}</select></label>
               {ruleProject&&<><label>Ortsregeln<textarea maxLength={2000} rows={4} value={rules} disabled={ruleLoading||!!phase} onChange={e=>setRules(e.target.value)} placeholder="Zum Beispiel: Rezepte als Notiz, Zutaten und Zubereitung getrennt; Tags saisonal ergänzen."/></label>
                 <button disabled={!!phase||ruleLoading||!rules.trim()||!config?.canSave} onClick={()=>void saveNote({...emptyDraft(),title:"Regeln · "+ruleProject,transcript:rules,project:ruleProject,tags:["projektregeln"]},true)}>Ortsregeln speichern</button></>}
-            </details>
-            <p>Audio: Infomaniak, Schweiz. Einordnung und Sprachchat: Anthropic. Einstellungen für Anzeige und Browser-Stimme bleiben auf diesem Gerät; Sitzung und Notizen werden nicht im localStorage gespeichert.</p>
+            </details>}
+            <p>Audio: Infomaniak, Schweiz. Einordnung und Sprachchat: Anthropic. Einstellungen für Anzeige und Browser-Stimme bleiben auf diesem Gerät. Die Anmeldung bleibt im Cookie. Lokal gespeicherte Arbeitsbereiche kannst du unter Geräte & Sync freiwillig sichern.</p>
           </div>}
         </>
       </div>
@@ -232,8 +253,8 @@ export default function AssistantDock() {
         {active ? <Square size={18}/> : preferences.microphone ? <Mic size={20}/> : <MicOff size={20}/>}
       </button>
       <button aria-label={preferences.sound ? "Ton ausschalten" : "Ton einschalten"} aria-pressed={preferences.sound} title="Sprachausgabe ein / aus" onClick={()=>update({sound:!preferences.sound})}>{preferences.sound ? <Volume2 size={20}/> : <VolumeX size={20}/>}</button>
-      <button aria-label="Trinity Einstellungen öffnen" title="Stimme & Helligkeit" aria-expanded={panel==="settings"} onClick={()=>{if(pendingDictation.current)pendingDictation.current.held=false;chatControls.current?.cancel();intent.current=false;mic.cancel();setError("");setNotice("");setPanel(panel==="settings" ? null : "settings");}}><Settings size={20}/></button>
-      <div className="assistant-identity"><AssistantAvatar state={avatarState} level={active ? mic.level : chatPulse.level} onOpen={()=>{if(path==="/sprechen"){document.getElementById("chat-text")?.focus();return;}openChat();}} caption={assistantName}/><button className="assistant-menu" aria-label="Trinity Menü öffnen" aria-controls="assistant-chat-panel" aria-expanded={panel==="chat"} title="Prompt öffnen · Alt+Y" onClick={()=>{if(panel==="chat")close();else openChat();}}><Menu size={16}/></button></div>
+      <button aria-label="Trinity Einstellungen öffnen" title="Mikrofon, Begleiter & Darstellung" aria-expanded={panel==="settings"} onClick={()=>panel==="settings"?close():openSettings("microphone")}><Settings size={20}/></button>
+      <div className="assistant-identity"><button type="button" className="trinity-sun" data-state={avatarState} aria-label={`${assistantName}: Gespräch öffnen`} aria-expanded={panel==="chat"} title="Trinity öffnen · Alt+Y" onClick={()=>{if(path==="/sprechen"){document.getElementById("chat-text")?.focus();return;}if(panel==="chat")close();else openChat();}} style={{"--voice-level":active?mic.level:chatPulse.level} as import("react").CSSProperties}><Image src="/pwa/purple-sun-192.png" width={64} height={64} sizes="64px" priority fetchPriority="high" alt=""/><span>{assistantName}</span></button><button className="assistant-menu" aria-label="Trinity Menü öffnen" aria-controls="assistant-chat-panel" aria-expanded={panel==="chat"} title="Prompt öffnen · Alt+Y" onClick={()=>{if(panel==="chat")close();else openChat();}}><Menu size={16}/></button></div>
       {(phase||draft)&&panel===null&&<span className="assistant-indicator" aria-label={phase||"Einordnung liegt bereit"}/>}
     </div>
   </>;

@@ -17,7 +17,7 @@ await page.evaluateOnNewDocument(()=>{
     stats.active++;let stopped=false;
     return {getTracks:()=>[{stop:()=>{if(!stopped){stopped=true;stats.active--;stats.stopped++;}}}]};
   };
-  Object.defineProperty(navigator,'mediaDevices',{value:{getUserMedia:get},configurable:true});
+  Object.defineProperty(navigator,'mediaDevices',{value:{getUserMedia:get,enumerateDevices:async()=>[],addEventListener(){},removeEventListener(){}},configurable:true});
   window.MediaRecorder=class {
     static isTypeSupported(){return true;}
     constructor(stream,options){this.stream=stream;this.mimeType=options.mimeType;this.state='inactive';}
@@ -75,9 +75,9 @@ try{
   await page.evaluate(()=>{window.sidebarOriginal=document.querySelector('.workspace-sidebar');});
   await page.click('.workspace-sidebar a[href="/gehirn"]');await page.waitForSelector('.brain-workspace');
   assert.equal(await page.evaluate(()=>window.sidebarOriginal===document.querySelector('.workspace-sidebar')),true,'Sidebar must persist between routes');
-  assert.equal(await page.$$('.assistant-avatar').then(e=>e.length),1,'Exactly one global avatar');
+  assert.equal(await page.$$('.trinity-sun').then(e=>e.length),1,'Exactly one global avatar');
   await page.screenshot({path:'/tmp/trinity-assistant-screens/brain-dark.png'});
-  await page.click('[aria-label="Trinity Einstellungen öffnen"]');await text('Stimme & Erscheinungsbild');
+  await page.click('[aria-label="Trinity Einstellungen öffnen"]');await text('Deine Trinity');await clickText('Darstellung');
   await page.$eval('input[aria-label="Helligkeit"]',e=>{const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(e,'100');e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});
   await page.waitForFunction(()=>getComputedStyle(document.documentElement).getPropertyValue('--theme-bg').includes('248'));
   assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('trinity-display-voice')).brightness),100);
@@ -120,7 +120,7 @@ try{
   assert.equal(await page.$eval('.assistant-draft textarea',e=>e.value),'Bitte ordne meine Gartenidee bei Eden ein.');
   await clickText('Entwurf verwerfen');failClassify=false;
   await page.click('.assistant-panel:not([hidden]) [aria-label="Trinity schließen"]');await page.click('[aria-label="Trinity Einstellungen öffnen"]');
-  await page.click('.assistant-settings details summary');await page.select('.assistant-settings details select','Eden');await text('Die neueste Version');
+  await clickText('Begleiter & Stimme');await page.click('.assistant-settings details summary');await page.select('.assistant-settings details select','Eden');await text('Die neueste Version');
   await page.waitForFunction(()=>document.querySelector('.assistant-settings details textarea')?.value.startsWith('Rezepte'));
   await clickText('Ortsregeln speichern');await text('Ortsregeln als private Projektnotiz');
   assert.deepEqual(writes.at(-1).note.tags,['projektregeln']);assert.equal(writes.at(-1).note.project,'Eden');

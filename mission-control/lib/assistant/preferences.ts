@@ -1,18 +1,28 @@
+import type {WeatherPlace} from "./ambience";
 export type AssistantPreferences = {
   brightness: number; sound: boolean; microphone: boolean;
   volume: number; rate: number; pitch: number;
   provider: "browser" | "vocallab" | "off";
-  browserVoice: string; voice: string;
+  browserVoice: string; voice: string; microphoneDeviceId: string;
+  companion: "dragon" | "human" | "tree" | "off"; energyColor: "violet" | "teal" | "rose";
+  companionMotion: boolean; adaptiveMood: boolean; daylight: boolean; atmosphere: number; weatherEnabled:boolean; weatherPlace:WeatherPlace|null;
 };
 export const defaultPreferences: AssistantPreferences = {
   brightness: 100, sound: true, microphone: true, volume: .8,
-  rate: 1, pitch: 1, provider: "browser", browserVoice: "", voice: "",
+  rate: 1, pitch: 1, provider: "browser", browserVoice: "", voice: "", microphoneDeviceId: "",
+  companion: "dragon", energyColor: "violet", companionMotion: true, adaptiveMood: true, daylight:true, atmosphere:7, weatherEnabled:false, weatherPlace:null,
 };
 const bounded = (v: unknown, min: number, max: number, fallback: number) =>
   typeof v === "number" && Number.isFinite(v) ? Math.max(min, Math.min(max, v)) : fallback;
 export function preferencesOf(value: unknown): AssistantPreferences {
   const p = value && typeof value === "object" ? value as Partial<AssistantPreferences> : {};
   return {
+    daylight: p.daylight !== false, atmosphere: bounded(p.atmosphere,0,15,7), weatherEnabled:p.weatherEnabled===true,
+    weatherPlace: p.weatherPlace && typeof p.weatherPlace.name==="string" && Number.isFinite(p.weatherPlace.latitude) && Math.abs(p.weatherPlace.latitude)<=90 && Number.isFinite(p.weatherPlace.longitude) && Math.abs(p.weatherPlace.longitude)<=180 ? {name:p.weatherPlace.name.slice(0,100),latitude:Math.round(p.weatherPlace.latitude*100)/100,longitude:Math.round(p.weatherPlace.longitude*100)/100} : null,
+    microphoneDeviceId: typeof p.microphoneDeviceId === "string" ? p.microphoneDeviceId.slice(0,500) : "",
+    companion: ["dragon","human","tree","off"].includes(p.companion || "") ? p.companion! : "dragon",
+    energyColor: ["violet","teal","rose"].includes(p.energyColor || "") ? p.energyColor! : "violet",
+    companionMotion: p.companionMotion !== false, adaptiveMood: p.adaptiveMood !== false,
     brightness: bounded(p.brightness, 0, 100, 100), sound: p.sound !== false, microphone: p.microphone !== false,
     volume: bounded(p.volume, 0, 1, .8), rate: bounded(p.rate, .5, 2, 1), pitch: bounded(p.pitch, .5, 2, 1),
     provider: ["browser", "vocallab", "off"].includes(p.provider || "") ? p.provider! : "browser",

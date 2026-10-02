@@ -110,3 +110,13 @@ Zusätzliche interne, vom vorhandenen Proxy für angemeldete Trinity-Mitglieder 
 ## Änderungen durch Codex · guiding.space
 
 Produktname jetzt guiding.space; Trinity bleibt Assistentin. Auth-, Provision-, Tabellen- und Cookie-Verträge unverändert. Bestehende Vereinsdomains bleiben aktiv; guiding.space-Domainumzug erst nach Kauf und gesondertem Auftrag. Neutrale YOU ARE NEO-Kontomails bleiben für alle angebundenen Produkte bestehen. Details: [GUIDING-SPACE-WIDGET.md](GUIDING-SPACE-WIDGET.md).
+
+## Änderungen durch Codex – guiding.space Begleiter und Gerätesicherung (02.10.2026)
+
+- Bestehende Auth-/Provisioning-Endpunkte, Cookie-Namen/-Domain, `neo_profiles` und `neo_access` unverändert.
+- Neu: `GET /api/workspace/snapshot` → `{userId,canSave,snapshot:null|{revision,payload,updated_at}}`; `PUT` mit `{userId,revision,payload}`. `revision:0` erzeugt den ersten Stand. Nur eigene authentifizierte Inhalte; Speichern benötigt aktiven Förder-/App-Zugang. HTTP 409 bei Konto-/Versionskonflikt. Snapshotformat `{version:1,stores:{[erlaubterSpeicherschlüssel]:"JSON als String"}}`, max. 2 MB. Migrationen `guiding_workspace_snapshots` / `guiding_workspace_save_access`. Keine automatische Übernahme oder Hintergrundsynchronisierung.
+- Neue Tabelle `guiding_workspace_snapshots`: `user_id` (PK/FK Auth), `revision`, `payload`, `updated_at`, eigene RLS-Policies. Bestehende Tabellen und Nutzer bleiben erhalten.
+- Sicherheitskorrektur am vorhandenen `GET/POST /api/gmail/threads`: authentifiziert und pro Nutzer getrennt; historischer gemeinsamer `.cache/gmail-threads.json` bleibt liegen und wird nicht automatisch zugeordnet. Neue Cachedateien im bestehenden beschreibbaren Datenvolume unter `DATA_DIR/private/mail-cache/mail-users/<Supabase-user-id>.json`. Refresh-Skripte benötigen jetzt die Sitzung des tatsächlichen Eigentümers. Keine Make-/n8n-/Portal-Konfiguration verändert. GET ergänzt `available`, `userScoped`, `userId`, `totalUnread`; ohne persönliche Quelle `available:false`, `totalUnread:null`.
+- Neu: öffentliche, ausschließlich lesende `/api/ambience?q=Ortsname`-Suche bzw. `?lat=...&lon=...` für optionale Open-Meteo-Wetterdarstellung. Kein GPS; Einstellung aus, bis Nutzer selbst aktiviert/Ort auswählt. Keine neuen Secrets.
+- Buzz nur wieder als bestehender Portal-Einstieg verknüpft; separater Buzz-Login und Einladungen unverändert. Kein gemeinsamer Login behauptet.
+- Details und Abnahmegrenzen: `docs/GUIDING-SPACE-BAUPLAN.md`.

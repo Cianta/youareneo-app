@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-02",
+  "source": "local production build, mobile simulation, fixtures, 3 runs per route",
+  "realProviderCalls": false,
+  "routes": [
+    {
+      "route": "/login",
+      "runs": 3,
+      "performance": 95,
+      "accessibility": 100,
+      "lcp": 2927.0879999999997,
+      "cls": 0,
+      "tbt": 22,
+      "consoleErrors": 0,
+      "jsBytes": 668577
+    },
+    {
+      "route": "/notiz",
+      "runs": 3,
+      "performance": 93,
+      "accessibility": 100,
+      "lcp": 3228.3995,
+      "cls": 0.02801233573989735,
+      "tbt": 12,
+      "consoleErrors": 0,
+      "jsBytes": 833913
+    },
+    {
+      "route": "/dashboard",
+      "runs": 3,
+      "performance": 87,
+      "accessibility": 100,
+      "lcp": 3828.46,
+      "cls": 0.05890723237545342,
+      "tbt": 14,
+      "consoleErrors": 0,
+      "jsBytes": 843496
+    },
+    {
+      "route": "/dashboard/vision/tasks",
+      "runs": 3,
+      "performance": 91,
+      "accessibility": 100,
+      "lcp": 3456.483,
+      "cls": 0.004281545851281892,
+      "tbt": 8,
+      "consoleErrors": 0,
+      "jsBytes": 973964
+    },
+    {
+      "route": "/dashboard/kanban",
+      "runs": 3,
+      "performance": 96,
+      "accessibility": 100,
+      "lcp": 2706.5739999999996,
+      "cls": 0.01757969682513784,
+      "tbt": 12.5,
+      "consoleErrors": 0,
+      "jsBytes": 852431
+    }
+  ]
+}

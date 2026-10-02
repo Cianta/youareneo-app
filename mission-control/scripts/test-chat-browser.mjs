@@ -367,8 +367,10 @@ try {
   vocalReady = true;
   await page.reload({ waitUntil: "networkidle0" });
   await page.waitForFunction(
-    () => document.querySelector(".chat-settings select").value === "vocallab",
+    () => !document.querySelector('.chat-settings option[value="vocallab"]').disabled,
   );
+  assert.equal(await page.$eval('.chat-settings select', e => e.value), 'browser', 'Provider availability must preserve the selected browser voice');
+  await page.select('.chat-settings select', 'vocallab');
   await page.type("#chat-text", "Lautstärke testen");
   await submit();
   await avatarState("thinking");

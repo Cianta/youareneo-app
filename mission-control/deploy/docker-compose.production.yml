@@ -1,0 +1,41 @@
+services:
+  mission-control:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mission-control:release-b36e157
+    pull_policy: never
+    restart: unless-stopped
+    expose:
+    - '3000'
+    labels:
+    - traefik.enable=true
+    - traefik.http.routers.mission-control.rule=Host(`trinity.youareneo.com`)
+    - traefik.http.routers.mission-control.entrypoints=websecure
+    - traefik.http.routers.mission-control.tls.certresolver=letsencrypt
+    - traefik.http.routers.mission-control.tls=true
+    - traefik.http.services.mission-control.loadbalancer.server.port=3000
+    - traefik.http.routers.mission-control-http.rule=Host(`trinity.youareneo.com`)
+    - traefik.http.routers.mission-control-http.entrypoints=web
+    - traefik.http.routers.mission-control-http.middlewares=mission-control-redirect
+    - traefik.http.middlewares.mission-control-redirect.redirectscheme.scheme=https
+    - traefik.http.middlewares.mission-control-redirect.redirectscheme.permanent=true
+    volumes:
+    - mc-data:/app/data
+    env_file:
+    - /docker/mission-control-stg/.env
+    - .env
+    - /docker/mission-control/auth-mail.env
+    environment:
+      NODE_ENV: production
+      PORT: '3000'
+      HOSTNAME: 0.0.0.0
+      DATA_DIR: /app/data
+      NEXT_PUBLIC_APP_NAME: TRINITY OS
+      NEXT_PUBLIC_ACADEMY_NAME: YOU ARE NEO
+      AUTH_PROVIDER: supabase
+      AUTH_APP_URL: https://trinity.youareneo.com
+      TRANSCRIBE_PROVIDER: infomaniak
+      NEXT_PUBLIC_ASSISTANT_NAME: ${NEXT_PUBLIC_ASSISTANT_NAME:-Trinity}
+volumes:
+  mc-data: null

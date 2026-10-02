@@ -1,6 +1,6 @@
 # guiding.space · Bauplan und überprüfbarer Gesamtstand
 
-Stand: 2. Oktober 2026. Laufende Umsetzung auf `codex/guiding-space-companion`, Ausgangspunkt PR #21 / `0c808f5`. Dieses Dokument unterscheidet vorhandene Funktionen, neue Umsetzung und tatsächliche Abnahme. Ein erfolgreicher Build ist kein Test eines echten Mikrofons oder externen Kontos.
+Stand: 2. Oktober 2026. Veröffentlicht als [PR #22](https://github.com/Cianta/youareneo-app/pull/22) auf `codex/guiding-space-companion`, Ausgangspunkt PR #21 / `0c808f5`. Dieses Dokument unterscheidet vorhandene Funktionen, neue Umsetzung und tatsächliche Abnahme. Ein erfolgreicher Build ist kein Test eines echten Mikrofons oder externen Kontos.
 
 Das ausführliche Routeninventar bleibt in [TRINITY-INVENTAR.md](./TRINITY-INVENTAR.md). Dieser Bauplan ergänzt die aktuelle Umsetzung und die weiterhin offenen Integrationen.
 
@@ -87,3 +87,13 @@ Alle 15 Läufe ohne Konsolenfehler. Der einzelne zusätzliche Font-Preload-Versu
 6. **Meine Apps → Buzz** öffnet den bestehenden Portal-Einstieg. Die dortige Einladung und Kontenverknüpfung sind weiterhin getrennt.
 
 Für dieses Paket sind **keine neuen Env-Variablen oder Schlüssel** nötig. Die vorhandenen Infomaniak-/VocalLab-/Hermes-Werte und SMTP-Einstellungen bleiben wie eingerichtet.
+
+## Veröffentlichung und Live-Nachweis
+
+- Anwendungscode `f860eb5c8d8bdfd7ee9e7661b32585d293204416` zuerst auf [Staging](https://trinity-stg.youareneo.com/notiz), anschließend entsprechend der bestehenden Freigabe auf der [Hauptdomain](https://trinity.youareneo.com/notiz) veröffentlicht. Dieser abschließende Dokumentationsnachtrag ändert keinen Anwendungscode.
+- Ausschließlich `docker compose up -d --build` in den beiden freigegebenen App-Ordnern. Je Instanz 50 übertragene Dateien anhand SHA-256 überprüft; Konfiguration und alle vorher erfassten Env-Dateien unverändert. Rückkopien und vorheriges Image sind in `.codex-backups/companion-*` dokumentiert.
+- Pro Instanz 24 Seiten-/API-Prüfungen und 23 statische Assets erfolgreich. Weitere fünf Prüfungen bestätigen Anmeldungspflicht beim Schreiben, Herkunftsprüfung und ungültige Wetterkoordinaten. Tatsächliche Orts-/Wetterabfragen und optimiertes Sonnenbild erfolgreich; das gelieferte 128px-WebP der Sonne hat 2.316 Bytes.
+- Im Live-Browser: richtiges Mikrofon-Einstellungsfenster, Darstellungsregler, globales Chatfenster und Energiebegleiter sichtbar. Auf der Hauptdomain bleibt die Seitenleiste beim Wechsel Notizen → Gehirn → Notizen bestehen. Keine private Notiz geschrieben, keine Mail verschickt, keine Sprache an KI-Anbieter gesendet.
+- Der neue öffentliche Wetter-Leseendpunkt und die selbstprüfenden privaten Routen sind in der Übergabe dokumentiert. Die abweichenden Original-Übergabedokumente auf dem Server wurden bewusst nicht überschrieben; maßgeblicher neuer Vertrag steht in diesem PR.
+
+Das Paket ist veröffentlicht; die oben ausdrücklich offenen Abnahmen und Integrationen bleiben offen. Insbesondere bedeutet ein bestandenes lokales Audio-Fixture nicht, dass das physische Mikrofon im Browser des Nutzers bereits abgenommen ist.

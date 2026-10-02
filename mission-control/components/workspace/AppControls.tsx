@@ -9,7 +9,7 @@ import { Dialog } from "./Dialog";
 const Palette = dynamic(() => import("./CommandPalette"), { ssr: false });
 export function AppControls() {
   const path = usePathname();
-  const enabled = path.startsWith("/dashboard") || path === "/notiz" || (path === "/gehirn" || path === "/sprechen");
+  const enabled = path.startsWith("/dashboard") || path.startsWith("/notiz") || (path === "/gehirn" || path === "/sprechen");
   const [palette, setPalette] = useState(false),
     [help, setHelp] = useState(false);
   useEffect(() => {
@@ -58,6 +58,8 @@ export function AppControls() {
             <dd>Seiten, Aktionen und eigene Inhalte suchen</dd>
             <dt>Alt+N</dt>
             <dd>Sprachnotiz öffnen; im Notizraum Aufnahme umschalten</dd>
+            <dt>Ctrl+Shift+Leertaste · gedrückt halten</dt>
+            <dd>Überall einen Gedanken aufnehmen. Loslassen startet die Einordnung; gespeichert wird nach deiner Bestätigung.</dd>
             <dt>?</dt>
             <dd>Diese Hilfe öffnen (außerhalb von Eingabefeldern)</dd>
             <dt>Esc</dt>

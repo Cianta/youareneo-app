@@ -1,5 +1,4 @@
 "use client";
-import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import {
   Component,
   useCallback,
@@ -95,6 +94,11 @@ export default function BrainWorkspace({
   const viewport = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 800, height: 560 });
   useEffect(() => setQuery(initialQuery), [initialQuery]);
+  useEffect(()=>{
+    const changed=()=>setRetry(n=>n+1);
+    window.addEventListener("neo-notes-changed",changed);
+    return()=>window.removeEventListener("neo-notes-changed",changed);
+  },[]);
   useEffect(() => {
     const update = () => {
       const low = limitedGraphics();
@@ -177,7 +181,7 @@ export default function BrainWorkspace({
     );
   }, []);
   return (
-    <main className="brain-workspace">
+    <section className="brain-workspace">
       <header>
         <div>
           <Link href="/dashboard">← Übersicht</Link>
@@ -190,7 +194,7 @@ export default function BrainWorkspace({
         >
           Suchen · ⌘K
         </button>
-        <AssistantAvatar />
+
       </header>
       <div className="brain-toolbar">
         <label>
@@ -373,6 +377,6 @@ export default function BrainWorkspace({
           </div>
         </>
       )}
-    </main>
+    </section>
   );
 }

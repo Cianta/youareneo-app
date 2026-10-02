@@ -1,5 +1,4 @@
 "use client";
-import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -16,6 +15,7 @@ import dynamic from "next/dynamic";
 import {ErrorState, LoadingState} from "@/components/workspace/States";
 const VoiceRecorder=dynamic(()=>import("./VoiceRecorder").then(m=>m.VoiceRecorder),{ssr:false,loading:()=> <LoadingState label="Mikrofon wird vorbereitet …"/>});
 import { useBrand } from "./BrandProvider";
+import { useAssistantPreferences } from "@/components/assistant/Preferences";
 import {
   emptyDraft,
   NOTE_TYPES,
@@ -51,6 +51,7 @@ type Config = {
 export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak", initialNote, initialProject="", initialTag="", initialType="" }: { autoStart?: boolean; initialProvider?: string; initialNote?: string; initialProject?: string; initialTag?: string; initialType?: string }) {
   const router = useRouter();
   const { appName, assistantName } = useBrand();
+  const { preferences } = useAssistantPreferences();
   const [titleEdited, setTitleEdited] = useState(false);
   const [draft, setDraft] = useState<NoteDraft>(emptyDraft),
     [audio, setAudio] = useState<Blob | null>(null),
@@ -60,7 +61,6 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     [language, setLanguage] = useState("auto");
   const [config, setConfig] = useState<Config | null>(null),
     [loaded, setLoaded] = useState(false),
-    [recordingLevel, setRecordingLevel] = useState<number | null>(null),
     [busy, setBusy] = useState(""),
     [error, setError] = useState(""),
     [message, setMessage] = useState("");
@@ -160,6 +160,11 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     setProjects(p.projects);
     setQueue(h.queue);
   }, []);
+  useEffect(()=>{
+    const changed=()=>{void refresh().then(()=>latestLoadNotes.current?.()).catch(()=>{});};
+    window.addEventListener("neo-notes-changed",changed);
+    return()=>window.removeEventListener("neo-notes-changed",changed);
+  },[refresh]);
   useEffect(() => {
     void refresh()
       .catch((e) => { if (!String(e.message).includes("melde dich")) setError(e.message); })
@@ -294,7 +299,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
     });
   }
   return (
-    <main className="voice-page">
+    <section className="voice-page">
       <div className="voice-wrap">
         <header className="voice-header">
           <button className="voice-secondary" onClick={()=>window.dispatchEvent(new Event("neo-open-search"))}>Suchen</button>
@@ -306,10 +311,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
           <Link href="/notiz/hilfe">
             Als App installieren <ArrowUpRight size={15} />
           </Link>
-          <AssistantAvatar
-            state={recordingLevel !== null ? "listening" : busy ? "thinking" : "idle"}
-            level={recordingLevel ?? 0}
-          />
+
         </header>
         <div className="voice-heading">
           <div>
@@ -339,10 +341,12 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
         <div className="voice-columns">
           <section className="voice-card voice-compose">
             <VoiceRecorder
-              onMeter={setRecordingLevel}
               autoStart={autoStart}
-              disabled={!!busy}
+              disabled={!!busy || !preferences.microphone}
               onActiveChange={setActive}
+              onMeter={(level) => window.dispatchEvent(new CustomEvent("neo-assistant-state", {
+                detail: {state: level === null ? "idle" : "listening", level: level ?? 0},
+              }))}
               onRecording={(blob) => {
                 setAudio(blob);
                 setNoteId(crypto.randomUUID());
@@ -826,7 +830,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
           </aside>
         </div>
       </div>
-    </main>
+    </section>
   );
 }
 function localDate(iso: string) {

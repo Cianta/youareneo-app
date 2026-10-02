@@ -17,38 +17,20 @@ const labels: Record<AvatarState, string> = {
 export function AssistantAvatar({
   state = "idle",
   level = 0,
+  onOpen,
+  caption,
 }: {
   state?: AvatarState;
   level?: number;
+  onOpen?: () => void;
+  caption?: string;
 }) {
   const { assistantName } = useBrand();
   const path = usePathname();
   const intensity = Number.isFinite(level)
     ? Math.max(0, Math.min(1, level))
     : 0;
-  return (
-    <Link
-      href="/sprechen"
-      prefetch={false}
-      className="assistant-avatar"
-      data-state={state}
-      style={{ "--voice-level": intensity } as CSSProperties}
-      aria-label={`${assistantName}: ${labels[state]}. Sprachchat öffnen`}
-      title={`Mit ${assistantName} sprechen`}
-      onClick={(event) => {
-        // Preserve the current conversation; focus its composer on repeated clicks.
-        if (
-          path === "/sprechen" &&
-          !event.metaKey &&
-          !event.ctrlKey &&
-          !event.shiftKey &&
-          !event.altKey
-        ) {
-          event.preventDefault();
-          document.getElementById("chat-text")?.focus();
-        }
-      }}
-    >
+  const content = <>
       <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
         <g
           fill="none"
@@ -80,7 +62,18 @@ export function AssistantAvatar({
           />
         </g>
       </svg>
-      <span aria-hidden="true">{labels[state]}</span>
-    </Link>
-  );
+      <span aria-hidden="true">{caption || labels[state]}</span>
+  </>;
+  const props = {
+    className: "assistant-avatar", "data-state": state,
+    style: { "--voice-level": intensity } as CSSProperties,
+    "aria-label": `${assistantName}: ${labels[state]}. Sprachchat öffnen`,
+    title: `Mit ${assistantName} sprechen`,
+  };
+  if (onOpen) return <button type="button" {...props} onClick={onOpen}>{content}</button>;
+  return <Link href="/sprechen" prefetch={false} {...props} onClick={event => {
+    if (path === "/sprechen" && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+      event.preventDefault(); document.getElementById("chat-text")?.focus();
+    }
+  }}>{content}</Link>;
 }

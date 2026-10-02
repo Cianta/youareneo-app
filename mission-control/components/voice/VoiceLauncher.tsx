@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
-import { Mic } from "lucide-react";
+import dynamic from "next/dynamic";
+const AssistantDock = dynamic(() => import("@/components/assistant/AssistantDock"), {ssr:false});
 export function VoiceLauncher() {
   const path = usePathname(),
     router = useRouter();
@@ -24,15 +24,5 @@ export function VoiceLauncher() {
         .register("/sw.js", { scope: "/" })
         .catch(() => {});
   }, []);
-  if (path === "/notiz" || path.startsWith("/dashboard")) return null;
-  return (
-    <Link
-      href="/notiz"
-      title="Sprachnotiz öffnen (Alt+N)"
-      aria-label="Sprachnotiz öffnen"
-      className="fixed bottom-5 left-5 z-[90] rounded-full bg-forest-800 text-white border border-forest-500 p-3 shadow-lg"
-    >
-      <Mic size={22} />
-    </Link>
-  );
+  return <AssistantDock />;
 }

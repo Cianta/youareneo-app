@@ -1,7 +1,8 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 type Callbacks = { onAudio: (blob: Blob) => void; onSpeechStart: () => void };
 export function useChatMicrophone(callbacks: Callbacks) {
+  const microphoneId = useId();
   const refs = useRef(callbacks);
   refs.current = callbacks;
   const [state, setState] = useState<
@@ -71,6 +72,7 @@ export function useChatMicrophone(callbacks: Callbacks) {
   }, [cancel, release]);
   const start = useCallback(
     async (handsFree: boolean) => {
+      window.dispatchEvent(new CustomEvent("neo-microphone-claim",{detail:microphoneId}));
       cancel();
       const r = run.current,
         token = ++r.token;
@@ -232,7 +234,7 @@ export function useChatMicrophone(callbacks: Callbacks) {
         );
       }
     },
-    [cancel, release],
+    [cancel, release, microphoneId],
   );
   useEffect(() => {
     mounted.current = true;
@@ -242,14 +244,17 @@ export function useChatMicrophone(callbacks: Callbacks) {
     const blur = () => {
       if (!run.current.handsFree) finish();
     };
+    const claim = (e:Event) => {if((e as CustomEvent).detail!==microphoneId)cancel();};
     document.addEventListener("visibilitychange", hide);
     window.addEventListener("blur", blur);
+    window.addEventListener("neo-microphone-claim",claim);
     return () => {
       mounted.current = false;
       cancel();
       document.removeEventListener("visibilitychange", hide);
       window.removeEventListener("blur", blur);
+      window.removeEventListener("neo-microphone-claim",claim);
     };
-  }, [cancel, finish]);
+  }, [cancel, finish, microphoneId]);
   return { state, level, error, start, finish, cancel };
 }

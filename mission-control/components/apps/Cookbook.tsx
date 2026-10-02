@@ -11,6 +11,7 @@ export function Cookbook() {
   const [saving, setSaving] = useState(false), [saveError, setSaveError] = useState(""), [notice, setNotice] = useState("");
   const lastSubmission = useRef<{ serialized: string; id: string } | null>(null);
   const mounted = useRef(false);
+  useEffect(() => { lastSubmission.current = null; }, [collection.config?.userId]);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const dirty = !!(title || ingredients || method);
   useEffect(() => { if (!dirty) return; const guard = (e: BeforeUnloadEvent) => { e.preventDefault(); }; window.addEventListener("beforeunload",guard); return () => window.removeEventListener("beforeunload",guard); }, [dirty]);

@@ -17,6 +17,7 @@ export function RadioEden() {
   const saveIds = useRef(new Map<string, string>());
   const saved = collection.notes.flatMap(note => { const station = savedStation(note); return station ? [station] : []; });
   const savedIds = new Set(saved.map(station => station.id));
+  useEffect(() => { saveIds.current.clear(); }, [collection.config?.userId]);
   useEffect(() => { mounted.current = true; const player = audio.current; return () => { mounted.current = false; serial.current++; if (player) { player.pause(); player.removeAttribute("src"); player.load(); } }; }, []);
   useEffect(() => { if (audio.current) audio.current.volume = volume; }, [volume]);
   useEffect(() => {

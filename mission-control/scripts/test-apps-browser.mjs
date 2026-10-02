@@ -107,9 +107,15 @@ try {
   const retried = apiCalls.filter(u => u.startsWith("/api/notes?") && u.includes("before="));
   assert.equal(retried.at(-1),retried.at(-2),"Retry must retain the failed page cursor");
   // A changed owner while paging must reset the library before a first-page read.
-  await page.reload({waitUntil:"networkidle0"}); owner = "00000000-0000-4000-8000-000000000099";
+  await page.reload({waitUntil:"networkidle0"});
+  await page.type("#recipe-title","Neues Rezept"); await page.type("#recipe-ingredients","Karotten"); await page.type("#recipe-method","Kochen.");
+  failSave = true; await clickText("In meinem Buch speichern"); await textContains("Speichern unterbrochen"); const previousOwnerId = writes.at(-1).id;
+  owner = "00000000-0000-4000-8000-000000000099";
   await clickText("Weitere Buchseiten laden"); await textContains("Die erste Seite wartet");
-  assert.equal(await page.$$(".recipe-entry").then(es => es.length),0); assert(!apiCalls.at(-1).includes("before=")); owner = oldOwner;
+  assert.equal(await page.$$(".recipe-entry").then(es => es.length),0); assert(!apiCalls.at(-1).includes("before="));
+  await clickText("In meinem Buch speichern"); await textContains("Dein Rezept liegt jetzt");
+  assert.notEqual(writes.at(-1).id,previousOwnerId,"A different owner must never reuse a previous account's retry id");
+  owner = oldOwner;
   await page.goto(base + "/dashboard/apps/radio",{waitUntil:"networkidle0"});
   await page.waitForSelector(".radio-stations .radio-tune"); await checkLayout();
   assert.equal(await page.$$eval(".radio-stations .radio-tune",es => es.length),1,"Unsafe streams and duplicate stations must be excluded");

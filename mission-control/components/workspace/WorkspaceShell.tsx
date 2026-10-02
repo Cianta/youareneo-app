@@ -115,7 +115,7 @@ export function WorkspaceShell({
             <Link
               key={p.id}
               href={p.href}
-              aria-current={path === p.href ? "page" : undefined}
+              aria-current={path === p.href || (p.id === "my-apps" && path.startsWith("/dashboard/apps/")) ? "page" : undefined}
             >
               {p.label}
             </Link>

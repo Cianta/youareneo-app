@@ -1,0 +1,35 @@
+[
+  {
+    "route": "/dashboard/apps",
+    "runs": 3,
+    "performance": 96,
+    "accessibility": 100,
+    "lcp": 2784.6659999999993,
+    "cls": 0,
+    "tbt": 13,
+    "consoleErrors": 0,
+    "jsBytes": 579091
+  },
+  {
+    "route": "/dashboard/apps/radio",
+    "runs": 3,
+    "performance": 96,
+    "accessibility": 100,
+    "lcp": 2785.9139999999998,
+    "cls": 0,
+    "tbt": 14,
+    "consoleErrors": 0,
+    "jsBytes": 592795
+  },
+  {
+    "route": "/dashboard/apps/kochbuch",
+    "runs": 3,
+    "performance": 96,
+    "accessibility": 100,
+    "lcp": 2783.837,
+    "cls": 0,
+    "tbt": 13.5,
+    "consoleErrors": 0,
+    "jsBytes": 589088
+  }
+]

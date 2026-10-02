@@ -36,6 +36,7 @@ export const primary: Destination[] = [
     group: "Arbeiten",
     keywords: "journal tagebuch fokus",
   },
+  { id: "my-apps", label: "Meine Apps", href: "/dashboard/apps", group: "Entdecken", keywords: "radio kochbuch kino visual frequency atelier good news living arts" },
   {
     id: "lab",
     label: "Labor",

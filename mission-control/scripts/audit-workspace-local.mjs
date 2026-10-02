@@ -10,8 +10,9 @@ assert(['127.0.0.1', 'localhost'].includes(base.hostname), 'Only localhost is al
 assert(process.env.TEST_BROWSER_PATH, 'Set TEST_BROWSER_PATH to a local Chromium browser.');
 const runs = Number(process.env.AUDIT_RUNS || 3);
 assert(Number.isInteger(runs) && runs >= 1 && runs <= 5, 'Use 1–5 runs.');
-const output = resolve(process.env.AUDIT_OUTPUT_DIR || '/tmp/trinity-workspace-audit');
-const routes = ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban'];
+const appsSuite = process.env.AUDIT_SUITE === 'apps';
+const output = resolve(process.env.AUDIT_OUTPUT_DIR || (appsSuite ? '/tmp/trinity-apps-audit' : '/tmp/trinity-workspace-audit'));
+const routes = appsSuite ? ['/dashboard/apps', '/dashboard/apps/radio', '/dashboard/apps/kochbuch'] : ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban'];
 const userId = '00000000-0000-4000-8000-000000000001';
 const note = { id: '00000000-0000-4000-8000-000000000002', title: 'Testgedanke',
   transcript: 'Ein rein lokaler Testgedanke.', summary: 'Lokale Beispielnotiz',
@@ -41,6 +42,7 @@ try {
         const url = new URL(request.url());
         if (['data:', 'blob:'].includes(url.protocol)) return request.continue();
         if (url.origin !== base.origin) {
+          if (appsSuite && url.hostname.endsWith('api.radio-browser.info') && request.method() === 'GET') return request.respond({ status:200, headers:{'Access-Control-Allow-Origin':'*'}, contentType:'application/json', body:JSON.stringify([{ stationuuid:'fixture-radio', name:'Salon Jazz', url_resolved:'https://stream.example.test/live', country:'Österreich', tags:'jazz' }]) });
           external++;
           // A local transparent image keeps fixture favicons independent of providers.
           if (request.resourceType() === 'image') return request.respond({ status: 200,
@@ -50,11 +52,11 @@ try {
         if (!url.pathname.startsWith('/api/')) return request.continue();
         if (request.method() !== 'GET') { writes++; return request.abort('blockedbyclient'); }
         const bodies = {
-          '/api/auth/me': { authenticated: true, hasTrinityAccess: true, displayName: 'Testmitglied', userId },
+          '/api/auth/me': { authenticated: true, hasTrinityAccess: true, displayName: 'Testmitglied', userId, products:['foerder'] },
           '/api/voice/config': { success: true, canSave: true, userId, provider: 'infomaniak',
             transcriptionReady: false, classificationReady: false,
             limits: { minutes: 60, requests: 100 }, usage: { voice_seconds: 0, requests: 0 } },
-          '/api/notes': { success: true, notes: [note] },
+          '/api/notes': { success: true, notes: appsSuite ? (url.searchParams.get('tag') === 'kochbuch' ? [{ ...note, title:'Gartensuppe', transcript:'Zutaten\nKürbis\n\nZubereitung\nKochen\n\nJahreszeit: Herbst', tags:['kochbuch','herbst'] }] : []) : [note] },
           '/api/notes/projects': { success: true, projects: ['Atelier'] },
           '/api/notes/queue': { success: true, queue: [] },
           '/api/search': { success: true, userId, items: [] },

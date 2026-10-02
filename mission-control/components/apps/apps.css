@@ -1,0 +1,28 @@
+.neo-apps { --app-ink:#f1eadb; --app-muted:#c0c5b3; --app-gold:#d3b578; color:var(--app-ink); }
+.apps-intro { padding:12px 0 30px; max-width:700px; }
+.apps-intro h1 { font-family:Georgia,serif; font-weight:400; font-size:clamp(36px,5vw,58px); }
+.apps-intro p,.neo-apps p { line-height:1.7; }
+.apps-intro p:last-child { color:var(--app-muted); font-size:17px; }
+.apps-catalog { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:22px; }
+.app-card { border:1px solid #475343; border-radius:16px; background:#17231c; overflow:hidden; transition:border-color .15s; }
+.app-card:hover { border-color:var(--app-gold); }
+.app-card img { width:100%; height:auto; aspect-ratio:18/11; display:block; object-fit:cover; }
+.app-card > div { padding:22px; }
+.app-card h2 { margin:8px 0 12px; font:400 25px/1.15 Georgia,serif; }
+.app-card p:not(.app-category) { font-size:14px; color:var(--app-muted); margin:0 0 18px; }
+.app-category { color:var(--app-gold); font-size:11px; letter-spacing:.12em; text-transform:uppercase; }
+.app-status { display:flex; justify-content:space-between; gap:12px; font-size:13px; color:var(--app-ink); }
+.apps-account-note { margin-top:32px; padding:24px; border:1px solid #475343; border-radius:14px; }
+.apps-account-note h2 { margin:0 0 12px; }
+.apps-account-note p { color:var(--app-muted); max-width:750px; }
+.apps-account-note a,.app-back { display:inline-flex; align-items:center; min-height:44px; color:var(--app-gold); }
+.app-detail { max-width:860px; }
+.app-detail-art { display:block; width:100%; max-width:600px; height:auto; margin:24px 0; border-radius:16px; }
+.app-detail h1 { font:400 clamp(32px,5vw,52px)/1.15 Georgia,serif; }
+.app-detail p { max-width:700px; }
+.app-detail-lead { font-size:20px; color:var(--app-muted); }
+.app-action { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:12px 18px; border:1px solid #af945a; background:#3e452c; color:#fff5df; border-radius:8px; margin-top:18px; }
+.neo-apps .app-hint { font-size:13px; color:var(--app-muted); margin-top:12px; }
+.neo-apps :is(a,button,input,select,textarea):focus-visible { outline:3px solid #dfc68d; outline-offset:3px; }
+@media(max-width:540px) { .apps-catalog { grid-template-columns:1fr; } .apps-intro { padding-top:0; } }
+@media(prefers-reduced-motion:reduce) { .neo-apps * { transition:none!important; } }

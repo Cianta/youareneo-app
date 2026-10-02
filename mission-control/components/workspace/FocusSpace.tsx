@@ -21,6 +21,7 @@ import { formatCountdown } from "@/lib/workspace/time";
 import { playGong } from "@/lib/gong";
 import { Modal } from "@/components/ui/Modal";
 import Link from "next/link";
+import {useAssistantPreferences} from "@/components/assistant/Preferences";
 const labels = {
   focus: "Fokuszeit",
   break: "Bewusste Pause",
@@ -92,6 +93,7 @@ export function FocusCard() {
   );
 }
 export function FocusSpace() {
+  const {preferences,update} = useAssistantPreferences();
   const f = useFocusStore();
   const ui = useUIExtStore();
   const globalAudio = useGlobalAudioStore();
@@ -182,10 +184,10 @@ export function FocusSpace() {
         </label>
         <button
           className="w-icon"
-          aria-label={ui.musicMuted ? "Ton einschalten" : "Ton ausschalten"}
-          onClick={() => ui.setMusicMuted(!ui.musicMuted)}
+          aria-label={(!preferences.sound || (f.pomodoroMode === "focus" ? globalAudio.workMuted : globalAudio.breakMuted)) ? "Ton einschalten" : "Ton ausschalten"}
+          onClick={()=>{const ownMuted=f.pomodoroMode === "focus" ? globalAudio.workMuted : globalAudio.breakMuted;const toggle=f.pomodoroMode === "focus" ? globalAudio.toggleWorkMute : globalAudio.toggleBreakMute;if(!preferences.sound){update({sound:true});if(ownMuted)toggle();}else toggle();}}
         >
-          {ui.musicMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+          {(!preferences.sound || (f.pomodoroMode === "focus" ? globalAudio.workMuted : globalAudio.breakMuted)) ? <VolumeX size={18} /> : <Volume2 size={18} />}
         </button>
         <label>
           Lautstärke
@@ -195,8 +197,8 @@ export function FocusSpace() {
             min="0"
             max="1"
             step="0.05"
-            value={ui.musicVolume}
-            onChange={(e) => ui.setMusicVolume(Number(e.target.value))}
+            value={globalAudio.volume}
+            onChange={(e) => globalAudio.setVolume(Number(e.target.value))}
           />
         </label>
         <Link

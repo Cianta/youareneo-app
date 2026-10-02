@@ -119,3 +119,5 @@
 
 .workspace-shell .voice-heading p:last-child{color:var(--theme-muted);}
 .restored-sky{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+
+.workspace-shell .focus-audio-status{left:240px;bottom:16px;}@media(max-width:767px){.workspace-shell .focus-audio-status{left:10px;bottom:150px;max-width:calc(100vw - 20px);}}

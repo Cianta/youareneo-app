@@ -64,3 +64,5 @@ Mobiler Lighthouse-Lauf gegen lokale Produktions-Fixtures, je ein finaler Lauf p
 | Notebooks & Ziele | 96 | 100 | 0 |
 
 Vexp ist erreichbar; seine mechanische Änderungserkennung für dieses separate Git-Worktree ist nicht verfügbar. Deshalb wurden aktuelle Dateien, Git-Diff, Build, Tests und Browser direkt geprüft. Die neuen Bibliotheken laufen lokal; `fflate` ist gegenüber dem historischen Stand auf die korrigierte Version 0.8.3 aktualisiert.
+
+Die wiederhergestellten Ruhepol-Regler steuern den einen gemeinsamen Audioplayer; vorhandene ausgewählte Arbeits-/Pausentracks werden wieder abgespielt. Der globale Ton-Schalter und seine Lautstärke gelten auch für Fokusmusik; ausgeschalteter Ton unterdrückt den Abschlussgong.

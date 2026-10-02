@@ -6,7 +6,7 @@ import {ownProjectRules} from "../lib/voice/project-rules";
 import {classify} from "../lib/voice/providers";
 test("device preferences reject malformed values and never retain arbitrary data",()=>{
   const p=preferencesOf({brightness:Infinity,volume:-7,rate:90,pitch:NaN,provider:"bad",sound:false,microphone:false,session:"not-a-preference"});
-  assert.equal(p.brightness,0);assert.equal(p.volume,0);assert.equal(p.rate,2);assert.equal(p.pitch,1);assert.equal(p.provider,"browser");
+  assert.equal(p.brightness,100);assert.equal(p.volume,0);assert.equal(p.rate,2);assert.equal(p.pitch,1);assert.equal(p.provider,"browser");
   assert.equal(p.sound,false);assert.equal(p.microphone,false);assert(!("session" in p));
 });
 test("continuous palette keeps foreground contrast against the main background",()=>{

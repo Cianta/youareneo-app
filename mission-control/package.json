@@ -25,7 +25,9 @@
     "test:chat:browser": "node scripts/test-chat-browser.mjs",
     "test:apps": "tsx --test tests/apps.test.ts",
     "test:apps:browser": "node scripts/test-apps-browser.mjs",
-    "audit:apps:local": "node scripts/audit-apps-local.mjs"
+    "audit:apps:local": "node scripts/audit-apps-local.mjs",
+    "test:restored": "tsx --test tests/restored.test.ts",
+    "test:restored:browser": "node scripts/test-restored-browser.mjs"
   },
   "build": {
     "appId": "com.youareneo.mission-control",
@@ -70,8 +72,13 @@
     "@google/generative-ai": "^0.14.1",
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.117.2",
+    "astronomy-engine": "2.1.19",
+    "city-timezones": "1.3.4",
     "clsx": "^2.1.1",
+    "fflate": "0.8.3",
     "framer-motion": "^11.3.0",
+    "free-human-design": "1.0.1",
+    "jspdf": "4.2.1",
     "lucide-react": "^0.400.0",
     "next": "^16.2.7",
     "openai": "^4.55.0",

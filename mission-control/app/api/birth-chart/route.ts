@@ -1,0 +1,4 @@
+import {limitedBody} from "@/lib/voice/validation";
+import {calculateBirth} from "@/lib/workspace/birth";
+import {failure,json,sameOrigin,HttpError} from "@/lib/auth/http";
+export async function POST(req:Request) { try {sameOrigin(req); const text=await (await limitedBody(req,4096)).text(); let input;try {input=JSON.parse(text)}catch{throw new HttpError(400,"Ungültige Eingabe.")}; if(!input || typeof input.date!=="string" || typeof input.time!=="string" || typeof input.timezone!=="string" || input.date.length>10 || input.time.length>5 || input.timezone.length>80 || (input.city!==undefined && (typeof input.city!=="string" || input.city.length>200)))throw new HttpError(400,"Datum, Uhrzeit und Zeitzone prüfen.");try{return json(calculateBirth(input));}catch{throw new HttpError(400,"Geburtsdatum, Uhrzeit, Ort und Zeitzone prüfen.");}}catch(e){return failure(e);}}

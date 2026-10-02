@@ -121,3 +121,9 @@
 .restored-sky{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
 
 .workspace-shell .focus-audio-status{left:240px;bottom:16px;}@media(max-width:767px){.workspace-shell .focus-audio-status{left:10px;bottom:150px;max-width:calc(100vw - 20px);}}
+.workspace-shell .voice-notice{background:var(--theme-panel);color:var(--theme-text);border-color:var(--theme-border);}
+.workspace-shell .voice-tabs{border-color:var(--theme-border);}
+.workspace-shell .voice-tabs button{color:var(--theme-muted);}
+.workspace-shell .voice-tabs button.selected{color:var(--theme-green);border-color:var(--theme-green);}
+.workspace-shell .voice-tabs button span{background:var(--theme-active);color:var(--theme-text);}
+.workspace-shell .voice-badge{color:var(--theme-green);border-color:var(--theme-green);}

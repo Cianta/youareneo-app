@@ -1,5 +1,5 @@
 /* Public shell only. Never store navigations, APIs, audio, notes or sessions. */
-const SHELL='neo-public-shell-v3';
+const SHELL='neo-public-shell-v4';
 const ASSETS=['/offline.html','/pwa/purple-sun-192.png','/pwa/purple-sun-512.png','/pwa/purple-sun-maskable-512.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(SHELL).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key==='trinity-os-proxy-v1'||key==='trinity-os-static-v1'||(key.startsWith('neo-public-shell-')&&key!==SHELL)).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));});

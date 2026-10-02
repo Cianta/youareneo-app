@@ -1,4 +1,5 @@
 'use client';
+import {useId} from 'react';
 import { useBrand } from '@/components/voice/BrandProvider';
 
 /**
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function TrinityLogo({ size = 36, className = '' }: Props) {
+  const prefix=useId().replace(/:/g, "");
   const {appName} = useBrand();
   return (
     <svg
@@ -35,7 +37,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
     >
       <defs>
         {/* ── Green (yang) gradient ── */}
-        <radialGradient id="tl-yang" gradientUnits="userSpaceOnUse" cx="63" cy="26" r="46">
+        <radialGradient id={`${prefix}-tl-yang`} gradientUnits="userSpaceOnUse" cx="63" cy="26" r="46">
           <stop offset="0%"   stopColor="#d8f4a8" />
           <stop offset="26%"  stopColor="#6bbf40" />
           <stop offset="62%"  stopColor="#4a8a3f" />
@@ -43,7 +45,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </radialGradient>
 
         {/* ── Blue (yin) gradient ── */}
-        <radialGradient id="tl-yin" gradientUnits="userSpaceOnUse" cx="37" cy="74" r="46">
+        <radialGradient id={`${prefix}-tl-yin`} gradientUnits="userSpaceOnUse" cx="37" cy="74" r="46">
           <stop offset="0%"   stopColor="#8aabf5" />
           <stop offset="28%"  stopColor="#3355cc" />
           <stop offset="65%"  stopColor="#1e3ba8" />
@@ -51,21 +53,21 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </radialGradient>
 
         {/* ── Yang eye (blue on green half) ── */}
-        <radialGradient id="tl-yang-eye" cx="45%" cy="33%" r="60%">
+        <radialGradient id={`${prefix}-tl-yang-eye`} cx="45%" cy="33%" r="60%">
           <stop offset="0%"   stopColor="#e8f0ff" />
           <stop offset="38%"  stopColor="#5588ff" />
           <stop offset="100%" stopColor="#1530a8" />
         </radialGradient>
 
         {/* ── Yin dot (green on blue half) ── */}
-        <radialGradient id="tl-yin-dot" cx="40%" cy="33%" r="65%">
+        <radialGradient id={`${prefix}-tl-yin-dot`} cx="40%" cy="33%" r="65%">
           <stop offset="0%"   stopColor="#eeffcc" />
           <stop offset="36%"  stopColor="#7acc44" />
           <stop offset="100%" stopColor="#2a5228" />
         </radialGradient>
 
         {/* ── Purple centre drop (rest state) ── */}
-        <radialGradient id="tl-purple" cx="50%" cy="38%" r="62%">
+        <radialGradient id={`${prefix}-tl-purple`} cx="50%" cy="38%" r="62%">
           <stop offset="0%"   stopColor="#ffffff" />
           <stop offset="18%"  stopColor="#ede9fe" />
           <stop offset="52%"  stopColor="#8b5cf6" />
@@ -73,7 +75,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </radialGradient>
 
         {/* ── Indigo → dark-turquoise collapse dot ── */}
-        <radialGradient id="tl-collapse" cx="42%" cy="36%" r="70%">
+        <radialGradient id={`${prefix}-tl-collapse`} cx="42%" cy="36%" r="70%">
           <stop offset="0%"   stopColor="#a5f3fc" />
           <stop offset="30%"  stopColor="#22d3ee" />
           <stop offset="60%"  stopColor="#155e75" />
@@ -81,7 +83,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </radialGradient>
 
         {/* ── Golden light bloom ── */}
-        <radialGradient id="tl-gold" cx="50%" cy="50%" r="50%">
+        <radialGradient id={`${prefix}-tl-gold`} cx="50%" cy="50%" r="50%">
           <stop offset="0%"   stopColor="#fff7d6" />
           <stop offset="30%"  stopColor="#fcd34d" stopOpacity="0.9" />
           <stop offset="65%"  stopColor="#f59e0b" stopOpacity="0.45" />
@@ -89,7 +91,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </radialGradient>
 
         {/* ── Silver gloss sweep ── */}
-        <linearGradient id="tl-silver" x1="0%" y1="0%" x2="100%" y2="0%">
+        <linearGradient id={`${prefix}-tl-silver`} x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%"   stopColor="#ffffff" stopOpacity="0" />
           <stop offset="42%"  stopColor="#ffffff" stopOpacity="0" />
           <stop offset="50%"  stopColor="#f8fafc" stopOpacity="0.85" />
@@ -98,12 +100,12 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </linearGradient>
 
         {/* Clip for the shimmer sweep — stays inside the orb */}
-        <clipPath id="tl-clip">
+        <clipPath id={`${prefix}-tl-clip`}>
           <circle cx="50" cy="50" r="47" />
         </clipPath>
 
         {/* ── Soft glow filter ── */}
-        <filter id="tl-glow" x="-70%" y="-70%" width="240%" height="240%">
+        <filter id={`${prefix}-tl-glow`} x="-70%" y="-70%" width="240%" height="240%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="4.5" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -113,7 +115,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </filter>
 
         {/* ── Strong bloom filter (golden light) ── */}
-        <filter id="tl-bloom" x="-120%" y="-120%" width="340%" height="340%">
+        <filter id={`${prefix}-tl-bloom`} x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -123,7 +125,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         </filter>
 
         {/* ── Sparkle filter ── */}
-        <filter id="tl-spark" x="-120%" y="-120%" width="340%" height="340%">
+        <filter id={`${prefix}-tl-spark`} x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -256,9 +258,9 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
              A 23.5,23.5 0 0,1 50,50
              A 23.5,23.5 0 0,0 50,97
              A 47,47    0 0,1 50,3 Z"
-          fill="url(#tl-yang)"
+          fill={`url(#${prefix}-tl-yang)`}
         />
-        <circle cx="64.5" cy="26.5" r="8.2" fill="url(#tl-yang-eye)" opacity="0.93" />
+        <circle cx="64.5" cy="26.5" r="8.2" fill={`url(#${prefix}-tl-yang-eye)`} opacity="0.93" />
         <circle cx="64.5" cy="26.5" r="3.9" fill="#1e3ba8"           opacity="0.88" />
         <circle cx="62.3" cy="24.3" r="1.5" fill="white"             opacity="0.55" />
 
@@ -268,9 +270,9 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
              A 23.5,23.5 0 0,1 50,50
              A 23.5,23.5 0 0,0 50,97
              A 47,47    0 0,0 50,3 Z"
-          fill="url(#tl-yin)"
+          fill={`url(#${prefix}-tl-yin)`}
         />
-        <circle cx="35.5" cy="73.5" r="8.2" fill="url(#tl-yin-dot)" opacity="0.93" />
+        <circle cx="35.5" cy="73.5" r="8.2" fill={`url(#${prefix}-tl-yin-dot)`} opacity="0.93" />
         <circle cx="35.5" cy="73.5" r="3.9" fill="#4a8a3f"          opacity="0.88" />
         <circle cx="33.3" cy="71.3" r="1.5" fill="white"            opacity="0.50" />
         <path
@@ -286,17 +288,17 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         />
 
         {/* Purple centre drop — part of the rest state, rotates with the body */}
-        <g className="tl-purple" filter="url(#tl-glow)">
+        <g className="tl-purple" filter={`url(#${prefix}-tl-glow)`}>
           <ellipse cx="50" cy="50" rx="9" ry="11.5"
-            fill="url(#tl-purple)"
+            fill={`url(#${prefix}-tl-purple)`}
             transform="rotate(-30 50 50)"
           />
         </g>
       </g>
 
       {/* ── INDIGO / DARK-TURQUOISE COLLAPSE DOT ── */}
-      <g className="tl-collapse-dot" filter="url(#tl-glow)">
-        <circle cx="50" cy="50" r="13" fill="url(#tl-collapse)" />
+      <g className="tl-collapse-dot" filter={`url(#${prefix}-tl-glow)`}>
+        <circle cx="50" cy="50" r="13" fill={`url(#${prefix}-tl-collapse)`} />
         <circle cx="46" cy="45.5" r="3" fill="#cffafe" opacity="0.5" />
       </g>
 
@@ -309,18 +311,18 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
           />
         ))}
       </g>
-      <circle cx="50" cy="50" r="34" fill="url(#tl-gold)"
-        className="tl-gold" filter="url(#tl-bloom)" />
+      <circle cx="50" cy="50" r="34" fill={`url(#${prefix}-tl-gold)`}
+        className="tl-gold" filter={`url(#${prefix}-tl-bloom)`} />
 
       {/* ── SILVER SHIMMER — gloss sweep + sparkles, clipped to the orb ── */}
-      <g clipPath="url(#tl-clip)">
+      <g clipPath={`url(#${prefix}-tl-clip)`}>
         <rect x="-10" y="-10" width="120" height="120"
-          fill="url(#tl-silver)"
+          fill={`url(#${prefix}-tl-silver)`}
           className="tl-shimmer"
           transform="rotate(18 50 50)"
         />
       </g>
-      <g filter="url(#tl-spark)">
+      <g filter={`url(#${prefix}-tl-spark)`}>
         <path className="tl-glint-a" fill="#f1f5f9"
           d="M 30,21 L 31.4,24.6 L 35,26 L 31.4,27.4 L 30,31 L 28.6,27.4 L 25,26 L 28.6,24.6 Z" />
         <path className="tl-glint-b" fill="#e2e8f0"

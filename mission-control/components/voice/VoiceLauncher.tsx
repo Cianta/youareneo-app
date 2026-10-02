@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-const AssistantDock = dynamic(() => import("@/components/assistant/AssistantDock"), {ssr:false});
+const AssistantDock = dynamic(() => import("@/components/assistant/AssistantDock"));
 export function VoiceLauncher() {
   const path = usePathname(),
     router = useRouter();

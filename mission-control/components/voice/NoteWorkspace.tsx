@@ -24,6 +24,7 @@ import {
   type QueueEntry,
 } from "@/lib/voice/contracts";
 import "./voice.css";
+import {OfflineDrafts} from "./OfflineDrafts";
 const labels = {
   aufgabe: "Aufgabe",
   idee: "Idee",
@@ -340,6 +341,7 @@ export function NoteWorkspace({ autoStart = false, initialProvider = "infomaniak
         )}
         <div className="voice-columns">
           <section className="voice-card voice-compose">
+            <OfflineDrafts disabled={!!busy||active||!!draft.transcript} onChoose={text=>setDraft({...emptyDraft(),transcript:text,title:text.slice(0,80)})}/>
             <VoiceRecorder
               autoStart={autoStart}
               disabled={!!busy || !preferences.microphone}

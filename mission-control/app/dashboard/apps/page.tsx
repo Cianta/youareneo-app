@@ -7,13 +7,13 @@ export default function MyApps() {
     <header className="apps-intro">
       <p className="workspace-eyebrow">DEINE RÄUME</p>
       <h1>Meine Apps</h1>
-      <p>Ein Gedanke, ein Klang, ein kleines Abenteuer. Hier findest du alle neun Räume an einem festen Platz.</p>
+      <p>Ein Gedanke, ein Klang, ein kleines Abenteuer. Hier findest du alle Räume an einem festen Platz.</p>
     </header>
     <nav className="apps-catalog" aria-label="Meine Apps">
       {neoApps.map(app => <Link key={app.slug} href={app.href} prefetch={false} className="app-card">
         <img src={`/apps/${app.slug}.svg`} alt="" width={360} height={220} loading="lazy" decoding="async" />
         <div><p className="app-category">{app.category}</p><h2>{app.name}</h2><p>{app.description}</p>
-          <span className="app-status">{app.state === "trinity" ? "In Trinity öffnen" : app.state === "legacy" ? "Bisherige App & Ausblick" : "Ausblick & Stand"} <span aria-hidden="true">↗</span></span>
+          <span className="app-status">{app.state === "portal" ? "Buzz-Zugang öffnen" : app.state === "trinity" ? "In guiding.space öffnen" : app.state === "legacy" ? "Bisherige App & Ausblick" : "Ausblick & Stand"} <span aria-hidden="true">↗</span></span>
         </div>
       </Link>)}
     </nav>

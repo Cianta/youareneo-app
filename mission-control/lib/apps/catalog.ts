@@ -6,12 +6,13 @@ export type NeoApp = {
   vision: string;
   href: string;
   legacyUrl?: string;
-  state: "trinity" | "legacy" | "source-needed";
+  state: "trinity" | "legacy" | "source-needed" | "portal";
 };
 
 // Verified destinations, 02.10.2026. Old domains still redirect to FuseBase.
 // Keep the old entry points; do not fabricate a completed account migration.
 export const neoApps: readonly NeoApp[] = [
+  {slug:"buzz",name:"Buzz · Teamchat",category:"Menschen & Zusammenarbeit",description:"Der vorhandene Vereinschat für Menschen und Agenten, wieder direkt erreichbar.",vision:"Ein ruhiger Treffpunkt für das Team. Der bestehende Buzz-Zugang bleibt im Vereinsportal; pro Gerät wird derzeit eine persönliche Einladung benötigt.",href:"/dashboard/apps/buzz",legacyUrl:"https://archiv.youareneo.com/app/",state:"portal"},
   { slug: "radio", name: "Radio Eden", category: "Klangwelten", description: "Ein warmes Kneipenradio zwischen Werkstatt und Wintergarten.", vision: "Nussbaum, Messing, Stofflautsprecher und eine bernsteinfarbene Skala. Ein Radio aus den 60ern, umrankt von viktorianischem Gartengrün.", href: "/dashboard/apps/radio", legacyUrl: "https://radio.youareneo.com/", state: "trinity" },
   { slug: "kochbuch", name: "Das Küchenschatzbuch", category: "Küche & Jahreszeiten", description: "Deine Rezepte zwischen goldenen Buchkanten und Kräutern.", vision: "Ein dunkelgrünes Schatzbuch mit geprägtem Messing, Papierseiten und botanischen Zeichnungen. Eigene Rezepte werden zu Fundstücken für den Alltag.", href: "/dashboard/apps/kochbuch", state: "trinity" },
   { slug: "visual-room", name: "Visual Room", category: "Sehen & Ankommen", description: "Ein verwunschener Garten für Licht, Klang und Stille.", vision: "Ein gläsernes viktorianisches Gewächshaus bei Nacht. Lichtbilder auf dunklem Wasser; ruhige, abschaltbare Bewegung und eine sofort erreichbare Wiedergabe.", href: "/dashboard/apps/visual-room", legacyUrl: "https://visual-room.youareneo.com/", state: "legacy" },

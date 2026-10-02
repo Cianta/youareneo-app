@@ -1,8 +1,12 @@
 "use client";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import {openMicrophone, microphoneError} from "@/lib/assistant/microphone";
+import {useAssistantPreferences} from "@/components/assistant/Preferences";
 type Callbacks = { onAudio: (blob: Blob) => void; onSpeechStart: () => void };
 export function useChatMicrophone(callbacks: Callbacks) {
   const microphoneId = useId();
+  const {preferences} = useAssistantPreferences();
+  const device = useRef(preferences.microphoneDeviceId); device.current = preferences.microphoneDeviceId;
   const refs = useRef(callbacks);
   refs.current = callbacks;
   const [state, setState] = useState<
@@ -82,18 +86,8 @@ export function useChatMicrophone(callbacks: Callbacks) {
       setState("requesting");
       if (!handsFree) refs.current.onSpeechStart();
       try {
-        if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder)
-          throw Error(
-            "Dein Browser unterstützt diese Aufnahme nicht. Du kannst unten Text eingeben.",
-          );
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
-          },
-          video: false,
-        });
+        if (!window.MediaRecorder) throw Error("Dieser Browser unterstützt keine Sprachaufnahme. Bitte öffne die App in Safari, Chrome oder Brave.");
+        const stream = await openMicrophone(device.current);
         if (!mounted.current || token !== r.token || !r.active) {
           stream.getTracks().forEach((t) => t.stop());
           return;
@@ -112,7 +106,7 @@ export function useChatMicrophone(callbacks: Callbacks) {
         let analyser: AnalyserNode | null = null;
         try {
           r.ctx = new AudioContext();
-          await r.ctx.resume();
+          void r.ctx.resume().catch(() => {});
           analyser = r.ctx.createAnalyser();
           analyser.fftSize = 512;
           r.ctx.createMediaStreamSource(stream).connect(analyser);
@@ -222,16 +216,12 @@ export function useChatMicrophone(callbacks: Callbacks) {
           tick();
         };
         begin();
+        return true;
       } catch (e) {
         if (token !== r.token || !mounted.current) return;
         cancel();
-        setError(
-          e instanceof DOMException
-            ? "Bitte erlaube den Mikrofonzugriff."
-            : e instanceof Error
-              ? e.message
-              : "Aufnahme nicht möglich.",
-        );
+        setError(microphoneError(e));
+        return false;
       }
     },
     [cancel, release, microphoneId],

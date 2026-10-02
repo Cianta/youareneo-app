@@ -12,7 +12,9 @@ const runs = Number(process.env.AUDIT_RUNS || 3);
 assert(Number.isInteger(runs) && runs >= 1 && runs <= 5, 'Use 1–5 runs.');
 const appsSuite = process.env.AUDIT_SUITE === 'apps';
 const output = resolve(process.env.AUDIT_OUTPUT_DIR || (appsSuite ? '/tmp/trinity-apps-audit' : '/tmp/trinity-workspace-audit'));
-const routes = appsSuite ? ['/dashboard/apps', '/dashboard/apps/radio', '/dashboard/apps/kochbuch'] : ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban'];
+const suiteRoutes = appsSuite ? ['/dashboard/apps', '/dashboard/apps/radio', '/dashboard/apps/kochbuch'] : ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban'];
+const routes = process.env.AUDIT_ROUTES ? process.env.AUDIT_ROUTES.split(',') : suiteRoutes;
+assert(routes.length > 0 && routes.every(route => suiteRoutes.includes(route)), 'Select only routes from this audit suite.');
 const userId = '00000000-0000-4000-8000-000000000001';
 const note = { id: '00000000-0000-4000-8000-000000000002', title: 'Testgedanke',
   transcript: 'Ein rein lokaler Testgedanke.', summary: 'Lokale Beispielnotiz',
@@ -85,6 +87,7 @@ try {
         metrics: Object.fromEntries(['largest-contentful-paint', 'total-blocking-time',
           'cumulative-layout-shift', 'speed-index'].map(key => [key, lhr.audits[key].numericValue])),
         console: lhr.audits['errors-in-console'].details?.items || [],
+        lcpDetails: lhr.audits['lcp-breakdown-insight']?.details,
         js: scripts
           .map(({ url, transferSize, resourceSize }) => ({ path: new URL(url).pathname, transferSize, resourceSize })),
         findings: Object.entries(lhr.audits).filter(([, value]) => value.score !== null && value.score < 1)

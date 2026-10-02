@@ -33,6 +33,7 @@ import {
 import { localDate, validWebUrl } from "@/lib/workspace/time";
 import { FocusCard } from "./FocusSpace";
 
+
 export function Today() {
   const user = useAuthStore((s) => s.user);
   const { board, ready, error, change } = useBoard();
@@ -107,7 +108,7 @@ export function Today() {
           Tag planen <ArrowUpRight size={15} />
         </Link>
       </div>
-      <section className="w-hero"><Image src="/images/sanctuary.webp" alt="" fill priority sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1200px) calc(100vw - 270px), 1100px" quality={78} className="w-hero-image" />
+      <section className="w-hero"><Image src="/images/sanctuary.webp" alt="" fill priority fetchPriority="high" sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1200px) calc(100vw - 270px), 1100px" quality={78} className="w-hero-image" />
         <div className="w-hero-content">
           <span className="w-eyebrow">
             <Leaf size={13} /> DEIN RAUM. DEIN RHYTHMUS.

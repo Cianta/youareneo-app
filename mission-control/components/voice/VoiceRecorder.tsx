@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Mic, Pause, Play, Square } from "lucide-react";
 import { MAX_RECORDING_SECONDS } from "@/lib/voice/contracts";
+import {openMicrophone, microphoneError, openMicrophoneSettings} from "@/lib/assistant/microphone";
+import {useAssistantPreferences} from "@/components/assistant/Preferences";
 type Props = {
   autoStart?: boolean;
   disabled?: boolean;
@@ -16,6 +18,7 @@ export function VoiceRecorder({
   onActiveChange,
   onMeter,
 }: Props) {
+  const {preferences} = useAssistantPreferences();
   const microphoneId = useId(), generation = useRef(0);
   const [status, setStatus] = useState<
     "idle" | "recording" | "paused" | "requesting"
@@ -73,14 +76,9 @@ export function VoiceRecorder({
     setError("");
     setStatus("requesting");
     try {
-      if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder)
-        throw new Error(
-          "Dieser Browser unterstützt keine Aufnahme. Bitte nutze Safari, Chrome oder eine Textnotiz.",
-        );
-      const input = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true },
-        video: false,
-      });
+      if (!preferences.microphone) throw Error("Das Mikrofon ist ausgeschaltet. Aktiviere es in den Mikrofoneinstellungen.");
+      if (!window.MediaRecorder) throw Error("Dieser Browser unterstützt keine Sprachaufnahme. Bitte öffne die App in Safari, Chrome oder Brave.");
+      const input = await openMicrophone(preferences.microphoneDeviceId);
       if (!mounted.current || token !== generation.current) {
         input.getTracks().forEach((t) => t.stop());
         return;
@@ -181,18 +179,12 @@ export function VoiceRecorder({
       release();
       if (mounted.current) {
         setStatus("idle");
-        setError(
-          e instanceof DOMException
-            ? "Bitte erlaube den Mikrofonzugriff und tippe auf Aufnahme starten."
-            : e instanceof Error
-              ? e.message
-              : "Aufnahme nicht möglich.",
-        );
+        setError(microphoneError(e));
       }
     } finally {
       busy.current = false;
     }
-  }, [disabled, release, stop, microphoneId]);
+  }, [disabled, release, stop, microphoneId, preferences.microphone, preferences.microphoneDeviceId]);
   const toggle = useCallback(() => {
     if (
       recorder.current?.state === "recording" ||
@@ -298,7 +290,7 @@ export function VoiceRecorder({
       )}
       {error && (
         <p role="alert" className="voice-error">
-          {error}
+          {error} <button type="button" onClick={openMicrophoneSettings}>Mikrofon einrichten</button>
         </p>
       )}
     </section>

@@ -6,8 +6,8 @@ import { recipeNote, radioNote, savedStation, secureUrl, stationOf } from "../li
 import { noteOf } from "../lib/voice/validation";
 import { searchStations } from "../lib/apps/radio";
 
-test("all nine apps have one stable entry, a local thumbnail and no fictitious account migration", () => {
-  assert.equal(neoApps.length,9); assert.equal(new Set(neoApps.map(a => a.slug)).size,9);
+test("all apps including Buzz have one stable entry, a local thumbnail and no fictitious account migration", () => {
+  assert.equal(neoApps.length,10); assert.equal(new Set(neoApps.map(a => a.slug)).size,10);
   for (const app of neoApps) {
     assert(existsSync(`public/apps/${app.slug}.svg`));
     assert(!readFileSync(`public/apps/${app.slug}.svg`,"utf8").includes("https://"));

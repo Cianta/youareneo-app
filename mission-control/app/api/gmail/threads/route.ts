@@ -6,60 +6,23 @@
  *
  * GET /api/gmail/threads?filter=inbox&limit=20
  */
-import { NextRequest, NextResponse } from 'next/server';
-import { readFile, writeFile, mkdir } from 'fs/promises';
+import { NextRequest } from 'next/server';
+import {voiceSession} from '@/lib/voice/server';
+import {json,failure,HttpError,sameOrigin} from '@/lib/auth/http';
+import {readMemberMail,writeMemberMail} from '@/lib/mail/cache';
 import path from 'path';
 
-const CACHE_DIR = path.join(process.cwd(), '.cache');
-const CACHE_FILE = path.join(CACHE_DIR, 'gmail-threads.json');
-
-export interface GmailMessage {
-  id: string;
-  threadId: string;
-  date: string;
-  sender: string;
-  senderName: string;
-  senderEmail: string;
-  subject: string;
-  snippet: string;
-  toRecipients: string[];
-  labelIds: string[];
-  body?: string;
-}
-
-export interface GmailThread {
-  id: string;
-  messages: GmailMessage[];
-  lastDate: string;
-  subject: string;
-  snippet: string;
-  isUnread: boolean;
-  isStarred: boolean;
-  isImportant: boolean;
-  labels: string[];
-}
-
-function parseSender(sender: string): { name: string; email: string } {
-  const match = sender.match(/^(.+?)\s*<(.+?)>$/);
-  if (match) return { name: match[1].trim(), email: match[2].trim() };
-  return { name: sender.split('@')[0], email: sender };
-}
-
-async function readCache(): Promise<GmailThread[]> {
-  try {
-    const raw = await readFile(CACHE_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch {
-    return [];
-  }
-}
+const CACHE_DIR = path.join(process.env.DATA_DIR || path.join(process.cwd(), 'data'), 'private', 'mail-cache');
 
 export async function GET(req: NextRequest) {
+ try {
+  const {user}=await voiceSession();
   const filter = req.nextUrl.searchParams.get('filter') ?? 'all';
-  const limit = parseInt(req.nextUrl.searchParams.get('limit') ?? '30', 10);
-
-  let threads = await readCache();
-
+  const n=Number(req.nextUrl.searchParams.get('limit')??30),limit=Number.isSafeInteger(n)?Math.max(1,Math.min(100,n)):30;
+  const cached=await readMemberMail(CACHE_DIR,user.id);
+  if(!cached)return json({ok:true,available:false,userScoped:true,userId:user.id,total:0,totalUnread:null,threads:[]});
+  const totalUnread=cached.filter(t=>t.isUnread).length;
+  let threads=[...cached];
   // Filter
   switch (filter) {
     case 'inbox':
@@ -82,22 +45,26 @@ export async function GET(req: NextRequest) {
   // Sort newest first
   threads.sort((a, b) => new Date(b.lastDate).getTime() - new Date(a.lastDate).getTime());
 
-  return NextResponse.json({
-    ok: true,
+  return json({
+    ok: true, available:true,userScoped:true,userId:user.id,totalUnread,
     filter,
     total: threads.length,
     threads: threads.slice(0, limit),
   });
+ }catch(e){return failure(e);}
 }
 
-// POST /api/gmail/threads — update cache with new thread data (called by scripts/refresh)
+// Legacy refresh boundary, now scoped to a verified member. Existing global cache is untouched.
 export async function POST(req: NextRequest) {
   try {
-    const { threads } = await req.json() as { threads: GmailThread[] };
-    await mkdir(CACHE_DIR, { recursive: true });
-    await writeFile(CACHE_FILE, JSON.stringify(threads, null, 2), 'utf-8');
-    return NextResponse.json({ ok: true, cached: threads.length });
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
-  }
+    sameOrigin(req);const {user}=await voiceSession();
+    const reader=req.body?.getReader();if(!reader)throw new HttpError(400,'Daten fehlen.');
+    const parts:Uint8Array[]=[];let size=0;
+    while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>1_000_000){await reader.cancel();throw new HttpError(413,'Cache zu groß.');}parts.push(value);}
+    let data;try{data=JSON.parse(Buffer.concat(parts).toString('utf8'));}catch{throw new HttpError(400,'Ungültiges JSON.');}
+    const threads=data?.threads;
+    if(!Array.isArray(threads)||threads.length>500||!threads.every(t=>t&&typeof t.id==='string'&&typeof t.lastDate==='string'&&typeof t.subject==='string'&&typeof t.snippet==='string'&&typeof t.isUnread==='boolean'&&typeof t.isStarred==='boolean'&&typeof t.isImportant==='boolean'&&Array.isArray(t.labels)&&t.labels.every((l:unknown)=>typeof l==='string')&&Array.isArray(t.messages)&&t.messages.length>0&&t.messages.every((m:Record<string,unknown>)=>m&&['id','threadId','date','sender','senderName','senderEmail','subject','snippet'].every(k=>typeof m[k]==='string')&&Array.isArray(m.labelIds)&&Array.isArray(m.toRecipients))))throw new HttpError(400,'Ungültige Maildaten.');
+    await writeMemberMail(CACHE_DIR,user.id,threads);
+    return json({ok:true,cached:threads.length,userScoped:true});
+  }catch(e){return failure(e);}
 }

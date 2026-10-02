@@ -442,7 +442,7 @@ export default function DashboardPage() {
             <div className="absolute inset-0 rounded-full bg-forest-500/10 animate-pulse-slow" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gold-gradient">{appName} · Mission Control</h1>
+            <h1 className="text-2xl font-bold text-gold-gradient">{appName} · Gesamtübersicht</h1>
             <p className="text-sm text-anth-400 mt-0.5">
               {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
             </p>

@@ -45,3 +45,19 @@ test("classification binds a selected place and bounds its own rules without ena
   try{const n=await classify("Mein Originaltext",["Eden"],"voice",{project:"Eden",rules:"a".repeat(5000)});assert.equal(n.project,"Eden");assert.equal(n.transcript,"Mein Originaltext");assert.equal(n.source,"voice");}
   finally{if(prior===undefined)delete process.env.ANTHROPIC_API_KEY;else process.env.ANTHROPIC_API_KEY=prior;}
 });
+
+test('widget keyboard layout and transcript insertion keep the user in control',async()=>{
+ const {widgetShortcut,insertDictation}=await import('../lib/assistant/widget');
+ const base={altKey:true,ctrlKey:false,metaKey:false,shiftKey:false,isComposing:false};
+ assert.equal(widgetShortcut({...base,key:'y',code:'KeyZ'}),'open');
+ assert.equal(widgetShortcut({...base,key:'¥',code:'KeyY'}),'open');
+ assert.equal(widgetShortcut({...base,key:'x',code:'KeyX'}),'dictate');
+ assert.equal(widgetShortcut({...base,key:'h',code:'KeyH'}),'append');
+ assert.equal(widgetShortcut({...base,key:'c',code:'KeyC',ctrlKey:true}),null,'AltGr must not send');
+ assert.equal(widgetShortcut({...base,key:'c',code:'KeyC',isComposing:true}),null);
+ assert.equal(insertDictation('Meine Idee',' Ergänzung ',true),'Meine Idee\nErgänzung');
+ assert.equal(insertDictation('Vorher nachher','Text',false,7,7),'Vorher Text nachher');
+ assert.equal(insertDictation('Vorher falsch nachher','richtig',false,7,13),'Vorher richtig nachher');
+ assert.equal(insertDictation('Bearbeitet','',false),'Bearbeitet');
+ assert.equal(insertDictation('x'.repeat(4000),'Bleibt erhalten',true).length,4016,'No silent truncation of a transcript');
+});

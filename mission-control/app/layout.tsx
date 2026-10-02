@@ -46,7 +46,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const dynamic = 'force-dynamic';
 export function generateMetadata(): Metadata {
   const { appName } = brandConfig();
-  return {title: `${appName} | YOU ARE NEO`, description: `${appName} – dein persönlicher Arbeitsraum`, robots:'noindex', manifest:'/manifest.webmanifest', appleWebApp:{capable:true,title:appName,statusBarStyle:'black-translucent'}, icons:{icon:[{url:'/pwa/purple-sun-favicon.ico',sizes:'any'},{url:'/pwa/purple-sun-32.png',sizes:'32x32',type:'image/png'}],apple:'/pwa/purple-sun-180.png'}};
+  return {title: `${appName} | YOU ARE NEO`, description: `${appName} – dein persönlicher Guiding Space`, robots:'noindex', manifest:'/manifest.webmanifest', appleWebApp:{capable:true,title:appName,statusBarStyle:'black-translucent'}, icons:{icon:[{url:'/pwa/purple-sun-favicon.ico',sizes:'any'},{url:'/pwa/purple-sun-32.png',sizes:'32x32',type:'image/png'}],apple:'/pwa/purple-sun-180.png'}};
 }
 
 export const viewport: Viewport = {

@@ -58,6 +58,10 @@ export function AppControls() {
             <dd>Seiten, Aktionen und eigene Inhalte suchen</dd>
             <dt>Alt+N</dt>
             <dd>Sprachnotiz öffnen; im Notizraum Aufnahme umschalten</dd>
+            <dt>Alt+Y</dt><dd>Trinity-Widget öffnen und Prompt schreiben</dd>
+            <dt>Alt+X · gedrückt halten</dt><dd>Prompt diktieren, nach Loslassen bearbeiten</dd>
+            <dt>Alt+H · gedrückt halten</dt><dd>Weitere Sprache zum Prompt hinzufügen</dd>
+            <dt>Alt+C</dt><dd>Bearbeiteten Prompt ausdrücklich senden</dd>
             <dt>Ctrl+Shift+Leertaste · gedrückt halten</dt>
             <dd>Überall einen Gedanken aufnehmen. Loslassen startet die Einordnung; gespeichert wird nach deiner Bestätigung.</dd>
             <dt>?</dt>

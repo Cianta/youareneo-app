@@ -232,8 +232,11 @@ try {
     await page.$(".chat-conversation article"),
     "avatar click must preserve conversation",
   );
-  await page.$$eval(".chat-mic button", (es) =>
-    es.find((e) => e.innerText === "Alles stoppen").click(),
+  await page.$eval(".chat-options summary",e=>e.scrollIntoView({block:"center",behavior:"instant"}));
+  await page.locator(".chat-options summary").click();
+  assert(await page.$eval(".chat-options",e=>e.open));
+  await page.$$eval(".chat-actions button", (es) =>
+    es.find((e) => e.textContent.trim() === "Antwort stoppen").click(),
   );
   await avatarState("idle");
   delayChat = 0;
@@ -244,7 +247,7 @@ try {
   assert.equal(
     await page.$$eval(
       ".chat-actions button",
-      (es) => es.find((e) => e.innerText.includes("speichern")).disabled,
+      (es) => es.find((e) => e.textContent.includes("speichern")).disabled,
     ),
     true,
   );
@@ -253,10 +256,12 @@ try {
     window.fixtureMicDelay = 300;
   });
   const button = await page.$(".chat-record");
-  await button.scrollIntoView();
+  await button.evaluate(e=>e.scrollIntoView({block:"center",behavior:"instant"}));
   const box = await button.boundingBox();
+  assert(await page.evaluate(({x,y,width,height})=>!!document.elementFromPoint(x+width/2,y+height/2)?.closest(".chat-record"),box),"Composer microphone must be clear of fixed controls");
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.mouse.down();
+  await page.waitForFunction(() => document.querySelector(".chat-feedback").textContent.includes("Mikrofon wird angefragt"));
   await page.mouse.up();
   await page.waitForFunction(
     () =>
@@ -268,7 +273,7 @@ try {
   await page.evaluate(() => {
     window.fixtureMicDelay = 0;
   });
-  await button.scrollIntoView();
+  await button.evaluate(e=>e.scrollIntoView({block:"center",behavior:"instant"}));
   const secondBox = await button.boundingBox();
   await page.mouse.move(
     secondBox.x + secondBox.width / 2,
@@ -276,7 +281,7 @@ try {
   );
   await page.mouse.down();
   await page.waitForFunction(() =>
-    document.querySelector(".chat-mic").innerText.includes("Hört zu"),
+    document.querySelector(".chat-feedback").innerText.includes("Ich höre zu"),
   );
   await avatarState("listening");
   await page.waitForFunction(
@@ -289,47 +294,34 @@ try {
   );
   await new Promise((r) => setTimeout(r, 400));
   await page.mouse.up();
-  await page.waitForFunction(() =>
-    document
-      .querySelector(".chat-conversation")
-      .innerText.includes("Satz aus Testaufnahme"),
-  );
+  await page.waitForFunction(() => document.querySelector("#chat-text").value.includes("Satz aus Testaufnahme"));
   assert.equal(transcriptions, 1);
-  await page.waitForFunction(() =>
-    window.fixtureTracks.every((t) => t.readyState === "ended"),
-  );
-  // Hands-free: sustained signal, silence -> one turn; new speech cancels playback.
-  await page.click(".chat-mic input[type=checkbox]");
-  await page.evaluate(() => {
-    window.fixtureHoldSpeech = true;
-  });
-  await page.click(".chat-record");
-  await page.waitForFunction(() =>
-    document.querySelector(".chat-mic").innerText.includes("Hört zu"),
-  );
-  await page.evaluate(() => {
-    window.fixtureGain.gain.value = 0;
-  });
-  await page.waitForFunction(() => window.fixtureSpeakCount >= 3, {
-    timeout: 10000,
-  });
-  await avatarState("speaking");
+  assert.equal(chatCalls, 1, "Releasing dictation must not send automatically");
+  await page.waitForFunction(() => window.fixtureTracks.every(t => t.readyState === "ended"));
+  await submit();
+  await avatarState("idle");
+  // Freihändig ends at the first silence, inserts text, and closes the microphone.
+  await page.$eval(".chat-free-options input", e=>e.scrollIntoView({block:"center",behavior:"instant"}));
+  await page.click(".chat-free-options input[type=checkbox]");
+  await page.evaluate(() => { window.fixtureHoldSpeech = true; });
+  await page.$eval(".chat-free", e=>e.scrollIntoView({block:"center",behavior:"instant"}));
+  await page.locator(".chat-free").click();
+  await page.waitForFunction(() => document.querySelector(".chat-feedback").innerText.includes("Ich höre zu"));
+  await new Promise(resolve=>setTimeout(resolve,500)); // Sustained signal reaches the speech detector before silence.
+  await page.evaluate(() => { window.fixtureGain.gain.value = 0; });
+  await page.waitForFunction(() => document.querySelector("#chat-text").value.includes("Satz aus Testaufnahme"));
   assert.equal(transcriptions, 2);
+  assert.equal(chatCalls, 2, "Silence detection must not send automatically");
+  await page.waitForFunction(() => window.fixtureTracks.every(t => t.readyState === "ended"));
+  await submit();
+  await avatarState("speaking");
   const before = await page.evaluate(() => window.fixtureSynthCanceled);
-  await page.evaluate(() => {
-    window.fixtureGain.gain.value = 0.08;
-  });
-  await page.waitForFunction(
-    (n) => window.fixtureSynthCanceled > n,
-    {},
-    before,
-  );
-  await page.$$eval(".chat-mic button", (es) =>
-    es.find((e) => e.innerText === "Alles stoppen").click(),
-  );
-  await page.waitForFunction(() =>
-    window.fixtureTracks.every((t) => t.readyState === "ended"),
-  );
+  // An explicit new recording interrupts speech; no ambient restart.
+  await page.$eval(".chat-free", e=>e.scrollIntoView({block:"center",behavior:"instant"}));
+  await page.locator(".chat-free").click();
+  await page.waitForFunction(n => window.fixtureSynthCanceled > n, {}, before);
+  await page.$$eval(".chat-actions button", es => es.find(e => e.textContent.trim() === "Antwort stoppen").click());
+  await page.waitForFunction(() => window.fixtureTracks.every(t => t.readyState === "ended"));
   await page.click(".chat-settings input[type=checkbox]");
   await page.type("#chat-text", "Nutze meine Notizen");
   await submit();
@@ -341,8 +333,8 @@ try {
     ),
     "/notiz?note=own",
   );
-  await page.$$eval(".chat-mic button", (es) =>
-    es.find((e) => e.innerText === "Alles stoppen").click(),
+  await page.$$eval(".chat-actions button", (es) =>
+    es.find((e) => e.textContent.trim() === "Antwort stoppen").click(),
   );
   assert(
     await page.evaluate(
@@ -350,19 +342,10 @@ try {
     ),
   );
   denyChat = true;
-  await page.click(".chat-record");
-  await page.waitForFunction(() =>
-    document.querySelector(".chat-mic").innerText.includes("Hört zu"),
-  );
-  await page.evaluate(() => {
-    window.fixtureGain.gain.value = 0;
-  });
-  await page.waitForFunction(() =>
-    document.body.innerText.includes("Monatskontingent erreicht"),
-  );
-  await page.waitForFunction(() =>
-    window.fixtureTracks.every((t) => t.readyState === "ended"),
-  );
+  await page.type("#chat-text", "Kontingent testen");
+  await submit();
+  await page.waitForFunction(() => document.body.innerText.includes("Monatskontingent erreicht"));
+  await page.waitForFunction(() => window.fixtureTracks.every(t => t.readyState === "ended"));
   // VocalLab-shaped response, actual audio playback + AnalyserNode, all local.
   denyChat = false;
   vocalReady = true;
@@ -371,6 +354,9 @@ try {
     () => !document.querySelector('.chat-settings option[value="vocallab"]').disabled,
   );
   assert.equal(await page.$eval('.chat-settings select', e => e.value), 'browser', 'Provider availability must preserve the selected browser voice');
+  await page.$eval(".chat-options summary",e=>e.scrollIntoView({block:"center",behavior:"instant"}));
+  await page.locator(".chat-options summary").click();
+  assert(await page.$eval(".chat-options",e=>e.open));
   await page.select('.chat-settings select', 'vocallab');
   await page.type("#chat-text", "Lautstärke testen");
   await submit();
@@ -427,8 +413,8 @@ try {
     "none",
   );
   await avatarState("speaking");
-  await page.$$eval(".chat-mic button", (es) =>
-    es.find((e) => e.innerText === "Alles stoppen").click(),
+  await page.$$eval(".chat-actions button", (es) =>
+    es.find((e) => e.textContent.trim() === "Antwort stoppen").click(),
   );
   await avatarState("idle");
   assert(
@@ -495,9 +481,9 @@ try {
   await page.click('button[aria-label="Aufnahme stoppen"]');
   await avatarState("idle");
   await page.click(".assistant-avatar");
-  await page.waitForSelector('.assistant-panel[aria-label="Trinity Sprachchat"] #chat-text');
+  await page.waitForSelector('.assistant-chat-panel #assistant-chat-text');
   assert.equal(new URL(page.url()).pathname, "/notiz", "Global chat preserves the current workspace route");
-  await page.click('[aria-label="Trinity schließen"]');
+  await page.click('.assistant-chat-panel [aria-label="Trinity schließen"]');
   // Narrow/mobile and desktop: the single global dock remains usable without overlap.
   for (const width of [320, 390, 1280]) {
     await page.setViewport({ width, height: 844 });
@@ -558,7 +544,7 @@ try {
         "optional own context",
         "free save disabled",
         "permission race cleanup",
-        "push to talk",
+        "dictation stays editable until explicit submit",
         "silence detection",
         "speech interrupts playback",
         "stop releases tracks",

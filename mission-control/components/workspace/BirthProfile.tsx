@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNinjasStore, useAuthStore } from "@/lib/store";
 import type { BirthResult } from "@/lib/workspace/birth";
+import {HumanDesignDetails} from "./HumanDesignDetails";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 export type SavedBirth = {
@@ -94,7 +95,7 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
         <h2>Eine Geburt. Viele Perspektiven.</h2>
         <p className="w-muted">
           Die Daten bleiben auf diesem Gerät gespeichert. Die Berechnung läuft
-          auf dem Trinity-Server; es wird kein externer Horoskopdienst
+          auf dem Guiding-Space-Server; es wird kein externer Horoskopdienst
           aufgerufen.
         </p>
         <form
@@ -322,6 +323,7 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
               </section>
             ))}
           </div>
+          {result.hd && <HumanDesignDetails hd={result.hd}/>}
           <p className="w-muted">
             Symbolische Selbstreflexion, keine wissenschaftliche
             Persönlichkeitsdiagnose. Human Design: rechnerische Näherung mit

@@ -4,7 +4,7 @@ export function brandConfig(): Brand {
   const read = (key: string, fallback: string) =>
     (process.env[key]?.trim() || fallback).slice(0, 80);
   return {
-    appName: read("NEXT_PUBLIC_APP_NAME", "NEO"),
-    assistantName: read("NEXT_PUBLIC_ASSISTANT_NAME", "Assistentin"),
+    appName: read("NEXT_PUBLIC_APP_NAME", "guiding.space"),
+    assistantName: read("NEXT_PUBLIC_ASSISTANT_NAME", "Trinity"),
   };
 }

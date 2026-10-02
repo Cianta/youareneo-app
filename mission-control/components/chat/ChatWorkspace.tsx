@@ -1,6 +1,9 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import {Send, Mic, Square, ArrowUpRight, Sparkles} from "lucide-react";
+import {insertDictation} from "@/lib/assistant/widget";
+export type ChatControls = {focus:()=>void; start:(append:boolean)=>Promise<void>; finish:()=>void; cancel:()=>void; send:()=>void};
 import { useBrand } from "@/components/voice/BrandProvider";
 import { type ChatMessage, speechChunks } from "@/lib/chat/contracts";
 import { readChat } from "@/lib/chat/client";
@@ -17,9 +20,11 @@ type Turn = ChatMessage & {
 export default function ChatWorkspace({
   providerLabel,
   embedded = false,
+  onControlsReady,
 }: {
   providerLabel: string;
   embedded?: boolean;
+  onControlsReady?:(controls:ChatControls|null)=>void;
 }) {
   const { assistantName } = useBrand();
   const {preferences, update} = useAssistantPreferences();
@@ -28,12 +33,16 @@ export default function ChatWorkspace({
   const setProvider = (value: typeof provider) => update({provider:value});
   const setVoice = (value:string) => update({voice:value});
   const setBrowserVoice = (value:string | ((old:string)=>string)) => update({browserVoice:typeof value === "function" ? value(preferencesRef.current.browserVoice) : value});
+  const textarea = useRef<HTMLTextAreaElement|null>(null), dictationMode=useRef(false), freeMode=useRef(false), held=useRef(false), owner=useRef("");
+  const controlsRef=useRef<ChatControls|null>(null), sending=useRef(false);
   const [turns, setTurns] = useState<Turn[]>([]),
     [text, setText] = useState(""),
     [includeNotes, setIncludeNotes] = useState(false),
     [handsFree, setHandsFree] = useState(false),
     [status, setStatus] = useState("Bereit"),
     [error, setError] = useState("");
+  const textRef=useRef(text);textRef.current=text;
+  const recordingOwner=useRef("");
   const [authenticated, setAuthenticated] = useState(false),
     [canSave, setCanSave] = useState(false),
     [transcriptionReady, setTranscriptionReady] = useState(false),
@@ -99,6 +108,8 @@ export default function ChatWorkspace({
               : d.error,
           );
         if (abort.signal.aborted) return;
+        if(owner.current && owner.current!==d.userId){interrupt();turnRef.current=[];textRef.current="";setTurns([]);setText("");saveId.current=null;setNotice("Das Konto hat gewechselt. Beginne einen neuen Gedanken.");}
+        owner.current=d.userId;
         setAuthenticated(true);
         setCanSave(d.canSave);
         setTranscriptionReady(d.transcriptionReady);
@@ -306,8 +317,29 @@ export default function ChatWorkspace({
       stopPlayback.current = null;
     }
   }
+  async function checkSession(signal?:AbortSignal, expectedOwner=owner.current) {
+    const r=await fetch("/api/voice/config",{cache:"no-store",signal}),c=await r.json();
+    if(!r.ok)throw Error(r.status===401 ? "Bitte melde dich mit deinem NEO-Konto an." : c.error||"Verbindung nicht verfügbar.");
+    if(signal?.aborted || !mounted.current)throw new DOMException("Abgebrochen","AbortError");
+    if((expectedOwner && expectedOwner!==c.userId) || (owner.current && owner.current!==c.userId)){owner.current=c.userId;turnRef.current=[];textRef.current="";setTurns([]);setText("");saveId.current=null;throw Error("Das Konto hat gewechselt. Bitte beginne einen neuen Gedanken.");}
+    owner.current=c.userId;return c;
+  }
+  async function startDictation(append:boolean, free=false) {
+    if(held.current || (busy && status==="Wandelt Sprache um"))return;
+    if(!preferencesRef.current.microphone){setError("Das Mikrofon ist ausgeschaltet. Aktiviere es am Zahnrad.");return;}
+    held.current=true;dictationMode.current=append;freeMode.current=free;interrupt();setError("");
+    const token=session.current,abort=new AbortController();controller.current=abort;
+    setStatus("Mikrofon wird vorbereitet …");
+    try {const c=await checkSession(abort.signal);if(!c.transcriptionReady)throw Error("Spracherkennung ist noch nicht bereit. Du kannst deinen Prompt schreiben.");
+      if(held.current && token===session.current && !abort.signal.aborted){recordingOwner.current=c.userId;await mic.start(free);}
+    } catch(e){if(!abort.signal.aborted && token===session.current){held.current=false;setError(e instanceof Error?e.message:"Aufnahme nicht möglich.");}}
+  }
+  function finishDictation(){held.current=false;mic.finish();}
+  controlsRef.current={focus:()=>{textarea.current?.focus();void checkSession().catch(e=>{if(mounted.current)setError(e.message)})},start:startDictation,finish:finishDictation,cancel:()=>{held.current=false;mic.cancel();interrupt();},send:()=>{if(!busy && mic.state==="idle")void send(textRef.current);}};
+  useEffect(()=>{onControlsReady?.({focus:()=>controlsRef.current?.focus(),start:async a=>{await controlsRef.current?.start(a)},finish:()=>controlsRef.current?.finish(),cancel:()=>controlsRef.current?.cancel(),send:()=>controlsRef.current?.send()});return()=>onControlsReady?.(null)},[onControlsReady]);
   async function send(content: string) {
-    if (!content.trim() || !authenticated || !chatReady) return;
+    if (!content.trim() || content.length>4000 || !authenticated || !chatReady || busy || sending.current || mic.state!=="idle") return;
+    sending.current=true;
     interrupt();
     const token = session.current,
       abort = new AbortController();
@@ -336,6 +368,7 @@ export default function ChatWorkspace({
       messages.length > 1
     )
       messages = messages.slice(2);
+    const submissionOwner=owner.current;
     const uid = crypto.randomUUID(),
       aid = crypto.randomUUID();
     let answer = "";
@@ -344,8 +377,9 @@ export default function ChatWorkspace({
       { id: uid, role: "user", content: content.trim(), complete: true },
       { id: aid, role: "assistant", content: "", complete: false },
     ]);
-    setText("");
     try {
+      const c=await checkSession(abort.signal,submissionOwner);if(!c.classificationReady)throw Error("Trinity ist noch nicht bereit. Dein Text bleibt erhalten.");
+      setText("");
       const response = await fetch("/api/voice/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -379,9 +413,12 @@ export default function ChatWorkspace({
       if (token === session.current)
         await playText(answer, token, abort.signal);
     } catch (e) {
-      if (!abort.signal.aborted && token === session.current)
+      if (!abort.signal.aborted && token === session.current){
         setError(e instanceof Error ? e.message : "Antwort nicht verfügbar.");
+        if(owner.current===submissionOwner)setText(current=>current||content);
+      }
     } finally {
+      sending.current=false;
       if (token === session.current) {
         setBusy(false);
         setStatus("Bereit");
@@ -389,6 +426,7 @@ export default function ChatWorkspace({
     }
   }
   audioTurn.current = (blob) => {
+    if(freeMode.current){held.current=false;mic.cancel();}
     void (async () => {
       interrupt();
       const token = session.current,
@@ -398,6 +436,7 @@ export default function ChatWorkspace({
       setStatus("Wandelt Sprache um");
       setError("");
       try {
+        await checkSession(abort.signal,recordingOwner.current);
         const form = new FormData();
         form.set(
           "audio",
@@ -416,7 +455,10 @@ export default function ChatWorkspace({
           throw Error(d.error);
         }
         if (token !== session.current) return;
-        await send(d.transcript);
+        const input=textarea.current,start=input?.selectionStart,end=input?.selectionEnd;
+        setText(current=>insertDictation(current,d.transcript,dictationMode.current,start,end));
+        held.current=false;setNotice("Transkription bereit. Prüfe oder ergänze den Text und sende mit Alt+C.");
+        textarea.current?.focus();
       } catch (e) {
         if (!abort.signal.aborted && token === session.current)
           setError(
@@ -435,6 +477,7 @@ export default function ChatWorkspace({
     setSaving(true);
     setError("");
     try {
+      const c=await checkSession();if(!c.canSave)throw Error("Zum Speichern benötigst du einen aktiven App-Zugang.");
       const transcript = turnRef.current
         .filter((t) => t.complete)
         .map(
@@ -472,6 +515,7 @@ export default function ChatWorkspace({
       setSaving(false);
     }
   }
+  useEffect(()=>{const leave=(e:BeforeUnloadEvent)=>{if(text.trim()||turns.length){e.preventDefault();}};window.addEventListener("beforeunload",leave);return()=>window.removeEventListener("beforeunload",leave)},[text,turns.length]);
   const stopAll = () => {
     mic.cancel();
     interrupt();
@@ -479,41 +523,22 @@ export default function ChatWorkspace({
   const lastAnswer = [...turns]
     .reverse()
     .find((t) => t.role === "assistant" && t.complete);
-  return (
-    <section className="chat-workspace" data-embedded={embedded || undefined}>
-      <header>
-        <Link href="/dashboard">← Übersicht</Link>
-        <h1>Mit {assistantName} sprechen</h1>
-        <button
-          className="workspace-button"
-          onClick={() => window.dispatchEvent(new Event("neo-open-search"))}
-        >
-          Suchen · ⌘K
-        </button>
-      </header>
-      <p className="workspace-muted">
-        Audio: {providerLabel}. Gespräch und optional ausgewählte eigene
-        Notizen: Anthropic. Sprachausgabe: VocalLab oder die Stimme deines
-        Browsers. Browser-Stimmen können je nach Gerät einen Dienst des
-        Betriebssystems nutzen. Aufnahmen und Gespräch bleiben hier flüchtig;
-        dauerhaft gespeichert wird nur auf deinen Klick.
-      </p>
-      {!authenticated && (
-        <p>
-          <Link href="/login">Zum Login</Link> · Ein NEO-Konto ist für
-          KI-Anfragen erforderlich.
-        </p>
-      )}
-      {notice && <p role="status">{notice}</p>}
-      {error && (
-        <p role="alert">
-          {error}{" "}
-          <button onClick={() => setRetry((n) => n + 1)}>
-            Verbindung prüfen
-          </button>
-        </p>
-      )}
-      <div className="chat-settings">
+  const recording=mic.state!=="idle";
+  const inputId=embedded ? "assistant-chat-text" : "chat-text";
+  return <section className="chat-workspace guiding-chat" data-embedded={embedded || undefined}>
+    {!embedded && <header><Link href="/dashboard">← Dein Guiding Space</Link><h1>{assistantName}</h1><span>Deine hauseigene Assistentin</span></header>}
+    <section className="chat-conversation" aria-label="Gespräch" aria-live="polite" aria-relevant="additions text">
+      {!turns.length && <div className="chat-welcome"><Sparkles size={25}/><h2>Was bewegt dich?</h2><p>Ein Gedanke, eine Frage, ein nächster Schritt.</p><div className="chat-suggestions">{["Hilf mir, meinen Tag zu ordnen.","Lass uns eine Idee weiterdenken."].map(t=><button key={t} onClick={()=>{setText(t);textarea.current?.focus()}}>{t}</button>)}</div></div>}
+      {turns.map(t=><article key={t.id} data-role={t.role}><strong>{t.role==="user" ? "Du" : assistantName}</strong><p>{t.content || (t.complete ? "Keine Textantwort." : "Trinity denkt …")}</p>{!t.complete && t.content && <small>Antwort läuft oder wurde unterbrochen.</small>}{!!t.sources?.length && <details><summary>Eigene Notizen im Kontext</summary>{t.sources.map(n=><Link key={n.id} href={"/notiz?note="+encodeURIComponent(n.id)}>{n.title}<ArrowUpRight size={12}/></Link>)}</details>}</article>)}<div ref={bottom}/>
+    </section>
+    <div className="chat-feedback"><p role="status">{mic.state==="requesting" ? "Mikrofon wird angefragt …" : recording ? "Ich höre zu. Loslassen übernimmt den Text." : status}</p>{(error||mic.error)&&<p role="alert">{error||mic.error} <button onClick={()=>setRetry(n=>n+1)}>Erneut prüfen</button></p>}{notice&&<p role="status">{notice}</p>}{!authenticated&&<p><Link href="/login">Anmelden</Link> für KI und Transkription. Deinen Prompt kannst du bereits schreiben.</p>}</div>
+    <form className="chat-composer" onSubmit={e=>{e.preventDefault();void send(textRef.current)}}>
+      <label htmlFor={inputId}>Dein Prompt</label><textarea ref={textarea} id={inputId} placeholder="Schreib Trinity, was du vorhast …" maxLength={4000} value={text} onChange={e=>setText(e.target.value)} rows={3}/>
+      <div className="chat-composer-tools"><button type="button" className={recording ? "chat-record is-recording" : "chat-record"} aria-label="Prompt diktieren: gedrückt halten" aria-pressed={recording} disabled={(busy&&status==="Wandelt Sprache um")||!preferences.microphone} style={{touchAction:"none"}} onPointerDown={e=>{if(e.button!==0)return;e.preventDefault();e.currentTarget.setPointerCapture(e.pointerId);void startDictation(true)}} onPointerUp={finishDictation} onPointerCancel={()=>{held.current=false;mic.cancel()}} onLostPointerCapture={()=>{if(held.current)finishDictation()}} onKeyDown={e=>{if([" ","Enter"].includes(e.key)&&!e.repeat){e.preventDefault();void startDictation(true)}}} onKeyUp={e=>{if([" ","Enter"].includes(e.key)){e.preventDefault();finishDictation()}}}>{recording ? <Square size={18}/> : <Mic size={18}/>}<span>Diktieren</span></button><meter min={0} max={1} value={mic.level} aria-label="Mikrofonpegel"/><button className="chat-send" type="submit" disabled={!authenticated||!chatReady||busy||recording||!text.trim()||text.length>4000}><Send size={17}/>Senden <kbd>Alt+C</kbd></button></div>
+      {text.length>4000&&<p role="alert">Bitte kürze den Text auf 4.000 Zeichen. Dein Text bleibt vollständig im Entwurf.</p>}
+      <div className="chat-shortcuts"><span><kbd>Alt+Y</kbd> Öffnen</span><span><kbd>Alt+X</kbd> Halten</span><span><kbd>Alt+H</kbd> Ergänzen</span></div>
+    </form>
+    <details className="chat-options"><summary>Kontext, Gespräch & Datenschutz</summary><label><input type="checkbox" checked={includeNotes} onChange={e=>setIncludeNotes(e.target.checked)}/>Passende eigene Notizen als Kontext verwenden</label>      <div className="chat-settings">
         <label>
           <input
             type="checkbox"
@@ -594,191 +619,6 @@ export default function ChatWorkspace({
           </label>
         ) : null}
       </div>
-      <section className="chat-mic" aria-label="Spracheingabe">
-        <label>
-          <input
-            type="checkbox"
-            checked={handsFree}
-            onChange={(e) => {
-              stopAll();
-              setHandsFree(e.target.checked);
-            }}
-          />
-          Freihändig mit Stille-Erkennung
-        </label>
-        {handsFree ? (
-          <button
-            className="chat-record"
-            disabled={!authenticated || !transcriptionReady || !chatReady || !preferences.microphone}
-            onClick={() =>
-              mic.state === "idle" ? void mic.start(true) : stopAll()
-            }
-          >
-            {mic.state === "idle"
-              ? "Freihändig starten"
-              : "Mikrofon ausschalten"}
-          </button>
-        ) : (
-          <button
-            className="chat-record"
-            style={{ touchAction: "none" }}
-            disabled={!authenticated || !transcriptionReady || !chatReady || !preferences.microphone}
-            onPointerDown={(e) => {
-              e.preventDefault();
-              e.currentTarget.setPointerCapture(e.pointerId);
-              void mic.start(false);
-            }}
-            onPointerUp={() => mic.finish()}
-            onPointerCancel={() => mic.cancel()}
-            onKeyDown={(e) => {
-              if ([" ", "Enter"].includes(e.key) && !e.repeat) {
-                e.preventDefault();
-                void mic.start(false);
-              }
-            }}
-            onKeyUp={(e) => {
-              if ([" ", "Enter"].includes(e.key)) {
-                e.preventDefault();
-                mic.finish();
-              }
-            }}
-          >
-            Gedrückt halten zum Sprechen
-          </button>
-        )}
-        <meter min={0} max={1} value={mic.level} aria-label="Mikrofonpegel" />
-        <p role="status">
-          {mic.state === "requesting"
-            ? "Mikrofon wird angefragt"
-            : mic.state === "recording"
-              ? "Hört zu"
-              : mic.state === "listening"
-                ? "Wartet auf deine Stimme"
-                : status}
-        </p>
-        {mic.error && <p role="alert">{mic.error}</p>}
-        <button className="workspace-button" onClick={stopAll}>
-          Alles stoppen
-        </button>
-        <p className="workspace-muted">
-          Loslassen sendet die Aufnahme. Freihändig endet ein Satz nach etwa
-          einer Sekunde Stille. Erneutes Sprechen unterbricht die Antwort;
-          Kopfhörer helfen gegen Echo. Maximal eine Minute pro Aufnahme.
-        </p>
-      </section>
-      <section className="chat-conversation" aria-label="Gespräch">
-        {!turns.length && (
-          <p>
-            Stelle eine Frage oder sammle deine Gedanken. {assistantName} kann
-            beraten; externe Aktionen und Hermes-Freigaben erfolgen hier nicht.
-          </p>
-        )}
-        {turns.map((t) => (
-          <article key={t.id} data-role={t.role}>
-            <strong>{t.role === "user" ? "Du" : assistantName}</strong>
-            <p>{t.content || (t.complete ? "Keine Textantwort." : "…")}</p>
-            {!t.complete && t.content && (
-              <small>Antwort läuft oder wurde unterbrochen.</small>
-            )}
-            {!!t.sources?.length && (
-              <details>
-                <summary>Eigene Notizen im Kontext</summary>
-                <ul>
-                  {t.sources.map((n) => (
-                    <li key={n.id}>
-                      <Link href={"/notiz?note=" + encodeURIComponent(n.id)}>
-                        {n.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            )}
-          </article>
-        ))}
-        <div ref={bottom} />
-      </section>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          mic.cancel();
-          void send(text);
-        }}
-      >
-        <label htmlFor="chat-text">Oder schreiben</label>
-        <textarea
-          id="chat-text"
-          maxLength={4000}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={3}
-        />
-        <button
-          className="workspace-button"
-          disabled={!authenticated || !chatReady || !text.trim()}
-          type="submit"
-        >
-          Senden
-        </button>
-      </form>
-      <div className="chat-actions">
-        <button
-          className="workspace-button"
-          disabled={!lastAnswer || busy}
-          onClick={() => {
-            if (!lastAnswer) return;
-            interrupt();
-            const token = session.current,
-              abort = new AbortController();
-            controller.current = abort;
-            setBusy(true);
-            void playText(lastAnswer.content, token, abort.signal)
-              .catch((e) => {
-                if (!abort.signal.aborted) setError(e.message);
-              })
-              .finally(() => {
-                if (token === session.current) {
-                  setBusy(false);
-                  setStatus("Bereit");
-                }
-              });
-          }}
-        >
-          Antwort vorlesen
-        </button>
-        <button
-          className="workspace-button"
-          disabled={!canSave || saving || busy || !turns.length}
-          onClick={() => void save()}
-        >
-          {saving ? "Speichert …" : "Gespräch als Notiz speichern"}
-        </button>
-        <button
-          className="workspace-button"
-          onClick={() => {
-            stopAll();
-            setTurns([]);
-            setText("");
-            saveId.current = null;
-            setNotice("Neues Gespräch gestartet.");
-          }}
-        >
-          Neues Gespräch
-        </button>
-      </div>
-      {!canSave && (
-        <p className="workspace-muted">
-          Gespräch nutzen ist frei. Dauerhaft speichern erfordert einen Förder-
-          oder App-Zugang.
-        </p>
-      )}
-      <p className="workspace-muted">
-        KI-Anfragen nutzen dein Monatskontingent. VocalLab-Ausgabe zählt je
-        Abschnitt eine Anfrage plus ein Zeitbudget anhand der Textlänge.
-        Browser-Ausgabe verursacht hier keine Serverkosten. VocalLab erzeugt
-        temporäre Audiodateien; wir fordern deren Löschung nach Übernahme an.
-        Bei einem Anbieterfehler kann dort eine Kopie verbleiben.
-      </p>
-    </section>
-  );
+<div className="chat-free-options"><label><input type="checkbox" checked={handsFree} onChange={e=>{stopAll();setHandsFree(e.target.checked)}}/>Freihändig bis zur Sprechpause</label>{handsFree&&<button className="chat-free" disabled={!preferences.microphone||(busy&&status==="Wandelt Sprache um")} onClick={()=>{if(mic.state==="idle")void startDictation(true,true);else{held.current=false;stopAll()}}}>{mic.state==="idle"?"Freihändig starten":"Mikrofon ausschalten"}</button>}<p>Nach der Sprechpause wird nur Text eingefügt. Du prüfst und sendest ihn selbst.</p></div><div className="chat-actions"><button disabled={!lastAnswer||busy} onClick={()=>{if(!lastAnswer)return;interrupt();const token=session.current,abort=new AbortController();controller.current=abort;setBusy(true);void playText(lastAnswer.content,token,abort.signal).catch(e=>{if(!abort.signal.aborted)setError(e.message)}).finally(()=>{if(token===session.current)setBusy(false)})}}>Antwort vorlesen</button><button disabled={!canSave||saving||busy||!turns.length} onClick={()=>void save()}>{saving ? "Speichert …" : "Als Notiz speichern"}</button><button onClick={stopAll}>Antwort stoppen</button><button onClick={()=>{stopAll();setTurns([]);saveId.current=null;setNotice("")}}>Neues Gespräch</button></div><p>Audio: {providerLabel}. Gespräch und optional eigene Notizen: Anthropic. Stimme: VocalLab oder Browser. Audio und Entwurf bleiben flüchtig. Nur dein Klick speichert eine Notiz; externe Aktionen brauchen weiterhin eine eigene Freigabe.</p></details>
+  </section>;
 }

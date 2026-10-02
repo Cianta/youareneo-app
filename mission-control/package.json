@@ -1,7 +1,7 @@
 {
   "name": "mission-control",
   "version": "1.0.0",
-  "description": "AI Agent Operating System \u2014 Academy Mission Control Dashboard",
+  "description": "guiding.space – persönliches Guiding System",
   "private": true,
   "main": "electron/main.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "build": {
     "appId": "com.youareneo.mission-control",
-    "productName": "Mission Control",
+    "productName": "guiding.space",
     "asar": false,
     "mac": {
       "category": "public.app-category.productivity",

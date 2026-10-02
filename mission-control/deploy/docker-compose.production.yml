@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mission-control:global-assistant-20261002
+    image: mission-control:guiding-20261002
     pull_policy: never
     restart: unless-stopped
     expose:
@@ -31,7 +31,7 @@ services:
       PORT: '3000'
       HOSTNAME: 0.0.0.0
       DATA_DIR: /app/data
-      NEXT_PUBLIC_APP_NAME: TRINITY OS
+      NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-guiding.space}
       NEXT_PUBLIC_ACADEMY_NAME: YOU ARE NEO
       AUTH_PROVIDER: supabase
       AUTH_APP_URL: https://trinity.youareneo.com

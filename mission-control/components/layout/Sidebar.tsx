@@ -56,7 +56,7 @@ const ACCORDION_CATS: AccordionCategory[] = [
   {
     id: 'vision-focus', label: 'FOKUS', defaultOpen: true,
     items: [
-      { id: 'mission-control', label: 'Mission Control', icon: Network,    href: '/dashboard' },
+      { id: 'mission-control', label: 'Guiding Space', icon: Network,    href: '/dashboard' },
       { id: 'eden-canvas',     label: 'Eden Canvas',     icon: LayoutGrid, href: '/dashboard/eden' },
       { id: 'tasks',           label: 'Tasks',           icon: ListTodo,   href: '/dashboard/vision/tasks' },
     ],

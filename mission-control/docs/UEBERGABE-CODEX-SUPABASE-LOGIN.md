@@ -120,3 +120,5 @@ Produktname jetzt guiding.space; Trinity bleibt Assistentin. Auth-, Provision-, 
 - Neu: öffentliche, ausschließlich lesende `/api/ambience?q=Ortsname`-Suche bzw. `?lat=...&lon=...` für optionale Open-Meteo-Wetterdarstellung. Kein GPS; Einstellung aus, bis Nutzer selbst aktiviert/Ort auswählt. Keine neuen Secrets.
 - Buzz nur wieder als bestehender Portal-Einstieg verknüpft; separater Buzz-Login und Einladungen unverändert. Kein gemeinsamer Login behauptet.
 - Details und Abnahmegrenzen: `docs/GUIDING-SPACE-BAUPLAN.md`.
+
+Die neuen Sicherungs- und Mailrouten prüfen ihre Sitzung selbst wie die bestehenden Notizrouten; sie werden von der pauschalen Produktprüfung im Proxy ausgenommen. Sicherungsschreiben benötigt weiterhin aktiven App-Zugang. `/api/ambience` liefert ausschließlich öffentliche Orts-/Wetterdaten; es ist ohne Anmeldung nutzbar.

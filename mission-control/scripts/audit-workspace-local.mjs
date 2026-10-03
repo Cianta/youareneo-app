@@ -12,7 +12,7 @@ const runs = Number(process.env.AUDIT_RUNS || 3);
 assert(Number.isInteger(runs) && runs >= 1 && runs <= 5, 'Use 1–5 runs.');
 const appsSuite = process.env.AUDIT_SUITE === 'apps';
 const output = resolve(process.env.AUDIT_OUTPUT_DIR || (appsSuite ? '/tmp/trinity-apps-audit' : '/tmp/trinity-workspace-audit'));
-const suiteRoutes = appsSuite ? ['/dashboard/apps', '/dashboard/apps/radio', '/dashboard/apps/kochbuch'] : ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban', '/dashboard/goals', '/dashboard/calendar', '/dashboard/labor'];
+const suiteRoutes = appsSuite ? ['/dashboard/apps', '/dashboard/apps/radio', '/dashboard/apps/kochbuch'] : ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban', '/dashboard/goals', '/dashboard/calendar', '/dashboard/labor', '/dashboard/projekte', '/dashboard/communication/meeting', '/dashboard/contacts'];
 const routes = process.env.AUDIT_ROUTES ? process.env.AUDIT_ROUTES.split(',') : suiteRoutes;
 assert(routes.length > 0 && routes.every(route => suiteRoutes.includes(route)), 'Select only routes from this audit suite.');
 const userId = '00000000-0000-4000-8000-000000000001';
@@ -21,10 +21,13 @@ const note = { id: '00000000-0000-4000-8000-000000000002', title: 'Testgedanke',
   type: 'notiz', project: null, tags: [], source: 'text', audio_path: null,
   created_at: '2026-10-01T10:00:00Z' };
 const chunkDir = resolve('.next/static/chunks');
-const graphChunks = [];
+const graphChunks = [], motionChunks = [];
 for (const name of await readdir(chunkDir)) {
-  if (name.endsWith('.js') && (await readFile(resolve(chunkDir, name), 'utf8')).includes('WebGLRenderer'))
-    graphChunks.push('/_next/static/chunks/' + name);
+  if (name.endsWith('.js')) {
+    const code = await readFile(resolve(chunkDir, name), 'utf8');
+    if (code.includes('WebGLRenderer')) graphChunks.push('/_next/static/chunks/' + name);
+    if (code.includes('framerAppearId')) motionChunks.push('/_next/static/chunks/' + name);
+  }
 }
 assert(graphChunks.length > 0, 'Build first: expected a separately built 3D chunk.');
 const browser = await puppeteer.launch({ executablePath: process.env.TEST_BROWSER_PATH,
@@ -60,6 +63,8 @@ try {
             limits: { minutes: 60, requests: 100 }, usage: { voice_seconds: 0, requests: 0 } },
           '/api/notes': { success: true, notes: appsSuite ? (url.searchParams.get('tag') === 'kochbuch' ? [{ ...note, title:'Gartensuppe', transcript:'Zutaten\nKürbis\n\nZubereitung\nKochen\n\nJahreszeit: Herbst', tags:['kochbuch','herbst'] }] : []) : [note] },
           '/api/notes/projects': { success: true, projects: ['Atelier'] },
+          '/api/brain': {success:true,graph:{truncated:false,nodes:[{id:'project:Atelier',label:'Atelier',type:'projekt',summary:'Lokales Beispielprojekt',href:'/notiz?project=Atelier',createdAt:'2026-10-01T10:00:00Z',degree:1},{id:'note:'+note.id,label:note.title,type:'notiz',summary:note.summary,href:'/notiz?note='+note.id,createdAt:note.created_at,degree:1}],links:[{source:'note:'+note.id,target:'project:Atelier',kind:'projekt'}]}},
+          '/api/crm/contacts': {success:true,userId,contacts:[{id:'hubspot:fixture',name:'Beispielkontakt',email:'fixture@example.test',company:'Atelier',workspace:'organization',source:'hubspot',updatedAt:'2026-10-01T10:00:00Z'}],providers:[{id:'hubspot',ready:false},{id:'ghl',ready:false}],mailReady:false},
           '/api/notes/queue': { success: true, queue: [] },
           '/api/search': { success: true, userId, items: [] },
           '/api/kanban': { success: true, data: [] },
@@ -80,6 +85,8 @@ try {
       assert.equal(writes, 0, 'An unexpected write was blocked.');
       const scripts = lhr.audits['network-requests'].details.items.filter(item => item.resourceType === 'Script');
       const loadedGraphChunks = scripts.filter(item => graphChunks.includes(new URL(item.url).pathname)).map(item => new URL(item.url).pathname);
+      const loadedMotionChunks = scripts.filter(item => motionChunks.includes(new URL(item.url).pathname)).map(item => new URL(item.url).pathname);
+      if (['/dashboard/labor','/dashboard/calendar','/dashboard/projekte','/dashboard/communication/meeting','/dashboard/contacts'].includes(route)) assert.equal(loadedMotionChunks.length,0,'Closed dialogs must not load their animation runtime.');
       if (route !== '/dashboard/calendar') assert.equal(loadedGraphChunks.length, 0, 'A core route loaded the 3D renderer.');
       const entry = { route, run, fixture: true, source: 'local production build',
         fetchTime: lhr.fetchTime, lighthouseVersion: lhr.lighthouseVersion,
@@ -96,7 +103,7 @@ try {
             displayValue: value.displayValue, details: value.details })),
         settings: { throttling: lhr.configSettings.throttling, screenEmulation: lhr.configSettings.screenEmulation },
         graphChunksNotLoaded: graphChunks.filter(path => !loadedGraphChunks.includes(path)),
-        loadedGraphChunks,
+        loadedGraphChunks, loadedMotionChunks,
         blockedExternalRequests: external, blockedWrites: writes, warnings: lhr.runWarnings };
       await writeFile(resolve(output, route.slice(1).replaceAll('/', '-') + '-' + run + '.json'), JSON.stringify(entry, null, 2));
       results.push(entry);

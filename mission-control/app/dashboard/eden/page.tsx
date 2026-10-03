@@ -16,7 +16,7 @@ import { CommentsPopover } from '@/components/shared/CommentsPopover';
 import { listKanbanProjects, publishToKanban, newComment, TRINITY_SYNC_EVENT, type CardComment } from '@/lib/crossPublish';
 
 import { CanvasRichCard, exportCanvasCard } from '@/components/workspace/CanvasRichCard';
-import { useContacts } from '@/lib/workspace/contacts';
+import {useContactDirectory} from '@/components/workspace/ContactDirectory';
 import { usePersonal, inWorkspace } from '@/lib/workspace/personal';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -175,7 +175,7 @@ const EDEN_SYSTEM_PROMPT =
 
 // ═════════════════════════════════════════════════════════════════════════════
 export default function EdenPage() {
-  const personal=usePersonal(); const contacts=useContacts(s=>s.contacts).filter(c=>inWorkspace(c,personal.workspace));
+  const personal=usePersonal(); const contacts=useContactDirectory().contacts.filter(c=>inWorkspace(c,personal.workspace));
   const [context,setContext]=useState<{x:number;y:number;cx:number;cy:number;cardId?:string}|null>(null);
   const [exportError,setExportError]=useState('');
   const t = useT();

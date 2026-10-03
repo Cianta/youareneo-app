@@ -11,6 +11,7 @@ import { AssistantPreferencesProvider } from '@/components/assistant/Preferences
 import '@/components/workspace/restored.css';
 import '@/components/workspace/journal.css';
 import '@/components/assistant/assistant.css';
+import '@/components/workspace/studio.css';
 
 const inter = Inter({
   subsets: ['latin'],

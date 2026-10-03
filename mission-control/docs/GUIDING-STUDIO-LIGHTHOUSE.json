@@ -1,0 +1,5198 @@
+{
+  "appCommit": "8ce8345c576cba90413456dac2b3d2f50bff3f24",
+  "source": "local production build, isolated authenticated fixtures",
+  "method": "Mobile, Lighthouse default simulated throttling; cold browser cache. Existing lower CRM result retained, two additional valid runs; median of all valid runs. One explicitly marked concurrent run excluded.",
+  "liveAuthenticatedAcceptance": false,
+  "summary": [
+    {
+      "route": "/dashboard/calendar",
+      "validRuns": 1,
+      "performanceMedian": 90,
+      "performanceRange": [
+        90,
+        90
+      ],
+      "accessibilityMin": 100,
+      "consoleErrors": 0,
+      "initialJavaScriptBytes": 791518,
+      "closedDialogAnimationRuntimeLoaded": false,
+      "actualProviderCalls": 0
+    },
+    {
+      "route": "/dashboard/communication/meeting",
+      "validRuns": 1,
+      "performanceMedian": 92,
+      "performanceRange": [
+        92,
+        92
+      ],
+      "accessibilityMin": 100,
+      "consoleErrors": 0,
+      "initialJavaScriptBytes": 747459,
+      "closedDialogAnimationRuntimeLoaded": false,
+      "actualProviderCalls": 0
+    },
+    {
+      "route": "/dashboard/contacts",
+      "validRuns": 3,
+      "performanceMedian": 93,
+      "performanceRange": [
+        85,
+        93
+      ],
+      "accessibilityMin": 100,
+      "consoleErrors": 0,
+      "initialJavaScriptBytes": 750994,
+      "closedDialogAnimationRuntimeLoaded": false,
+      "actualProviderCalls": 0
+    },
+    {
+      "route": "/dashboard/labor",
+      "validRuns": 1,
+      "performanceMedian": 92,
+      "performanceRange": [
+        92,
+        92
+      ],
+      "accessibilityMin": 100,
+      "consoleErrors": 0,
+      "initialJavaScriptBytes": 740667,
+      "closedDialogAnimationRuntimeLoaded": false,
+      "actualProviderCalls": 0
+    },
+    {
+      "route": "/dashboard/projekte",
+      "validRuns": 1,
+      "performanceMedian": 92,
+      "performanceRange": [
+        92,
+        92
+      ],
+      "accessibilityMin": 100,
+      "consoleErrors": 0,
+      "initialJavaScriptBytes": 759228,
+      "closedDialogAnimationRuntimeLoaded": false,
+      "actualProviderCalls": 0
+    }
+  ],
+  "runs": [
+    {
+      "route": "/dashboard/calendar",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:12:08.465Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 90,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3536.789,
+        "total-blocking-time": 39.5,
+        "cumulative-layout-shift": 0,
+        "speed-index": 1656.7890000000002
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 23.32299996948242
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 12.191000030517579
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 18.629
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 63.868
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+            "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+            "boundingRect": {
+              "top": 684,
+              "bottom": 712,
+              "left": 366,
+              "right": 394,
+              "width": 28,
+              "height": 28
+            },
+            "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+            "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/1wlu_z8zg0jui.js",
+          "transferSize": 7617,
+          "resourceSize": 21558
+        },
+        {
+          "path": "/_next/static/chunks/3jsvh-lscvpns.js",
+          "transferSize": 10263,
+          "resourceSize": 30891
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/3vo88xf85i85p.js",
+          "transferSize": 2305,
+          "resourceSize": 3621
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.93,
+          "displayValue": "1.7 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.63,
+          "displayValue": "3.5 s"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.96,
+          "displayValue": "100 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.89,
+          "displayValue": "3.8 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 33 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18690,
+                "wastedPercent": 94.43600635002359,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 15598,
+                "wastedPercent": 80.05303154556886,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 34288,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 150,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 21 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 21129,
+                "wastedPercent": 29.715730460591406
+              }
+            ],
+            "overallSavingsMs": 230,
+            "overallSavingsBytes": 21129,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 230
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/calendar"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/calendar"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "checklist",
+                "items": {
+                  "priorityHinted": {
+                    "label": "fetchpriority=high should be applied to the image preload request",
+                    "value": false
+                  },
+                  "requestDiscoverable": {
+                    "label": "Request is discoverable in initial document",
+                    "value": true
+                  },
+                  "eagerlyLoaded": {
+                    "label": "LCP resources should not use loading=lazy",
+                    "value": true
+                  }
+                }
+              },
+              {
+                "type": "node",
+                "lhId": "page-0-IMG",
+                "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+                "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+                "boundingRect": {
+                  "top": 684,
+                  "bottom": 712,
+                  "left": 366,
+                  "right": 394,
+                  "width": 28,
+                  "height": 28
+                },
+                "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+                "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "61C581A984E2F5CCF831F8D2F06B8FEF": {
+                      "url": "http://127.0.0.1:3310/dashboard/calendar",
+                      "navStartToEndTime": 34,
+                      "transferSize": 16927,
+                      "isLongest": true,
+                      "children": {
+                        "35413.4": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 52,
+                          "transferSize": 20157,
+                          "isLongest": true,
+                          "children": {
+                            "35413.73": {
+                              "url": "http://127.0.0.1:3310/_next/static/media/01e4147cff8141ee-s.3huc2loe0ie8a.woff2",
+                              "navStartToEndTime": 97,
+                              "transferSize": 38076,
+                              "isLongest": true,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "35413.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 53,
+                          "transferSize": 5057,
+                          "children": {}
+                        },
+                        "35413.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 53,
+                          "transferSize": 19851,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 97
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 850 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 302
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 452
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 302
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [
+        "/_next/static/chunks/3vo88xf85i85p.js"
+      ],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": true
+    },
+    {
+      "route": "/dashboard/communication/meeting",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:12:22.929Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 92,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3303.9579999999996,
+        "total-blocking-time": 11.5,
+        "cumulative-layout-shift": 0,
+        "speed-index": 1355.958
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 13.879
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 142.958
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-P",
+            "path": "1,HTML,1,BODY,1,DIV,2,DIV,2,MAIN,1,DIV,0,HEADER,2,P",
+            "selector": "main#workspace-content > div.w-page > header > p",
+            "boundingRect": {
+              "top": 143,
+              "bottom": 191,
+              "left": 14,
+              "right": 398,
+              "width": 384,
+              "height": 48
+            },
+            "snippet": "<p>",
+            "nodeLabel": "Deine Räume, deine Menschen. Ein Gespräch beginnt mit einer Einladung."
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/3pwwx3xbfc_8f.js",
+          "transferSize": 4875,
+          "resourceSize": 12011
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.98,
+          "displayValue": "1.4 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.69,
+          "displayValue": "3.3 s"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.99,
+          "displayValue": "70 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.92,
+          "displayValue": "3.6 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 35 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18688,
+                "wastedPercent": 94.42828334835028,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 17653,
+                "wastedPercent": 90.59737940334955,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 150,
+            "overallSavingsBytes": 36341,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 150
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 21 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 21140,
+                "wastedPercent": 29.730680444102454
+              }
+            ],
+            "overallSavingsMs": 220,
+            "overallSavingsBytes": 21140,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 220
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/communication/meeting"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/communication/meeting"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "253F16B3143E864143986BB221617ACF": {
+                      "url": "http://127.0.0.1:3310/dashboard/communication/meeting",
+                      "navStartToEndTime": 41,
+                      "transferSize": 14549,
+                      "isLongest": true,
+                      "children": {
+                        "36643.4": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 63,
+                          "transferSize": 20157,
+                          "isLongest": true,
+                          "children": {
+                            "36643.71": {
+                              "url": "http://127.0.0.1:3310/_next/static/media/01e4147cff8141ee-s.3huc2loe0ie8a.woff2",
+                              "navStartToEndTime": 93,
+                              "transferSize": 38076,
+                              "isLongest": true,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "36643.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 63,
+                          "transferSize": 5057,
+                          "children": {}
+                        },
+                        "36643.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 62,
+                          "transferSize": 19851,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 93
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 700 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 302
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 302
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 452
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3vo88xf85i85p.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": true
+    },
+    {
+      "route": "/dashboard/contacts",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:12:29.816Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 85,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3243.089,
+        "total-blocking-time": 339.13699999999994,
+        "cumulative-layout-shift": 0.008510635156622558,
+        "speed-index": 1559.4933338723185
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 12.534
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 22.86
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 15.922
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 185.974
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+            "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+            "boundingRect": {
+              "top": 684,
+              "bottom": 712,
+              "left": 366,
+              "right": 394,
+              "width": 28,
+              "height": 28
+            },
+            "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+            "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/22qhtassnbtrn.js",
+          "transferSize": 5900,
+          "resourceSize": 15546
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.99,
+          "displayValue": "1.2 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.71,
+          "displayValue": "3.2 s"
+        },
+        {
+          "id": "total-blocking-time",
+          "title": "Total Blocking Time",
+          "score": 0.74,
+          "displayValue": "340 ms"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.01,
+          "displayValue": "750 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.92,
+          "displayValue": "3.6 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 35 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18683,
+                "wastedPercent": 94.40339812073626,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 17600,
+                "wastedPercent": 90.32402092103584,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 36283,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 150,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 20 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 20949,
+                "wastedPercent": 29.462460151698362
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 20949,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "checklist",
+                "items": {
+                  "priorityHinted": {
+                    "label": "fetchpriority=high should be applied to the image preload request",
+                    "value": false
+                  },
+                  "requestDiscoverable": {
+                    "label": "Request is discoverable in initial document",
+                    "value": true
+                  },
+                  "eagerlyLoaded": {
+                    "label": "LCP resources should not use loading=lazy",
+                    "value": true
+                  }
+                }
+              },
+              {
+                "type": "node",
+                "lhId": "page-0-IMG",
+                "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+                "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+                "boundingRect": {
+                  "top": 684,
+                  "bottom": 712,
+                  "left": 366,
+                  "right": 394,
+                  "width": 28,
+                  "height": 28
+                },
+                "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+                "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "CE04D45B06D3614642B3475B70503EFB": {
+                      "url": "http://127.0.0.1:3310/dashboard/contacts",
+                      "navStartToEndTime": 41,
+                      "transferSize": 14849,
+                      "isLongest": true,
+                      "children": {
+                        "37237.4": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 54,
+                          "transferSize": 20157,
+                          "isLongest": true,
+                          "children": {
+                            "37237.70": {
+                              "url": "http://127.0.0.1:3310/_next/static/media/01e4147cff8141ee-s.3huc2loe0ie8a.woff2",
+                              "navStartToEndTime": 355,
+                              "transferSize": 38076,
+                              "isLongest": true,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "37237.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 54,
+                          "transferSize": 19851,
+                          "children": {}
+                        },
+                        "37237.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 53,
+                          "transferSize": 5057,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 355
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 410 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 301
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 451
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 301
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3vo88xf85i85p.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": true
+    },
+    {
+      "route": "/dashboard/labor",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:11:59.853Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 92,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3302.214,
+        "total-blocking-time": 31.76200000000017,
+        "cumulative-layout-shift": 0,
+        "speed-index": 1205.476
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 25.243000030517578
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 269.4019999694824
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-H1",
+            "path": "1,HTML,1,BODY,1,DIV,2,DIV,2,MAIN,1,SECTION,0,HEADER,0,DIV,1,H1",
+            "selector": "section.w-page > header.w-page-heading > div > h1",
+            "boundingRect": {
+              "top": 129,
+              "bottom": 170,
+              "left": 14,
+              "right": 309,
+              "width": 295,
+              "height": 42
+            },
+            "snippet": "<h1>",
+            "nodeLabel": "Daten-Labor."
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/44q690-iy3_cf.js",
+          "transferSize": 2712,
+          "resourceSize": 5219
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.99,
+          "displayValue": "1.2 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.69,
+          "displayValue": "3.3 s"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.12,
+          "displayValue": "450 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.92,
+          "displayValue": "3.6 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 35 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18692,
+                "wastedPercent": 94.44716179688506,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 17598,
+                "wastedPercent": 90.31582016656644,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 36290,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 150,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 21 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 21495,
+                "wastedPercent": 30.22974607013301
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 21495,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/labor"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/labor"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "B0AFA2949480CEAECDEE9CE77E79CC97": {
+                      "url": "http://127.0.0.1:3310/dashboard/labor",
+                      "navStartToEndTime": 46,
+                      "transferSize": 16209,
+                      "isLongest": true,
+                      "children": {
+                        "34665.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 67,
+                          "transferSize": 19851,
+                          "isLongest": true,
+                          "children": {}
+                        },
+                        "34665.4": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 65,
+                          "transferSize": 20157,
+                          "children": {}
+                        },
+                        "34665.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 64,
+                          "transferSize": 5057,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 67
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 380 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 453
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 303
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 303
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3vo88xf85i85p.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": true
+    },
+    {
+      "route": "/dashboard/projekte",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:12:15.215Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 92,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3382.0310000000004,
+        "total-blocking-time": 12,
+        "cumulative-layout-shift": 0.01531604286838449,
+        "speed-index": 1358.031
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 12.87
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 36.632
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 23.569
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 43.902
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,1,DIV,2,DIV,2,MAIN,1,SECTION,0,HEADER,0,IMG",
+            "selector": "main#workspace-content > section.w-page > header.project-observatory > img",
+            "boundingRect": {
+              "top": 105,
+              "bottom": 349,
+              "left": 14,
+              "right": 398,
+              "width": 384,
+              "height": 244
+            },
+            "snippet": "<img alt=\"Sternenforscher-Arbeitszimmer mit Bibliothek und Blick in einen violetten …\" decoding=\"async\" data-nimg=\"fill\" style=\"position: absolute; height: 100%; width: 100%; inset: 0px;\" sizes=\"(max-width:767px) 100vw, 85vw\" srcset=\"/_next/image?url=%2Fimages%2Fprojects-stargazer-v1.webp&amp;w=640&amp;q=60 640w, /…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fimages%2Fprojects-stargazer-v1.we…\">",
+            "nodeLabel": "Sternenforscher-Arbeitszimmer mit Bibliothek und Blick in einen violetten Nacht…"
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/3romfh87kjf5i.js",
+          "transferSize": 9174,
+          "resourceSize": 23780
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.98,
+          "displayValue": "1.4 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.67,
+          "displayValue": "3.4 s"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.99,
+          "displayValue": "70 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.91,
+          "displayValue": "3.6 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 35 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18687,
+                "wastedPercent": 94.42313468056807,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 17599,
+                "wastedPercent": 90.3231097260948,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 150,
+            "overallSavingsBytes": 36286,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 150
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 21 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 21253,
+                "wastedPercent": 29.890293503352755
+              }
+            ],
+            "overallSavingsMs": 220,
+            "overallSavingsBytes": 21253,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 220
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/projekte"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/projekte"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "checklist",
+                "items": {
+                  "priorityHinted": {
+                    "label": "fetchpriority=high should be applied to the image preload request",
+                    "value": false
+                  },
+                  "requestDiscoverable": {
+                    "label": "Request is discoverable in initial document",
+                    "value": true
+                  },
+                  "eagerlyLoaded": {
+                    "label": "LCP resources should not use loading=lazy",
+                    "value": true
+                  }
+                }
+              },
+              {
+                "type": "node",
+                "lhId": "page-0-IMG",
+                "path": "1,HTML,1,BODY,1,DIV,2,DIV,2,MAIN,1,SECTION,0,HEADER,0,IMG",
+                "selector": "main#workspace-content > section.w-page > header.project-observatory > img",
+                "boundingRect": {
+                  "top": 105,
+                  "bottom": 349,
+                  "left": 14,
+                  "right": 398,
+                  "width": 384,
+                  "height": 244
+                },
+                "snippet": "<img alt=\"Sternenforscher-Arbeitszimmer mit Bibliothek und Blick in einen violetten …\" decoding=\"async\" data-nimg=\"fill\" style=\"position: absolute; height: 100%; width: 100%; inset: 0px;\" sizes=\"(max-width:767px) 100vw, 85vw\" srcset=\"/_next/image?url=%2Fimages%2Fprojects-stargazer-v1.webp&amp;w=640&amp;q=60 640w, /…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fimages%2Fprojects-stargazer-v1.we…\">",
+                "nodeLabel": "Sternenforscher-Arbeitszimmer mit Bibliothek und Blick in einen violetten Nacht…"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "0650462278FEE1FC5D99CEFD8A4EDDEC": {
+                      "url": "http://127.0.0.1:3310/dashboard/projekte",
+                      "navStartToEndTime": 55,
+                      "transferSize": 14404,
+                      "isLongest": true,
+                      "children": {
+                        "35992.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 76,
+                          "transferSize": 20157,
+                          "isLongest": true,
+                          "children": {
+                            "35992.77": {
+                              "url": "http://127.0.0.1:3310/_next/static/media/01e4147cff8141ee-s.3huc2loe0ie8a.woff2",
+                              "navStartToEndTime": 106,
+                              "transferSize": 38076,
+                              "isLongest": true,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "35992.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 77,
+                          "transferSize": 19851,
+                          "children": {}
+                        },
+                        "35992.7": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 75,
+                          "transferSize": 5057,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 106
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 740 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 453
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 303
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 303
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3vo88xf85i85p.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": true
+    },
+    {
+      "route": "/dashboard/contacts",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:13:05.824Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 81,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 4323.728,
+        "total-blocking-time": 211.13599999999997,
+        "cumulative-layout-shift": 0.008510635156622558,
+        "speed-index": 1505.796
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 15.330999969482422
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 38.07200003051758
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 17.743
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 183.95
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+            "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+            "boundingRect": {
+              "top": 684,
+              "bottom": 712,
+              "left": 366,
+              "right": 394,
+              "width": 28,
+              "height": 28
+            },
+            "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+            "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/22qhtassnbtrn.js",
+          "transferSize": 5900,
+          "resourceSize": 15546
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.96,
+          "displayValue": "1.5 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.41,
+          "displayValue": "4.3 s"
+        },
+        {
+          "id": "total-blocking-time",
+          "title": "Total Blocking Time",
+          "score": 0.88,
+          "displayValue": "210 ms"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0,
+          "displayValue": "840 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.84,
+          "displayValue": "4.3 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 35 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18683,
+                "wastedPercent": 94.40339812073626,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 17600,
+                "wastedPercent": 90.32402092103584,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 36283,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 20 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 20949,
+                "wastedPercent": 29.462460151698362
+              }
+            ],
+            "overallSavingsMs": 220,
+            "overallSavingsBytes": 20949,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 220
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "checklist",
+                "items": {
+                  "priorityHinted": {
+                    "label": "fetchpriority=high should be applied to the image preload request",
+                    "value": false
+                  },
+                  "requestDiscoverable": {
+                    "label": "Request is discoverable in initial document",
+                    "value": true
+                  },
+                  "eagerlyLoaded": {
+                    "label": "LCP resources should not use loading=lazy",
+                    "value": true
+                  }
+                }
+              },
+              {
+                "type": "node",
+                "lhId": "page-0-IMG",
+                "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+                "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+                "boundingRect": {
+                  "top": 684,
+                  "bottom": 712,
+                  "left": 366,
+                  "right": 394,
+                  "width": 28,
+                  "height": 28
+                },
+                "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+                "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "9D7CA8764A3DF3D19A4842ACDF2218ED": {
+                      "url": "http://127.0.0.1:3310/dashboard/contacts",
+                      "navStartToEndTime": 59,
+                      "transferSize": 14849,
+                      "isLongest": true,
+                      "children": {
+                        "40208.4": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 73,
+                          "transferSize": 20157,
+                          "isLongest": true,
+                          "children": {
+                            "40208.70": {
+                              "url": "http://127.0.0.1:3310/_next/static/media/01e4147cff8141ee-s.3huc2loe0ie8a.woff2",
+                              "navStartToEndTime": 231,
+                              "transferSize": 38076,
+                              "isLongest": true,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "40208.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 74,
+                          "transferSize": 19851,
+                          "children": {}
+                        },
+                        "40208.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 72,
+                          "transferSize": 5057,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 231
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 710 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 452
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 302
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 302
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3vo88xf85i85p.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": false,
+      "exclusionReason": "Überschneidung mit gestarteter Browser-Bedienungsprüfung; kein kontrollierter Performance-Lauf."
+    },
+    {
+      "route": "/dashboard/contacts",
+      "run": 2,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:13:13.855Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 93,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3221.585,
+        "total-blocking-time": 9,
+        "cumulative-layout-shift": 0.008510635156622558,
+        "speed-index": 1202.39
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 67.04900003051758
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 29.17799996948242
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 12.67
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 62.992
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+            "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+            "boundingRect": {
+              "top": 684,
+              "bottom": 712,
+              "left": 366,
+              "right": 394,
+              "width": 28,
+              "height": 28
+            },
+            "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+            "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/22qhtassnbtrn.js",
+          "transferSize": 5900,
+          "resourceSize": 15546
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.99,
+          "displayValue": "1.2 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.72,
+          "displayValue": "3.2 s"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.99,
+          "displayValue": "70 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.92,
+          "displayValue": "3.6 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 35 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18683,
+                "wastedPercent": 94.40339812073626,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 17600,
+                "wastedPercent": 90.32402092103584,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 36283,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 150,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 20 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 20949,
+                "wastedPercent": 29.462460151698362
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 20949,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "checklist",
+                "items": {
+                  "priorityHinted": {
+                    "label": "fetchpriority=high should be applied to the image preload request",
+                    "value": false
+                  },
+                  "requestDiscoverable": {
+                    "label": "Request is discoverable in initial document",
+                    "value": true
+                  },
+                  "eagerlyLoaded": {
+                    "label": "LCP resources should not use loading=lazy",
+                    "value": true
+                  }
+                }
+              },
+              {
+                "type": "node",
+                "lhId": "page-0-IMG",
+                "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+                "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+                "boundingRect": {
+                  "top": 684,
+                  "bottom": 712,
+                  "left": 366,
+                  "right": 394,
+                  "width": 28,
+                  "height": 28
+                },
+                "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+                "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "CA123087052C81EC88E8701FEC687B66": {
+                      "url": "http://127.0.0.1:3310/dashboard/contacts",
+                      "navStartToEndTime": 44,
+                      "transferSize": 14849,
+                      "isLongest": true,
+                      "children": {
+                        "40939.4": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 53,
+                          "transferSize": 20157,
+                          "isLongest": true,
+                          "children": {
+                            "40939.70": {
+                              "url": "http://127.0.0.1:3310/_next/static/media/01e4147cff8141ee-s.3huc2loe0ie8a.woff2",
+                              "navStartToEndTime": 151,
+                              "transferSize": 38076,
+                              "isLongest": true,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "40939.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 53,
+                          "transferSize": 19851,
+                          "children": {}
+                        },
+                        "40939.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 52,
+                          "transferSize": 5057,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 151
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 410 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 451
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 301
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 301
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3vo88xf85i85p.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": true
+    },
+    {
+      "route": "/dashboard/contacts",
+      "run": 1,
+      "fixture": true,
+      "source": "local production build",
+      "fetchTime": "2026-10-03T23:14:27.630Z",
+      "lighthouseVersion": "13.5.0",
+      "performance": 93,
+      "accessibility": 100,
+      "metrics": {
+        "largest-contentful-paint": 3232.973,
+        "total-blocking-time": 13.5,
+        "cumulative-layout-shift": 0.008510635156622558,
+        "speed-index": 1203.982
+      },
+      "console": [],
+      "lcpDetails": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [
+              {
+                "key": "label",
+                "valueType": "text",
+                "label": "Subpart"
+              },
+              {
+                "key": "duration",
+                "valueType": "ms",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "subpart": "timeToFirstByte",
+                "label": "Time to first byte",
+                "duration": 23.483000030517577
+              },
+              {
+                "subpart": "resourceLoadDelay",
+                "label": "Resource load delay",
+                "duration": 18.50099996948242
+              },
+              {
+                "subpart": "resourceLoadDuration",
+                "label": "Resource load duration",
+                "duration": 19.293
+              },
+              {
+                "subpart": "elementRenderDelay",
+                "label": "Element render delay",
+                "duration": 125.492
+              }
+            ]
+          },
+          {
+            "type": "node",
+            "lhId": "page-0-IMG",
+            "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+            "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+            "boundingRect": {
+              "top": 684,
+              "bottom": 712,
+              "left": 366,
+              "right": 394,
+              "width": 28,
+              "height": 28
+            },
+            "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+            "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+          }
+        ]
+      },
+      "js": [
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "transferSize": 2419,
+          "resourceSize": 5598
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "transferSize": 9270,
+          "resourceSize": 31371
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "transferSize": 38067,
+          "resourceSize": 138272
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "transferSize": 71485,
+          "resourceSize": 227425
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "transferSize": 9603,
+          "resourceSize": 44022
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "transferSize": 4565,
+          "resourceSize": 10614
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "transferSize": 11920,
+          "resourceSize": 37612
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "transferSize": 14408,
+          "resourceSize": 41068
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "transferSize": 11425,
+          "resourceSize": 35770
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "transferSize": 13335,
+          "resourceSize": 54763
+        },
+        {
+          "path": "/_next/static/chunks/22qhtassnbtrn.js",
+          "transferSize": 5900,
+          "resourceSize": 15546
+        },
+        {
+          "path": "/_next/static/chunks/2hp3cttg7-e9c.js",
+          "transferSize": 597,
+          "resourceSize": 251
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "transferSize": 18413,
+          "resourceSize": 51275
+        },
+        {
+          "path": "/_next/static/chunks/3s24qm42974pj.js",
+          "transferSize": 2172,
+          "resourceSize": 3787
+        },
+        {
+          "path": "/_next/static/chunks/0b3g1yytu-sc-.js",
+          "transferSize": 22532,
+          "resourceSize": 50720
+        },
+        {
+          "path": "/_next/static/chunks/12exupvoue6yw.js",
+          "transferSize": 1667,
+          "resourceSize": 2900
+        }
+      ],
+      "findings": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.99,
+          "displayValue": "1.2 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.71,
+          "displayValue": "3.2 s"
+        },
+        {
+          "id": "max-potential-fid",
+          "title": "Max Potential First Input Delay",
+          "score": 0.99,
+          "displayValue": "80 ms"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.92,
+          "displayValue": "3.6 s"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 35 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "wastedBytes": 18683,
+                "wastedPercent": 94.40339812073626,
+                "totalBytes": 19791
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "wastedBytes": 17600,
+                "wastedPercent": 90.32402092103584,
+                "totalBytes": 19485
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 36283,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 150,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 20 KiB",
+          "details": {
+            "type": "opportunity",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "source",
+                  "valueType": "code"
+                },
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceBytes"
+                },
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "subItemsHeading": {
+                  "key": "sourceWastedBytes"
+                },
+                "label": "Est Savings"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "totalBytes": 71105,
+                "wastedBytes": 20949,
+                "wastedPercent": 29.462460151698362
+              }
+            ],
+            "overallSavingsMs": 300,
+            "overallSavingsBytes": 20949,
+            "sortedBy": [
+              "wastedBytes"
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "metricSavings": {
+                "FCP": 0,
+                "LCP": 300
+              }
+            }
+          }
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "score": 0,
+          "displayValue": "2 failure reasons",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "reason",
+                "valueType": "text",
+                "subItemsHeading": {
+                  "key": "frameUrl",
+                  "valueType": "url"
+                },
+                "label": "Failure reason"
+              },
+              {
+                "key": "failureType",
+                "valueType": "text",
+                "label": "Failure type"
+              }
+            ],
+            "items": [
+              {
+                "reason": "Pages whose main resource has cache-control:no-store cannot enter back/forward cache.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "MainResourceHasCacheControlNoStore"
+              },
+              {
+                "reason": "Back/forward cache is disabled because some JavaScript network request received resource with Cache-Control: no-store header.",
+                "failureType": "Not actionable",
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "frameUrl": "http://127.0.0.1:3310/dashboard/contacts"
+                    }
+                  ]
+                },
+                "protocolReason": "JsNetworkRequestReceivedCacheControlNoStoreResource"
+              }
+            ]
+          }
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "checklist",
+                "items": {
+                  "priorityHinted": {
+                    "label": "fetchpriority=high should be applied to the image preload request",
+                    "value": false
+                  },
+                  "requestDiscoverable": {
+                    "label": "Request is discoverable in initial document",
+                    "value": true
+                  },
+                  "eagerlyLoaded": {
+                    "label": "LCP resources should not use loading=lazy",
+                    "value": true
+                  }
+                }
+              },
+              {
+                "type": "node",
+                "lhId": "page-0-IMG",
+                "path": "1,HTML,1,BODY,3,DIV,3,DIV,0,BUTTON,0,IMG",
+                "selector": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img",
+                "boundingRect": {
+                  "top": 684,
+                  "bottom": 712,
+                  "left": 366,
+                  "right": 394,
+                  "width": 28,
+                  "height": 28
+                },
+                "snippet": "<img alt=\"\" width=\"28\" height=\"28\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"28px\" srcset=\"/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&amp;w=32&amp;q=75 32w, /_nex…\" src=\"http://127.0.0.1:3310/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png…\">",
+                "nodeLabel": "div.assistant-dock > div.assistant-identity > button.trinity-sun > img"
+              }
+            ]
+          }
+        },
+        {
+          "id": "legacy-javascript-insight",
+          "title": "Legacy JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 13 KiB",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "subItemsHeading": {
+                  "key": "location",
+                  "valueType": "source-location"
+                },
+                "label": "URL"
+              },
+              {
+                "key": null,
+                "valueType": "code",
+                "subItemsHeading": {
+                  "key": "signal"
+                },
+                "label": ""
+              },
+              {
+                "key": "wastedBytes",
+                "valueType": "bytes",
+                "label": "Wasted bytes"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                "wastedBytes": 13763,
+                "subItems": {
+                  "type": "subitems",
+                  "items": [
+                    {
+                      "signal": "Array.prototype.at",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6451
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flat",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5839
+                      }
+                    },
+                    {
+                      "signal": "Array.prototype.flatMap",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5952
+                      }
+                    },
+                    {
+                      "signal": "Object.fromEntries",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6328
+                      }
+                    },
+                    {
+                      "signal": "Object.hasOwn",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 6586
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimEnd",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5581
+                      }
+                    },
+                    {
+                      "signal": "String.prototype.trimStart",
+                      "location": {
+                        "type": "source-location",
+                        "url": "http://127.0.0.1:3310/_next/static/chunks/2u8phr0aj_bca.js",
+                        "urlProvider": "network",
+                        "line": 0,
+                        "column": 5496
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "debugData": {
+              "type": "debugdata",
+              "wastedBytes": 13763
+            }
+          }
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "details": {
+            "type": "list",
+            "items": [
+              {
+                "type": "list-section",
+                "value": {
+                  "type": "network-tree",
+                  "chains": {
+                    "A81F2427B0689A0A021B481065AE3015": {
+                      "url": "http://127.0.0.1:3310/dashboard/contacts",
+                      "navStartToEndTime": 47,
+                      "transferSize": 14849,
+                      "isLongest": true,
+                      "children": {
+                        "46920.4": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                          "navStartToEndTime": 65,
+                          "transferSize": 20157,
+                          "isLongest": true,
+                          "children": {
+                            "46920.70": {
+                              "url": "http://127.0.0.1:3310/_next/static/media/01e4147cff8141ee-s.3huc2loe0ie8a.woff2",
+                              "navStartToEndTime": 266,
+                              "transferSize": 38076,
+                              "isLongest": true,
+                              "children": {}
+                            }
+                          }
+                        },
+                        "46920.5": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                          "navStartToEndTime": 66,
+                          "transferSize": 19851,
+                          "children": {}
+                        },
+                        "46920.6": {
+                          "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                          "navStartToEndTime": 63,
+                          "transferSize": 5057,
+                          "children": {}
+                        }
+                      }
+                    }
+                  },
+                  "longestChain": {
+                    "duration": 266
+                  }
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnected origins",
+                "description": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
+                "value": {
+                  "type": "text",
+                  "value": "no origins were preconnected"
+                }
+              },
+              {
+                "type": "list-section",
+                "title": "Preconnect candidates",
+                "description": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
+                "value": {
+                  "type": "text",
+                  "value": "No additional origins are good candidates for preconnecting"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 410 ms",
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "url",
+                "valueType": "url",
+                "label": "URL"
+              },
+              {
+                "key": "totalBytes",
+                "valueType": "bytes",
+                "label": "Transfer Size"
+              },
+              {
+                "key": "wastedMs",
+                "valueType": "timespanMs",
+                "label": "Duration"
+              }
+            ],
+            "items": [
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2x1iovtfkls3y.css",
+                "totalBytes": 19851,
+                "wastedMs": 452
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/2u5kn8meil87-.css",
+                "totalBytes": 20157,
+                "wastedMs": 302
+              },
+              {
+                "url": "http://127.0.0.1:3310/_next/static/chunks/36z320l7v9vpv.css",
+                "totalBytes": 5057,
+                "wastedMs": 302
+              }
+            ]
+          }
+        }
+      ],
+      "settings": {
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        }
+      },
+      "graphChunksNotLoaded": [
+        "/_next/static/chunks/170mnrim52mg2.js",
+        "/_next/static/chunks/2f4f333i4-ofc.js",
+        "/_next/static/chunks/3vo88xf85i85p.js",
+        "/_next/static/chunks/3y1cnxzig85x_.js"
+      ],
+      "loadedGraphChunks": [],
+      "loadedMotionChunks": [],
+      "blockedExternalRequests": 0,
+      "blockedWrites": 0,
+      "warnings": [],
+      "includedInSummary": true
+    }
+  ]
+}

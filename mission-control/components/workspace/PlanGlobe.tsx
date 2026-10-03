@@ -5,7 +5,7 @@ export default function PlanGlobe({place}:{place?:Place}){
  const host=useRef<HTMLDivElement>(null),placeRef=useRef(place),[fallback,setFallback]=useState(true);placeRef.current=place;
  useEffect(()=>{let disposed=false,cleanup=()=>{};const element=host.current;if(!element)return;
  void (async()=>{try{
-   await new Promise<void>(resolve=>{const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();resolve();}},{root:element.closest('#workspace-content'),rootMargin:'120px'});observer.observe(element);cleanup=()=>observer.disconnect();});if(disposed)return;
+   await new Promise<void>(resolve=>{const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();resolve();}},{rootMargin:'0px'});observer.observe(element);cleanup=()=>observer.disconnect();});if(disposed)return;
   const THREE=await import('three');if(disposed)return;const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(160,160);element.appendChild(renderer.domElement);setFallback(false);
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(35,1,.1,20);camera.position.z=4;
   const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=512;const ctx=canvas.getContext('2d')!;ctx.fillStyle='#235f79';ctx.fillRect(0,0,1024,512);const texture=new THREE.CanvasTexture(canvas);

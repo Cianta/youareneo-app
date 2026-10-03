@@ -1,13 +1,37 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import {HeaderBookmarks,HeaderFocus,HeaderSettings} from "./HeaderTools";
-import {Atmosphere} from "./Atmosphere";
-import {useNavAttention} from "./NavAttention";
-import {Home,NotebookPen,CheckSquare,FolderOpen,Network,BookOpen,Lightbulb,CalendarDays,Orbit,Leaf,Grid2X2,FlaskConical,Settings,Mail,Video,ContactRound,Search,LogOut,LogIn,Notebook as NotebookIcon} from "lucide-react";
-import {TrinityLogo} from "@/components/sacred-geometry/TrinityLogo";
+import { HeaderBookmarks, HeaderFocus, HeaderSettings } from "./HeaderTools";
+import { Atmosphere } from "./Atmosphere";
+import { useNavAttention } from "./NavAttention";
+import {
+  Home,
+  NotebookPen,
+  CheckSquare,
+  FolderOpen,
+  Network,
+  BookOpen,
+  Lightbulb,
+  CalendarDays,
+  Orbit,
+  Leaf,
+  Grid2X2,
+  FlaskConical,
+  Settings,
+  Mail,
+  Video,
+  ContactRound,
+  Search,
+  LogOut,
+  LogIn,
+  Notebook as NotebookIcon,
+  PanelLeftClose,
+  PanelLeftOpen,
+  HelpCircle,
+} from "lucide-react";
+import { TrinityLogo } from "@/components/sacred-geometry/TrinityLogo";
 import { primary } from "@/lib/workspace/navigation";
 import type { WorkspaceIdentity } from "@/lib/workspace/session";
 import {
@@ -18,14 +42,19 @@ import {
   useAgentStore,
 } from "@/lib/store";
 import { useBrand } from "@/components/voice/BrandProvider";
-import { Dialog } from "./Dialog";
+import { usePersonal } from "@/lib/workspace/personal";
 import { FocusRuntime } from "./FocusRuntime";
 import { ErrorState, LoadingState } from "./States";
-const FocusSpace = dynamic(()=>import("./FocusSpace").then(m=>m.FocusSpace),{ssr:false});
-const CosmosMenu=dynamic(()=>import("./CosmosMenu").then(m=>m.CosmosMenu),{ssr:false});
+const FocusSpace = dynamic(
+  () => import("./FocusSpace").then((m) => m.FocusSpace),
+  { ssr: false },
+);
+const CosmosMenu = dynamic(
+  () => import("./CosmosMenu").then((m) => m.CosmosMenu),
+  { ssr: false },
+);
 const Notebook = dynamic(
-  () =>
-    import("@/components/layout/NotebookPanel").then((m) => m.NotebookPanel),
+  () => import("./NotebookDrawer").then((m) => m.NotebookDrawer),
   { loading: () => <LoadingState />, ssr: false },
 );
 const Audio = dynamic(
@@ -42,7 +71,25 @@ const Completion = dynamic(
     ),
   { ssr: false },
 );
-const navIcons:Record<string,typeof Home>={home:Home,notes:NotebookPen,tasks:CheckSquare,projects:FolderOpen,brain:Network,notebooks:BookOpen,ideas:Lightbulb,planner:CalendarDays,calendar:CalendarDays,soul:Orbit,meditation:Leaf,"my-apps":Grid2X2,lab:FlaskConical,settings:Settings,inbox:Mail,meeting:Video,contacts:ContactRound};
+const navIcons: Record<string, typeof Home> = {
+  home: Home,
+  notes: NotebookPen,
+  tasks: CheckSquare,
+  projects: FolderOpen,
+  brain: Network,
+  notebooks: BookOpen,
+  ideas: Lightbulb,
+  planner: CalendarDays,
+  calendar: CalendarDays,
+  soul: Orbit,
+  meditation: Leaf,
+  "my-apps": Grid2X2,
+  lab: FlaskConical,
+  settings: Settings,
+  inbox: Mail,
+  meeting: Video,
+  contacts: ContactRound,
+};
 export function WorkspaceShell({
   identity,
   children,
@@ -53,16 +100,24 @@ export function WorkspaceShell({
   allowGuest?: boolean;
 }) {
   const { appName } = useBrand();
+  const navOpen = usePersonal((s) => s.navOpen);
+  const [navigationReady, setNavigationReady] = useState(false);
+  useEffect(() => setNavigationReady(true), []);
+  const collapsed = navigationReady && navOpen.sidebar === false;
+  const closeNotebook = useCallback(() => {
+    setNotebook(false);
+    useNotebookStore.getState().setOpen(false);
+  }, []);
   const path = usePathname();
-  const attention=useNavAttention();
+  const attention = useNavAttention();
   const [notebook, setNotebook] = useState(false),
     [error, setError] = useState("");
-  const [agentError,setAgentError] = useState("");
+  const [agentError, setAgentError] = useState("");
   const [authenticated, setAuthenticated] = useState(!!identity);
   const setUser = useAuthStore((s) => s.setUser);
-  const user=useAuthStore(s=>s.user);
+  const user = useAuthStore((s) => s.user);
   const [notebookMounted, setNotebookMounted] = useState(false);
-  const focusOpen = useFocusStore(s=>s.isOpen);
+  const focusOpen = useFocusStore((s) => s.isOpen);
   const completion = useUIExtStore((s) => s.completionDialog);
   useEffect(() => {
     if (identity)
@@ -71,7 +126,7 @@ export function WorkspaceShell({
   useEffect(() => {
     if (identity) return;
     const abort = new AbortController();
-    void fetch("/api/auth/me", {signal: abort.signal, cache: "no-store"})
+    void fetch("/api/auth/me", { signal: abort.signal, cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
         if (abort.signal.aborted) return;
@@ -84,7 +139,10 @@ export function WorkspaceShell({
           });
         else if (!allowGuest) window.location.assign("/login");
       })
-      .catch(() => {if (!abort.signal.aborted) setError("Die Anmeldung konnte nicht geprüft werden.");});
+      .catch(() => {
+        if (!abort.signal.aborted)
+          setError("Die Anmeldung konnte nicht geprüft werden.");
+      });
     return () => abort.abort();
   }, [identity, setUser, allowGuest]);
   useEffect(() => {
@@ -117,52 +175,159 @@ export function WorkspaceShell({
     }
   }
   return (
-    <div className="workspace-shell">
+    <div className="workspace-shell" data-sidebar-collapsed={collapsed}>
       <a className="workspace-skip" href="#workspace-content">
         Zum Inhalt
       </a>
       <aside className="workspace-sidebar">
+        <button
+          className="sidebar-collapse"
+          aria-label={collapsed ? "Menü ausklappen" : "Menü einklappen"}
+          aria-expanded={!collapsed}
+          onClick={() => {
+            const p = usePersonal.getState();
+            p.set({ navOpen: { ...p.navOpen, sidebar: collapsed } });
+          }}
+        >
+          {collapsed ? (
+            <PanelLeftOpen size={18} />
+          ) : (
+            <PanelLeftClose size={18} />
+          )}
+        </button>
         <Link href="/dashboard" className="workspace-brand">
-          <TrinityLogo size={36}/><span>{appName}</span>
+          <TrinityLogo size={36} />
+          <span>{appName}</span>
         </Link>
-        <p className="workspace-user">{identity?.name||user?.name||"Dein Raum"}</p>
-        <CosmosMenu/>
-        <nav aria-label="Hauptnavigation">
-          {["Mein Raum","Arbeiten","Kommunikation","Entdecken","Apps"].map(group=>{const links=primary.filter(p=>p.group===group);const render=links.map(p=>{const Icon=navIcons[p.id]||FolderOpen;const notice=attention[(p.id==="notes"?"planner":p.id) as keyof typeof attention];return <Link prefetch={false} key={p.id} data-nav-id={p.id} href={p.href} data-attention={!!notice?.count} title={notice?.label} aria-current={path===p.href||(p.id==="my-apps"&&path.startsWith("/dashboard/apps/"))?"page":undefined}><Icon className="workspace-nav-icon" aria-hidden="true"/><span>{p.label}</span>{!!notice?.count&&<span className="nav-attention" aria-label={notice.label}>{notice.count}</span>}</Link>;});return group==="Entdecken"?<details className="workspace-discover" key={group}><summary>{group}<span>⌄</span></summary>{render}</details>:<div className="workspace-nav-section" key={group}>{group!=="Apps"&&<span className="workspace-nav-group">{group}</span>}{render}</div>;})}
+        <p className="workspace-user">
+          {identity?.name || user?.name || "Dein Raum"}
+        </p>
+        <CosmosMenu />
+        <nav id="workspace-navigation" aria-label="Hauptnavigation">
+          {["Mein Raum", "Arbeiten", "Kommunikation", "Entdecken", "Apps"].map(
+            (group) => {
+              const links = primary.filter((p) => p.group === group);
+              const render = links.map((p) => {
+                const Icon = navIcons[p.id] || FolderOpen;
+                const notice =
+                  attention[
+                    (p.id === "notes"
+                      ? "planner"
+                      : p.id) as keyof typeof attention
+                  ];
+                return (
+                  <Link
+                    prefetch={false}
+                    key={p.id}
+                    data-nav-id={p.id}
+                    aria-label={p.label}
+                    href={p.href}
+                    data-attention={!!notice?.count}
+                    title={notice?.label || p.label}
+                    aria-current={
+                      path === p.href ||
+                      (p.id === "my-apps" &&
+                        path.startsWith("/dashboard/apps/"))
+                        ? "page"
+                        : undefined
+                    }
+                  >
+                    <Icon className="workspace-nav-icon" aria-hidden="true" />
+                    <span>{p.label}</span>
+                    {!!notice?.count && (
+                      <span className="nav-attention" aria-label={notice.label}>
+                        {notice.count}
+                      </span>
+                    )}
+                  </Link>
+                );
+              });
+              return group === "Entdecken" ? (
+                <details className="workspace-discover" key={group}>
+                  <summary>
+                    {group}
+                    <span>⌄</span>
+                  </summary>
+                  {render}
+                </details>
+              ) : (
+                <div className="workspace-nav-section" key={group}>
+                  {group !== "Apps" && (
+                    <span className="workspace-nav-group">{group}</span>
+                  )}
+                  {render}
+                </div>
+              );
+            },
+          )}
         </nav>
         <button
-          className="workspace-button"
+          className="workspace-button sidebar-help"
+          aria-label="Hilfe & Tastenkürzel"
+          title="Hilfe & Tastenkürzel"
           onClick={() => window.dispatchEvent(new Event("neo-open-help"))}
         >
-          Hilfe & Tastenkürzel
+          <HelpCircle size={19} />
+          <span>Hilfe & Tastenkürzel</span>
         </button>
       </aside>
-      <div className="workspace-body"><Atmosphere/>
+      <div className="workspace-body">
+        <Atmosphere />
         <header className="workspace-topbar">
           <Link href="/dashboard" className="workspace-mobile-brand">
-            <TrinityLogo size={28}/><span>{appName}</span>
+            <TrinityLogo size={28} />
+            <span>{appName}</span>
           </Link>
-          <HeaderBookmarks/>
+          <HeaderBookmarks />
           <button
-            className="workspace-search-trigger" aria-label="Suchen & öffnen"
+            className="workspace-search-trigger"
+            aria-label="Suchen & öffnen"
             onClick={() => window.dispatchEvent(new Event("neo-open-search"))}
           >
-            <Search size={16} className="header-search-icon"/><span className="header-search-label">Suchen & öffnen</span> <kbd>⌘K / Ctrl+K</kbd>
+            <Search size={16} className="header-search-icon" />
+            <span className="header-search-label">Suchen & öffnen</span>{" "}
+            <kbd>⌘K / Ctrl+K</kbd>
           </button>
-          <span className="header-spacer"/><HeaderFocus/>
+          <span className="header-spacer" />
+          <HeaderFocus />
           <button
             aria-label="Tagesnotizbuch öffnen"
+            aria-expanded={notebook}
+            aria-controls="notebook-drawer"
             title="Tagesnotizbuch"
             onClick={() => {
+              if (notebook) {
+                closeNotebook();
+                return;
+              }
               useNotebookStore.getState().setOpen(true);
               setNotebookMounted(true);
               setNotebook(true);
             }}
           >
-            <NotebookIcon size={16} className="header-notebook-icon"/><span className="header-notebook-label">Notizbuch</span>
+            <NotebookIcon size={16} className="header-notebook-icon" />
+            <span className="header-notebook-label">Notizbuch</span>
           </button>
-          <HeaderSettings/>
-          {authenticated ? <button aria-label="Abmelden" title="Abmelden" onClick={() => void logout()}><LogOut size={16} className="header-logout-icon"/><span className="header-logout-label">Abmelden</span></button> : <Link href="/login" className="header-icon" aria-label="Anmelden" title="Anmelden"><LogIn size={16}/></Link>}
+          <HeaderSettings />
+          {authenticated ? (
+            <button
+              aria-label="Abmelden"
+              title="Abmelden"
+              onClick={() => void logout()}
+            >
+              <LogOut size={16} className="header-logout-icon" />
+              <span className="header-logout-label">Abmelden</span>
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              className="header-icon"
+              aria-label="Anmelden"
+              title="Anmelden"
+            >
+              <LogIn size={16} />
+            </Link>
+          )}
         </header>
         <main
           id="workspace-content"
@@ -175,20 +340,20 @@ export function WorkspaceShell({
               retry={() => window.location.reload()}
             />
           ) : (
-            <>{agentError && <p role="status" className="workspace-muted">{agentError} Deine Inhalte bleiben verfügbar.</p>}{children}</>
+            <>
+              {agentError && (
+                <p role="status" className="workspace-muted">
+                  {agentError} Deine Inhalte bleiben verfügbar.
+                </p>
+              )}
+              {children}
+            </>
           )}
         </main>
       </div>
-      {notebookMounted && (
-        <Dialog
-          open={notebook}
-          title="Tagesnotizbuch · auf diesem Gerät"
-          onClose={() => setNotebook(false)}
-        >
-          <Notebook />
-        </Dialog>
-      )}
-      <FocusRuntime />{focusOpen && <FocusSpace/>}
+      {notebookMounted && <Notebook open={notebook} onClose={closeNotebook} />}
+      <FocusRuntime />
+      {focusOpen && <FocusSpace />}
       <Audio />
       {completion && <Completion />}
     </div>

@@ -1,0 +1,1059 @@
+{
+  "verifiedAt": "2026-10-03T23:18:03.738912+00:00",
+  "appCommit": "8ce8345c576cba90413456dac2b3d2f50bff3f24",
+  "pullRequest": "https://github.com/Cianta/youareneo-app/pull/25",
+  "deployCommand": "docker compose up -d --build",
+  "order": [
+    "staging",
+    "production"
+  ],
+  "instances": [
+    {
+      "url": "https://trinity-stg.youareneo.com",
+      "integrity": {
+        "verified": true,
+        "mode": "staging",
+        "appCommit": "8ce8345c576cba90413456dac2b3d2f50bff3f24",
+        "sourceFiles": 108,
+        "containerRunning": true,
+        "dataVolumeWritable": true,
+        "envUnchanged": true,
+        "composeUnchanged": true,
+        "sourceBackup": "/docker/mission-control-stg/.codex-backups/studio-20261003T231223Z-8ce8345"
+      },
+      "httpChecks": 84,
+      "checks": [
+        {
+          "path": "/login",
+          "status": 200
+        },
+        {
+          "path": "/notiz",
+          "status": 200
+        },
+        {
+          "path": "/gehirn",
+          "status": 200
+        },
+        {
+          "path": "/sprechen",
+          "status": 200
+        },
+        {
+          "path": "/dashboard",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/goals",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/calendar",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/labor",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/apps",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/eden",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/soul",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/meeting",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/email",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/contacts",
+          "status": 307
+        },
+        {
+          "path": "/api/workspace/snapshot",
+          "status": 401
+        },
+        {
+          "path": "/api/gmail/threads",
+          "status": 401
+        },
+        {
+          "path": "/api/auth/me",
+          "status": 401
+        },
+        {
+          "path": "/api/notes",
+          "status": 401
+        },
+        {
+          "path": "/api/notes/projects?rulesFor=Eden",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/config",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/speech/voices",
+          "status": 401
+        },
+        {
+          "path": "/api/brain?refresh=1",
+          "status": 401
+        },
+        {
+          "path": "/api/crm/contacts",
+          "status": 401
+        },
+        {
+          "path": "/api/birth-places?q=Wien",
+          "status": 401
+        },
+        {
+          "path": "/apps/archiv.svg",
+          "status": 200
+        },
+        {
+          "path": "/apps/buzz.svg",
+          "status": 200
+        },
+        {
+          "path": "/offline.html",
+          "status": 200
+        },
+        {
+          "path": "/sw.js",
+          "status": 200
+        },
+        {
+          "path": "/manifest.webmanifest",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/05zkn-o3jl672.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0cz1d0mv5g_q7.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0zivvs-537o3d.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/15j5y5cog1ifv.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/19t3y3gfol0tg.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1wxkfb2sd_hpu.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/27q0aiexsyv0v.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/29211olj-k_1y.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u5kn8meil87-.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2wt2t-zbs1qgp.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x0bu1cur_mw8.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x1iovtfkls3y.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/36z320l7v9vpv.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/41t-kosqg0_-6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 206
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 206
+        },
+        {
+          "path": "/maps/land-110m.json",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/infomaniak.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/telegram.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/shopify.svg",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&w=96&q=75",
+          "status": 200
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 401
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 403
+        },
+        {
+          "path": "/api/crm/contacts",
+          "status": 401
+        },
+        {
+          "path": "/api/crm/contacts",
+          "status": 403
+        },
+        {
+          "path": "/api/crm/sync",
+          "status": 401
+        },
+        {
+          "path": "/api/crm/sync",
+          "status": 403
+        },
+        {
+          "path": "/api/meeting/invite",
+          "status": 401
+        },
+        {
+          "path": "/api/meeting/invite",
+          "status": 403
+        },
+        {
+          "path": "/images/projects-stargazer-v1.webp",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fprojects-stargazer-v1.webp&w=750&q=60",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-32.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-maskable-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-apple-180.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        }
+      ],
+      "realLoginOrProviderCalls": false
+    },
+    {
+      "url": "https://trinity.youareneo.com",
+      "integrity": {
+        "verified": true,
+        "mode": "production",
+        "appCommit": "8ce8345c576cba90413456dac2b3d2f50bff3f24",
+        "sourceFiles": 108,
+        "containerRunning": true,
+        "dataVolumeWritable": true,
+        "envUnchanged": true,
+        "composeUnchanged": true,
+        "sourceBackup": "/docker/mission-control/.codex-backups/studio-20261003T231515Z-8ce8345"
+      },
+      "httpChecks": 84,
+      "checks": [
+        {
+          "path": "/login",
+          "status": 200
+        },
+        {
+          "path": "/notiz",
+          "status": 200
+        },
+        {
+          "path": "/gehirn",
+          "status": 200
+        },
+        {
+          "path": "/sprechen",
+          "status": 200
+        },
+        {
+          "path": "/dashboard",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/goals",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/calendar",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/labor",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/apps",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/eden",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/soul",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/meeting",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/email",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/contacts",
+          "status": 307
+        },
+        {
+          "path": "/api/workspace/snapshot",
+          "status": 401
+        },
+        {
+          "path": "/api/gmail/threads",
+          "status": 401
+        },
+        {
+          "path": "/api/auth/me",
+          "status": 401
+        },
+        {
+          "path": "/api/notes",
+          "status": 401
+        },
+        {
+          "path": "/api/notes/projects?rulesFor=Eden",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/config",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/speech/voices",
+          "status": 401
+        },
+        {
+          "path": "/api/brain?refresh=1",
+          "status": 401
+        },
+        {
+          "path": "/api/crm/contacts",
+          "status": 401
+        },
+        {
+          "path": "/api/birth-places?q=Wien",
+          "status": 401
+        },
+        {
+          "path": "/apps/archiv.svg",
+          "status": 200
+        },
+        {
+          "path": "/apps/buzz.svg",
+          "status": 200
+        },
+        {
+          "path": "/offline.html",
+          "status": 200
+        },
+        {
+          "path": "/sw.js",
+          "status": 200
+        },
+        {
+          "path": "/manifest.webmanifest",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/05zkn-o3jl672.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0cz1d0mv5g_q7.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0zivvs-537o3d.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/15j5y5cog1ifv.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/19t3y3gfol0tg.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1j06ut7lkamx4.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1kti7z3m5794-.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1wxkfb2sd_hpu.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/27q0aiexsyv0v.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/29211olj-k_1y.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2l79n97z53oe6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u5kn8meil87-.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2uews6-4twrnc.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2wt2t-zbs1qgp.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x0bu1cur_mw8.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x1iovtfkls3y.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/36z320l7v9vpv.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/41t-kosqg0_-6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-23vg9epc1j493.js",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 206
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 206
+        },
+        {
+          "path": "/maps/land-110m.json",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/infomaniak.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/telegram.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/shopify.svg",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&w=96&q=75",
+          "status": 200
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 401
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 403
+        },
+        {
+          "path": "/api/crm/contacts",
+          "status": 401
+        },
+        {
+          "path": "/api/crm/contacts",
+          "status": 403
+        },
+        {
+          "path": "/api/crm/sync",
+          "status": 401
+        },
+        {
+          "path": "/api/crm/sync",
+          "status": 403
+        },
+        {
+          "path": "/api/meeting/invite",
+          "status": 401
+        },
+        {
+          "path": "/api/meeting/invite",
+          "status": 403
+        },
+        {
+          "path": "/images/projects-stargazer-v1.webp",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fprojects-stargazer-v1.webp&w=750&q=60",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-32.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-maskable-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-apple-180.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        }
+      ],
+      "realLoginOrProviderCalls": false
+    }
+  ],
+  "sourceManifest": [
+    {
+      "local": "mission-control/app/api/crm/contacts/route.ts",
+      "remote": "app/api/crm/contacts/route.ts",
+      "sha256": "f5c43d3de2cf5d91b4a0a227377c0bc4859072c42c32b2807a22fe8574b1a8b3",
+      "before": null,
+      "stagingBefore": "f5c43d3de2cf5d91b4a0a227377c0bc4859072c42c32b2807a22fe8574b1a8b3"
+    },
+    {
+      "local": "mission-control/app/api/crm/sync/route.ts",
+      "remote": "app/api/crm/sync/route.ts",
+      "sha256": "a63a954e7dfff0b6e784cd6c7c1b46f65f2b4af31b8f8b240a7505215f28cfc7",
+      "before": null,
+      "stagingBefore": "a63a954e7dfff0b6e784cd6c7c1b46f65f2b4af31b8f8b240a7505215f28cfc7"
+    },
+    {
+      "local": "mission-control/app/api/meeting/invite/route.ts",
+      "remote": "app/api/meeting/invite/route.ts",
+      "sha256": "1001504be461b17387a5bb376e198f0df1fd9b0d6e1b9c1a056bd3e8625bff6f",
+      "before": null,
+      "stagingBefore": "1001504be461b17387a5bb376e198f0df1fd9b0d6e1b9c1a056bd3e8625bff6f"
+    },
+    {
+      "local": "mission-control/app/dashboard/eden/page.tsx",
+      "remote": "app/dashboard/eden/page.tsx",
+      "sha256": "9aead7d4fb59c0d18ddfb7bc99781e3c77848d0d07e0c9bbbb27ece4b29b2ef1",
+      "before": "4b0192cfc8afd967ed0bc6258b14d1a9d572faa8fce6a32110ddeb0647d3e577",
+      "stagingBefore": "9aead7d4fb59c0d18ddfb7bc99781e3c77848d0d07e0c9bbbb27ece4b29b2ef1"
+    },
+    {
+      "local": "mission-control/app/dashboard/labor/page.tsx",
+      "remote": "app/dashboard/labor/page.tsx",
+      "sha256": "90947192dd1ff3f637df172ad250817db3e10bf2784e9e7113c08eac393aae03",
+      "before": "110274dfe2c08f2f0b300f4c79f4d90cdf192115f0817986cc5cd06f95075aa3",
+      "stagingBefore": "90947192dd1ff3f637df172ad250817db3e10bf2784e9e7113c08eac393aae03"
+    },
+    {
+      "local": "mission-control/app/layout.tsx",
+      "remote": "app/layout.tsx",
+      "sha256": "b73e9310c4142d2a9a29061b910c7f6f48d6910e93f3136ddb04639bf65e9d25",
+      "before": "1186ecc9b7995392e6048e3f747cfccd4a16374eec451e9fc1e3ea49ed5cface",
+      "stagingBefore": "b73e9310c4142d2a9a29061b910c7f6f48d6910e93f3136ddb04639bf65e9d25"
+    },
+    {
+      "local": "mission-control/components/assistant/AssistantDock.tsx",
+      "remote": "components/assistant/AssistantDock.tsx",
+      "sha256": "30a7570f7d8dd8e7176ff1e0c6e82d4764237aeab00aa9aed940714cefa1f023",
+      "before": "24c967c70d508ac5cb74e00362ddabfacb1cf01172b9420210b7b203f3d5862d",
+      "stagingBefore": "30a7570f7d8dd8e7176ff1e0c6e82d4764237aeab00aa9aed940714cefa1f023"
+    },
+    {
+      "local": "mission-control/components/brain/BrainInsights.tsx",
+      "remote": "components/brain/BrainInsights.tsx",
+      "sha256": "0869ce13cc815161b1c0ea0efda3909529894e7bbc0b6b712d3a6ca0ce329fac",
+      "before": null,
+      "stagingBefore": "0869ce13cc815161b1c0ea0efda3909529894e7bbc0b6b712d3a6ca0ce329fac"
+    },
+    {
+      "local": "mission-control/components/brain/BrainWorkspace.tsx",
+      "remote": "components/brain/BrainWorkspace.tsx",
+      "sha256": "d10602e3abf0c52df4566aaa5dbd03ed2d018c9bebe3f97db2d75ec591b85030",
+      "before": "fda4da5a73b3c6396a3a2220cbe362620deefd0014ff854137e60f9e5e978fc4",
+      "stagingBefore": "d10602e3abf0c52df4566aaa5dbd03ed2d018c9bebe3f97db2d75ec591b85030"
+    },
+    {
+      "local": "mission-control/components/workspace/Calendar.tsx",
+      "remote": "components/workspace/Calendar.tsx",
+      "sha256": "e3d3e34ae29f972a1c61e82c31643e850c18a715e610fb5fb7b5320ffd952770",
+      "before": "15f50e162fe7f8a32197c1de9c3b8c5d2056a73ddb03f17df3d12bceb46fea36",
+      "stagingBefore": "2cf4025a69634c0f804b45ea97f5782334085bbf81c6a00a9eff00ed677ef58c"
+    },
+    {
+      "local": "mission-control/components/workspace/CalendarOverview.tsx",
+      "remote": "components/workspace/CalendarOverview.tsx",
+      "sha256": "de52ebba27200f181f6188648a1004eada5dd8391633188126c20524c50b584d",
+      "before": "e6d98b26e7333b41457096f669b8d7bda02ae1ec133559d3ab0b64b486c23f35",
+      "stagingBefore": "de52ebba27200f181f6188648a1004eada5dd8391633188126c20524c50b584d"
+    },
+    {
+      "local": "mission-control/components/workspace/ContactDirectory.ts",
+      "remote": "components/workspace/ContactDirectory.ts",
+      "sha256": "62583edeaa48c0fa9cbd4cf72fd76625b9de50b52bdb84ec814249f24a9fbb1c",
+      "before": null,
+      "stagingBefore": "62583edeaa48c0fa9cbd4cf72fd76625b9de50b52bdb84ec814249f24a9fbb1c"
+    },
+    {
+      "local": "mission-control/components/workspace/Contacts.tsx",
+      "remote": "components/workspace/Contacts.tsx",
+      "sha256": "747a53e95132dd0ac1a877e1f4e1104465e8cfc2c9be682378b40df965f81b87",
+      "before": "b801e5265e36912ab050390c068e9a7d8afea73425658275501e8ba8879f5a3d",
+      "stagingBefore": "747a53e95132dd0ac1a877e1f4e1104465e8cfc2c9be682378b40df965f81b87"
+    },
+    {
+      "local": "mission-control/components/workspace/CosmosMenu.tsx",
+      "remote": "components/workspace/CosmosMenu.tsx",
+      "sha256": "f9ed876f6bd9fc12fdb2eb7818bf70934747e47bac5e59198f647e3c36106f14",
+      "before": "9115c9003d9d071a2e8fec2ce91dfe0131dfb4f84b685b35083789003d7051ae",
+      "stagingBefore": "9115c9003d9d071a2e8fec2ce91dfe0131dfb4f84b685b35083789003d7051ae"
+    },
+    {
+      "local": "mission-control/components/workspace/DailyPlanner.tsx",
+      "remote": "components/workspace/DailyPlanner.tsx",
+      "sha256": "ce2ca9890a71483ee78a93c5e97c194d6cced736b7b6c9c4ad5485161844d18a",
+      "before": "52f17593c2248ab1db1ad9a2850236e68537510b5837921951ffd863b389d091",
+      "stagingBefore": "52f17593c2248ab1db1ad9a2850236e68537510b5837921951ffd863b389d091"
+    },
+    {
+      "local": "mission-control/components/workspace/FocusControls.tsx",
+      "remote": "components/workspace/FocusControls.tsx",
+      "sha256": "6c1ee5f7742516b0a6b0f29f7970a4d217cb73f5c6ec56dfe3dadfe1ff3810ad",
+      "before": "20ed66d2cdf406c818e66e1be621c54cdd57562d261535e1979775d8983489fd",
+      "stagingBefore": "6c1ee5f7742516b0a6b0f29f7970a4d217cb73f5c6ec56dfe3dadfe1ff3810ad"
+    },
+    {
+      "local": "mission-control/components/workspace/MeetingSpace.tsx",
+      "remote": "components/workspace/MeetingSpace.tsx",
+      "sha256": "6fe9745ebb8f491f1a20cc3f9c69eb2abf69d6b2930d45c397bb65d40700dd40",
+      "before": "992dbe9a769493071d7185979fda4632959a075f419bdac17c5d8b178842538f",
+      "stagingBefore": "6fe9745ebb8f491f1a20cc3f9c69eb2abf69d6b2930d45c397bb65d40700dd40"
+    },
+    {
+      "local": "mission-control/components/workspace/NotebookDrawer.tsx",
+      "remote": "components/workspace/NotebookDrawer.tsx",
+      "sha256": "666315393b6027e9ffaa82b15f339859e7321510c711c2ec101faed713531426",
+      "before": null,
+      "stagingBefore": "666315393b6027e9ffaa82b15f339859e7321510c711c2ec101faed713531426"
+    },
+    {
+      "local": "mission-control/components/workspace/PlanGlobe.tsx",
+      "remote": "components/workspace/PlanGlobe.tsx",
+      "sha256": "bde8f75d63e4e8c9ae874bffe3d49c968b713374fe4917f207c0463484abb8c3",
+      "before": "6a35d59b2fcf8a6b6db5320907ffcec54870f440cccaed2ebcbf49cea36e91c1",
+      "stagingBefore": "bde8f75d63e4e8c9ae874bffe3d49c968b713374fe4917f207c0463484abb8c3"
+    },
+    {
+      "local": "mission-control/components/workspace/Projects.tsx",
+      "remote": "components/workspace/Projects.tsx",
+      "sha256": "9e611b3e71e50353dec32916f1d6a3eceb8a82911995d99be297db06f980f279",
+      "before": "74c96e8fb7f73f634d91d2fe594daac461da0bca76e14f90691082a4f33dc4f7",
+      "stagingBefore": "9e611b3e71e50353dec32916f1d6a3eceb8a82911995d99be297db06f980f279"
+    },
+    {
+      "local": "mission-control/components/workspace/ToolLaboratory.tsx",
+      "remote": "components/workspace/ToolLaboratory.tsx",
+      "sha256": "7c3360a35b2b3826fcb34d2bb8eaf600ae86910b2c629f7f006dbda369524740",
+      "before": null,
+      "stagingBefore": "7c3360a35b2b3826fcb34d2bb8eaf600ae86910b2c629f7f006dbda369524740"
+    },
+    {
+      "local": "mission-control/components/workspace/WorkspaceShell.tsx",
+      "remote": "components/workspace/WorkspaceShell.tsx",
+      "sha256": "a19eb5c0062bf5c97d82931a99cab7e46bde79b08ed5b5b79b5536afaa2ba9a5",
+      "before": "5a80e1b7bac1d9ca5760afcc05834602e61b0cdc01d205153d5f464ea5d495e0",
+      "stagingBefore": "a19eb5c0062bf5c97d82931a99cab7e46bde79b08ed5b5b79b5536afaa2ba9a5"
+    },
+    {
+      "local": "mission-control/components/workspace/studio.css",
+      "remote": "components/workspace/studio.css",
+      "sha256": "54fb5f771bdf7b4bc4d4c9bce8ed9a3721f82b03610d71a0644304f828846e37",
+      "before": null,
+      "stagingBefore": "54fb5f771bdf7b4bc4d4c9bce8ed9a3721f82b03610d71a0644304f828846e37"
+    },
+    {
+      "local": "mission-control/docs/GUIDING-WORKSPACE-STUDIO.md",
+      "remote": "docs/GUIDING-WORKSPACE-STUDIO.md",
+      "sha256": "d12be2087a8e546bdfdf223bf482bbd2d9625d783d92e242ea734d6259af0c2b",
+      "before": null,
+      "stagingBefore": "26553d66a82f24e1a49acc2f2a9bc6d9e2218ce78834739294b34078db3ed95e"
+    },
+    {
+      "local": "mission-control/lib/brain/insights.ts",
+      "remote": "lib/brain/insights.ts",
+      "sha256": "1cd330faf8865c329a45cf3c25fcd54891c0dd2b9874870b2ba7799cb6e8ff40",
+      "before": null,
+      "stagingBefore": "1cd330faf8865c329a45cf3c25fcd54891c0dd2b9874870b2ba7799cb6e8ff40"
+    },
+    {
+      "local": "mission-control/lib/crm/cache.ts",
+      "remote": "lib/crm/cache.ts",
+      "sha256": "a56db54676fff3e96e680856c757e7cb47ca43c71aa114bb77b7cd28aa01ea86",
+      "before": null,
+      "stagingBefore": "a56db54676fff3e96e680856c757e7cb47ca43c71aa114bb77b7cd28aa01ea86"
+    },
+    {
+      "local": "mission-control/lib/crm/contracts.ts",
+      "remote": "lib/crm/contracts.ts",
+      "sha256": "c63c9a6ef4b7cde62335ce32b893eee093b5fbd7c65dfcfe5d5e1d76dc0d2f05",
+      "before": null,
+      "stagingBefore": "c63c9a6ef4b7cde62335ce32b893eee093b5fbd7c65dfcfe5d5e1d76dc0d2f05"
+    },
+    {
+      "local": "mission-control/lib/crm/providers.ts",
+      "remote": "lib/crm/providers.ts",
+      "sha256": "aca77053fff0cdbc2558e17fa978f0311d0e9c4c3c8e7b8efc8e4885ddc9a52a",
+      "before": null,
+      "stagingBefore": "aca77053fff0cdbc2558e17fa978f0311d0e9c4c3c8e7b8efc8e4885ddc9a52a"
+    },
+    {
+      "local": "mission-control/lib/meeting/mail.ts",
+      "remote": "lib/meeting/mail.ts",
+      "sha256": "2f028f15a5aad17a50b48d42b46d857acb0123ba786843326e92e704d3978182",
+      "before": null,
+      "stagingBefore": "2f028f15a5aad17a50b48d42b46d857acb0123ba786843326e92e704d3978182"
+    },
+    {
+      "local": "mission-control/lib/meeting/room.ts",
+      "remote": "lib/meeting/room.ts",
+      "sha256": "8cd799e56930c417910dfc709af08a80aa36cc1456c0946062b8c37112b9e6fd",
+      "before": null,
+      "stagingBefore": "8cd799e56930c417910dfc709af08a80aa36cc1456c0946062b8c37112b9e6fd"
+    },
+    {
+      "local": "mission-control/lib/workspace/contacts.ts",
+      "remote": "lib/workspace/contacts.ts",
+      "sha256": "182533f177ec14e7e0e9d2ef80cd827b987d8ba1ec4eb7c89402e3feee7ffcda",
+      "before": "9459b905b72555d57f9ee623a065db7dd62cd0145482477b3ef84fa64e8dfe09",
+      "stagingBefore": "182533f177ec14e7e0e9d2ef80cd827b987d8ba1ec4eb7c89402e3feee7ffcda"
+    },
+    {
+      "local": "mission-control/package-lock.json",
+      "remote": "package-lock.json",
+      "sha256": "fc013013af34e9e6e6c140b023828a4afe50b0a0ddfe604a2a32984e08f783f8",
+      "before": "9a0a5e5608eccdbf2eab49ba3d996ae252a4b7c24f6cf048b9219e711bb50ebb",
+      "stagingBefore": "fc013013af34e9e6e6c140b023828a4afe50b0a0ddfe604a2a32984e08f783f8"
+    },
+    {
+      "local": "mission-control/package.json",
+      "remote": "package.json",
+      "sha256": "61e658fb85811b25f613369f07221c069fb0cb04eccc457a6b1d74aac7f6f1ec",
+      "before": "d4c53d6fe48ec223702ddfc2a64ec1df6e661e022ec1470294bb529777b79485",
+      "stagingBefore": "61e658fb85811b25f613369f07221c069fb0cb04eccc457a6b1d74aac7f6f1ec"
+    },
+    {
+      "local": "mission-control/proxy.ts",
+      "remote": "proxy.ts",
+      "sha256": "75075817681a7c8adca4726e78374ad2f806d3bde6d771f3fec83dc0caa62e1c",
+      "before": "45e5df606fbf63f5742a25487d5edbb5238ad7c1023359f61cd24b0b82108022",
+      "stagingBefore": "75075817681a7c8adca4726e78374ad2f806d3bde6d771f3fec83dc0caa62e1c"
+    },
+    {
+      "local": "mission-control/public/images/projects-stargazer-v1.webp",
+      "remote": "public/images/projects-stargazer-v1.webp",
+      "sha256": "e248901298b77db5c9c5e5bbff33b4c81487f37a900a0b794a855a44ac0982a1",
+      "before": null,
+      "stagingBefore": "e248901298b77db5c9c5e5bbff33b4c81487f37a900a0b794a855a44ac0982a1"
+    },
+    {
+      "local": "mission-control/scripts/audit-workspace-local.mjs",
+      "remote": "scripts/audit-workspace-local.mjs",
+      "sha256": "d40a309290b56c7fb64faaf3ec3f707b06e8dcaf236fb22c6f0710f68a176f8f",
+      "before": "3ca19367f394fa7a1939b01281e6892c56bca9e156a51e39617f53e35bf7d316",
+      "stagingBefore": "87bb31a4481fc767b78e0f8118dc88e85ce106cc125cf2f43da5be595c2c48f1"
+    },
+    {
+      "local": "mission-control/scripts/test-journal-browser.mjs",
+      "remote": "scripts/test-journal-browser.mjs",
+      "sha256": "0ee8592234cc4cc057a1ef147292a217b14fcc5500c01e636d66448f1b81e431",
+      "before": "fd98098e62aa6e8104a56f3fdd163cfa0ac550ba3719f35f29331dc01521f232",
+      "stagingBefore": "0ee8592234cc4cc057a1ef147292a217b14fcc5500c01e636d66448f1b81e431"
+    },
+    {
+      "local": "mission-control/scripts/test-studio-browser.mjs",
+      "remote": "scripts/test-studio-browser.mjs",
+      "sha256": "cf83a99d8aed09c1b7c3bd02e52b24f1f7b4b5abfa5e7fce3df9b4440bc61ea9",
+      "before": null,
+      "stagingBefore": "688f3b74b2431ef9bfe7d657380f95584b88eee8e025e21c20ffcc267c707095"
+    },
+    {
+      "local": "mission-control/tests/studio.test.ts",
+      "remote": "tests/studio.test.ts",
+      "sha256": "438ddc97ca7b38bfe9f10bd1235c4c3ee5d67ea509cbc06da5ff671e6a2feefe",
+      "before": null,
+      "stagingBefore": "438ddc97ca7b38bfe9f10bd1235c4c3ee5d67ea509cbc06da5ff671e6a2feefe"
+    }
+  ],
+  "validation": {
+    "unitTests": {
+      "passed": 92,
+      "failed": 0
+    },
+    "studioBrowser": {
+      "passed": true,
+      "all10CategoriesVisible": true,
+      "categoryExpansion": true,
+      "manualSidebarPersistence": true,
+      "sharedNotebookDrawer": true,
+      "threeCalendarTabs": true,
+      "stableGlobe": true,
+      "lazyAstrologyAndCalendarDialogs": true,
+      "roomSelection": true,
+      "invitationFixture": true,
+      "crmPreviewAndMetadata": true,
+      "accountIsolation": true,
+      "brainCharts": true,
+      "mobile": [
+        320,
+        390
+      ],
+      "actualProviderCalls": 0,
+      "errors": []
+    },
+    "journalBrowser": {
+      "passed": true,
+      "preservedPriorities": true,
+      "headerTools": true,
+      "guestHeader": true,
+      "preservedGoalAttention": true,
+      "automatic45plus10": true,
+      "orderedFocus": true,
+      "calendarImport": true,
+      "mobile": [
+        320,
+        390
+      ],
+      "externalWrites": 0,
+      "expectedVideoHost": [
+        "www.youtube-nocookie.com"
+      ],
+      "errors": []
+    },
+    "existingBrowserSuites": [
+      "workspace",
+      "logo-communication",
+      "brain"
+    ],
+    "vexp": {
+      "brokenImports": 0,
+      "parseErrors": 0,
+      "pendingDependents": 0
+    },
+    "lighthouse": "GUIDING-STUDIO-LIGHTHOUSE.json"
+  },
+  "newEnvValuesEntered": false,
+  "supabaseTablesOrCookiesChanged": false,
+  "actualAuthenticatedAcceptance": "Deferred by user; no real login, microphone/AI/Hermes, SMTP or CRM import acceptance",
+  "serverHandoffDocumentPreserved": true,
+  "environmentAndComposeUnchanged": true,
+  "trinityProductionTabReloaded": true,
+  "documentationOnlyFollowupCommitNotRedeployed": true
+}

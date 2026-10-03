@@ -56,6 +56,21 @@ Build, Unit-/API-Fixturetests, Bedienungsprüfungen auf Desktop und 320/390 px, 
 
 Lighthouse-Werte und Release-Nachweis werden separat unter `GUIDING-STUDIO-LIGHTHOUSE.json` und `GUIDING-STUDIO-RELEASE.json` festgehalten. Reihenfolge: Staging bauen und prüfen, danach freigegebene Produktion bauen und prüfen. Nur die beiden mission-control-Ordner; Env-Dateien, Compose, Datenvolume, Traefik und andere Dienste bleiben erhalten.
 
+## Kurz selbst ausprobieren
+
+1. Daten-Labor öffnen: alle zehn Bereiche sehen, einen Bereich antippen und darin ein Werkzeug suchen.
+2. Menü mit dem Pfeil einklappen, eine andere Seite öffnen und wieder ausklappen. Die eigene Wahl bleibt erhalten.
+3. Im Header das Notizbuch öffnen, einen Gedanken mit Farbe/Bild/Link speichern und in „Ziele & Notizen“ wiederfinden. Rechts lässt sich die Schublade jederzeit schließen.
+4. In Projekte eine Sternbildkarte wählen: rechts erscheinen deren verbundene Gedanken sowie freie Ideen und zuletzt hinzugekommene Notizen.
+5. Im Kalender Monat, Jahr und Woche & Tag wechseln. Die Erde bleibt rechts. „Termin planen“ und die Tagesnotizen lassen sich weiterhin bearbeiten.
+6. In Meeting mehrere eigene HTTPS-Raumlinks ergänzen, einen Raum wählen, Kontakt suchen, URL kopieren oder den Entwurf im Mailprogramm öffnen. Direkten Versand erst nach eigener SMTP-Einrichtung bewusst ausprobieren.
+7. Kontakte nach Thema oder Beziehung filtern; Gesprächsnotiz, Merkliste und Wiedervorlage pflegen. Nach Einrichtung der privaten CRM-Anbindung erst die Importvorschau prüfen, dann bewusst übernehmen.
+8. Im Daten-Gehirn suchen oder filtern; unten zwischen Überblick, Themen und Aktivität wechseln und den Ursprungsinhalt öffnen.
+
+Lokale Lighthouse-Messung der fünf geänderten Ansichten: Daten-Labor 92, Kalender 90, Projekte 92, Meeting 92, CRM 93 im Median dreier gültiger Läufe (85–93). Barrierefreiheit jeweils 100, keine Konsolenfehler. Isolierte Beispieldaten und simuliertes Mobilgerät; das ist keine angemeldete Live-Abnahme und keine garantierte Messung auf jedem Handy. Die letzten beiden CRM-Werte waren 93; ein zusätzlich erfasster Lauf mit paralleler Browserprüfung ist im JSON als ungültig markiert und bleibt nachvollziehbar erhalten.
+
+Produktionsbuild und 92 Unit-Tests bestanden. Die letzte neue Browserprüfung öffnet auch die verzögert geladenen Astrologie-, Termin- und Tagesdetaildialoge. Dokumentierte API-Verträge stehen zusätzlich im Auth-Übergabedokument unter „Änderungen durch Codex“. PR: [#25](https://github.com/Cianta/youareneo-app/pull/25).
+
 ## Primärdokumentation
 
 - [HubSpot Kontakte und Cursor-Paginierung](https://developers.hubspot.com/docs/api-reference/legacy/crm/objects/contacts/guide)

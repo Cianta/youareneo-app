@@ -302,17 +302,8 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         <circle cx="46" cy="45.5" r="3" fill="#cffafe" opacity="0.5" />
       </g>
 
-      {/* ── GOLDEN LIGHT — bloom + rays while the logo regrows ── */}
-      <g className="tl-gold-rays">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <rect key={i} x="49.3" y="8" width="1.4" height="24" rx="0.7"
-            fill="#fcd34d" opacity="0.8"
-            transform={`rotate(${i * 45} 50 50)`}
-          />
-        ))}
-      </g>
-      <circle cx="50" cy="50" r="34" fill={`url(#${prefix}-tl-gold)`}
-        className="tl-gold" filter={`url(#${prefix}-tl-bloom)`} />
+      {/* Trinity's own purple sun returns during the rebirth. */}
+      <image href="/_next/image?url=%2Fpwa%2Fpurple-sun-192.png&w=96&q=75" x="4" y="4" width="92" height="92" className="tl-gold" preserveAspectRatio="xMidYMid meet"/>
 
       {/* ── SILVER SHIMMER — gloss sweep + sparkles, clipped to the orb ── */}
       <g clipPath={`url(#${prefix}-tl-clip)`}>

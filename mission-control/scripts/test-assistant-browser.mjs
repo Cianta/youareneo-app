@@ -77,7 +77,7 @@ try{
   assert.equal(await page.evaluate(()=>window.sidebarOriginal===document.querySelector('.workspace-sidebar')),true,'Sidebar must persist between routes');
   assert.equal(await page.$$('.trinity-sun').then(e=>e.length),1,'Exactly one global avatar');
   await page.screenshot({path:'/tmp/trinity-assistant-screens/brain-dark.png'});
-  await page.click('[aria-label="Trinity Einstellungen öffnen"]');await text('Deine Trinity');await clickText('Darstellung');
+  await page.click('[aria-label="Trinity Einstellungen öffnen"]');await text('Deine Trinity');await clickText('Darstellung');await page.waitForSelector('input[aria-label="Helligkeit"]');
   await page.$eval('input[aria-label="Helligkeit"]',e=>{const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(e,'100');e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});
   await page.waitForFunction(()=>getComputedStyle(document.documentElement).getPropertyValue('--theme-bg').includes('248'));
   assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('trinity-display-voice')).brightness),100);
@@ -101,7 +101,7 @@ try{
   // The global hold chord also works without switching route.
   await page.keyboard.down('Control');await page.keyboard.down('Shift');await page.keyboard.down('Space');
   await page.waitForFunction(()=>document.querySelector('.assistant-panel:not([hidden])')?.textContent.includes('Ich höre zu'));
-  await page.evaluate(()=>document.querySelector('.workspace-sidebar a[href="/notiz"]').click());await page.waitForSelector('.voice-page');
+  await page.evaluate(()=>document.querySelector('.workspace-sidebar a[href="/dashboard/goals"]').click());await page.waitForSelector('.journal-page');await page.evaluate(()=>document.querySelector('#workspace-content a[href="/notiz"]').click());await page.waitForSelector('.voice-page');
   assert.equal(await page.evaluate(()=>window.sidebarOriginal===document.querySelector('.workspace-sidebar')),true);
   await page.keyboard.up('Space');await page.keyboard.up('Shift');await page.keyboard.up('Control');await text('Vorschlag bereit');
   assert.equal(new URL(page.url()).pathname,'/notiz');

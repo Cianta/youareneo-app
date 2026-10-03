@@ -37,13 +37,13 @@ export function CosmosMenu({initialOpen=false,onClose}:{initialOpen?:boolean;onC
         </div>
         {p.cosmosVisible && (
           <div className="s-cosmos-mini">
-            <span
+            <button onClick={()=>setOpen(true)}
               className="s-blue-moon"
               title={`${sky.moon.name} · ${sky.moon.illumination}% beleuchtet`}
               aria-label={sky.moon.name}
             >
               {sky.moon.icon}
-            </span>
+            </button>
             <button
               className="w-icon"
               aria-label="Aktuelle astrologische Gegebenheiten öffnen"

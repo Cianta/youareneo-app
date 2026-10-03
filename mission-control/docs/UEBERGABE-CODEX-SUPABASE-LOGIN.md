@@ -122,3 +122,9 @@ Produktname jetzt guiding.space; Trinity bleibt Assistentin. Auth-, Provision-, 
 - Details und Abnahmegrenzen: `docs/GUIDING-SPACE-BAUPLAN.md`.
 
 Die neuen Sicherungs- und Mailrouten prüfen ihre Sitzung selbst wie die bestehenden Notizrouten; sie werden von der pauschalen Produktprüfung im Proxy ausgenommen. Sicherungsschreiben benötigt weiterhin aktiven App-Zugang. `/api/ambience` liefert ausschließlich öffentliche Orts-/Wetterdaten; es ist ohne Anmeldung nutzbar.
+
+## Änderungen durch Codex – Journal, Fokus und Kalender (03.10.2026)
+
+Additiv: `POST /api/calendar/feed` mit `{url:string}` liefert `{text:string}`; ausschließlich lesender Google-/iCloud-ICS-Abruf für frisch authentifizierte Nutzer, gleiche Herkunft erforderlich, keine Produktpflicht für diesen Leseabruf. Fehler im bestehenden Format `{success:false,error:string}`, HTTP 400/401/403/413/502. Erlaubte Providerpfade, keine Weiterleitungen, 10 Sekunden Timeout, 2 MB Antwortlimit; keine Speicherung der Links auf dem Server. Die Route prüft ihre Sitzung selbst und wird von der pauschalen Produktprüfung im Proxy ausgenommen.
+
+Gerätesicherungsformat weiterhin Version 1: zusätzlicher erlaubter Speicherschlüssel `trinity-temporal-v2` (Kalender und Termine); darin werden alle `calendars[].url` vor Export/Cloudspeicherung geleert. `trinity-personal-v1` erlaubt ergänzend `planItems` und `years`. Keine neue Datenbankspalte/Migration. Alte Exporte bleiben lesbar; Exporte mit Kalenderanteil benötigen den aktualisierten Client. Keine Änderung an Auth-/Provisioning-Pfaden, Request-/Response-Formaten, Cookie-Name oder `.youareneo.com`-Domain, `neo_profiles` oder `neo_access`. Keine Portal-/n8n-Einstellungen verändert. Details: [GUIDING-JOURNAL-FOKUS.md](GUIDING-JOURNAL-FOKUS.md).

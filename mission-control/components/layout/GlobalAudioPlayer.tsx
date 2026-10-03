@@ -1,90 +1,17 @@
-'use client';
-import { useEffect, useRef } from 'react';
-import { Volume2, VolumeX, Music } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useGlobalAudioStore, useFocusStore, useUIExtStore } from '@/lib/store';
+"use client";
+import {useEffect,useRef} from 'react';
+import {useFocusStore,useGlobalAudioStore,useUIExtStore} from '@/lib/store';
+import {useFocusMedia} from '@/lib/workspace/focus-media';
+import {DEFAULT_WORK,DEFAULT_REST} from '@/lib/workspace/media';
 import {useAssistantPreferences} from '@/components/assistant/Preferences';
-
-/**
- * GlobalAudioPlayer — lives in DashboardLayout so it persists across route changes.
- * Plays "Arbeits-Sound" during focus blocks and "Pausen-Sound" during break blocks.
- * Audio state (URL, mute, volume) survives navigation and F5 via Zustand persist.
- */
-export function GlobalAudioPlayer() {
-  const {preferences,update} = useAssistantPreferences();
-  const ui = useUIExtStore();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const {
-    workSoundUrl, breakSoundUrl, workMuted, breakMuted,
-    activeMode, volume, toggleWorkMute, toggleBreakMute, setActiveMode,
-  } = useGlobalAudioStore();
-  const { pomodoroMode, pomodoroRunning } = useFocusStore();
-
-  const workUrl=ui.workTracks.find(t=>t.id===ui.selectedWorkTrackId)?.dataUrl || workSoundUrl;
-  const breakUrl=ui.breakTracks.find(t=>t.id===ui.selectedBreakTrackId)?.dataUrl || breakSoundUrl;
-
-  // Sync audio mode with pomodoro state
-  useEffect(() => {
-    if (!pomodoroRunning) {
-      setActiveMode('off');
-      return;
-    }
-    if (pomodoroMode === 'focus') setActiveMode('work');
-    else if (pomodoroMode === 'break') setActiveMode('break');
-    else setActiveMode('off');
-  }, [pomodoroMode, pomodoroRunning, setActiveMode]);
-
-  // Manage audio playback
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const url = activeMode === 'work' ? workUrl : activeMode === 'break' ? breakUrl : '';
-    const isMuted = !preferences.sound || (activeMode === 'work' ? workMuted : activeMode === 'break' ? breakMuted : true);
-
-    if (!url || activeMode === 'off') {
-      audio.pause();
-      audio.src = '';
-      return;
-    }
-
-    if (audio.src !== url) {
-      audio.src = url;
-      audio.loop = true;
-      audio.volume = volume * preferences.volume;
-    }
-    audio.muted = isMuted;
-    audio.volume = volume * preferences.volume;
-    audio.play().catch(() => {}); // browsers block autoplay until user gesture
-  }, [activeMode, workUrl, breakUrl, workMuted, breakMuted, volume, preferences.sound, preferences.volume]);
-
-  const isMuted = !preferences.sound || (activeMode === 'work' ? workMuted : breakMuted);
-  const toggleMute = activeMode === 'work' ? toggleWorkMute : toggleBreakMute;
-  const hasSound = activeMode === 'work' ? !!workUrl : !!breakUrl;
-
-  if (activeMode === 'off' || !hasSound) return null;
-
-  return (
-    <>
-      <audio ref={audioRef} />
-      <div className="focus-audio-status fixed bottom-4 left-4 z-50 flex items-center gap-2 px-3 py-2 rounded-2xl glass border border-border shadow-lg">
-        <Music size={12} className="text-forest-400" />
-        <span className="text-[10px] text-anth-400">
-          {activeMode === 'work' ? 'Arbeits-Sound' : 'Pausen-Sound'}
-        </span>
-        <button
-          aria-label={isMuted ? "Fokusmusik einschalten" : "Fokusmusik ausschalten"}
-          onClick={()=>{if(!preferences.sound){update({sound:true});if(activeMode === "work" ? workMuted : breakMuted)toggleMute();}else toggleMute();}}
-          className={cn(
-            'p-1.5 rounded-lg border transition-colors',
-            isMuted
-              ? 'border-anth-700 text-anth-500 hover:text-anth-300'
-              : 'border-forest-700/50 text-forest-400 bg-forest-900/30 hover:bg-forest-900/50'
-          )}
-        >
-          {isMuted ? <VolumeX size={12} /> : <Volume2 size={12} />}
-        </button>
-      </div>
-    </>
-  );
+/** One audio element across all routes. Playback progress stays out of persisted media. */
+export function GlobalAudioPlayer(){
+ const ref=useRef<HTMLAudioElement>(null),f=useFocusStore(),a=useGlobalAudioStore(),ui=useUIExtStore(),{preferences:p}=useAssistantPreferences(),seek=useFocusMedia(s=>s.seek);
+ const work=ui.workTracks.find(t=>t.id===ui.selectedWorkTrackId)?.dataUrl||a.workSoundUrl||DEFAULT_WORK.dataUrl;
+ const rest=ui.breakTracks.find(t=>t.id===ui.selectedBreakTrackId)?.dataUrl||a.breakSoundUrl||DEFAULT_REST.dataUrl;
+ const url=f.pomodoroMode==='focus'?work:rest,muted=!p.sound||(f.pomodoroMode==='focus'?a.workMuted:a.breakMuted);
+ useEffect(()=>{const el=ref.current;if(!el)return;const absolute=new URL(url,location.href).href;if(el.src!==absolute){el.src=url;useFocusMedia.getState().set({current:0,duration:0});}el.muted=muted;el.volume=a.volume*p.volume;if(f.pomodoroRunning){a.setActiveMode(f.pomodoroMode==='focus'?'work':'break');void el.play().then(()=>useFocusMedia.getState().set({blocked:false})).catch(()=>useFocusMedia.getState().set({blocked:true}));}else{el.pause();a.setActiveMode('off');}},[url,muted,a.volume,p.volume,f.pomodoroRunning,f.pomodoroMode,a.setActiveMode]);
+ useEffect(()=>{const play=()=>{if(!useFocusStore.getState().pomodoroRunning)return;const el=ref.current;if(el)void el.play().then(()=>useFocusMedia.getState().set({blocked:false})).catch(()=>useFocusMedia.getState().set({blocked:true}));};window.addEventListener('neo-focus-play',play);return()=>window.removeEventListener('neo-focus-play',play);},[]);
+ useEffect(()=>{const el=ref.current;if(seek===null||!el)return;if(Number.isFinite(el.duration))el.currentTime=Math.max(0,Math.min(el.duration,seek));useFocusMedia.getState().set({seek:null});},[seek]);
+ return <audio ref={ref} loop preload="none" data-focus-audio onTimeUpdate={e=>{const el=e.currentTarget;useFocusMedia.getState().set({current:el.currentTime,duration:Number.isFinite(el.duration)?el.duration:0});}} onLoadedMetadata={e=>useFocusMedia.getState().set({duration:Number.isFinite(e.currentTarget.duration)?e.currentTarget.duration:0})}/>;
 }

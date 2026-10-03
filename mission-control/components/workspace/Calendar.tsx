@@ -1,4 +1,15 @@
 "use client";
+import dynamic from "next/dynamic";
+import {CalendarOverview} from "./CalendarOverview";
+import {CalendarSources} from "./CalendarSources";
+import {DayPlan} from "./DayPlan";
+import {DailyPlanner} from "./DailyPlanner";
+import {PlaceField} from "./PlaceField";
+import {Attachments} from "./Attachments";
+import {usePersonal,inWorkspace} from "@/lib/workspace/personal";
+import type {Place,Attachment} from "@/lib/workspace/personal";
+import Link from "next/link";
+const PlanGlobe=dynamic(()=>import("./PlanGlobe"),{ssr:false});
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   CalendarDays,
@@ -14,7 +25,7 @@ import { useTemporalStore, useFocusStore } from "@/lib/store";
 import { localDate, overlaps } from "@/lib/workspace/time";
 import { Modal } from "@/components/ui/Modal";
 export function Calendar() {
-  const store = useTemporalStore();
+  const store = useTemporalStore(),personal=usePersonal();
   const [date, setDate] = useState(localDate());
   const [now, setNow] = useState(new Date());
   useEffect(() => {
@@ -28,6 +39,7 @@ export function Calendar() {
   const [end, setEnd] = useState("10:00");
   const [calendarId, setCalendarId] = useState("priv-default");
   const [notes, setNotes] = useState("");
+  const [place,setPlace]=useState<Place|undefined>(),[attachments,setAttachments]=useState<Attachment[]>([]),[globePlace,setGlobePlace]=useState<Place|undefined>();
   const [error, setError] = useState("");
   const day = useMemo(() => new Date(`${date}T12:00:00`), [date]);
   const events = store.events
@@ -38,7 +50,9 @@ export function Calendar() {
     )
     .sort((a, b) => (a.startTime || "").localeCompare(b.startTime || ""));
   const currentTime = now.toTimeString().slice(0, 5);
-  const currentEvents = events.filter(
+  const planEvents=(personal.planItems??[]).filter(i=>i.date===date&&inWorkspace(i,personal.workspace)&&!i.done&&i.startTime&&i.sourceKind!=='event').map(i=>{const start=Number(i.startTime!.slice(0,2))*60+Number(i.startTime!.slice(3));const end=Math.min(1439,start+i.minutes);return {...i,startTime:i.startTime!,endTime:String(Math.floor(end/60)).padStart(2,'0')+':'+String(end%60).padStart(2,'0')};});
+  const liveEvents=[...events,...planEvents].sort((a,b)=>(a.startTime||'').localeCompare(b.startTime||''));
+  const currentEvents = liveEvents.filter(
     (e) =>
       date === localDate(now) &&
       e.startTime &&
@@ -48,7 +62,7 @@ export function Calendar() {
   );
   const nextEvent =
     date === localDate(now)
-      ? events.find((e) => e.startTime && e.startTime > currentTime)
+      ? liveEvents.find((e) => e.startTime && e.startTime > currentTime)
       : null;
   const shift = (n: number) => {
     const next = new Date(day);
@@ -65,7 +79,7 @@ export function Calendar() {
     setNotes("");
     setStart("09:00");
     setEnd("10:00");
-    setEditingId(null);
+    setEditingId(null);setPlace(undefined);setAttachments([]);
     setError("");
     setOpen(true);
   }
@@ -86,7 +100,7 @@ export function Calendar() {
       startTime: start,
       endTime: end,
       calendarId,
-      notes: notes.trim(),
+      notes: notes.trim(),location:place,attachments,
     };
     if (!draft.title || !store.calendars.some((c) => c.id === calendarId)) {
       setError("Bitte Titel und Kalender auswählen.");
@@ -114,7 +128,7 @@ export function Calendar() {
       <div className="w-page-heading">
         <div>
           <span className="w-eyebrow">ZEIT FÜR DAS WESENTLICHE</span>
-          <h1>Dein Kalender. Dein Rhythmus.</h1>
+          <h1>Kalender & Plan.</h1>
           <p>
             Ein Plan mit Platz fürs Leben – und für deine nächste gute Idee.
           </p>
@@ -124,6 +138,7 @@ export function Calendar() {
           Termin planen
         </button>
       </div>
+      <CalendarOverview date={date} setDate={setDate} onNew={showNew} onEvent={ev=>{setEditingId(ev.id);setTitle(ev.title);setStart(ev.startTime||"");setEnd(ev.endTime||"");setCalendarId(ev.calendarId);setNotes(ev.notes||"");setPlace(ev.location);setGlobePlace(ev.location);setAttachments(ev.attachments??[]);setOpen(true);}}/>
       <div className="w-calendar-layout">
         <section className="w-card">
           <div className="w-calendar-toolbar">
@@ -220,6 +235,7 @@ export function Calendar() {
                       )?.color,
                     }}
                     onClick={() => {
+                      setPlace(ev.location);setGlobePlace(ev.location);setAttachments(ev.attachments??[]);
                       setEditingId(ev.id);
                       setTitle(ev.title);
                       setStart(ev.startTime || "");
@@ -244,7 +260,7 @@ export function Calendar() {
                         Überschneidung mit einem anderen Termin
                       </small>
                     )}
-                  </button>
+                  </button><button className="w-icon calendar-plan-add" aria-label={ev.title+" zum Tagesplan"} onClick={()=>{setGlobePlace(ev.location);window.dispatchEvent(new CustomEvent('neo-plan-add',{detail:{kind:'event',sourceId:ev.id,date}}));}}><Plus size={15}/></button>
                 </div>
               );
             })}
@@ -261,7 +277,7 @@ export function Calendar() {
             )}
           </div>
         </section>
-        <aside className="w-calendar-aside">
+        <aside className="w-calendar-aside"><PlanGlobe place={globePlace}/><CalendarSources year={Number(date.slice(0,4))}/><DayPlan date={date} onPlace={setGlobePlace}/>
           <section className="w-card">
             <div className="w-section-head">
               <span className="w-eyebrow">DEIN LIVEPLAN</span>
@@ -324,26 +340,9 @@ export function Calendar() {
               Fokus jetzt starten
             </button>
           </section>
-          <section className="w-card">
-            <span className="w-eyebrow">MEINE KALENDER</span>
-            {store.calendars.map((c) => (
-              <label key={c.id} className="w-calendar-toggle">
-                <input
-                  type="checkbox"
-                  checked={c.visible}
-                  onChange={() => store.toggleCalendar(c.id)}
-                />
-                <span style={{ background: c.color }} />
-                {c.name}
-              </label>
-            ))}
-            <p className="w-storage-note">
-              Termine werden derzeit in diesem Browser gespeichert. Eine
-              Kontosynchronisierung ist noch nicht aktiv.
-            </p>
-          </section>
         </aside>
       </div>
+      <section className="calendar-planner"><DailyPlanner selectedDate={date} onDateChange={setDate} onAddGoal={()=>window.location.assign("/dashboard/goals")} renderGoals={<Link className="w-btn" href="/dashboard/goals">Ziele & Journal öffnen →</Link>}/></section>
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -368,7 +367,7 @@ export function Calendar() {
               onChange={(e) => setCalendarId(e.target.value)}
             >
               {store.calendars
-                .filter((c) => c.provider === "local")
+
                 .map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
@@ -410,6 +409,8 @@ export function Calendar() {
               rows={3}
             />
           </label>
+          <PlaceField value={place} onChange={setPlace}/><Attachments items={attachments} onChange={setAttachments}/>
+          {editingId&&store.events.find(e=>e.id===editingId)?.imported&&<p>Importierter Termin: Änderungen bleiben auf diesem Gerät und können beim Aktualisieren ersetzt werden.</p>}
           {error && (
             <p role="alert" className="w-error">
               {error}

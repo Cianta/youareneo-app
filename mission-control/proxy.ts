@@ -12,7 +12,7 @@ export async function proxy(request: NextRequest) {
   if (path.startsWith('/api/auth/') || path.startsWith('/api/provision/')
     || path.startsWith('/api/voice/') || path === '/api/notes' || path.startsWith('/api/notes/')
     || path === '/api/hermes/queue' || path === '/api/brain' || path === '/api/search' || path === '/api/onboarding'
-    || path === '/api/workspace/snapshot' || path === '/api/gmail/threads') return NextResponse.next();
+    || path === '/api/calendar/feed' || path === '/api/workspace/snapshot' || path === '/api/gmail/threads') return NextResponse.next();
   const isApi = path.startsWith('/api/');
   let response = NextResponse.next({ request });
   response.headers.set('Cache-Control', 'private, no-store');

@@ -32,18 +32,22 @@ const nice = (date: string, options: Intl.DateTimeFormatOptions) =>
 export function DailyPlanner({
   onAddGoal,
   renderGoals,
+  selectedDate, onDateChange,
 }: {
   onAddGoal: () => void;
   renderGoals: React.ReactNode;
+  selectedDate?:string; onDateChange?:(date:string)=>void;
 }) {
   const s = usePersonal();
   const today = localDate(new Date());
-  const [date, setDate] = useState(today),
+  const [ownDate, setOwnDate] = useState(today),
     [view, setView] = useState("Woche"),
     [detail, setDetail] = useState<string | null>(null),
     [reasonGoal, setReasonGoal] = useState(""),
     [reason, setReason] = useState(""),
     [reasonSearch, setReasonSearch] = useState("");
+  const date=selectedDate??ownDate;
+  function setDate(value:string){setOwnDate(value);onDateChange?.(value);}
   const dates = weekDates(date),
     weekKey = `${s.workspace}:${dates[0]}`,
     monthKey = `${s.workspace}:${date.slice(0, 7)}`;
@@ -58,7 +62,11 @@ export function DailyPlanner({
   const patchDay = (d: string, patch: Partial<PlannerDay>) => {
     const state = usePersonal.getState(),
       key = `${state.workspace}:${d}`;
+    const items=(state.planItems??[]).filter(i=>i.date===d&&inWorkspace(i,state.workspace));
+    const changes:Partial<typeof state>={};
+    if(items.length&&(patch.top||patch.completed))changes.planItems=(state.planItems??[]).map(item=>{const index=items.findIndex(i=>i.id===item.id);if(index<0||index>2)return item;const title=patch.top?.[index];return {...item,...(title!==undefined&&title!==item.title?{title,sourceKind:'free' as const,sourceId:'priority:'+item.id}:{}),...(patch.completed?{done:patch.completed[index]??false}:{})};});
     state.set({
+      ...changes,
       days: {
         ...state.days,
         [key]: { ...(state.days[key] ?? emptyDay()), ...patch },

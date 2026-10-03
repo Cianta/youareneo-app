@@ -250,3 +250,7 @@ html[data-guiding-motion=false] .trinity-sun{animation:none!important;}
 html[data-guiding-motion=false] :is(.workspace-brand,.workspace-mobile-brand) :is(.tl-collapse-dot,.tl-gold,.tl-gold-rays,.tl-shimmer,.tl-glint-a,.tl-glint-b){opacity:0!important;}
 .energy-companion{--energy:#8353b5;}
 .energy-stage{background:radial-gradient(ellipse at 50% 55%,color-mix(in srgb,var(--theme-bg) 88%,transparent),transparent 72%);}
+
+/* Smaller transparent Trinity launcher; keep the touch target accessible. */
+.assistant-dock{background:transparent;border:0;box-shadow:none;padding:0;gap:2px;}
+.trinity-sun{min-width:44px;min-height:44px;}.trinity-sun img{width:28px;height:28px;}.trinity-sun span{font-size:8px;}

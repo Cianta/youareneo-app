@@ -426,8 +426,13 @@ interface FocusStore {
   pomodoroMode: PomodoroMode;
   pomodoroRunning: boolean;
   pomodoroSeconds: number;
-  pomodoroRound: number; // 0-indexed; after round 1 completes → deep-recovery
+  pomodoroRound: number; // Completed focus blocks; automatic breaks are always 10 minutes
   todayNote: string;
+  deadline:number|null;
+  planQueue:{id:string;title:string;part:number}[];
+  planIndex:number;
+  startPlan:(queue:{id:string;title:string;part:number}[])=>void;
+  stopPomodoro:()=>void;
   // Actions
   toggleFocus: () => void;
   setDailyTask: (i: 0 | 1 | 2, val: string) => void;
@@ -451,6 +456,9 @@ export const useFocusStore = create<FocusStore>()(
       pomodoroSeconds: POMO_DURATIONS.focus,
       pomodoroRound: 0,
       todayNote: '',
+      deadline:null,planQueue:[],planIndex:0,
+      startPlan:(planQueue)=>set({planQueue,planIndex:0,pomodoroMode:'focus',pomodoroSeconds:POMO_DURATIONS.focus,pomodoroRunning:true,deadline:Date.now()+POMO_DURATIONS.focus*1000}),
+      stopPomodoro:()=>set({pomodoroRunning:false,deadline:null,pomodoroMode:'focus',pomodoroSeconds:POMO_DURATIONS.focus,planQueue:[],planIndex:0}),
       toggleFocus: () => set((s) => ({ isOpen: !s.isOpen })),
       setDailyTask: (i, val) =>
         set((s) => {
@@ -464,42 +472,26 @@ export const useFocusStore = create<FocusStore>()(
           d[i] = val;
           return { dailyTaskDone: d };
         }),
-      togglePomodoro: () => set((s) => ({ pomodoroRunning: !s.pomodoroRunning })),
-      tickPomodoro: () =>
-        set((s) => {
-          if (s.pomodoroSeconds > 1) return { pomodoroSeconds: s.pomodoroSeconds - 1 };
-          // Phase complete — advance (caller plays gong)
-          return { pomodoroSeconds: 0, pomodoroRunning: false };
-        }),
-      resetPomodoro: () =>
-        set((s) => ({
-          pomodoroRunning: false,
-          pomodoroSeconds: POMO_DURATIONS[s.pomodoroMode],
-        })),
-      advancePomodoro: () =>
-        set((s) => {
-          if (s.pomodoroMode === 'focus') {
-            const nextRound = s.pomodoroRound + 1;
-            if (nextRound >= 2) {
-              return { pomodoroMode: 'deep-recovery', pomodoroSeconds: POMO_DURATIONS['deep-recovery'], pomodoroRound: 0, pomodoroRunning: false };
-            }
-            return { pomodoroMode: 'break', pomodoroSeconds: POMO_DURATIONS.break, pomodoroRound: nextRound, pomodoroRunning: false };
-          }
-          if (s.pomodoroMode === 'break') {
-            return { pomodoroMode: 'focus', pomodoroSeconds: POMO_DURATIONS.focus, pomodoroRunning: false };
-          }
-          // deep-recovery → back to focus, round 0
-          return { pomodoroMode: 'focus', pomodoroSeconds: POMO_DURATIONS.focus, pomodoroRound: 0, pomodoroRunning: false };
-        }),
-      snoozeBreak: (seconds = 10 * 60) => set({ pomodoroSeconds: seconds, pomodoroRunning: true }),
+      togglePomodoro: () => set((s) => ({pomodoroRunning:!s.pomodoroRunning,deadline:s.pomodoroRunning?null:Date.now()+Math.max(1,s.pomodoroSeconds)*1000})),
+      tickPomodoro: () => set((s) => {
+        if(!s.pomodoroRunning)return {};
+        const seconds=s.deadline===null?Math.max(0,s.pomodoroSeconds-1):Math.max(0,Math.ceil((s.deadline-Date.now())/1000));
+        return {pomodoroSeconds:seconds,pomodoroRunning:seconds>0,deadline:seconds>0?s.deadline:null};
+      }),
+      resetPomodoro: () => set((s)=>({pomodoroRunning:false,deadline:null,pomodoroSeconds:POMO_DURATIONS[s.pomodoroMode]})),
+      advancePomodoro: () => set((s)=>s.pomodoroMode==='focus'
+        ? {pomodoroMode:'break',pomodoroSeconds:POMO_DURATIONS.break,pomodoroRound:s.pomodoroRound+1,pomodoroRunning:false,deadline:null}
+        : {pomodoroMode:'focus',pomodoroSeconds:POMO_DURATIONS.focus,pomodoroRunning:false,deadline:null,planIndex:Math.min(s.planIndex+1,Math.max(0,s.planQueue.length-1))}),
+      snoozeBreak: (seconds=10*60)=>set({pomodoroSeconds:seconds,pomodoroRunning:true,deadline:Date.now()+seconds*1000}),
       setTodayNote: (note) => set({ todayNote: note }),
     }),
     {
       name: 'trinity-focus',
+      merge:(saved,current)=>({...current,...saved as Partial<FocusStore>,pomodoroRunning:false,deadline:null,isOpen:false}),
       // Don't persist pomodoroRunning — timer must not silently restart after a page reload
       partialize: (s) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { pomodoroRunning, ...rest } = s;
+        const { pomodoroRunning, deadline, isOpen, ...rest } = s;
         return rest;
       },
     }
@@ -525,6 +517,10 @@ export interface CalendarEvent {
   startTime?: string; // HH:mm
   endTime?: string;
   notes?: string;
+  location?:import("./workspace/personal").Place;
+  attachments?:import("./workspace/personal").Attachment[];
+  importedUid?:string;
+  imported?:boolean;
 }
 
 interface TemporalStore {

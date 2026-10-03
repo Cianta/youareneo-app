@@ -1,0 +1,9 @@
+import {failure,HttpError,json,sameOrigin} from '@/lib/auth/http';
+import {voiceSession} from '@/lib/voice/server';
+import {calendarFeedUrl,MAX_ICAL_BYTES} from '@/lib/workspace/ical';
+export const dynamic='force-dynamic';
+export async function POST(req:Request){try{
+ sameOrigin(req);await voiceSession();const requestReader=req.body?.getReader();if(!requestReader)throw new HttpError(400,'Kalenderlink fehlt.');let requestSize=0;const requestParts:Uint8Array[]=[];while(true){const {done,value}=await requestReader.read();if(done)break;requestSize+=value.byteLength;if(requestSize>5000){await requestReader.cancel();throw new HttpError(413,'Kalenderlink zu lang.');}requestParts.push(value);}const input=Buffer.concat(requestParts).toString('utf8');let body;try{body=JSON.parse(input);}catch{throw new HttpError(400,'Ungültiger Kalenderlink.');}const url=calendarFeedUrl(body.url??'');if(!url)throw new HttpError(400,'Bitte einen Google- oder iCloud-ICS-Abonnementlink verwenden.');
+ const response=await fetch(url,{redirect:'error',signal:AbortSignal.timeout(10000),cache:'no-store',headers:{Accept:'text/calendar'}});if(!response.ok)throw new HttpError(502,'Kalender konnte nicht geladen werden. Prüfe die Freigabe.');
+ const reader=response.body?.getReader();if(!reader)throw new HttpError(502,'Kalender leer.');let size=0;const parts:Uint8Array[]=[];while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>MAX_ICAL_BYTES){await reader.cancel();throw new HttpError(413,'Kalender größer als 2 MB.');}parts.push(value);}const text=Buffer.concat(parts).toString('utf8');if(!text.includes('BEGIN:VCALENDAR'))throw new HttpError(502,'Der Link enthält keine Kalenderdatei.');return json({text});
+ }catch(e){return failure(e instanceof HttpError?e:new HttpError(502,'Kalender vorübergehend nicht erreichbar.'));}}

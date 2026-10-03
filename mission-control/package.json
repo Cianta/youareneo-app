@@ -29,7 +29,9 @@
     "test:restored": "tsx --test tests/restored.test.ts",
     "test:restored:browser": "node scripts/test-restored-browser.mjs",
     "test:companion": "tsx --test tests/companion.test.ts tests/mail-cache.test.ts",
-    "test:companion:browser": "node scripts/test-companion-browser.mjs"
+    "test:companion:browser": "node scripts/test-companion-browser.mjs",
+    "test:journal": "tsx --test tests/journal.test.ts",
+    "test:journal:browser": "node scripts/test-journal-browser.mjs"
   },
   "build": {
     "appId": "com.youareneo.mission-control",
@@ -80,6 +82,7 @@
     "fflate": "0.8.3",
     "framer-motion": "^11.3.0",
     "free-human-design": "1.0.1",
+    "ical.js": "2.2.1",
     "jspdf": "4.2.1",
     "lucide-react": "^0.400.0",
     "next": "^16.2.7",

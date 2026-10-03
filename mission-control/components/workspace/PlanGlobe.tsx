@@ -1,0 +1,23 @@
+"use client";
+import {useEffect,useRef,useState} from 'react';
+import type {Place} from '@/lib/workspace/personal';
+export default function PlanGlobe({place}:{place?:Place}){
+ const host=useRef<HTMLDivElement>(null),placeRef=useRef(place),[fallback,setFallback]=useState(true);placeRef.current=place;
+ useEffect(()=>{let disposed=false,cleanup=()=>{};const element=host.current;if(!element)return;
+ void (async()=>{try{
+   await new Promise<void>(resolve=>{const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();resolve();}},{root:element.closest('#workspace-content'),rootMargin:'120px'});observer.observe(element);cleanup=()=>observer.disconnect();});if(disposed)return;
+  const THREE=await import('three');if(disposed)return;const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(160,160);element.appendChild(renderer.domElement);setFallback(false);
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(35,1,.1,20);camera.position.z=4;
+  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=512;const ctx=canvas.getContext('2d')!;ctx.fillStyle='#235f79';ctx.fillRect(0,0,1024,512);const texture=new THREE.CanvasTexture(canvas);
+  const material=new THREE.MeshPhongMaterial({map:texture,shininess:22,specular:0x77bbdd});const geometry=new THREE.SphereGeometry(1,40,28),earth=new THREE.Mesh(geometry,material);scene.add(earth);
+  const grid=new THREE.Mesh(new THREE.SphereGeometry(1.008,24,12),new THREE.MeshBasicMaterial({color:0xb9d7e4,wireframe:true,transparent:true,opacity:.055}));earth.add(grid);
+  const glow=new THREE.Mesh(new THREE.SphereGeometry(1.055,36,24),new THREE.MeshBasicMaterial({color:0x97dded,transparent:true,opacity:.09,side:THREE.BackSide}));scene.add(glow);
+  const marker=new THREE.Mesh(new THREE.SphereGeometry(.035,12,8),new THREE.MeshBasicMaterial({color:0xf0adc8}));earth.add(marker);marker.visible=false;
+  scene.add(new THREE.AmbientLight(0xbdcfe5,1.15));const light=new THREE.DirectionalLight(0xfff3db,2);light.position.set(-2,2,3);scene.add(light);
+  const controller=new AbortController();void fetch('/maps/land-110m.json',{signal:controller.signal}).then(r=>r.json()).then(data=>{if(disposed)return;ctx.fillStyle='#b2c1a2';ctx.strokeStyle='#92adab';ctx.lineWidth=.6;for(const feature of data.features){const polys=feature.geometry.type==='Polygon'?[feature.geometry.coordinates]:feature.geometry.coordinates;for(const polygon of polys){ctx.beginPath();for(const ring of polygon){ring.forEach(([lon,lat]:number[],i:number)=>{const x=(lon+180)/360*1024,y=(90-lat)/180*512;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();}ctx.fill('evenodd');ctx.stroke();}}texture.needsUpdate=true;renderer.render(scene,camera);}).catch(()=>{});
+  let frame=0,last=performance.now(),renderedAt=0;const reduced=matchMedia('(prefers-reduced-motion: reduce)'),q=new THREE.Quaternion(),up=new THREE.Vector3(0,0,1);let previous='';
+  const render=(time:number)=>{if(disposed)return;if(time-renderedAt<33){frame=requestAnimationFrame(render);return;}renderedAt=time;const delta=Math.min((time-last)/1000,.1);last=time;if(document.visibilityState==='visible'){const p=placeRef.current;if(p){const key=p.latitude+':'+p.longitude;const lat=p.latitude*Math.PI/180,lon=p.longitude*Math.PI/180;const target=new THREE.Vector3(Math.cos(lat)*Math.cos(lon),Math.sin(lat),-Math.cos(lat)*Math.sin(lon));if(key!==previous){q.setFromUnitVectors(target,up);marker.position.copy(target.multiplyScalar(1.015));marker.visible=true;previous=key;}if(reduced.matches)earth.quaternion.copy(q);else earth.quaternion.slerp(q,Math.min(1,delta*2.4));}else{marker.visible=false;previous='';if(!reduced.matches)earth.rotation.y+=delta*.12;}renderer.render(scene,camera);}frame=requestAnimationFrame(render);};frame=requestAnimationFrame(render);
+  cleanup=()=>{controller.abort();cancelAnimationFrame(frame);scene.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose();const materials=Array.isArray(o.material)?o.material:[o.material];materials.forEach(m=>m.dispose());}});texture.dispose();renderer.dispose();renderer.domElement.remove();};if(disposed)cleanup();
+ }catch{if(!disposed)setFallback(true);}})();return()=>{disposed=true;cleanup();};},[]);
+ return <figure className="plan-globe" aria-label={place?'Erde · '+place.name:'Erde · deine Orte'}><div ref={host} className={fallback?'globe-fallback':''}/><figcaption>{place?.name||'Deine Welt, dein Weg.'}</figcaption><small>Natural Earth · public domain</small></figure>;
+}

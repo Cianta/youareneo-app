@@ -14,7 +14,7 @@ export function Contacts() {
   return (
     <div className="w-page">
       <span className="w-eyebrow">MENSCHEN & VERBINDUNGEN</span>
-      <h1>Deine Kontakte.</h1>
+      <h1>Kontakte CRM.</h1>
       <p>Verwende Kontakte im Ideenraum und verknüpfe sie mit Dokumenten.</p>
       <p className="w-muted">Lokale Kontakte auf diesem Gerät. Ein CRM-Abgleich ist derzeit nicht verbunden.</p>
       <input
@@ -29,7 +29,7 @@ export function Contacts() {
           .filter(
             (c) =>
               inWorkspace(c, p.workspace) &&
-              `${c.name} ${c.email} ${c.company}`
+              `${c.name} ${c.email} ${c.company} ${c.phone || ""}`
                 .toLowerCase()
                 .includes(query.toLowerCase()),
           )
@@ -37,7 +37,8 @@ export function Contacts() {
             <article className="w-card" key={c.id}>
               <h2>{c.name}</h2>
               <p>{c.company}</p>
-              <p>{c.email}</p>
+              {c.email && <p><a href={`mailto:${encodeURIComponent(c.email)}`}>{c.email}</a></p>}
+              {c.phone && <p><a href={`tel:${c.phone.replace(/[^+0-9]/g, "")}`}>{c.phone}</a></p>}
               <small>
                 {c.source === "hubspot" ? "HubSpot" : "Eigener Kontakt"}
               </small>
@@ -57,6 +58,7 @@ export function Contacts() {
                 name: String(f.get("name")),
                 email: String(f.get("email")),
                 company: String(f.get("company")),
+                phone: String(f.get("phone") || "").trim(),
                 workspace: String(f.get("workspace")) as Workspace,
                 source: "local",
                 updatedAt: new Date().toISOString(),
@@ -76,6 +78,10 @@ export function Contacts() {
           <label>
             Firma
             <input name="company" className="w-input" />
+          </label>
+          <label>
+            Telefon
+            <input name="phone" type="tel" autoComplete="tel" maxLength={40} className="w-input" />
           </label>
           <WorkspaceChoice />
           <button className="w-btn">Speichern</button>

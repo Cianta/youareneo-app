@@ -12,7 +12,7 @@ async function click(text){const h=await p.evaluateHandle(t=>[...document.queryS
 try{
  await p.setViewport({width:1440,height:1050});await go('/dashboard/goals');await p.waitForFunction(()=>document.body.innerText.includes('Erhaltene Idee'));
  await p.waitForSelector('.workspace-sidebar a[href="/dashboard/goals"] .nav-attention');assert.equal(await p.$eval('.workspace-sidebar a[href="/dashboard/goals"] .nav-attention',e=>e.textContent),'1');assert(await p.$eval('.workspace-discover',e=>!e.open));assert.equal(await p.$$('.workspace-sidebar a[href="/dashboard/calendar"]').then(x=>x.length),1);assert.equal(await p.$$('.workspace-sidebar a[href="/dashboard/settings"]').then(x=>x.length),0);assert(await p.$('.workspace-topbar a[href="/dashboard/settings"]'));
- assert(await p.$('.tl-gold[href*="purple-sun-192.png"]'));assert.equal(await p.$$('.tl-gold-rays').then(x=>x.length),0);
+ assert(await p.$('.tl-sun-stage image[href*="trinity-sun-transparent.png"]'));assert.equal(await p.$$('.tl-gold-rays').then(x=>x.length),0);
  await p.click('[aria-label="Lesezeichen öffnen"]');await p.waitForSelector('dialog[open] .w-bookmarks');await p.keyboard.press('Escape');
  await p.click('[aria-label="Darkmode & Darstellung öffnen"]');await p.waitForSelector('.appearance-settings');await p.keyboard.press('Escape');
  await p.$eval('[aria-label="Journaldatum"]',e=>{const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(e,'2026-10-03');e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});

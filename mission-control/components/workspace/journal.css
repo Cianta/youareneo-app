@@ -21,3 +21,6 @@
 .calendar-overview .month-event{min-height:24px}.calendar-overview .month-more{min-height:24px}.calendar-overview .year-month-name{min-height:28px}.year-days>.year-day{display:grid;place-items:center;font-size:8px;position:relative;height:16px}.year-day>span{position:absolute;bottom:0;left:3px;right:3px;display:flex;justify-content:center;gap:1px}
 
 .focus-current-time{display:grid;text-align:center;gap:5px}.focus-current-time small{color:var(--theme-muted)}.focus-current-time strong{font-family:var(--font-cormorant),serif;font-size:48px;font-variant-numeric:tabular-nums}.focus-break-screen .focus-current-time{display:none}
+
+.workspace-nav-section a[data-nav-id="projects"]{margin-top:12px;}
+.meeting-rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;}.meeting-space{display:grid;gap:20px;}.meeting-space .w-card{display:grid;gap:14px;align-content:start;min-width:0}.meeting-actions{display:flex;gap:8px;flex-wrap:wrap}.meeting-space .w-btn{display:inline-flex;align-items:center;gap:7px;min-height:44px}.meeting-space label{display:grid;gap:6px}.meeting-space input{width:100%;min-width:0}.meeting-space svg{color:var(--theme-purple);flex-shrink:0}.meeting-space details input{margin-top:10px}

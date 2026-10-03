@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import {HeaderBookmarks,HeaderFocus,HeaderSettings} from "./HeaderTools";
 import {Atmosphere} from "./Atmosphere";
 import {useNavAttention} from "./NavAttention";
-import {Home,NotebookPen,CheckSquare,FolderOpen,Network,BookOpen,Lightbulb,CalendarDays,Orbit,Leaf,Grid2X2,FlaskConical,Settings,Mail,Search,LogOut,LogIn,Notebook as NotebookIcon} from "lucide-react";
+import {Home,NotebookPen,CheckSquare,FolderOpen,Network,BookOpen,Lightbulb,CalendarDays,Orbit,Leaf,Grid2X2,FlaskConical,Settings,Mail,Video,ContactRound,Search,LogOut,LogIn,Notebook as NotebookIcon} from "lucide-react";
 import {TrinityLogo} from "@/components/sacred-geometry/TrinityLogo";
 import { primary } from "@/lib/workspace/navigation";
 import type { WorkspaceIdentity } from "@/lib/workspace/session";
@@ -42,7 +42,7 @@ const Completion = dynamic(
     ),
   { ssr: false },
 );
-const navIcons:Record<string,typeof Home>={home:Home,notes:NotebookPen,tasks:CheckSquare,projects:FolderOpen,brain:Network,notebooks:BookOpen,ideas:Lightbulb,planner:CalendarDays,calendar:CalendarDays,soul:Orbit,meditation:Leaf,"my-apps":Grid2X2,lab:FlaskConical,settings:Settings,inbox:Mail};
+const navIcons:Record<string,typeof Home>={home:Home,notes:NotebookPen,tasks:CheckSquare,projects:FolderOpen,brain:Network,notebooks:BookOpen,ideas:Lightbulb,planner:CalendarDays,calendar:CalendarDays,soul:Orbit,meditation:Leaf,"my-apps":Grid2X2,lab:FlaskConical,settings:Settings,inbox:Mail,meeting:Video,contacts:ContactRound};
 export function WorkspaceShell({
   identity,
   children,
@@ -128,7 +128,7 @@ export function WorkspaceShell({
         <p className="workspace-user">{identity?.name||user?.name||"Dein Raum"}</p>
         <CosmosMenu/>
         <nav aria-label="Hauptnavigation">
-          {["Mein Raum","Arbeiten","Entdecken","Apps"].map(group=>{const links=primary.filter(p=>p.group===group);const render=links.map(p=>{const Icon=navIcons[p.id]||FolderOpen;const notice=attention[(p.id==="notes"?"planner":p.id) as keyof typeof attention];return <Link prefetch={false} key={p.id} href={p.href} data-attention={!!notice?.count} title={notice?.label} aria-current={path===p.href||(p.id==="my-apps"&&path.startsWith("/dashboard/apps/"))?"page":undefined}><Icon className="workspace-nav-icon" aria-hidden="true"/><span>{p.label}</span>{!!notice?.count&&<span className="nav-attention" aria-label={notice.label}>{notice.count}</span>}</Link>;});return group==="Entdecken"?<details className="workspace-discover" key={group}><summary>{group}<span>⌄</span></summary>{render}</details>:<div className="workspace-nav-section" key={group}>{group!=="Apps"&&<span className="workspace-nav-group">{group}</span>}{render}</div>;})}
+          {["Mein Raum","Arbeiten","Kommunikation","Entdecken","Apps"].map(group=>{const links=primary.filter(p=>p.group===group);const render=links.map(p=>{const Icon=navIcons[p.id]||FolderOpen;const notice=attention[(p.id==="notes"?"planner":p.id) as keyof typeof attention];return <Link prefetch={false} key={p.id} data-nav-id={p.id} href={p.href} data-attention={!!notice?.count} title={notice?.label} aria-current={path===p.href||(p.id==="my-apps"&&path.startsWith("/dashboard/apps/"))?"page":undefined}><Icon className="workspace-nav-icon" aria-hidden="true"/><span>{p.label}</span>{!!notice?.count&&<span className="nav-attention" aria-label={notice.label}>{notice.count}</span>}</Link>;});return group==="Entdecken"?<details className="workspace-discover" key={group}><summary>{group}<span>⌄</span></summary>{render}</details>:<div className="workspace-nav-section" key={group}>{group!=="Apps"&&<span className="workspace-nav-group">{group}</span>}{render}</div>;})}
         </nav>
         <button
           className="workspace-button"

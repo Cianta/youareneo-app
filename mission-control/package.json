@@ -31,7 +31,8 @@
     "test:companion": "tsx --test tests/companion.test.ts tests/mail-cache.test.ts",
     "test:companion:browser": "node scripts/test-companion-browser.mjs",
     "test:journal": "tsx --test tests/journal.test.ts",
-    "test:journal:browser": "node scripts/test-journal-browser.mjs"
+    "test:journal:browser": "node scripts/test-journal-browser.mjs",
+    "test:logo-communication:browser": "node scripts/test-logo-communication-browser.mjs"
   },
   "build": {
     "appId": "com.youareneo.mission-control",

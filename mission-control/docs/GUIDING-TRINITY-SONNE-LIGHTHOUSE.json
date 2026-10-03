@@ -1,0 +1,19 @@
+{
+  "applicationCommit": "1ab4b499f920fb0e8253fc1eb49cfc241b82e109",
+  "source": "local production build with fixtures",
+  "routes": [
+    {
+      "route": "/notiz",
+      "runs": 3,
+      "performance": 94,
+      "accessibility": 100,
+      "lcp": 3107.494,
+      "cls": 0.025558781454057253,
+      "tbt": 13.5,
+      "consoleErrors": 0,
+      "jsBytes": 902053
+    }
+  ],
+  "realAccountOrProviderTest": false,
+  "originalFivePageMeasurement": "GUIDING-JOURNAL-LIGHTHOUSE.json"
+}

@@ -79,6 +79,14 @@ Zusätzliche Live-Korrektur: Der Gast-Header verwendet jetzt ein zugänglich als
 
 Der bisherige Hinweis auf überfällige Ziele folgt dem neuen Einstieg „Ziele & Notizen“. Auch dieser Navigationshinweis wird im Browser anhand einer überfälligen Fixture-Priorität geprüft.
 
-Die spätere Lilasonnen-/Kommunikations-Ergänzung verändert die gemessenen Screens geringfügig; die Lighthouse-Tabelle ist weiterhin der dokumentierte Messstand von `137072e`, keine neue Messung der Animation.
+Die spätere Lilasonnen-/Kommunikations-Ergänzung verändert die gemessenen Screens geringfügig; die Lighthouse-Tabelle ist weiterhin der dokumentierte Messstand von `137072e`, keine neue Messung dieser fünf Seiten nach der Animation. Eine ergänzende Messung der Notizenseite folgt unten.
 
 Ergänzende Prüfung nach der Lilasonnen-/Kommunikationsänderung: Produktionsbuild/TypeScript erfolgreich, alle acht Navigations-/Arbeitsbereichstests erfolgreich und beide Browser-Suiten für Journal sowie Logo/Kommunikation erfolgreich. Geprüft sind unabhängige Solar-Ebenen, transparente optimierte PNG-Fassung (96 × 96, 4.758 Bytes WebP mit Alpha), Ruhe bei reduzierter/deaktivierter Bewegung, Menüordnung, gespeicherte/erneut geladene Raumlinks, Duplikat-/Zugangsdaten-Abweisung, Telefonverknüpfung, vorhandener Kontaktstore und 320/390-px-Ansichten. Der mobile Kontaktknopf ist nach normalem Scrollen oberhalb der Tab-Leiste erreichbar; der Browsertest prüft den tatsächlich getroffenen Knopf. Keine echten Konferenzen, Anrufe oder CRM-Provideraufrufe.
+
+## Veröffentlichung und ergänzende Tempo-Prüfung
+
+Der gleiche Anwendungsstand `1ab4b499f920fb0e8253fc1eb49cfc241b82e109` läuft auf [Staging](https://trinity-stg.youareneo.com/notiz) und [Produktion](https://trinity.youareneo.com/notiz), entsprechend der fortbestehenden Produktionsfreigabe. Je Instanz bestehen 65 HTTP-/Asset-/Zugriffskontrollen. Alle 72 ausgelieferten Quell-/Assetdateien stimmen mit dem geprüften Paket überein; Container laufen, Compose und Secrets sind unverändert. Die Live-Oberfläche bestätigt Logo-Ebenen, transparenten Sonnenasset, Header-Symbole und die neue Menüordnung. Prüfung ohne tatsächliche Anmeldung oder Mikrofon-/KI-/Anrufvorgänge. Der serverseitig unabhängig geänderte Auth-Übergabedokumentstand wurde bei der Übertragung bewusst erhalten; dessen Ergänzung ist im Repository sichtbar.
+
+Nach der Solar-/Kommunikationsänderung wurde `/notiz` erneut lokal auf dem Produktionsbuild mit Fixtures gemessen: drei mobile Lighthouse-Läufe, Performance 92/99/94 (Median **94**), Accessibility je **100**, keine Konsolenfehler oder unerwarteten externen Zugriffe. Median LCP 3.11 s, TBT 13.5 ms, CLS 0.026. Der ältere Fünfseiten-Nachweis bleibt ein eigener Messstand; die Startseite wurde nicht erneut gemessen und ihr Ziel ≥ 90 bleibt offen.
+
+Maschinenlesbar: [Veröffentlichung](GUIDING-JOURNAL-RELEASE.json), [ergänzende Lighthouse-Werte](GUIDING-TRINITY-SONNE-LIGHTHOUSE.json). Änderungen nach dem genannten Anwendungscommit sind ausschließlich Dokumentation; die Tests und das deployte Paket beziehen sich auf diesen Anwendungsstand.

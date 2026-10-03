@@ -1,0 +1,13 @@
+{%- comment -%}
+  Feinschliff für alle Seiten (sitzt unsichtbar im Header, lädt vor dem Inhalt):
+  - es-farben-v2.css: Farbschemata, Knöpfe, News-Lederfolio, Arche-Bild, Ein-Bild-Slider, Tor-Szene, Glasschneeflocke
+  - es-kopf.css: modernes Header-Design (gepflegt von der zweiten Sitzung)
+  - es-zauber.js: untere Startseite – Funke, Tor-Szene, Schmetterlinge, Herzens-Schneeflocke (nur auf „/“ aktiv)
+  Quellen: shopify-elemente-scroll/assets (Inhalte → Dateien). Logo bleibt unverändert.
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ 'es-farben-v2.css' | file_url }}">
+<link rel="stylesheet" href="{{ 'es-kopf.css' | file_url }}">
+{%- if request.page_type == 'index' -%}<script src="{{ 'es-zauber.js' | file_url }}" defer></script>{%- endif -%}
+{% schema %}
+{ "name": "Farben (Feinabstimmung)", "tag": "div", "class": "section-es-farben", "settings": [], "presets": [{ "name": "Farben (Feinabstimmung)" }] }
+{% endschema %}

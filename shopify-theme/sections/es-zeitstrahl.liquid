@@ -1,0 +1,112 @@
+{%- comment -%}
+  Zeitstrahl in 3D: die Entstehungsgeschichte von YOU ARE NEO.
+  Header-Logo → Erde (rechts oben, eine Ebene vor dem Header, dreht sich zum Land der Station),
+  Fotos setzen sich von allen Seiten zusammen, dahinter die Landkarte (Umriss, Gebirge, Wälder, Städte),
+  der Weg durch den Raum mit einem Tor pro Station, links der große Baum des Lebens – pro Station ein goldenes Blatt.
+  Stationen: Daten aus dem Freigeist Archiv (Vereinsgeschichte, Sammlungen) – bitte noch abgleichen.
+{%- endcomment -%}
+{%- if images['elemente-logo.webp'] -%}{%- assign zs_logo = images['elemente-logo.webp'] | image_url: width: 400 -%}{%- else -%}{%- assign zs_logo = 'elemente-logo.webp' | asset_url -%}{%- endif -%}
+<section id="ZS-{{ section.id }}" class="zs" data-sid="{{ section.id }}" data-logo="{{ zs_logo }}">
+  <div class="zs__stage">
+    <canvas class="zs__map" aria-hidden="true"></canvas>
+    <canvas class="zs__path" aria-hidden="true"></canvas>
+    <canvas class="zs__tree" aria-hidden="true"></canvas>
+    <div class="zs__cards" aria-hidden="true"></div>
+    <div class="zs__intro">
+      <p class="zs__kicker">YOU ARE NEO</p>
+      <h1 class="zs__h1">{{ section.settings.title }}</h1>
+      <p class="zs__sub">{{ section.settings.subtitle }}</p>
+      <p class="zs__hint">scrollen ↓</p>
+    </div>
+    <div class="zs__text" aria-live="polite"><div class="zs__year"></div><h2 class="zs__title"></h2><p class="zs__body"></p><p class="zs__place"></p></div>
+    <svg class="zs__line" aria-hidden="true"></svg>
+    <div class="zs__globe" id="ZSG-{{ section.id }}"><canvas aria-hidden="true"></canvas><img alt="" class="zs__logo"></div>
+    <a class="zs__cta" href="{{ section.settings.cta_link | default: routes.account_register_url }}">{{ section.settings.cta }}</a>
+  </div>
+</section>
+
+<script type="application/json" id="zs-daten-{{ section.id }}">
+[
+  { "year": "2011", "title": "Der Weg beginnt", "place": "Tirol, Österreich", "iso": "040", "ll": [11.39, 47.27],
+    "text": "Aus einer persönlichen Suche wird eine Richtung: alte Lebenskünste – QiGong, Kampfkunst, Meditation – im eigenen Leben erforschen.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_20191019_161813.jpg?v=1771767000"] },
+  { "year": "2018", "title": "China – Qing Cheng Shan", "place": "Sichuan, China", "iso": "156", "ll": [103.57, 30.9],
+    "text": "Internationale Zhineng-QiGong-Lehrerausbildung am Berg Qing Cheng. Lernen an der Quelle – und Freundschaften über Kontinente.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_5741.jpg?v=1707838176", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_5352.jpg?v=1707838176", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_5852.jpg?v=1771882308", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_8087.jpg?v=1771888024"] },
+  { "year": "2019", "title": "Das erste Neo Retreat", "place": "Österreich", "iso": "040", "ll": [11.39, 47.27],
+    "text": "Oktober 2019: Menschen kommen zusammen, um gemeinsam zu üben, zu atmen und zu teilen. Der Funke springt über.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_20191019_153445.jpg?v=1707048733", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_1807.webp?v=1749657880"] },
+  { "year": "2023", "title": "QiGong am Gardasee", "place": "Gardasee, Italien", "iso": "380", "ll": [10.7, 45.6],
+    "text": "April 2023: Seminar am Wasser – die Praxis wird zum gemeinsamen Erleben.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_1688.webp?v=1749657877"] },
+  { "year": "10.08.2023", "title": "Der Verein entsteht", "place": "Innsbruck, Österreich", "iso": "040", "ll": [11.39, 47.27],
+    "text": "YOU ARE NEO – Vereinigung zur Förderung holistischer Gesundheit und Ontologie wird errichtet. Gemeinnützig, unabhängig, offen für alle.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_1697.webp?v=1748437574", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20240321-WA0013_c81d1fa7-d6ec-48c9-8609-23818d6d5cc0.jpg?v=1712607276"] },
+  { "year": "Herbst 2023", "title": "Japan – Dojo, Tempel, Gärten", "place": "Japan", "iso": "392", "ll": [139.7, 35.7],
+    "text": "Studienreise ins Herz der Kampfkünste: Training im Dojo, Stille in Tempeln und Gärten.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20231006-WA0012.jpg?v=1707837977", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20231104-WA0003.jpg?v=1707837984"] },
+  { "year": "17.12.2023", "title": "Zweigstelle Zenshinkan Dojo", "place": "Aldrans, Tirol", "iso": "040", "ll": [11.45, 47.25],
+    "text": "Der geübte Teil der Arbeit bekommt ein Zuhause. Dazu: Forschungsprojekt „Grenzerfahrungen Mensch“ und das Online-Portal.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_20191019_161813.jpg?v=1771767000"] },
+  { "year": "2025 – 2026", "title": "AWEN & das goldene Zeitalter", "place": "Tirol, Österreich", "iso": "040", "ll": [11.72, 47.4],
+    "text": "Projekt AWEN, die Academy, das Freigeist Archiv – und im Dezember 2026 das Retreat „The Great Reset“. Wir begleiten die Welt ins goldene Zeitalter.",
+    "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20231104-WA0003.jpg?v=1707837984"] }
+]
+</script>
+
+<style>
+  #ZS-{{ section.id }} { position: relative; height: calc(var(--zs-n, 9) * 120vh); background: radial-gradient(ellipse at 50% 30%, #1b2140 0%, #0b0d16 60%, #07080d 100%); color: #f1ead8; }
+  #ZS-{{ section.id }} .zs__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; perspective: 1400px; }
+  #ZS-{{ section.id }} .zs__map { position: absolute; inset: -10% -5% 0; width: 110%; height: 110%; transform: rotateX(42deg) translateY(-6%); transform-origin: 50% 70%; opacity: .9; pointer-events: none; }
+  #ZS-{{ section.id }} .zs__path { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+  #ZS-{{ section.id }} .zs__tree { position: absolute; left: 0; bottom: 0; width: min(46vw, 620px); height: 96%; pointer-events: none; z-index: 2; }
+  #ZS-{{ section.id }} .zs__cards { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; z-index: 3; }
+  #ZS-{{ section.id }} .zs__card { position: absolute; left: 50%; top: 42%; width: min(46vw, 460px); aspect-ratio: 3 / 2; margin: calc(min(46vw, 460px) / -2 * .6667) 0 0 calc(min(46vw, 460px) / -2);
+    transform-style: preserve-3d; visibility: hidden; will-change: transform, opacity; }
+  #ZS-{{ section.id }} .zs__tile { position: absolute; overflow: hidden; background: #111; backface-visibility: hidden; will-change: transform, opacity;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35); outline: 1px solid rgba(221,183,113,.18); }
+  #ZS-{{ section.id }} .zs__tile:nth-child(1) { border-top-left-radius: 16px; } #ZS-{{ section.id }} .zs__tile:nth-child(3) { border-top-right-radius: 16px; }
+  #ZS-{{ section.id }} .zs__tile:nth-child(7) { border-bottom-left-radius: 16px; } #ZS-{{ section.id }} .zs__tile:nth-child(9) { border-bottom-right-radius: 16px; }
+  #ZS-{{ section.id }} .zs__tile img { position: absolute; object-fit: cover; display: block; max-width: none; }
+  #ZS-{{ section.id }} .zs__intro { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; z-index: 4; pointer-events: none; padding: 0 20px; }
+  #ZS-{{ section.id }} .zs__kicker { letter-spacing: .4em; font-size: .78rem; color: #ddb771; margin: 0 0 10px; }
+  #ZS-{{ section.id }} .zs__h1 { font-size: clamp(2rem, 6vw, 4.2rem); margin: 0; font-weight: 300; letter-spacing: .04em; color: #fff7e6; }
+  #ZS-{{ section.id }} .zs__sub { margin: 14px 0 0; opacity: .8; font-size: clamp(.95rem, 2vw, 1.15rem); }
+  #ZS-{{ section.id }} .zs__hint { margin-top: 36px; font-size: .75rem; letter-spacing: .3em; opacity: .55; animation: zs-bob 2.4s ease-in-out infinite; }
+  @keyframes zs-bob { 50% { transform: translateY(6px); } }
+  #ZS-{{ section.id }} .zs__text { position: absolute; right: 5vw; bottom: 14vh; z-index: 5; width: min(440px, 40vw); opacity: 0; text-shadow: 0 2px 14px rgba(0,0,0,.7); }
+  #ZS-{{ section.id }} .zs__year { font-size: clamp(2rem, 6vw, 3.6rem); font-weight: 200; color: #ddb771; line-height: 1; }
+  #ZS-{{ section.id }} .zs__title { margin: 6px 0 8px; font-size: clamp(1.1rem, 2.6vw, 1.7rem); font-weight: 500; color: #fff7e6; }
+  #ZS-{{ section.id }} .zs__body { margin: 0; line-height: 1.6; opacity: .9; font-size: clamp(.9rem, 1.6vw, 1.02rem); }
+  #ZS-{{ section.id }} .zs__place { margin: 8px 0 0; font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: #9fd3cf; }
+  #ZS-{{ section.id }} .zs__line { position: absolute; left: 0; bottom: 0; width: 100%; height: 8vh; z-index: 4; overflow: visible; opacity: .75; }
+  /* Erde: wird per Skript an <body> gehängt → liegt als eigene Ebene vor dem Header */
+  #ZSG-{{ section.id }} { position: fixed; left: 0; top: 0; width: 140px; height: 140px; z-index: 2147483000; pointer-events: none; transform-origin: 50% 50%; will-change: transform; visibility: hidden;
+    filter: drop-shadow(0 10px 22px rgba(0,0,0,.45)); }
+  #ZSG-{{ section.id }} canvas, #ZSG-{{ section.id }} .zs__logo { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #ZSG-{{ section.id }} .zs__logo { object-fit: contain; filter: drop-shadow(0 0 18px rgba(221,183,113,.45)); }
+  #ZS-{{ section.id }} .zs__cta { position: absolute; left: 50%; bottom: 20vh; transform: translateX(-50%); z-index: 7; opacity: 0; pointer-events: none;
+    padding: 16px 34px; border-radius: 999px; text-decoration: none; color: #262b38; font-weight: 600; letter-spacing: .08em;
+    background: linear-gradient(115deg, #f4dfb0, #c79a3c 45%, #fff3cf 60%, #b8862f); box-shadow: 0 12px 34px rgba(221,183,113,.4); }
+  @media (max-width: 749px) {
+    #ZS-{{ section.id }} .zs__card { width: 78vw; margin: calc(78vw / -2 * .6667) 0 0 -39vw; top: 36%; }
+    #ZS-{{ section.id }} .zs__text { left: 6vw; right: 6vw; width: auto; bottom: 11vh; }
+    #ZS-{{ section.id }} .zs__tree { width: 80vw; opacity: .5; }
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js" defer></script>
+<script src="{{ 'elemente-zeitstrahl.js' | file_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Zeitstrahl 3D",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titel", "default": "Entstehungsgeschichte" },
+    { "type": "text", "id": "subtitle", "label": "Untertitel", "default": "Ein Verein, der die Welt ins goldene Zeitalter begleitet" },
+    { "type": "text", "id": "cta", "label": "Knopf am Ende", "default": "Werde Teil der Geschichte" },
+    { "type": "url", "id": "cta_link", "label": "Link" }
+  ],
+  "presets": [{ "name": "Zeitstrahl 3D" }]
+}
+{% endschema %}

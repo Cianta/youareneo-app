@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "Shopify.theme-check-vscode",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker-german"
+  ]
+}

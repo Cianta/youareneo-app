@@ -1,0 +1,347 @@
+{%- comment -%}
+  Elemente-Scrollanimation v3 — Wasser · Feuer · Holz, eher schamanisch als technisch
+  1. Rundes Logo klein in der Mitte, dreht sich langsam, Sternenhimmel lebt
+  2. Das Header-Logo fliegt hinein, wird zum Lichtpunkt und weckt den Vulkan (Wunderkerze)
+  3. Das Logo bleibt ganz und lebt: Farne und Efeu wachsen heraus, Wasser fließt aus der Kugel,
+     Feuer und Lava breiten sich in den Raum aus – mit kleinen Pausen
+  4. Die Elemente werden zu Sternenstaub, Licht breitet sich aus, der goldene Kreis lädt ein
+  5. Auf der Seite: ab und zu eine fallende Feder, ein Blatt, Glut, Tropfen, ein Traumfänger,
+     feine Efeu-Ranken an den Rändern, Unterstreichungen und laufende Bilderrahmen
+  6. Ganz unten fließt alles zurück ins Logo im Header
+{%- endcomment -%}
+
+{%- liquid
+  if section.settings.logo
+    assign es_src = section.settings.logo | image_url: width: 900
+  elsif images['elemente-logo.webp']
+    assign es_src = images['elemente-logo.webp'] | image_url: width: 900
+  else
+    assign es_src = 'elemente-logo.webp' | asset_url
+  endif
+  assign es_eyebrow = section.settings.cta_eyebrow
+  if es_eyebrow == 'Das goldene Zeitalter'
+    assign es_eyebrow = 'Das Goldene Zeitalter?'
+  endif
+  assign es_title = section.settings.cta_title
+  if es_title == 'Gestalte die Zukunft mit uns'
+    assign es_title = 'Erschaffe mit uns die Zukunft'
+  endif
+  if section.settings.cta_link != blank
+    assign es_cta_link = section.settings.cta_link
+  else
+    assign es_cta_link = routes.account_register_url
+  endif
+-%}
+
+<section
+  id="ES-{{ section.id }}"
+  class="es"
+  data-sid="{{ section.id }}"
+  data-src="{{ es_src }}"
+  data-end="{{ section.settings.end_color }}"
+  data-header="{{ section.settings.header_selector | escape }}"
+  data-pieces="{{ section.settings.pieces }}"
+  data-size="{{ section.settings.piece_size }}"
+  data-intensity="{{ section.settings.intensity }}"
+  data-fx-headings="{{ section.settings.fx_headings }}"
+  data-fx-images="{{ section.settings.fx_images }}"
+  data-fx-vines="{{ section.settings.fx_vines }}"
+  data-fx-header="{{ section.settings.fx_header }}"
+  data-fx-feathers="{{ section.settings.fx_feathers }}"
+  data-art="{{ 'es-fern-a.webp' | asset_url }}|{{ 'es-fern-b.webp' | asset_url }}|{{ 'es-ivy.webp' | asset_url }}|{{ 'es-ivy-b.webp' | asset_url }}|{{ 'es-leaf-0.webp' | asset_url }}|{{ 'es-leaf-1.webp' | asset_url }}|{{ 'es-leaf-2.webp' | asset_url }}|{{ 'es-leaf-3.webp' | asset_url }}"
+  style="--es-len: {{ section.settings.length }}vh; --es-end: {{ section.settings.end_color }};"
+>
+  <div class="es__stage">
+    <div class="es__nebula"><i></i><i></i><i></i></div>
+    <canvas class="es__stars" aria-hidden="true"></canvas>
+    <div class="es__light"></div>
+
+    <div class="es__orb">
+      <div class="es__halo"></div>
+      <div class="es__atmo"></div>
+      <div class="es__ring"></div>
+      <div class="es__flora" aria-hidden="true"></div>
+      {%- comment -%} Das Logo bleibt immer ganz – Wasser wogt, Feuer flackert, Pflanzen atmen (Verzerrungsfilter, nur innerhalb ihrer Bereiche) {%- endcomment -%}
+      <svg class="es__live" viewBox="0 0 100 100" role="img" aria-label="{{ section.settings.alt | escape }}">
+        <defs>
+          <filter id="esb-{{ section.id }}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2"/></filter>
+          <filter id="esw-{{ section.id }}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035 .08" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="esf-{{ section.id }}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".06 .03" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="esp-{{ section.id }}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".02 .02" numOctaves="1" seed="11"/><feDisplacementMap in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <mask id="esmw-{{ section.id }}" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120"><g filter="url(#esb-{{ section.id }})" fill="#fff"><path d="M-5,-5 L30,-5 C38,12 37,28 41,40 C45,52 58,54 64,64 C70,76 64,90 50,97 L30,105 L-5,105 Z"/></g></mask>
+          <mask id="esmp-{{ section.id }}" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120"><g filter="url(#esb-{{ section.id }})" fill="#fff"><path d="M36,-5 L105,-5 L105,105 L56,105 C70,92 78,78 72,64 C66,52 54,46 50,36 C46,24 45,10 40,-5 Z"/></g></mask>
+          <mask id="esmf-{{ section.id }}" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120"><g filter="url(#esb-{{ section.id }})" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"><path d="M32,2 C40,14 37,28 43,40 C49,52 57,56 53,66 L51,74"/><path d="M53,62 C65,56 75,66 73,80 C71,92 57,98 41,96 C29,95 21,90 13,82"/><path d="M40,8 C50,2 64,2 72,10"/><ellipse fill="#fff" stroke="none" cx="51" cy="73" rx="8" ry="7"/></g></mask>
+        </defs>
+        <image class="es__img" href="{{ es_src }}" width="100" height="100"/>
+        <image class="es__img" href="{{ es_src }}" width="100" height="100" mask="url(#esmw-{{ section.id }})" filter="url(#esw-{{ section.id }})"/>
+        <image class="es__img" href="{{ es_src }}" width="100" height="100" mask="url(#esmp-{{ section.id }})" filter="url(#esp-{{ section.id }})"/>
+        <image class="es__img" href="{{ es_src }}" width="100" height="100" mask="url(#esmf-{{ section.id }})" filter="url(#esf-{{ section.id }})"/>
+      </svg>
+    </div>
+    <canvas class="es__life" aria-hidden="true"></canvas>
+    <canvas class="es__erupt" aria-hidden="true"></canvas>
+
+    <div class="es__grade" aria-hidden="true"></div>
+    {%- if section.settings.cta_show -%}
+      <a class="es__cta" href="{{ es_cta_link }}">
+        <span class="es__cta-orbit" aria-hidden="true"></span>
+        <svg class="es__cta-ring" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="esr-{{ section.id }}" d="M100,100 m-86,0 a86,86 0 1,1 172,0 a86,86 0 1,1 -172,0"/></defs>
+          <text><textPath href="#esr-{{ section.id }}" textLength="536" lengthAdjust="spacing">{{ section.settings.cta_ring | escape }}</textPath></text>
+        </svg>
+        <span class="es__cta-inner">
+          {%- if es_eyebrow != blank -%}<span class="es__cta-eyebrow">{{ es_eyebrow | escape }}</span>{%- endif -%}
+          {%- assign es_words = es_title | split: ' ' -%}
+          <span class="es__cta-title">{%- for w in es_words -%}{%- if forloop.last and forloop.length > 1 -%}<em>{{ w | escape }}</em>{%- else -%}{{ w | escape }}{{ ' ' }}{%- endif -%}{%- endfor -%}</span>
+          <span class="es__cta-orn" aria-hidden="true"></span>
+          <span class="es__cta-btn">{{ section.settings.cta_button | escape }} &rarr;</span>
+        </span>
+      </a>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="es__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+  </div>
+</section>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,600&display=swap">
+<style>
+  #ES-{{ section.id }} {
+    position: relative;
+    height: var(--es-len, 400vh);
+    background: #07060d;
+  }
+  #ES-{{ section.id }} .es__stage {
+    position: sticky; top: 0;
+    height: 100vh; height: 100svh;
+    overflow: hidden; isolation: isolate;
+  }
+  /* Theme blendet leere <div> aus (div:empty) – Licht, Schein & Lichtpunkt sind bewusst leer */
+  #ES-{{ section.id }} div:empty, .es-fx div:empty { display: block; }
+  /* lebender Hintergrund: drei langsam wandernde Farbnebel */
+  #ES-{{ section.id }} .es__nebula { position: absolute; inset: 0; overflow: hidden; }
+  #ES-{{ section.id }} .es__nebula i {
+    position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%;
+    filter: blur(80px); opacity: calc(.32 * var(--es-neb, 1)); mix-blend-mode: screen;
+    animation: es-drift 38s ease-in-out infinite alternate;
+  }
+  #ES-{{ section.id }} .es__nebula i:nth-child(1) { left: -20vmax; top: -15vmax; background: #3d2470; }
+  #ES-{{ section.id }} .es__nebula i:nth-child(2) { right: -25vmax; top: 10vmax; background: #0f5162; animation-duration: 46s; animation-delay: -12s; }
+  #ES-{{ section.id }} .es__nebula i:nth-child(3) { left: 20vmax; bottom: -35vmax; background: #1f6b4a; opacity: calc(.22 * var(--es-neb, 1)); animation-duration: 54s; animation-delay: -30s; }
+  @keyframes es-drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(6vmax, -4vmax) scale(1.12); }
+    100% { transform: translate(-5vmax, 5vmax) scale(.95); }
+  }
+  #ES-{{ section.id }} .es__stars { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* Licht, das sich aus der Mitte ausbreitet bis zur Seitenfarbe */
+  #ES-{{ section.id }} .es__light {
+    position: absolute; left: 50%; top: 50%;
+    width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--es-end) 62%, color-mix(in srgb, var(--es-end) 40%, transparent) 82%, transparent 100%);
+    transform: scale(0); will-change: transform;
+  }
+  #ES-{{ section.id }} .es__orb {
+    position: absolute; left: 50%; top: 50%;
+    width: min(26vmin, 270px); aspect-ratio: 1;
+    margin: calc(min(26vmin, 270px) / -2) 0 0 calc(min(26vmin, 270px) / -2);
+    will-change: transform;
+  }
+  #ES-{{ section.id }} .es__halo {
+    position: absolute; inset: -45%; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255,244,220,.55), rgba(140,200,255,.18) 45%, transparent 100%);
+    opacity: .35; pointer-events: none;
+  }
+  #ES-{{ section.id }} .es__ring {
+    position: absolute; inset: -6%; border-radius: 50%;
+    border: 1px solid rgba(255,236,200,.8);
+    box-shadow: 0 0 24px rgba(255,220,160,.5);
+    opacity: 0; pointer-events: none;
+  }
+  #ES-{{ section.id }} .es__live { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; display: block; }
+  #ES-{{ section.id }} .es__flora { position: absolute; inset: 0; pointer-events: none; }
+  .es-sprout { position: absolute; width: 0; height: 0; }
+  .es-sprout img { position: absolute; display: block; max-width: none; height: auto; user-select: none; pointer-events: none; will-change: transform, opacity; opacity: 0; }
+  #ES-{{ section.id }} .es__life { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  #ES-{{ section.id }} .es__erupt { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  #ES-{{ section.id }} .es__code { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  /* Atmosphäre: feiner Lichtsaum wie bei einem Planeten */
+  #ES-{{ section.id }} .es__atmo {
+    position: absolute; inset: -7%; border-radius: 50%; pointer-events: none; z-index: 2;
+    background: radial-gradient(closest-side, transparent 86%, rgba(150,215,255,.28) 91%, rgba(255,214,150,.12) 95%, transparent 100%);
+    mix-blend-mode: screen;
+  }
+  #ES-{{ section.id }} .es__live { z-index: 1; }
+  /* Kino-Look: Vignette + feines Filmkorn */
+  #ES-{{ section.id }} .es__grade {
+    position: absolute; inset: 0; pointer-events: none; z-index: 2;
+    background:
+      radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.42) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .5; mix-blend-mode: overlay;
+    animation: es-grain 1.2s steps(3) infinite;
+  }
+  @keyframes es-grain { 0% { background-position: 0 0, 0 0; } 33% { background-position: 0 0, -40px 25px; } 66% { background-position: 0 0, 30px -45px; } }
+  /* goldener Einladungskreis */
+  #ES-{{ section.id }} .es__cta {
+    position: absolute; left: 50%; top: 50%; z-index: 3;
+    width: min(70vmin, 430px); aspect-ratio: 1;
+    margin: calc(min(70vmin, 430px) / -2) 0 0 calc(min(70vmin, 430px) / -2);
+    border-radius: 50%; display: grid; place-items: center;
+    text-decoration: none; color: #2a2318;
+    opacity: 0; pointer-events: none; will-change: transform, opacity;
+  }
+  #ES-{{ section.id }} .es__cta::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%; padding: 1.5px;
+    background: conic-gradient(from 0deg, #f6e7b8, #c79a3c, #fff3cf, #b8862f, #f6e7b8);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: es-spin 24s linear infinite;
+  }
+  #ES-{{ section.id }} .es__cta::after {
+    content: ''; position: absolute; inset: 13%; border-radius: 50%;
+    background: radial-gradient(circle at 50% 38%, rgba(255,248,226,.97), rgba(252,240,208,.7) 62%, rgba(240,214,150,.15) 100%);
+    box-shadow: 0 0 70px rgba(214,170,80,.28), inset 0 0 0 1px rgba(200,154,60,.35);
+  }
+  #ES-{{ section.id }} .es__cta-ring {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    fill: #a07a2e; font-size: 7.2px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase;
+    animation: es-spin 70s linear infinite reverse; opacity: .85;
+  }
+  #ES-{{ section.id }} .es__cta-orbit { position: absolute; inset: -5%; border-radius: 50%; border: 1px dashed rgba(190,150,70,.35); animation: es-spin 40s linear infinite; }
+  #ES-{{ section.id }} .es__cta-orbit::after {
+    content: ''; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%;
+    background: #e9c66e; box-shadow: 0 0 10px 3px rgba(233,198,110,.7);
+  }
+  #ES-{{ section.id }} .es__cta-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .55em; max-width: 60%; text-align: center; }
+  #ES-{{ section.id }} .es__cta-eyebrow { font-size: clamp(.6rem, 1.5vmin, .74rem); font-weight: 700; letter-spacing: .36em; text-transform: uppercase; color: #9a7630; }
+  /* Titel: ruhige Serifenschrift, das letzte Wort groß, kursiv und in Gold */
+  #ES-{{ section.id }} .es__cta-title {
+    font-family: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.45rem, 4.4vmin, 2.2rem); line-height: 1.04; font-weight: 600; letter-spacing: .01em; color: #2a2318;
+  }
+  #ES-{{ section.id }} .es__cta-title em {
+    display: block; margin-top: .02em; font-style: italic; font-size: 1.32em; letter-spacing: 0;
+    background: linear-gradient(100deg, #7a521a 0%, #c99a3e 38%, #e9c977 52%, #a8782c 72%, #6f4a16 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; padding: 0 .06em .06em;
+  }
+  #ES-{{ section.id }} .es__cta-orn { position: relative; width: 58%; height: 1px; margin: .15em 0 .1em; background: linear-gradient(90deg, transparent, rgba(160,122,46,.75), transparent); }
+  #ES-{{ section.id }} .es__cta-orn::after { content: '✦'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -54%); font-size: .7rem; color: #b8862f; background: #fbf1d8; padding: 0 .4em; line-height: 1; }
+  /* Knopf: von dunklem Türkisblau immer heller bis ins Grün – kein Rot, kein Gelb */
+  #ES-{{ section.id }} .es__cta-btn, .es-dawn-btn {
+    margin-top: .4em; padding: .8em 1.6em; border-radius: 999px;
+    background: linear-gradient(120deg, #0c3f52 0%, #12667a 30%, #2b8f80 58%, #5fae5a 82%, #8fc25a 100%); color: #fff;
+    font-size: clamp(.82rem, 2vmin, 1rem); font-weight: 700; letter-spacing: .08em; text-shadow: 0 1px 2px rgba(6,30,36,.55);
+    box-shadow: 0 6px 22px rgba(18,102,122,.38), inset 0 1px 0 rgba(255,255,255,.3); transition: transform .3s, box-shadow .3s, filter .3s;
+  }
+  #ES-{{ section.id }} .es__cta:hover .es__cta-btn,
+  #ES-{{ section.id }} .es__cta:focus-visible .es__cta-btn { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(18,102,122,.5); filter: brightness(1.08); }
+  /* Garantie-Feld: drei Werte in Bronze, Silber und Gold – größere Zeichen, klarere Schrift, ruhigere Aufteilung */
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee__box { --es-m1: #e3a46a; --es-m2: #a8673a; --es-m3: #6e3f1f; --es-glow: rgba(205,127,50,.28); }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee__box:nth-child(3n+2) { --es-m1: #f4f6fa; --es-m2: #b6bec9; --es-m3: #6f7884; --es-glow: rgba(200,210,225,.26); }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee__box:nth-child(3n+3) { --es-m1: #fbe7a6; --es-m2: #d4a640; --es-m3: #8a6418; --es-glow: rgba(221,183,113,.3); }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee--card__info {
+    position: relative; border-radius: 18px; padding: 34px 24px 30px;
+    background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee--card__info::before {
+    content: ''; position: absolute; left: 22%; right: 22%; top: 0; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--es-m2), var(--es-m1), var(--es-m2), transparent);
+  }
+  [id*="__dbtfy_guarantee_"] .heading--icon { position: relative; margin-bottom: 16px; }
+  [id*="__dbtfy_guarantee_"] .heading--icon::before {
+    content: ''; position: absolute; left: 50%; top: 50%; width: 92px; height: 92px; margin: -46px 0 0 -46px; border-radius: 50%;
+    background: radial-gradient(closest-side, var(--es-glow), transparent 75%); box-shadow: inset 0 0 0 1px var(--es-m3); opacity: .9;
+  }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee__section .material-icon.medium {
+    position: relative; font-size: 64px !important; max-width: none;
+    background: linear-gradient(160deg, var(--es-m1) 10%, var(--es-m2) 55%, var(--es-m3) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+  }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee__box h5.title {
+    padding-bottom: 12px !important; font-size: 17px !important; line-height: 1.3 !important; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--es-m1) !important;
+  }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee__box h5.title span { color: inherit !important; }
+  [id*="__dbtfy_guarantee_"] .dbtfy-guarantee__box .rte p {
+    max-width: 32ch; margin: 0 auto; font-size: 16px; line-height: 1.65; color: rgba(241,236,224,.92);
+  }
+  @keyframes es-spin { to { transform: rotate(360deg); } }
+  #ES-{{ section.id }} .es__heading {
+    position: absolute; left: 0; right: 0; bottom: 8vh; margin: 0;
+    text-align: center; color: rgba(255,255,255,.88);
+    font-size: clamp(1rem, 2vw, 1.5rem); font-weight: 300; letter-spacing: .22em; text-transform: uppercase;
+  }
+
+  /* ===== seitenweite Effekte ===== */
+  .es-fx { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+  .es-fx > * { position: absolute; left: 0; top: 0; }
+  .es-fx canvas { width: 100%; height: 100%; }
+  .es-vine { width: 50px; opacity: 0; transform-origin: 50% 0; will-change: transform, clip-path; }
+  .es-vine img { display: block; width: 100%; height: auto; }
+  .es-ghost { opacity: 0; will-change: transform, opacity; }
+  .es-ghost img { width: 100%; height: 100%; object-fit: contain; }
+  .es-dot {
+    width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%;
+    background: #fff8e8;
+    box-shadow: 0 0 6px 2px rgba(255,240,210,.9), 0 0 22px 8px rgba(255,200,120,.45), 0 0 60px 18px rgba(140,200,255,.25);
+    opacity: 0; will-change: transform, opacity;
+  }
+  .es-dock { cursor: pointer; pointer-events: auto; border-radius: 50%; opacity: 0; transition: filter .4s; }
+  .es-dock img { width: 100%; height: 100%; object-fit: contain; }
+  .es-dock:hover { filter: drop-shadow(0 0 10px rgba(255,210,140,.8)); }
+  .es-decor { width: 100%; height: 100%; overflow: visible; }
+  .es-glow-logo { filter: drop-shadow(0 0 6px rgba(255,214,150,.75)) drop-shadow(0 0 16px rgba(120,190,255,.35)); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #ES-{{ section.id }} { height: auto; }
+    #ES-{{ section.id }} .es__stage { position: relative; }
+    #ES-{{ section.id }} .es__nebula i, #ES-{{ section.id }} .es__grade { animation: none; }
+    #ES-{{ section.id }} .es__cta { opacity: 1; pointer-events: auto; position: relative; left: auto; top: auto; margin: 6vh auto; }
+    #ES-{{ section.id }} .es__cta::before, #ES-{{ section.id }} .es__cta-ring, #ES-{{ section.id }} .es__cta-orbit { animation: none; }
+  }
+</style>
+
+{%- comment -%} Skripte liegen komprimiert unter Inhalte → Dateien (lesbare Quelle: shopify-elemente-scroll/assets) {%- endcomment -%}
+<script src="{{ 'elemente-scroll-v6.js' | file_url }}" defer></script>
+<script src="{{ 'elemente-vulkan-v4.js' | file_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Elemente Scroll-Animation",
+  "tag": "div",
+  "class": "section-elemente-scroll",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Rundes Logo (PNG ohne Hintergrund)", "info": "Leer lassen = elemente-logo.webp aus Inhalte → Dateien" },
+    { "type": "text", "id": "alt", "label": "Alternativtext", "default": "Wasser, Feuer und Holz als Yin-Yang-Logo" },
+    { "type": "text", "id": "heading", "label": "Kleiner Text unter dem Logo (optional)" },
+    { "type": "range", "id": "length", "label": "Scroll-Länge", "min": 250, "max": 600, "step": 50, "unit": "vh", "default": 400 },
+    { "type": "color", "id": "end_color", "label": "Hintergrundfarbe der Seite (Ziel des Lichts)", "default": "#ffffff" },
+    { "type": "header", "content": "Header-Logo" },
+    { "type": "checkbox", "id": "fx_header", "label": "Header-Logo fliegt ein und setzt sich unten wieder zusammen", "default": true },
+    { "type": "text", "id": "header_selector", "label": "CSS-Selektor Header-Logo (optional)", "info": "Leer = automatisch erkennen" },
+    { "type": "header", "content": "Elemente auf der ganzen Seite" },
+    { "type": "range", "id": "pieces", "label": "Wie viel gleichzeitig unterwegs ist", "min": 0, "max": 18, "step": 1, "default": 8 },
+    { "type": "range", "id": "piece_size", "label": "Größe von Federn und Blättern", "min": 3, "max": 12, "step": 1, "default": 6 },
+    { "type": "range", "id": "intensity", "label": "Intensität", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 70 },
+    { "type": "checkbox", "id": "fx_headings", "label": "Überschriften unterstreichen", "default": true },
+    { "type": "checkbox", "id": "fx_images", "label": "Leuchtlinie läuft um Bilder", "default": true },
+    { "type": "checkbox", "id": "fx_vines", "label": "Efeu-Ranken an den Seitenrändern (Desktop)", "default": true },
+    { "type": "checkbox", "id": "fx_feathers", "label": "Federn und Traumfänger", "default": true },
+    { "type": "header", "content": "Goldener Einladungskreis" },
+    { "type": "checkbox", "id": "cta_show", "label": "Einladungskreis am Ende zeigen", "default": true },
+    { "type": "text", "id": "cta_eyebrow", "label": "Kleine Zeile oben", "default": "Das Goldene Zeitalter?" },
+    { "type": "text", "id": "cta_title", "label": "Titel", "default": "Erschaffe mit uns die Zukunft" },
+    { "type": "text", "id": "cta_button", "label": "Knopf-Text", "default": "Gemeinschaft beitreten" },
+    { "type": "url", "id": "cta_link", "label": "Link", "info": "Leer = Kundenkonto anlegen" },
+    { "type": "text", "id": "cta_ring", "label": "Schriftband im Ring", "default": "Gemeinschaft ✦ Bewusstsein ✦ Zukunft ✦ Verbundenheit ✦ Goldenes Zeitalter ✦ " }
+  ],
+  "presets": [{ "name": "Elemente Scroll-Animation" }]
+}
+{% endschema %}

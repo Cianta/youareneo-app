@@ -1,0 +1,38 @@
+{%- comment -%}
+  Feinschliff für alle Seiten (sitzt unsichtbar im Fußbereich):
+  lädt elemente-seite.js aus Inhalte → Dateien – geschwungene Übergänge, Knöpfe, Fuß-Karten,
+  Blog-Suche mit Auswahl, kompakte Blogkarten, News-Seite (Formular-Reparatur, fallende Zeitungsseiten)
+{%- endcomment -%}
+{%- assign es_handles = section.settings.blog_handles | split: ',' -%}
+<script id="es-feinschliff-daten" type="application/json">
+  {
+    "searchUrl": {{ routes.search_url | json }},
+    "blogs": [
+      {%- for h in es_handles -%}
+        {%- assign es_h = h | strip -%}
+        {%- assign es_b = blogs[es_h] -%}
+        {%- if es_b and es_b.title != blank -%}
+          {%- unless forloop.first -%},{%- endunless -%}
+          { "title": {{ es_b.title | json }}, "url": {{ es_b.url | json }}, "handle": {{ es_h | json }} }
+        {%- endif -%}
+      {%- endfor -%}
+    ],
+    "searchLabel": {{ section.settings.search_label | json }},
+    "blogLabel": {{ section.settings.blog_label | json }}
+  }
+</script>
+<script src="{{ 'elemente-seite.js' | file_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Feinschliff (Elemente)",
+  "tag": "div",
+  "class": "section-es-feinschliff",
+  "settings": [
+    { "type": "text", "id": "blog_handles", "label": "Blogs in der Auswahl (Handles, kommagetrennt)", "default": "der-weg,reisen" },
+    { "type": "text", "id": "search_label", "label": "Platzhalter der Blog-Suche", "default": "Beiträge durchsuchen …" },
+    { "type": "text", "id": "blog_label", "label": "Beschriftung der Blog-Auswahl", "default": "Alle Blogs" }
+  ],
+  "presets": [{ "name": "Feinschliff (Elemente)" }]
+}
+{% endschema %}

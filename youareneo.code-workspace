@@ -1,0 +1,47 @@
+{
+  // Öffnen in VS Code: Datei → Arbeitsbereich aus Datei öffnen … → youareneo.code-workspace
+  // Jeder Bereich erscheint links als eigener Ordner – kein Durcheinander mehr.
+  "folders": [
+    { "name": "🌐 Website-Theme (Shopify)", "path": "shopify-theme" },
+    { "name": "🛰️ Mission Control (Trinity OS)", "path": "mission-control" },
+    { "name": "📱 Portal-Apps", "path": "apps" },
+    { "name": "🔗 Gemeinsamer Code", "path": "shared" },
+    { "name": "📚 Doku & Notizen", "path": "docs" },
+    { "name": "🏠 Gesamtes Repo", "path": "." }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/dist": true,
+      "**/.DS_Store": true,
+      "**/._*": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/package-lock.json": true
+    },
+    "files.associations": { "*.liquid": "liquid" },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "package.json": "package-lock.json, .npmrc, tsconfig.json, next.config.*, postcss.config.*, tailwind.config.*",
+      "*.liquid": "${capture}.css, ${capture}.js"
+    },
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "workbench.editor.labelFormat": "short",
+    "git.autofetch": true
+  },
+  "extensions": {
+    "recommendations": [
+      "Shopify.theme-check-vscode",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "bradlc.vscode-tailwindcss",
+      "eamodio.gitlens",
+      "streetsidesoftware.code-spell-checker-german"
+    ]
+  }
+}

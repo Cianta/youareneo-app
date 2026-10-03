@@ -1,0 +1,142 @@
+{
+  "sections": {
+    "wegweiser": {
+      "type": "es-wegweiser",
+      "blocks": {
+        "knopf_01": {
+          "type": "knopf",
+          "settings": {
+            "label": "Community",
+            "icon": "community",
+            "color": "#5f9e8f",
+            "link": "/pages/community"
+          }
+        },
+        "knopf_02": {
+          "type": "knopf",
+          "settings": {
+            "label": "Visionen",
+            "icon": "vision",
+            "color": "#7b6fb0",
+            "link": "/pages/visions"
+          }
+        },
+        "knopf_03": {
+          "type": "knopf",
+          "settings": {
+            "label": "Projekte",
+            "icon": "projekt",
+            "color": "#6f9a52",
+            "link": "/pages/projekte"
+          }
+        },
+        "knopf_04": {
+          "type": "knopf",
+          "settings": {
+            "label": "Events",
+            "icon": "event",
+            "color": "#c27a4a",
+            "link": "/pages/events"
+          }
+        },
+        "knopf_05": {
+          "type": "knopf",
+          "settings": {
+            "label": "Lebenskünste",
+            "icon": "leben",
+            "color": "#b5739b",
+            "link": "/pages/lebenskunste"
+          }
+        },
+        "knopf_06": {
+          "type": "knopf",
+          "settings": {
+            "label": "News",
+            "icon": "news",
+            "color": "#b08d57",
+            "link": "/pages/news"
+          }
+        },
+        "knopf_07": {
+          "type": "knopf",
+          "settings": {
+            "label": "Blog",
+            "icon": "blog",
+            "color": "#4f8fb0",
+            "link": "/pages/blog"
+          }
+        },
+        "knopf_08": {
+          "type": "knopf",
+          "settings": {
+            "label": "Tools",
+            "icon": "tools",
+            "color": "#8a94a6",
+            "link": "/pages/one-solution"
+          }
+        },
+        "knopf_09": {
+          "type": "knopf",
+          "settings": {
+            "label": "Archiv",
+            "icon": "archiv",
+            "color": "#9a7b5c",
+            "link": "/pages/archiv"
+          }
+        },
+        "knopf_10": {
+          "type": "knopf",
+          "settings": {
+            "label": "Kontakt",
+            "icon": "kontakt",
+            "color": "#3f9aa0",
+            "link": "/pages/kontakt"
+          }
+        },
+        "knopf_11": {
+          "type": "knopf",
+          "settings": {
+            "label": "Kundenportal",
+            "icon": "kunde",
+            "color": "#a06a6a",
+            "link": "/account"
+          }
+        },
+        "knopf_12": {
+          "type": "knopf",
+          "settings": {
+            "label": "Mitgliederbereich",
+            "icon": "mitglied",
+            "color": "#c9a24a",
+            "link": "/pages/mitgliederbereiche"
+          }
+        }
+      },
+      "block_order": [
+        "knopf_01",
+        "knopf_02",
+        "knopf_03",
+        "knopf_04",
+        "knopf_05",
+        "knopf_06",
+        "knopf_07",
+        "knopf_08",
+        "knopf_09",
+        "knopf_10",
+        "knopf_11",
+        "knopf_12"
+      ],
+      "settings": {
+        "title": "Wohin möchtest du?"
+      }
+    },
+    "zeit": {
+      "type": "es-zeitstrahl",
+      "settings": {}
+    }
+  },
+  "order": [
+    "wegweiser",
+    "zeit"
+  ]
+}

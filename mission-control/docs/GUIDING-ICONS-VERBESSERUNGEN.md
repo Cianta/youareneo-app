@@ -43,7 +43,7 @@ Gemessene Tempelbild-Antworten:
 
 [Next.js-Bildformate und Qualitätsfreigabe](https://nextjs.org/docs/app/api-reference/components/image#formats). AVIF-Erzeugung erfolgt beim ersten Abruf, danach über den bestehenden Bildcache; größere Cache-/Erzeugungskosten sind der bekannte Format-Tradeoff. WebP bleibt explizit geprüft.
 
-Maschinenlesbarer Messnachweis: [GUIDING-ICONS-LIGHTHOUSE.json](GUIDING-ICONS-LIGHTHOUSE.json). Veröffentlichungsnachweis folgt nach Staging-/Produktionskontrolle.
+Maschinenlesbarer Messnachweis: [GUIDING-ICONS-LIGHTHOUSE.json](GUIDING-ICONS-LIGHTHOUSE.json). Veröffentlichungsnachweis: [GUIDING-ICONS-RELEASE.json](GUIDING-ICONS-RELEASE.json).
 
 ## Kurz testen
 
@@ -51,3 +51,9 @@ Maschinenlesbarer Messnachweis: [GUIDING-ICONS-LIGHTHOUSE.json](GUIDING-ICONS-LI
 2. Übersicht → „Mit AI planen“: Trinity öffnet den bearbeitbaren Tagesplan-Prompt. Erst ausdrückliches Senden startet die KI-Anfrage. Einen eigenen Text schreiben, schließen und erneut öffnen: der Text bleibt.
 3. Login: Trinity-Beschriftung rechts unten auch bei zuvor hellem Arbeitsbereich gut lesbar.
 4. Handy: Navigation, kleines Fokusfenster, Journal, Kalender und Trinity-Widget bedienen. Reale Mikrofon-/Infomaniak-/Hermes-Abnahme ist damit nicht behauptet.
+
+## Veröffentlichung
+
+Anwendungsstand `fe3a88b2b9e1737e3a7472dd87b7b3ca4e3c6ca7` zuerst auf [Staging](https://trinity-stg.youareneo.com/notiz), nach erfolgreicher Prüfung auf [Produktion](https://trinity.youareneo.com/notiz) veröffentlicht. Nur `docker compose up -d --build` in den beiden erlaubten Mission-Control-Ordnern. Beide Container laufen; je 74 HTTP-/Asset-/Zugriffskontrollen einschließlich 24 Next-Assets erfolgreich. Die 19 neuen/geänderten Paketdateien sowie insgesamt 87 Dateien zusammen mit dem vorherigen Paket stimmen per SHA-256 überein. Secrets, Compose, ausgeschlossene Dienste und der unabhängig geänderte Auth-Übergabedokumentstand sind erhalten.
+
+Der Live-Browser bestätigt auf beiden Domains die neuen Favicon-/Apple-Verknüpfungen, geladene 28-px-Dock-Sonne und die unabhängige Logoanimation. Die Produktionsseite wurde ohne vorhandenen Entwurf neu geladen. Echte Anmeldung, Mailversand, Mikrofon-/KI-Provider, Hermes-Freigabe sowie ein bereits installiertes Handy-Symbol sind damit nicht abgenommen. Der App-Commit enthält den gemessenen Code; spätere Änderungen dieses PR sind nur Dokumentation.

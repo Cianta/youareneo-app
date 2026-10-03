@@ -27,6 +27,7 @@ import { Modal } from "@/components/ui/Modal";
 export function Calendar() {
   const store = useTemporalStore(),personal=usePersonal();
   const [date, setDate] = useState(localDate());
+  const [view,setView]=useState<"month"|"year"|"week">("month");
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 30_000);
@@ -138,9 +139,10 @@ export function Calendar() {
           Termin planen
         </button>
       </div>
-      <CalendarOverview date={date} setDate={setDate} onNew={showNew} onEvent={ev=>{setEditingId(ev.id);setTitle(ev.title);setStart(ev.startTime||"");setEnd(ev.endTime||"");setCalendarId(ev.calendarId);setNotes(ev.notes||"");setPlace(ev.location);setGlobePlace(ev.location);setAttachments(ev.attachments??[]);setOpen(true);}}/>
-      <div className="w-calendar-layout">
-        <section className="w-card">
+      <div className="w-calendar-layout calendar-studio-layout">
+        <div className="calendar-tab-column"><div className="calendar-view-tabs" role="tablist" aria-label="Kalenderansicht">{([['month','Monat'],['year','Jahr'],['week','Woche & Tag']] as const).map(([key,label],i)=><button key={key} id={'calendar-tab-'+key} role="tab" aria-selected={view===key} aria-controls={'calendar-panel-'+key} tabIndex={view===key?0:-1} onClick={()=>setView(key)} onKeyDown={e=>{const keys=['month','year','week'] as const;const next=e.key==='ArrowRight'?(i+1)%3:e.key==='ArrowLeft'?(i+2)%3:e.key==='Home'?0:e.key==='End'?2:-1;if(next>=0){e.preventDefault();setView(keys[next]);document.getElementById('calendar-tab-'+keys[next])?.focus();}}}>{label}</button>)}</div>
+        {view!=="week"&&<div id={'calendar-panel-'+view} role="tabpanel" aria-labelledby={'calendar-tab-'+view}><CalendarOverview view={view==="year"?"year":"month"} onDay={()=>setView("week")} onMonth={()=>setView("month")} date={date} setDate={setDate} onNew={showNew} onEvent={ev=>{setEditingId(ev.id);setTitle(ev.title);setStart(ev.startTime||"");setEnd(ev.endTime||"");setCalendarId(ev.calendarId);setNotes(ev.notes||"");setPlace(ev.location);setGlobePlace(ev.location);setAttachments(ev.attachments??[]);setOpen(true);}}/></div>}
+        <section className="w-card calendar-week-panel" role="tabpanel" id="calendar-panel-week" aria-labelledby="calendar-tab-week" hidden={view!=="week"}>
           <div className="w-calendar-toolbar">
             <h2>
               {day.toLocaleDateString("de-AT", {
@@ -277,6 +279,7 @@ export function Calendar() {
             )}
           </div>
         </section>
+        <section className="calendar-planner"><DailyPlanner selectedDate={date} onDateChange={setDate} onAddGoal={()=>window.location.assign("/dashboard/goals")} renderGoals={<Link className="w-btn" href="/dashboard/goals">Ziele & Journal öffnen →</Link>}/></section></div>
         <aside className="w-calendar-aside"><PlanGlobe place={globePlace}/><CalendarSources year={Number(date.slice(0,4))}/><DayPlan date={date} onPlace={setGlobePlace}/>
           <section className="w-card">
             <div className="w-section-head">
@@ -342,7 +345,6 @@ export function Calendar() {
           </section>
         </aside>
       </div>
-      <section className="calendar-planner"><DailyPlanner selectedDate={date} onDateChange={setDate} onAddGoal={()=>window.location.assign("/dashboard/goals")} renderGoals={<Link className="w-btn" href="/dashboard/goals">Ziele & Journal öffnen →</Link>}/></section>
       <Modal
         open={open}
         onClose={() => setOpen(false)}

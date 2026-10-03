@@ -9,8 +9,10 @@ export type Contact = {
   company: string;
   phone?: string;
   workspace: Workspace;
-  source: "local" | "hubspot";
+  source: "local" | "hubspot" | "ghl";
   updatedAt: string;
+  stage?: "neu"|"im_gespraech"|"verbunden"|"ruhend";
+  note?:string;nextContact?:string;tags?:string[];favorite?:boolean;
 };
 export const useContacts = create<{
   contacts: Contact[];

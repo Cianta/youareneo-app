@@ -132,3 +132,9 @@ Gerätesicherungsformat weiterhin Version 1: zusätzlicher erlaubter Speichersch
 ### Änderungen durch Codex · Lilasonne und Kommunikation (03.10.2026)
 
 Additive UI-Route `/dashboard/communication/meeting`: lokale eigene Raumlinks im vorhandenen `trinity-personal-v1.customLinks` (Kategorie `meeting`), kein neuer API-Endpunkt. Kontakte erhalten optional `phone` im bisherigen lokalen `trinity-contacts-v1`; dies ist kein neues Supabase-Profilfeld und kein CRM-Abgleich. Auth-/Provisioning-Pfade, Tabellen, Cookie-Name und Domain bleiben unverändert. Keine neue Env-Variable.
+
+## Änderungen durch Codex – Arbeitsraum, CRM und Meeting (04.10.2026)
+
+Additiv: `GET/POST /api/crm/contacts`, `POST /api/crm/sync` und `POST /api/meeting/invite`. Alle prüfen die Supabase-Sitzung selbst; Schreiboperationen zusätzlich aktiven App-/Förderzugang, gleiche Herkunft und die erwartete `userId` (409 beim Kontowechsel). Import-/SMTP-Tokens werden ausschließlich aus der Server-`.env` gelesen und einer expliziten Besitzer-UUID zugeordnet. CRM-Daten im eigenen vorhandenen Datenvolume, keine neue Supabase-Tabelle. Manuelle Importvorschau, kein Rückschreiben an HubSpot/GHL. SMTP-Einladungen ausschließlich nach bewusstem Klick; Supabase-SMTP für Login-Mails bleibt unverändert. Neue Env-Namen und vollständige Request-/Response-Formate: [GUIDING-WORKSPACE-STUDIO.md](GUIDING-WORKSPACE-STUDIO.md).
+
+Auth-/Provisioning-Endpunkte, deren Formate, Cookie-Name und `.youareneo.com`-Domain, `neo_profiles` und `neo_access` bleiben unverändert. Keine Portal-/Make-/n8n-/FuseBase-Konfiguration verändert. Lokale Speicher und bisherige Inhalte werden erhalten. Neue UI: manuell einklappbare Navigation, rechte Journal-Notizschublade, Kalender-Tabs mit dauerhaft sichtbarer Erde, kompakte Laborbereiche, Projekt-Observatorium, CRM und Wissensauswertungen.

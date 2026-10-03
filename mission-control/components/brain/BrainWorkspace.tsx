@@ -24,6 +24,7 @@ import {
 } from "@/components/workspace/States";
 import { colors, labels } from "./shared";
 import "./brain.css";
+import {BrainInsights} from "./BrainInsights";
 const Graph2D = dynamic(() => import("./Graph2D"), {
   ssr: false,
   loading: () => <LoadingState label="2D-Ansicht wird geladen …" />,
@@ -186,7 +187,7 @@ export default function BrainWorkspace({
         <div>
           <Link href="/dashboard">← Übersicht</Link>
           <h1>Gehirn</h1>
-          <p>Deine Gedanken und ihre Verbindungen</p>
+          <p>Finde Gedanken, erkenne Zusammenhänge und entdecke deinen nächsten Schritt.</p>
         </div>
         <button
           className="workspace-button"
@@ -375,6 +376,7 @@ export default function BrainWorkspace({
               )}
             </aside>
           </div>
+          <BrainInsights graph={filtered!} nodes={hits} onSearch={setQuery}/>
         </>
       )}
     </section>

@@ -31,8 +31,8 @@ export default function AssistantDock() {
   const [panel, setPanel] = useState<"capture"|"chat"|"settings"|null>(null);
   const [settingsTab,setSettingsTab]=useState<"microphone"|"companion"|"appearance"|"sync">("microphone");
   const [chatMounted,setChatMounted]=useState(false);
-  const chatControls=useRef<ChatControls|null>(null), pendingDictation=useRef<{append:boolean;held:boolean}|null>(null), focusPrompt=useRef(false);
-  const receiveControls=useCallback((controls:ChatControls|null)=>{chatControls.current=controls;if(controls && focusPrompt.current){controls.focus();focusPrompt.current=false;}if(controls && pendingDictation.current?.held)void controls.start(pendingDictation.current.append);},[]);
+  const chatControls=useRef<ChatControls|null>(null), pendingDictation=useRef<{append:boolean;held:boolean}|null>(null), focusPrompt=useRef(false), pendingPrompt=useRef<string|null>(null);
+  const receiveControls=useCallback((controls:ChatControls|null)=>{chatControls.current=controls;if(controls && pendingPrompt.current){controls.prefill(pendingPrompt.current);pendingPrompt.current=null;}if(controls && focusPrompt.current){controls.focus();focusPrompt.current=false;}if(controls && pendingDictation.current?.held)void controls.start(pendingDictation.current.append);},[]);
   const openChat=()=>{setChatMounted(true);setPanel("chat");focusPrompt.current=true;requestAnimationFrame(()=>{chatControls.current?.focus();if(chatControls.current)focusPrompt.current=false;});};
   const [draft, setDraft] = useState<NoteDraft|null>(null), [projects,setProjects] = useState<string[]>([]);
   const [config,setConfig] = useState<Config|null>(null), [phase,setPhase] = useState(""), [error,setError] = useState(""), [notice,setNotice] = useState("");
@@ -44,6 +44,17 @@ export default function AssistantDock() {
   const currentDraft = useRef(draft); currentDraft.current = draft;
   const state = useRef({phase,preferences}); state.current = {phase,preferences};
   const openChatRef=useRef(openChat);openChatRef.current=openChat;
+  useEffect(()=>{
+    const open=(event:Event)=>{
+      const prompt=(event as CustomEvent<{prompt?:unknown}>).detail?.prompt;
+      if(typeof prompt!=="string" || !prompt.trim() || prompt.length>4000)return;
+      if(chatControls.current)chatControls.current.prefill(prompt);
+      else pendingPrompt.current=prompt;
+      openChatRef.current();
+    };
+    window.addEventListener("neo-assistant-open",open);
+    return()=>window.removeEventListener("neo-assistant-open",open);
+  },[]);
   const receiveAudio = useRef<(blob:Blob)=>void>(()=>{});
   const mic = useChatMicrophone({onAudio:blob=>receiveAudio.current(blob),onSpeechStart:()=>{
     window.dispatchEvent(new Event("neo-stop-chat")); window.speechSynthesis?.cancel();
@@ -245,7 +256,7 @@ export default function AssistantDock() {
         </>
       </div>
     </aside>}
-    <div className="assistant-dock" aria-label="Trinity Steuerung">
+    <div data-surface={path==="/login" || path.startsWith("/auth/") ? "auth" : "workspace"} className="assistant-dock" aria-label="Trinity Steuerung">
       <button title="Gedrückt halten zum Sprechen · Ctrl+Shift+Leertaste" aria-label="Sprachnotiz aufnehmen: gedrückt halten" aria-pressed={active} className={active ? "is-listening" : ""}
         onPointerDown={e=>{if(e.button!==0)return;e.preventDefault();e.currentTarget.setPointerCapture(e.pointerId);void startRef.current();}}
         onPointerUp={release} onPointerCancel={()=>{intent.current=false;mic.cancel();}} onLostPointerCapture={()=>{if(intent.current)release();}}
@@ -254,7 +265,7 @@ export default function AssistantDock() {
       </button>
       <button aria-label={preferences.sound ? "Ton ausschalten" : "Ton einschalten"} aria-pressed={preferences.sound} title="Sprachausgabe ein / aus" onClick={()=>update({sound:!preferences.sound})}>{preferences.sound ? <Volume2 size={20}/> : <VolumeX size={20}/>}</button>
       <button aria-label="Trinity Einstellungen öffnen" title="Mikrofon, Begleiter & Darstellung" aria-expanded={panel==="settings"} onClick={()=>panel==="settings"?close():openSettings("microphone")}><Settings size={20}/></button>
-      <div className="assistant-identity"><button type="button" className="trinity-sun" data-state={avatarState} aria-label={`${assistantName}: Gespräch öffnen`} aria-expanded={panel==="chat"} title="Trinity öffnen · Alt+Y" onClick={()=>{if(path==="/sprechen"){document.getElementById("chat-text")?.focus();return;}if(panel==="chat")close();else openChat();}} style={{"--voice-level":active?mic.level:chatPulse.level} as import("react").CSSProperties}><Image src="/pwa/trinity-sun-transparent.png" width={64} height={64} sizes="64px" priority fetchPriority="high" alt=""/><span>{assistantName}</span></button><button className="assistant-menu" aria-label="Trinity Menü öffnen" aria-controls="assistant-chat-panel" aria-expanded={panel==="chat"} title="Prompt öffnen · Alt+Y" onClick={()=>{if(panel==="chat")close();else openChat();}}><Menu size={16}/></button></div>
+      <div className="assistant-identity"><button type="button" className="trinity-sun" data-state={avatarState} aria-label={`${assistantName}: Gespräch öffnen`} aria-expanded={panel==="chat"} title="Trinity öffnen · Alt+Y" onClick={()=>{if(path==="/sprechen"){document.getElementById("chat-text")?.focus();return;}if(panel==="chat")close();else openChat();}} style={{"--voice-level":active?mic.level:chatPulse.level} as import("react").CSSProperties}><Image src="/pwa/trinity-sun-transparent.png" width={28} height={28} sizes="28px" alt=""/><span>{assistantName}</span></button><button className="assistant-menu" aria-label="Trinity Menü öffnen" aria-controls="assistant-chat-panel" aria-expanded={panel==="chat"} title="Prompt öffnen · Alt+Y" onClick={()=>{if(panel==="chat")close();else openChat();}}><Menu size={16}/></button></div>
       {(phase||draft)&&panel===null&&<span className="assistant-indicator" aria-label={phase||"Einordnung liegt bereit"}/>}
     </div>
   </>;

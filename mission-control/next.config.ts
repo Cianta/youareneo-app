@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   serverExternalPackages: ['free-human-design', 'city-timezones', '@anthropic-ai/sdk', 'openai', '@google/generative-ai', '@fusebase/fusebase-gate-sdk'],
   images: {
+    qualities: [60, 75],
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
     ],

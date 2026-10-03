@@ -1,0 +1,158 @@
+{
+  "sourceBranch": "codex/guiding-icons-performance",
+  "method": "Local production build, mobile Lighthouse, three fixture runs, no real login/provider calls",
+  "summary": [
+    {
+      "route": "/login",
+      "runs": 3,
+      "performance": 95,
+      "accessibility": 100,
+      "lcp": 2909.5735,
+      "cls": 0,
+      "tbt": 2.5,
+      "consoleErrors": 0,
+      "jsBytes": 683530
+    },
+    {
+      "route": "/dashboard",
+      "runs": 3,
+      "performance": 88,
+      "accessibility": 100,
+      "lcp": 3748.0409999999997,
+      "cls": 0.02488601901824194,
+      "tbt": 24.5,
+      "consoleErrors": 0,
+      "jsBytes": 911681
+    },
+    {
+      "route": "/notiz",
+      "runs": 3,
+      "performance": 95,
+      "accessibility": 100,
+      "lcp": 2784.3999999999996,
+      "cls": 0.025558781454057253,
+      "tbt": 15,
+      "consoleErrors": 0,
+      "jsBytes": 902546
+    }
+  ],
+  "heroImageResponses": [
+    {
+      "quality": 60,
+      "width": 750,
+      "bytes": 24853,
+      "type": "image/avif"
+    },
+    {
+      "quality": 60,
+      "width": 750,
+      "bytes": 43314,
+      "type": "image/webp"
+    },
+    {
+      "quality": 60,
+      "width": 1920,
+      "bytes": 90054,
+      "type": "image/avif"
+    },
+    {
+      "quality": 60,
+      "width": 1920,
+      "bytes": 150322,
+      "type": "image/webp"
+    },
+    {
+      "quality": 75,
+      "width": 750,
+      "bytes": 50828,
+      "type": "image/avif"
+    },
+    {
+      "quality": 75,
+      "width": 750,
+      "bytes": 53676,
+      "type": "image/webp"
+    },
+    {
+      "quality": 75,
+      "width": 1920,
+      "bytes": 173461,
+      "type": "image/avif"
+    },
+    {
+      "quality": 75,
+      "width": 1920,
+      "bytes": 183936,
+      "type": "image/webp"
+    }
+  ],
+  "imageChecks": [
+    {
+      "file": "trinity-sun-v2-32.png",
+      "size": [
+        32,
+        32
+      ],
+      "transparentCorners": true,
+      "sha256": "d2b4082940a97fe3fc6d4c1ddcd68f7490f5fe84e52d46495e88ff8410a813de"
+    },
+    {
+      "file": "trinity-sun-v2-192.png",
+      "size": [
+        192,
+        192
+      ],
+      "transparentCorners": true,
+      "sha256": "543034e0c2c0aca2b477019e9f4298d5310f4bf8150d0ba662602863f0ddfb86"
+    },
+    {
+      "file": "trinity-sun-v2-512.png",
+      "size": [
+        512,
+        512
+      ],
+      "transparentCorners": true,
+      "sha256": "14f0d5b3991957d76dcf30bd37d2c573dc8ecdcfff1b4082bc088c6adde5cc43"
+    },
+    {
+      "file": "trinity-sun-v2-apple-180.png",
+      "size": [
+        180,
+        180
+      ],
+      "opaqueDarkCorners": true,
+      "sha256": "5dba9f588082977f889a61ba624981104e1ab55490ab2413b6497cb4488048f4"
+    },
+    {
+      "file": "trinity-sun-v2-maskable-512.png",
+      "size": [
+        512,
+        512
+      ],
+      "opaqueDarkCorners": true,
+      "sha256": "9634d732440798df3ee6bd61636f5e07305e82176def6faaa9fe0ee4644e27f9"
+    },
+    {
+      "file": "trinity-sun-v2-favicon.ico",
+      "icoSizes": [
+        [
+          16,
+          16
+        ],
+        [
+          32,
+          32
+        ],
+        [
+          48,
+          48
+        ],
+        [
+          64,
+          64
+        ]
+      ],
+      "transparentCorners": true
+    }
+  ]
+}

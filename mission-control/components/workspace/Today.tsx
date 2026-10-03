@@ -20,7 +20,6 @@ import {
   useAuthStore,
   useTemporalStore,
   useFocusStore,
-  useFloatingAgentStore,
   useLauncherStore,
 } from "@/lib/store";
 import { useBoard } from "@/lib/workspace/useBoard";
@@ -32,9 +31,12 @@ import {
 } from "@/lib/workspace/board";
 import { localDate, validWebUrl } from "@/lib/workspace/time";
 import { FocusCard } from "./FocusSpace";
+import { openAssistantPrompt } from "@/lib/assistant/widget";
+import { useBrand } from "@/components/voice/BrandProvider";
 
 
 export function Today() {
+  const {appName,assistantName} = useBrand();
   const user = useAuthStore((s) => s.user);
   const { board, ready, error, change } = useBoard();
   const temporal = useTemporalStore();
@@ -108,7 +110,7 @@ export function Today() {
           Tag planen <ArrowUpRight size={15} />
         </Link>
       </div>
-      <section className="w-hero"><Image src="/images/sanctuary.webp" alt="" fill priority fetchPriority="high" sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1200px) calc(100vw - 270px), 1100px" quality={78} className="w-hero-image" />
+      <section className="w-hero"><Image src="/images/sanctuary.webp" alt="" fill priority fetchPriority="high" sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1200px) calc(100vw - 270px), 1100px" quality={60} className="w-hero-image" />
         <div className="w-hero-content">
           <span className="w-eyebrow">
             <Leaf size={13} /> DEIN RAUM. DEIN RHYTHMUS.
@@ -366,15 +368,11 @@ export function Today() {
             <h2>
               Du bringst die Vision.
               <br />
-              Trinity hilft beim nächsten Schritt.
+              {assistantName} hilft beim nächsten Schritt.
             </h2>
             <button
               className="w-text-link"
-              onClick={() => {
-                const ai = useFloatingAgentStore.getState();
-                ai.setInput("Hilf mir, meinen Tag zu strukturieren.");
-                if (!ai.isOpen) ai.toggle();
-              }}
+              onClick={() => openAssistantPrompt("Hilf mir, meinen Tag zu strukturieren.")}
             >
               Mit AI planen <ArrowUpRight size={15} />
             </button>
@@ -386,7 +384,7 @@ export function Today() {
         <span>
           <Leaf size={12} /> Für ein Leben in Balance.
         </span>
-        <span>TRINITY · YOU ARE NEO</span>
+        <span>{appName} · YOU ARE NEO</span>
       </footer>
     </div>
   );

@@ -1,4 +1,8 @@
 export type WidgetAction = 'open' | 'dictate' | 'append' | 'send';
+// Local UI intent only: opening the composer must never send a message.
+export function openAssistantPrompt(prompt: string) {
+  window.dispatchEvent(new CustomEvent('neo-assistant-open', {detail: {prompt}}));
+}
 export function widgetShortcut(e: Pick<KeyboardEvent,'key'|'code'|'altKey'|'ctrlKey'|'metaKey'|'shiftKey'|'isComposing'>): WidgetAction | null {
   if(!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.isComposing)return null;
   // Character keys support QWERTZ; physical fallbacks also handle macOS Option symbols.

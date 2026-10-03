@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import {HeaderBookmarks,HeaderFocus,HeaderSettings} from "./HeaderTools";
 import {Atmosphere} from "./Atmosphere";
 import {useNavAttention} from "./NavAttention";
-import {Home,NotebookPen,CheckSquare,FolderOpen,Network,BookOpen,Lightbulb,CalendarDays,Orbit,Leaf,Grid2X2,FlaskConical,Settings,Mail,Search,LogOut,Notebook as NotebookIcon} from "lucide-react";
+import {Home,NotebookPen,CheckSquare,FolderOpen,Network,BookOpen,Lightbulb,CalendarDays,Orbit,Leaf,Grid2X2,FlaskConical,Settings,Mail,Search,LogOut,LogIn,Notebook as NotebookIcon} from "lucide-react";
 import {TrinityLogo} from "@/components/sacred-geometry/TrinityLogo";
 import { primary } from "@/lib/workspace/navigation";
 import type { WorkspaceIdentity } from "@/lib/workspace/session";
@@ -162,7 +162,7 @@ export function WorkspaceShell({
             <NotebookIcon size={16} className="header-notebook-icon"/><span className="header-notebook-label">Notizbuch</span>
           </button>
           <HeaderSettings/>
-          {authenticated ? <button aria-label="Abmelden" title="Abmelden" onClick={() => void logout()}><LogOut size={16} className="header-logout-icon"/><span className="header-logout-label">Abmelden</span></button> : <Link href="/login" className="workspace-button">Anmelden</Link>}
+          {authenticated ? <button aria-label="Abmelden" title="Abmelden" onClick={() => void logout()}><LogOut size={16} className="header-logout-icon"/><span className="header-logout-label">Abmelden</span></button> : <Link href="/login" className="header-icon" aria-label="Anmelden" title="Anmelden"><LogIn size={16}/></Link>}
         </header>
         <main
           id="workspace-content"

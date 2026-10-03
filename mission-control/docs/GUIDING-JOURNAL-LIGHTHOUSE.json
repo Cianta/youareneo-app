@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-03",
+  "sourceCommit": "137072ece8e138b43899cbf3226badbb59734964",
+  "fixture": true,
+  "source": "local production build; mobile Lighthouse 13.5.0; three runs, median; external providers and writes blocked",
+  "summary": [
+    {
+      "route": "/login",
+      "runs": 3,
+      "performance": 96,
+      "accessibility": 96,
+      "lcp": 2854.812000000001,
+      "cls": 0,
+      "tbt": 11,
+      "consoleErrors": 0,
+      "jsBytes": 679734
+    },
+    {
+      "route": "/notiz",
+      "runs": 3,
+      "performance": 93,
+      "accessibility": 100,
+      "lcp": 3081.315,
+      "cls": 0.0649010350292691,
+      "tbt": 11.5,
+      "consoleErrors": 0,
+      "jsBytes": 898750
+    },
+    {
+      "route": "/dashboard",
+      "runs": 3,
+      "performance": 86,
+      "accessibility": 100,
+      "lcp": 3972.4630000000006,
+      "cls": 0.031086209577570165,
+      "tbt": 15,
+      "consoleErrors": 0,
+      "jsBytes": 907126
+    },
+    {
+      "route": "/dashboard/goals",
+      "runs": 3,
+      "performance": 91,
+      "accessibility": 100,
+      "lcp": 3455.628,
+      "cls": 0.00794277786187771,
+      "tbt": 33,
+      "consoleErrors": 0,
+      "jsBytes": 917477
+    },
+    {
+      "route": "/dashboard/calendar",
+      "runs": 3,
+      "performance": 91,
+      "accessibility": 100,
+      "lcp": 3454.6574999999993,
+      "cls": 0.00794277786187771,
+      "tbt": 54.5,
+      "consoleErrors": 0,
+      "jsBytes": 927621
+    }
+  ]
+}

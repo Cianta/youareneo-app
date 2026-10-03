@@ -47,10 +47,28 @@ Der ICS-Parser ist auf 2 MB, maximal 5.000 Termine und begrenzte Wiederholungsdu
 4. Kalender: Monats-/Jahresauswahl, Termin mit Ort, + zum Tagesplan, Kalenderdatei einlesen, Sichtbarkeit und Farben prüfen. Ein erneuter Import desselben Abos/Jahres erzeugt keine Duplikate.
 5. Handy: Header-Icons, untere Tab-Leiste, Journalnotizen, Wochen-/Monatskalender und Trinity-Einstieg bedienen. Bestehende Astro-, Ideenboard-, Radio-/Rezept- und Assistentenrouten bleiben erreichbar.
 
-Mess- und Veröffentlichungsnachweis wird nach den abschließenden Prüfungen hier ergänzt. Echte Konto-/Mikrofon-/KI-Abnahme bleibt entsprechend dem Nutzerwunsch separat; lokale Fixtures geben keine solche Abnahme vor.
+Mess- und Veröffentlichungsnachweis stehen unten. Echte Konto-/Mikrofon-/KI-Abnahme bleibt entsprechend dem Nutzerwunsch separat; lokale Fixtures geben keine solche Abnahme vor.
 
 ## Technische Prüfung
 
 Produktionsbuild und TypeScript erfolgreich. Alle 80 Unit-/Integrationstests erfolgreich, darunter neun neue Tests für Fokusblöcke, Hintergrundtimer, erhaltene Prioritäten/Reflexionen, Monatsraster, ICS-Wiederholungen/Ausnahmen/Ganztagstermine, Zeitzonen-/Größenlimits, erlaubte Feedpfade und das Entfernen von Abo-URLs aus Sicherungen. Vexp meldet keine gebrochenen Imports, Parsefehler oder offenen strukturellen Abhängigkeiten.
 
 Lokale Browser-Fixtures bestätigen neue Headerfenster, Lilasonne, Journalbearbeitung, alte Prioritäten, geordnete Fokusblöcke, Neustarten/Stoppen, automatische 45/10-Pause, Musikwechsel zur Pause, ICS-Dateiimport und 320/390-Pixel-Ansichten ohne horizontales Überlaufen. Die Erde lädt ihren 3D-Renderer erst im sichtbaren Kalenderbereich. Zusätzlich sind wiederhergestellte Räume einschließlich Ideenboard/Geburtsberechnung, Begleiter-/Geräte-/Sicherungsfunktionen, Assistenten-Kürzel/Einordnung/Kontenwechsel und Chat-Diktat geprüft. Keine privaten Daten oder tatsächlichen Kalenderkonten angelegt; externe Videoaufrufe im Fixture blockiert. Die tatsächliche Video- und Musikwiedergabe im Browser des Nutzers bleibt getrennt zu prüfen.
+
+## Lighthouse und Bündelprüfung
+
+Mobiler Lighthouse 13.5.0 auf dem lokalen Produktionsbuild, je drei Läufe mit Konto-/Daten-Fixtures, Median. Kein Mobilfunk-/VPS- oder echter Konto-Test. Alle 15 Läufe ohne Konsolenfehler, unerwartete externe Zugriffe oder Schreibvorgänge.
+
+| Route | Performance | Accessibility | LCP | TBT | JavaScript unkomprimiert |
+|---|---:|---:|---:|---:|---:|
+| `/login` | 96 | 96 | 2.85 s | 11.0 ms | 664 KiB |
+| `/notiz` | 93 | 100 | 3.08 s | 11.5 ms | 878 KiB |
+| `/dashboard` | 86 | 100 | 3.97 s | 15.0 ms | 886 KiB |
+| `/dashboard/goals` | 91 | 100 | 3.46 s | 33.0 ms | 896 KiB |
+| `/dashboard/calendar` | 91 | 100 | 3.45 s | 54.5 ms | 906 KiB |
+
+Journal, Kalender, Notizen und Login erreichen das Performance-Ziel ≥ 90. Die Startseite erreicht 86; das Ziel ist dort weiterhin offen. Login hat einen verbleibenden Kontrastbefund (Accessibility 96), die vier anderen Seiten erreichen 100. Die Kalenderseite lädt vor Sichtbarkeit der Erde keinen 3D-Renderer. Gegenüber dem ersten Lauf dieses Pakets sinkt ihr JavaScript von 1.683 MB auf 0.928 MB und TBT von 271.5 auf 54.5 ms; Performance von 84 auf 91. Das ist ein lokaler Vergleich unter denselben Fixture-Bedingungen, keine allgemeine Geschwindigkeitsgarantie.
+
+Endgültige Werte: [GUIDING-JOURNAL-LIGHTHOUSE.json](GUIDING-JOURNAL-LIGHTHOUSE.json). Reproduzierbar mit `scripts/audit-workspace-local.mjs`.
+
+Zusätzliche Live-Korrektur: Der Gast-Header verwendet jetzt ein zugänglich als „Anmelden“ beschriftetes Login-Symbol. Der zuvor überlappende Textknopf entfällt auf schmalen Bildschirmen. Die Browserprüfung kontrolliert zusätzlich die tatsächlichen Abstände aller Headeraktionen bei 320 und 390 px, auch ohne Anmeldung. Ein lokaler Fehler im generierten Next-Font-Cache wurde durch erneutes Erzeugen ausschließlich des Buildverzeichnisses behoben; Quellcode und Nutzerdaten blieben erhalten. Die Lighthouse-Tabelle wurde vor diesem kleinen Gast-Header-Fix auf Commit `137072e` gemessen.

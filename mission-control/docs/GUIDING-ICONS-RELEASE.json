@@ -1,0 +1,778 @@
+{
+  "appCommit": "fe3a88b2b9e1737e3a7472dd87b7b3ca4e3c6ca7",
+  "branch": "codex/guiding-icons-performance",
+  "pullRequest": "https://github.com/Cianta/youareneo-app/pull/24",
+  "productionAuthorizedByUser": true,
+  "date": "2026-10-04",
+  "packageFiles": [
+    {
+      "remote": "app/layout.tsx",
+      "sha256": "1186ecc9b7995392e6048e3f747cfccd4a16374eec451e9fc1e3ea49ed5cface"
+    },
+    {
+      "remote": "app/manifest.webmanifest/route.ts",
+      "sha256": "eb21ab895ba87a494a146684c11dcfae616d2de60b6e8cbaa8e8eb2ba8a69e05"
+    },
+    {
+      "remote": "components/assistant/AssistantDock.tsx",
+      "sha256": "24c967c70d508ac5cb74e00362ddabfacb1cf01172b9420210b7b203f3d5862d"
+    },
+    {
+      "remote": "components/assistant/assistant.css",
+      "sha256": "729511e89ce42881858cf18d62e19c8fe8e57cb63c3630574531e6d70f900a16"
+    },
+    {
+      "remote": "components/chat/ChatWorkspace.tsx",
+      "sha256": "b5c94d2f86eeb8c03f3206eec13d1492e25e5afec953dfe6829cdce586afc9fc"
+    },
+    {
+      "remote": "components/workspace/Today.tsx",
+      "sha256": "afc8cf8f1da96c87ca461da65356200aafe68094eafe504aad6a1f081cc92046"
+    },
+    {
+      "remote": "docs/GUIDING-ICONS-LIGHTHOUSE.json",
+      "sha256": "43b795e09ff3b16802cfb21ff821e474d7cc39b3e2d5f7fa05edbaa820caed2c"
+    },
+    {
+      "remote": "docs/GUIDING-ICONS-VERBESSERUNGEN.md",
+      "sha256": "3810d121dc9e52f7b772cc921bdf11db60121e0714df751d64fd7a7049bbb899"
+    },
+    {
+      "remote": "lib/assistant/widget.ts",
+      "sha256": "ee5af747f28e39c15232f22ab44e4e2e0d7e840c236a5baabca8b7c7bd9fc895"
+    },
+    {
+      "remote": "next.config.ts",
+      "sha256": "74283146a2c642f10b03fd447efcb8272c649b2b2e63d4dd38aa12da22e509f9"
+    },
+    {
+      "remote": "public/favicon.ico",
+      "sha256": "c4f97bd4a4dc9ccc4a92de0a90ede7c034c5acb08646541d0178fd5611e4c916"
+    },
+    {
+      "remote": "public/pwa/trinity-sun-v2-192.png",
+      "sha256": "543034e0c2c0aca2b477019e9f4298d5310f4bf8150d0ba662602863f0ddfb86"
+    },
+    {
+      "remote": "public/pwa/trinity-sun-v2-32.png",
+      "sha256": "d2b4082940a97fe3fc6d4c1ddcd68f7490f5fe84e52d46495e88ff8410a813de"
+    },
+    {
+      "remote": "public/pwa/trinity-sun-v2-512.png",
+      "sha256": "14f0d5b3991957d76dcf30bd37d2c573dc8ecdcfff1b4082bc088c6adde5cc43"
+    },
+    {
+      "remote": "public/pwa/trinity-sun-v2-apple-180.png",
+      "sha256": "5dba9f588082977f889a61ba624981104e1ab55490ab2413b6497cb4488048f4"
+    },
+    {
+      "remote": "public/pwa/trinity-sun-v2-favicon.ico",
+      "sha256": "c4f97bd4a4dc9ccc4a92de0a90ede7c034c5acb08646541d0178fd5611e4c916"
+    },
+    {
+      "remote": "public/pwa/trinity-sun-v2-maskable-512.png",
+      "sha256": "9634d732440798df3ee6bd61636f5e07305e82176def6faaa9fe0ee4644e27f9"
+    },
+    {
+      "remote": "public/sw.js",
+      "sha256": "696cc22febe230a702d2b76d86f5059a4c37d71e81209fb3cfeb0dfc578838bb"
+    },
+    {
+      "remote": "scripts/test-restored-browser.mjs",
+      "sha256": "9930e5e9a8c59b2d353e0137ac71a8ec50ca77f765b78a2e4b9d3ffffe14599f"
+    }
+  ],
+  "instances": {
+    "stg": {
+      "url": "https://trinity-stg.youareneo.com",
+      "running": true,
+      "newPackageFilesVerified": 19,
+      "currentAndPreviousPackageFilesVerified": 87,
+      "secretsUnchanged": true,
+      "composeUnchanged": true,
+      "httpChecks": [
+        {
+          "path": "/login",
+          "status": 200
+        },
+        {
+          "path": "/notiz",
+          "status": 200
+        },
+        {
+          "path": "/gehirn",
+          "status": 200
+        },
+        {
+          "path": "/sprechen",
+          "status": 200
+        },
+        {
+          "path": "/dashboard",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/goals",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/calendar",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/labor",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/apps",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/eden",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/soul",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/meeting",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/email",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/contacts",
+          "status": 307
+        },
+        {
+          "path": "/api/workspace/snapshot",
+          "status": 401
+        },
+        {
+          "path": "/api/gmail/threads",
+          "status": 401
+        },
+        {
+          "path": "/api/auth/me",
+          "status": 401
+        },
+        {
+          "path": "/api/notes",
+          "status": 401
+        },
+        {
+          "path": "/api/notes/projects?rulesFor=Eden",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/config",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/speech/voices",
+          "status": 401
+        },
+        {
+          "path": "/api/brain?refresh=1",
+          "status": 401
+        },
+        {
+          "path": "/api/birth-places?q=Wien",
+          "status": 401
+        },
+        {
+          "path": "/apps/archiv.svg",
+          "status": 200
+        },
+        {
+          "path": "/apps/buzz.svg",
+          "status": 200
+        },
+        {
+          "path": "/offline.html",
+          "status": 200
+        },
+        {
+          "path": "/sw.js",
+          "status": 200
+        },
+        {
+          "path": "/manifest.webmanifest",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/05zkn-o3jl672.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/08sqhd9xi_ej_.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0cz1d0mv5g_q7.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0qntpyihvf5ny.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0zivvs-537o3d.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/15j5y5cog1ifv.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/19t3y3gfol0tg.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1bcn_ous6_7jq.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1wxkfb2sd_hpu.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/27q0aiexsyv0v.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/29211olj-k_1y.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2e6ebvog7-p5k.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u5kn8meil87-.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x0bu1cur_mw8.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x1iovtfkls3y.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3ixo7anvdpa0e.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3l9129lzj224s.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-09cjy667ze5y-.js",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 206
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 206
+        },
+        {
+          "path": "/maps/land-110m.json",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/infomaniak.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/telegram.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/shopify.svg",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&w=96&q=75",
+          "status": 200
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 401
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 403
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-32.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-maskable-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-apple-180.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        }
+      ],
+      "nextAssets": 24,
+      "browserIconMetadataVerified": true,
+      "loadedDockSunVerified": true,
+      "layeredLogoVerified": true
+    },
+    "prod": {
+      "url": "https://trinity.youareneo.com",
+      "running": true,
+      "newPackageFilesVerified": 19,
+      "currentAndPreviousPackageFilesVerified": 87,
+      "secretsUnchanged": true,
+      "composeUnchanged": true,
+      "httpChecks": [
+        {
+          "path": "/login",
+          "status": 200
+        },
+        {
+          "path": "/notiz",
+          "status": 200
+        },
+        {
+          "path": "/gehirn",
+          "status": 200
+        },
+        {
+          "path": "/sprechen",
+          "status": 200
+        },
+        {
+          "path": "/dashboard",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/goals",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/calendar",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/labor",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/apps",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/eden",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/soul",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/meeting",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/communication/email",
+          "status": 307
+        },
+        {
+          "path": "/dashboard/contacts",
+          "status": 307
+        },
+        {
+          "path": "/api/workspace/snapshot",
+          "status": 401
+        },
+        {
+          "path": "/api/gmail/threads",
+          "status": 401
+        },
+        {
+          "path": "/api/auth/me",
+          "status": 401
+        },
+        {
+          "path": "/api/notes",
+          "status": 401
+        },
+        {
+          "path": "/api/notes/projects?rulesFor=Eden",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/config",
+          "status": 401
+        },
+        {
+          "path": "/api/voice/speech/voices",
+          "status": 401
+        },
+        {
+          "path": "/api/brain?refresh=1",
+          "status": 401
+        },
+        {
+          "path": "/api/birth-places?q=Wien",
+          "status": 401
+        },
+        {
+          "path": "/apps/archiv.svg",
+          "status": 200
+        },
+        {
+          "path": "/apps/buzz.svg",
+          "status": 200
+        },
+        {
+          "path": "/offline.html",
+          "status": 200
+        },
+        {
+          "path": "/sw.js",
+          "status": 200
+        },
+        {
+          "path": "/manifest.webmanifest",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/05zkn-o3jl672.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/06j3juy1u5a-6.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/08sqhd9xi_ej_.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0cz1d0mv5g_q7.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0g8ku62w0yb2s.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0qntpyihvf5ny.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/0zivvs-537o3d.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/15j5y5cog1ifv.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/19t3y3gfol0tg.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1bcn_ous6_7jq.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1ntn7efqc-iiw.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/1wxkfb2sd_hpu.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/27q0aiexsyv0v.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/29211olj-k_1y.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2e6ebvog7-p5k.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u5kn8meil87-.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2u8phr0aj_bca.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x0bu1cur_mw8.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/2x1iovtfkls3y.css",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/37v5ulr6qjozi.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3g-bnwvnaz8zc.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3ixo7anvdpa0e.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/3l9129lzj224s.js",
+          "status": 200
+        },
+        {
+          "path": "/_next/static/chunks/turbopack-09cjy667ze5y-.js",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-work.mp3",
+          "status": 206
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 200
+        },
+        {
+          "path": "/audio/trinity-rest.mp3",
+          "status": 206
+        },
+        {
+          "path": "/maps/land-110m.json",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/infomaniak.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/telegram.svg",
+          "status": 200
+        },
+        {
+          "path": "/tool-logos/shopify.svg",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&w=96&q=75",
+          "status": 200
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 401
+        },
+        {
+          "path": "/api/calendar/feed",
+          "status": 403
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-32.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-192.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-maskable-512.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-apple-180.png",
+          "status": 200
+        },
+        {
+          "path": "/pwa/trinity-sun-v2-favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/favicon.ico",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        },
+        {
+          "path": "/_next/image?url=%2Fimages%2Fsanctuary.webp&w=750&q=60",
+          "status": 200
+        }
+      ],
+      "nextAssets": 24,
+      "browserIconMetadataVerified": true,
+      "loadedDockSunVerified": true,
+      "layeredLogoVerified": true
+    }
+  },
+  "realLoginOrProviderCalls": false,
+  "browserSuites": {
+    "restored-final": {
+      "passed": true,
+      "routes": 11,
+      "preservedIdeaBoard": true,
+      "birthCalculation": true,
+      "themeMigrationPreservesVoice": true,
+      "planningOpensDockWithoutSending": true,
+      "preservesPrompt": true,
+      "newManifestIcons": true,
+      "sharedFocusAudio": true,
+      "externalWrites": 0,
+      "errors": []
+    },
+    "assistant": {
+      "passed": true,
+      "fixture": true,
+      "simulatedWrites": 3,
+      "transcriptions": 5,
+      "screenshots": "/tmp/trinity-assistant-screens",
+      "errors": []
+    },
+    "chat-final": {
+      "pass": true,
+      "transcriptions": 2,
+      "chatCalls": 9,
+      "noteSaves": 0,
+      "checks": [
+        "avatar states and microphone level",
+        "avatar click preserves conversation",
+        "real output level with silent interval",
+        "reduced motion including audio-driven transforms",
+        "output context cleanup on completion, interruption and navigation",
+        "native audio fallback without Web Audio",
+        "note recording pause/resume avatar",
+        "global dock at 320/390/1280px without overlap",
+        "text stream",
+        "optional own context",
+        "free save disabled",
+        "permission race cleanup",
+        "dictation stays editable until explicit submit",
+        "silence detection",
+        "speech interrupts playback",
+        "stop releases tracks",
+        "quota failure stops microphone",
+        "mobile no overflow",
+        "no page errors"
+      ]
+    },
+    "logo-final": {
+      "passed": true,
+      "layeredSun": true,
+      "transparentAsset": true,
+      "motionPreferences": true,
+      "communicationNavigation": true,
+      "meetingPersistence": true,
+      "duplicateAndCredentialRejection": true,
+      "telephone": true,
+      "mobile": [
+        320,
+        390
+      ],
+      "realProviderCalls": false,
+      "errors": []
+    }
+  },
+  "unitTests": {
+    "passed": 80,
+    "failed": 0
+  }
+}

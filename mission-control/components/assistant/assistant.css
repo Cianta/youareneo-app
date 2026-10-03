@@ -254,3 +254,7 @@ html[data-guiding-motion=false] :is(.workspace-brand,.workspace-mobile-brand) :i
 /* Smaller transparent Trinity launcher; keep the touch target accessible. */
 .assistant-dock{background:transparent;border:0;box-shadow:none;padding:0;gap:2px;}
 .trinity-sun{min-width:44px;min-height:44px;}.trinity-sun img{width:28px;height:28px;}.trinity-sun span{font-size:8px;}
+
+/* Auth screens use the fixed dark login surface, independent of workspace brightness. */
+.assistant-dock[data-surface=auth]{--dock-label:#dac2f5;}
+.trinity-sun span{color:var(--dock-label,var(--theme-purple));}

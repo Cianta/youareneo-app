@@ -4,7 +4,7 @@ import Link from "next/link";
 import {Send, Mic, Square, ArrowUpRight, Sparkles} from "lucide-react";
 import {openMicrophoneSettings} from "@/lib/assistant/microphone";
 import {insertDictation} from "@/lib/assistant/widget";
-export type ChatControls = {focus:()=>void; start:(append:boolean)=>Promise<void>; finish:()=>void; cancel:()=>void; send:()=>void};
+export type ChatControls = {focus:()=>void; prefill:(prompt:string)=>void; start:(append:boolean)=>Promise<void>; finish:()=>void; cancel:()=>void; send:()=>void};
 import { useBrand } from "@/components/voice/BrandProvider";
 import { type ChatMessage, speechChunks } from "@/lib/chat/contracts";
 import { readChat } from "@/lib/chat/client";
@@ -336,8 +336,8 @@ export default function ChatWorkspace({
     } catch(e){if(!abort.signal.aborted && token===session.current){held.current=false;setError(e instanceof Error?e.message:"Aufnahme nicht möglich.");}}
   }
   function finishDictation(){held.current=false;mic.finish();}
-  controlsRef.current={focus:()=>{textarea.current?.focus();void checkSession().catch(e=>{if(mounted.current)setError(e.message)})},start:startDictation,finish:finishDictation,cancel:()=>{held.current=false;mic.cancel();interrupt();},send:()=>{if(!busy && mic.state==="idle")void send(textRef.current);}};
-  useEffect(()=>{onControlsReady?.({focus:()=>controlsRef.current?.focus(),start:async a=>{await controlsRef.current?.start(a)},finish:()=>controlsRef.current?.finish(),cancel:()=>controlsRef.current?.cancel(),send:()=>controlsRef.current?.send()});return()=>onControlsReady?.(null)},[onControlsReady]);
+  controlsRef.current={focus:()=>{textarea.current?.focus();void checkSession().catch(e=>{if(mounted.current)setError(e.message)})},prefill:prompt=>{if(!textRef.current.trim() && !busy && mic.state==="idle"){textRef.current=prompt;setText(prompt);}},start:startDictation,finish:finishDictation,cancel:()=>{held.current=false;mic.cancel();interrupt();},send:()=>{if(!busy && mic.state==="idle")void send(textRef.current);}};
+  useEffect(()=>{onControlsReady?.({focus:()=>controlsRef.current?.focus(),prefill:p=>controlsRef.current?.prefill(p),start:async a=>{await controlsRef.current?.start(a)},finish:()=>controlsRef.current?.finish(),cancel:()=>controlsRef.current?.cancel(),send:()=>controlsRef.current?.send()});return()=>onControlsReady?.(null)},[onControlsReady]);
   async function send(content: string) {
     if (!content.trim() || content.length>4000 || !authenticated || !chatReady || busy || sending.current || mic.state!=="idle") return;
     sending.current=true;

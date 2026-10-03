@@ -16,19 +16,19 @@ export async function GET() {
       theme_color: "#f8f8f7",
       icons: [
         {
-          src: "/pwa/purple-sun-192.png",
+          src: "/pwa/trinity-sun-v2-192.png",
           sizes: "192x192",
           type: "image/png",
           purpose: "any",
         },
         {
-          src: "/pwa/purple-sun-512.png",
+          src: "/pwa/trinity-sun-v2-512.png",
           sizes: "512x512",
           type: "image/png",
           purpose: "any",
         },
         {
-          src: "/pwa/purple-sun-maskable-512.png",
+          src: "/pwa/trinity-sun-v2-maskable-512.png",
           sizes: "512x512",
           type: "image/png",
           purpose: "maskable",
@@ -39,7 +39,7 @@ export async function GET() {
           name: "Neue Sprachnotiz",
           short_name: "Aufnehmen",
           url: "/notiz?rec=1",
-          icons: [{ src: "/pwa/purple-sun-192.png", sizes: "192x192" }],
+          icons: [{ src: "/pwa/trinity-sun-v2-192.png", sizes: "192x192" }],
         },
       ],
     },

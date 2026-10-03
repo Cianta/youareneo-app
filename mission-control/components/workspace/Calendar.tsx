@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { useTemporalStore, useFocusStore } from "@/lib/store";
 import { localDate, overlaps } from "@/lib/workspace/time";
-import { Modal } from "@/components/ui/Modal";
+const Modal = dynamic(() => import("@/components/ui/Modal").then((m) => m.Modal), {ssr:false});
 export function Calendar() {
   const store = useTemporalStore(),personal=usePersonal();
   const [date, setDate] = useState(localDate());
@@ -345,7 +345,7 @@ export function Calendar() {
           </section>
         </aside>
       </div>
-      <Modal
+      {open && <Modal
         open={open}
         onClose={() => setOpen(false)}
         title={editingId ? "Termin bearbeiten" : "Zeit bewusst planen"}
@@ -437,7 +437,7 @@ export function Calendar() {
             </button>
           </div>
         </form>
-      </Modal>
+      </Modal>}
     </div>
   );
 }

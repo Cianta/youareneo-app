@@ -1,10 +1,11 @@
 "use client";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { ChevronRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { skyNow, COSMOS_SYSTEMS, ELEMENT_COLORS } from "@/lib/workspace/cosmos";
 import { usePersonal } from "@/lib/workspace/personal";
-import { Modal } from "@/components/ui/Modal";
+const Modal = dynamic(() => import("@/components/ui/Modal").then((m) => m.Modal), {ssr:false});
 export function CosmosMenu({initialOpen=false,onClose}:{initialOpen?:boolean;onClose?:()=>void}) {
   const [now, setNow] = useState<Date | null>(null),
     [open, setOpen] = useState(initialOpen);
@@ -62,7 +63,7 @@ export function CosmosMenu({initialOpen=false,onClose}:{initialOpen?:boolean;onC
           </div>
         )}
       </div>
-      <Modal
+      {open && <Modal
         open={open}
         onClose={() => {setOpen(false);onClose?.();}}
         title="Dein Himmelskompass"
@@ -111,7 +112,7 @@ export function CosmosMenu({initialOpen=false,onClose}:{initialOpen?:boolean;onC
         >
           Mein Geburtsprofil öffnen →
         </Link>
-      </Modal>
+      </Modal>}
     </>
   );
 }

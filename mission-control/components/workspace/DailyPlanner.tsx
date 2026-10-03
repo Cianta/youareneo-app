@@ -1,4 +1,5 @@
 "use client";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -26,7 +27,7 @@ import {
   emptyMonth,
   type PlannerDay,
 } from "@/lib/workspace/planner";
-import { Modal } from "@/components/ui/Modal";
+const Modal = dynamic(() => import("@/components/ui/Modal").then((m) => m.Modal), {ssr:false});
 const nice = (date: string, options: Intl.DateTimeFormatOptions) =>
   new Date(`${date}T12:00:00`).toLocaleDateString("de-AT", options);
 export function DailyPlanner({
@@ -566,7 +567,7 @@ export function DailyPlanner({
           </section>
         </div>
       )}
-      <Modal
+      {!!detail && <Modal
         open={!!detail}
         onClose={() => setDetail(null)}
         title={
@@ -642,7 +643,7 @@ export function DailyPlanner({
             Fertig
           </button>
         </div>
-      </Modal>
+      </Modal>}
     </>
   );
 }

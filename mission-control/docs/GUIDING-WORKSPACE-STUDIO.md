@@ -13,6 +13,8 @@ Auftrag vom 04.10.2026. Branch `codex/guiding-workspace-studio`, auf dem Stand v
 - **Kontakte CRM:** echte Kennzahlen, Suche einschließlich Gesprächsnotizen/Themen, Beziehungsstatus, Merkliste, Gesprächsnotizen und Wiedervorlagen. Fällige Kontakte erscheinen rechts. Eigene bisherige Kontakte bleiben lokal. Importierte CRM-Kontakte liegen im privaten Kontospeicher und stehen ebenfalls in der Meeting-Auswahl und im Ideenboard zur bewussten Auswahl bereit. Eingefügte Ideenboardkarten bleiben wie bisher auf dem jeweiligen Gerät.
 - **Daten-Gehirn:** Suche nach Thema/Projekt/Person, Typ- und Zeitfilter, Vorschau und Ursprungslink. Unter dem Graphen: Wissensmix als Kreisdiagramm, Themen als Balken und sieben Tage Aktivität als Säulen. Auswertung folgt der aktuellen Suche und den Filtern. Gedanken ohne Verbindung geben konkrete Einstiege zum Ordnen. Diagramme sind leichte SVG/CSS-Elemente, keine zusätzliche globale 3D-Bibliothek.
 
+Geschlossene Astrologie-, Termin- und Tagesdetaildialoge laden ihre Animationsbibliothek erst beim Öffnen. Die vorhandenen Anzeigen und Bewegungen bleiben erhalten; die erste Ansicht lädt weniger JavaScript.
+
 ## Neue Server-Anbindungen
 
 **Manueller Import von HubSpot und HighLevel nach guiding.space**, mit Vorschau und bewusstem Übernehmen. Keine automatischen Hintergrundabläufe und kein Rückschreiben an das externe CRM. Veränderte Stammdaten werden nach Quellen-ID aktualisiert; lokale Kontakte, Gesprächsnotizen, Merkliste, Beziehung und Wiedervorlagen werden erhalten. Gleiche E-Mail-Adressen aus verschiedenen Quellen bleiben für eine bewusste Prüfung getrennt. Entfernte Quellkontakte werden nicht automatisch gelöscht. Maximal 2.000 Kontakte pro Abgleich; größere Mengen werden als Ausschnitt gekennzeichnet.

@@ -1,0 +1,859 @@
+html .color-scheme-1,
+body.color-scheme-1 {
+  --color-background: 240, 236, 227;
+  --gradient-background: #f0ece3;
+  --color-foreground: 59, 22, 51;
+  --color-background-contrast: 180, 189, 184;
+  --color-shadow: 58, 52, 72;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 240, 236, 227;
+  --color-secondary-button-text: 59, 22, 51;
+  --color-link: 59, 22, 51;
+  --color-badge-foreground: 59, 22, 51;
+  --color-badge-background: 240, 236, 227;
+  --color-badge-border: 59, 22, 51;
+  --payment-terms-background-color: rgb(240 236 227);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-2,
+body.color-scheme-2 {
+  --color-background: 36, 40, 51;
+  --gradient-background: #242833;
+  --color-foreground: 255, 255, 255;
+  --color-background-contrast: 47, 52, 66;
+  --color-shadow: 37, 42, 42;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 36, 40, 51;
+  --color-secondary-button-text: 228, 184, 99;
+  --color-link: 228, 184, 99;
+  --color-badge-foreground: 255, 255, 255;
+  --color-badge-background: 36, 40, 51;
+  --color-badge-border: 255, 255, 255;
+  --payment-terms-background-color: rgb(36 40 51);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-3,
+body.color-scheme-3 {
+  --color-background: 240, 236, 227;
+  --gradient-background: #f0ece3;
+  --color-foreground: 255, 255, 255;
+  --color-background-contrast: 180, 189, 184;
+  --color-shadow: 0, 17, 40;
+  --color-button: 92, 31, 71;
+  --color-button-text: 253, 248, 243;
+  --color-secondary-button: 240, 236, 227;
+  --color-secondary-button-text: 92, 70, 48;
+  --color-link: 92, 70, 48;
+  --color-badge-foreground: 255, 255, 255;
+  --color-badge-background: 240, 236, 227;
+  --color-badge-border: 255, 255, 255;
+  --payment-terms-background-color: rgb(240 236 227);
+  --color-button-hover: #6f2655;
+  --color-button-hover--brightness: 43.25;
+}
+html .color-scheme-4,
+body.color-scheme-4 {
+  --color-background: 36, 40, 51;
+  --gradient-background: #242833;
+  --color-foreground: 255, 255, 255;
+  --color-background-contrast: 47, 52, 66;
+  --color-shadow: 0, 17, 40;
+  --color-button: 255, 255, 255;
+  --color-button-text: 0, 17, 40;
+  --color-secondary-button: 36, 40, 51;
+  --color-secondary-button-text: 255, 255, 255;
+  --color-link: 255, 255, 255;
+  --color-badge-foreground: 255, 255, 255;
+  --color-badge-background: 36, 40, 51;
+  --color-badge-border: 255, 255, 255;
+  --payment-terms-background-color: rgb(36 40 51);
+  --color-button-hover: #faf5f0;
+  --color-button-hover--brightness: 255;
+}
+html .color-scheme-ffaca650-a47f-472c-a215-03b40cdade38,
+body.color-scheme-ffaca650-a47f-472c-a215-03b40cdade38 {
+  --color-background: 36, 40, 51;
+  --gradient-background: #242833;
+  --color-foreground: 228, 184, 99;
+  --color-background-contrast: 47, 52, 66;
+  --color-shadow: 31, 61, 44;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 36, 40, 51;
+  --color-secondary-button-text: 228, 184, 99;
+  --color-link: 228, 184, 99;
+  --color-badge-foreground: 228, 184, 99;
+  --color-badge-background: 36, 40, 51;
+  --color-badge-border: 228, 184, 99;
+  --payment-terms-background-color: rgb(36 40 51);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-160a7836-b6b8-466c-9b24-23473b3479e1,
+body.color-scheme-160a7836-b6b8-466c-9b24-23473b3479e1 {
+  --color-background: 241, 213, 168;
+  --gradient-background: #f1d5a8;
+  --color-foreground: 59, 22, 51;
+  --color-background-contrast: 213, 154, 75;
+  --color-shadow: 58, 52, 72;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 241, 213, 168;
+  --color-secondary-button-text: 59, 22, 51;
+  --color-link: 59, 22, 51;
+  --color-badge-foreground: 59, 22, 51;
+  --color-badge-background: 241, 213, 168;
+  --color-badge-border: 59, 22, 51;
+  --payment-terms-background-color: rgb(241 213 168);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-bb9cb07b-65e0-4110-adaf-e2dde40db3c5,
+body.color-scheme-bb9cb07b-65e0-4110-adaf-e2dde40db3c5 {
+  --color-background: 240, 236, 227;
+  --gradient-background: #f0ece3;
+  --color-foreground: 59, 22, 51;
+  --color-background-contrast: 180, 189, 184;
+  --color-shadow: 58, 52, 72;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 240, 236, 227;
+  --color-secondary-button-text: 59, 22, 51;
+  --color-link: 59, 22, 51;
+  --color-badge-foreground: 59, 22, 51;
+  --color-badge-background: 240, 236, 227;
+  --color-badge-border: 59, 22, 51;
+  --payment-terms-background-color: rgb(240 236 227);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-107165f7-6aae-4ced-94d2-cb024b2f5259,
+body.color-scheme-107165f7-6aae-4ced-94d2-cb024b2f5259 {
+  --color-background: 240, 236, 227;
+  --gradient-background: #f0ece3;
+  --color-foreground: 37, 42, 42;
+  --color-background-contrast: 180, 189, 184;
+  --color-shadow: 58, 52, 72;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 240, 236, 227;
+  --color-secondary-button-text: 92, 31, 71;
+  --color-link: 92, 31, 71;
+  --color-badge-foreground: 37, 42, 42;
+  --color-badge-background: 240, 236, 227;
+  --color-badge-border: 37, 42, 42;
+  --payment-terms-background-color: rgb(240 236 227);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-3307e20e-40bb-410f-bb4e-0d0ea1ee07ed,
+body.color-scheme-3307e20e-40bb-410f-bb4e-0d0ea1ee07ed {
+  --color-background: 50, 56, 65;
+  --gradient-background: #323841;
+  --color-foreground: 50, 56, 65;
+  --color-background-contrast: 61, 68, 79;
+  --color-shadow: 228, 184, 99;
+  --color-button: 42, 55, 67;
+  --color-button-text: 0, 0, 0;
+  --color-secondary-button: 50, 56, 65;
+  --color-secondary-button-text: 50, 56, 65;
+  --color-link: 50, 56, 65;
+  --color-badge-foreground: 50, 56, 65;
+  --color-badge-background: 50, 56, 65;
+  --color-badge-border: 50, 56, 65;
+  --payment-terms-background-color: rgb(50 56 65);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-9b833b24-66da-42d0-bcaa-bea6b6e35f00,
+body.color-scheme-9b833b24-66da-42d0-bcaa-bea6b6e35f00 {
+  --color-background: 205, 213, 216;
+  --gradient-background: #cdd5d8;
+  --color-foreground: 0, 0, 0;
+  --color-background-contrast: 135, 135, 135;
+  --color-shadow: 58, 52, 72;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 205, 213, 216;
+  --color-secondary-button-text: 59, 22, 51;
+  --color-link: 59, 22, 51;
+  --color-badge-foreground: 0, 0, 0;
+  --color-badge-background: 205, 213, 216;
+  --color-badge-border: 0, 0, 0;
+  --payment-terms-background-color: rgb(205 213 216);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-e465bf85-17d4-4520-b29d-e073781c2ebb,
+body.color-scheme-e465bf85-17d4-4520-b29d-e073781c2ebb {
+  --color-background: 36, 40, 51;
+  --gradient-background: #242833;
+  --color-foreground: 194, 198, 208;
+  --color-background-contrast: 47, 52, 66;
+  --color-shadow: 58, 52, 72;
+  --color-button: 42, 55, 67;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 36, 40, 51;
+  --color-secondary-button-text: 59, 22, 51;
+  --color-link: 59, 22, 51;
+  --color-badge-foreground: 194, 198, 208;
+  --color-badge-background: 36, 40, 51;
+  --color-badge-border: 194, 198, 208;
+  --payment-terms-background-color: rgb(36 40 51);
+  --color-button-hover: #344453;
+  --color-button-hover--brightness: 52.48;
+}
+html .color-scheme-1319178d-f58a-431f-b719-6c9c01f6bed2,
+body.color-scheme-1319178d-f58a-431f-b719-6c9c01f6bed2 {
+  --color-background: 42, 55, 67;
+  --gradient-background: #2a3743;
+  --color-foreground: 255, 255, 255;
+  --color-background-contrast: 52, 68, 83;
+  --color-shadow: 58, 52, 72;
+  --color-button: 36, 40, 51;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 42, 55, 67;
+  --color-secondary-button-text: 0, 0, 0;
+  --color-link: 0, 0, 0;
+  --color-badge-foreground: 255, 255, 255;
+  --color-badge-background: 42, 55, 67;
+  --color-badge-border: 255, 255, 255;
+  --payment-terms-background-color: rgb(42 55 67);
+  --color-button-hover: #2f3442;
+  --color-button-hover--brightness: 40.06;
+}
+html .color-scheme-77c5f00c-1252-4f3f-a428-1e010d281280,
+body.color-scheme-77c5f00c-1252-4f3f-a428-1e010d281280 {
+  --color-background: 42, 55, 67;
+  --gradient-background: #2a3743;
+  --color-foreground: 63, 140, 100;
+  --color-background-contrast: 52, 68, 83;
+  --color-shadow: 58, 52, 72;
+  --color-button: 36, 40, 51;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 42, 55, 67;
+  --color-secondary-button-text: 59, 22, 51;
+  --color-link: 59, 22, 51;
+  --color-badge-foreground: 63, 140, 100;
+  --color-badge-background: 42, 55, 67;
+  --color-badge-border: 63, 140, 100;
+  --payment-terms-background-color: rgb(42 55 67);
+  --color-button-hover: #2f3442;
+  --color-button-hover--brightness: 40.06;
+}
+html .color-scheme-40879a92-3c39-4858-b47b-75e7a1eb253d,
+body.color-scheme-40879a92-3c39-4858-b47b-75e7a1eb253d {
+  --color-background: 36, 40, 51;
+  --gradient-background: #242833;
+  --color-foreground: 255, 255, 255;
+  --color-background-contrast: 47, 52, 66;
+  --color-shadow: 58, 52, 72;
+  --color-button: 25, 32, 38;
+  --color-button-text: 228, 184, 99;
+  --color-secondary-button: 36, 40, 51;
+  --color-secondary-button-text: 59, 22, 51;
+  --color-link: 59, 22, 51;
+  --color-badge-foreground: 255, 255, 255;
+  --color-badge-background: 36, 40, 51;
+  --color-badge-border: 255, 255, 255;
+  --payment-terms-background-color: rgb(36 40 51);
+  --color-button-hover: #232d35;
+  --color-button-hover--brightness: 30.59;
+}
+:root,
+.dbtfy-color-scheme-1 {
+  --color-background: 240, 236, 227;
+  --gradient-background: #f0ece3;
+  --color-foreground: 36, 40, 51;
+  --color-background-contrast: 180, 189, 184;
+  --color-shadow: 36, 40, 51;
+  --color-button: 36, 40, 51;
+  --color-button-text: 240, 236, 227;
+  --color-secondary-button: 240, 236, 227;
+  --color-secondary-button-text: 36, 40, 51;
+  --color-link: 36, 40, 51;
+  --color-badge-foreground: 36, 40, 51;
+  --color-badge-background: 240, 236, 227;
+  --color-badge-border: 36, 40, 51;
+  --payment-terms-background-color: rgb(240 236 227);
+  --color-button-hover: #2f3442;
+  --color-button-hover--brightness: 40.06;
+}
+.dbtfy-color-scheme-2 {
+  --color-background: 36, 40, 51;
+  --gradient-background: #242833;
+  --color-foreground: 240, 236, 227;
+  --color-background-contrast: 47, 52, 66;
+  --color-shadow: 36, 40, 51;
+  --color-button: 240, 236, 227;
+  --color-button-text: 36, 40, 51;
+  --color-secondary-button: 36, 40, 51;
+  --color-secondary-button-text: 240, 236, 227;
+  --color-link: 240, 236, 227;
+  --color-badge-foreground: 240, 236, 227;
+  --color-badge-background: 36, 40, 51;
+  --color-badge-border: 240, 236, 227;
+  --payment-terms-background-color: rgb(36 40 51);
+  --color-button-hover: #e4e0d5;
+  --color-button-hover--brightness: 232.25;
+}
+.dbtfy-color-scheme-3 {
+  --color-background: 59, 22, 51;
+  --gradient-background: #3b1633;
+  --color-foreground: 240, 236, 227;
+  --color-background-contrast: 87, 31, 68;
+  --color-shadow: 36, 40, 51;
+  --color-button: 240, 236, 227;
+  --color-button-text: 59, 22, 51;
+  --color-secondary-button: 59, 22, 51;
+  --color-secondary-button-text: 240, 236, 227;
+  --color-link: 240, 236, 227;
+  --color-badge-foreground: 240, 236, 227;
+  --color-badge-background: 59, 22, 51;
+  --color-badge-border: 240, 236, 227;
+  --payment-terms-background-color: rgb(59 22 51);
+  --color-button-hover: #e4e0d5;
+  --color-button-hover--brightness: 232.25;
+}
+.dbtfy-color-scheme-4 {
+  --color-background: 36, 40, 51;
+  --gradient-background: #242833;
+  --color-foreground: 240, 236, 227;
+  --color-background-contrast: 47, 52, 66;
+  --color-shadow: 36, 40, 51;
+  --color-button: 240, 236, 227;
+  --color-button-text: 36, 40, 51;
+  --color-secondary-button: 36, 40, 51;
+  --color-secondary-button-text: 240, 236, 227;
+  --color-link: 240, 236, 227;
+  --color-badge-foreground: 240, 236, 227;
+  --color-badge-background: 36, 40, 51;
+  --color-badge-border: 240, 236, 227;
+  --payment-terms-background-color: rgb(36 40 51);
+  --color-button-hover: #e4e0d5;
+  --color-button-hover--brightness: 232.25;
+}
+.color-scheme-1,
+.color-scheme-2,
+.color-scheme-3,
+.color-scheme-4,
+.dbtfy-color-custom.color-scheme-ffaca650-a47f-472c-a215-03b40cdade38,
+.dbtfy-color-custom.color-scheme-160a7836-b6b8-466c-9b24-23473b3479e1,
+.dbtfy-color-custom.color-scheme-bb9cb07b-65e0-4110-adaf-e2dde40db3c5,
+.dbtfy-color-custom.color-scheme-107165f7-6aae-4ced-94d2-cb024b2f5259,
+.dbtfy-color-custom.color-scheme-3307e20e-40bb-410f-bb4e-0d0ea1ee07ed,
+.dbtfy-color-custom.color-scheme-9b833b24-66da-42d0-bcaa-bea6b6e35f00,
+.dbtfy-color-custom.color-scheme-e465bf85-17d4-4520-b29d-e073781c2ebb,
+.dbtfy-color-custom.color-scheme-1319178d-f58a-431f-b719-6c9c01f6bed2,
+.dbtfy-color-custom.color-scheme-77c5f00c-1252-4f3f-a428-1e010d281280,
+.dbtfy-color-custom.color-scheme-40879a92-3c39-4858-b47b-75e7a1eb253d {
+  color: rgba(var(--color-foreground), 0.75);
+  background-color: rgb(var(--color-background));
+}
+.splide__list:not(:has(> .splide__slide:not(.splide__slide--clone) ~ .splide__slide:not(.splide__slide--clone))) {
+  transform: none !important;
+}
+.splide__list:not(:has(> .splide__slide:not(.splide__slide--clone) ~ .splide__slide:not(.splide__slide--clone)))
+  > .splide__slide--clone {
+  display: none !important;
+}
+.splide:not(:has(.splide__slide:not(.splide__slide--clone) ~ .splide__slide:not(.splide__slide--clone))) .splide__arrow,
+.splide:not(:has(.splide__slide:not(.splide__slide--clone) ~ .splide__slide:not(.splide__slide--clone)))
+  .splide__pagination {
+  display: none !important;
+}
+html body [id^="ProductSubmitButton-"][id*="featured_product"] {
+  background: linear-gradient(
+    115deg,
+    #eceef3,
+    #c5cad4 16%,
+    #f6f7fa 32%,
+    #8fc6cf 46%,
+    #1f6f7d 56%,
+    #0e4250 62%,
+    #6aa9b5 72%,
+    #dcd2ef 84%,
+    #eef0f5
+  ) !important;
+  background-size: 260% 100% !important;
+  color: #13222b !important;
+  border: 2px solid #0f5867 !important;
+  outline: 1px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 2px;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.75),
+    0 0 8px rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 4px rgba(31, 111, 125, 0.22),
+    0 10px 26px #1f6f7d59,
+    inset 0 1px #ffffffe6,
+    inset 0 -1px #787d8c40 !important;
+  animation: es-sheen 7s ease-in-out infinite alternate;
+  transition:
+    transform 0.3s,
+    filter 0.3s;
+}
+html body [id^="ProductSubmitButton-"][id*="featured_product"]:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+}
+html body [id^="ProductSubmitButton-"][id*="featured_product"]:before,
+html body [id^="ProductSubmitButton-"][id*="featured_product"]:after {
+  display: none !important;
+}
+html body [id^="ProductSubmitButton-"][id*="featured_product"] * {
+  color: inherit !important;
+}
+html body a.es-silver.es-silver--lila {
+  background: linear-gradient(115deg, #efe9df, #cdbda7 22%, #f8f4ec 42%, #c7a985 58%, #b5a28b 78%, #efe8dd) !important;
+  background-size: 260% 100% !important;
+  color: #2e2418 !important;
+  box-shadow:
+    0 10px 26px #7a5c3a52,
+    inset 0 1px #ffffffd9,
+    inset 0 -1px #6e553747 !important;
+}
+[id$="__double_image_banner_TFkYnt"] .banner {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 14px auto;
+  width: min(1440px, calc(100% - 24px));
+}
+[id$="__double_image_banner_TFkYnt"] .banner__media img {
+  content: url(https://cdn.shopify.com/s/files/1/0797/8310/0743/files/es-news-leder.webp);
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+[id$="__double_image_banner_TFkYnt"] .banner:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 20px;
+  border: 13px solid transparent;
+  background: linear-gradient(135deg, #5d3b25, #8c5d38 22%, #3f2718 48%, #7b4e2d 72%, #4b2f1d) border-box;
+  -webkit-mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  box-shadow: inset 0 0 0 1px #ffdcaa2e;
+}
+[id$="__double_image_banner_TFkYnt"] .banner:after {
+  content: "";
+  position: absolute;
+  inset: 19px;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 12px;
+  border: 1.5px dashed rgba(226, 186, 128, 0.55);
+  box-shadow: inset 0 0 60px #140a048c;
+}
+[id$="__double_image_banner_TFkYnt"] .banner__box {
+  background: radial-gradient(ellipse at 50% 40%, #f4e8cef0, #e2cea8e6 70%, #c6a87ae6) !important;
+  color: #3a2716 !important;
+  border-radius: 6px 10px 7px 12px/10px 6px 12px 7px;
+  border: 1px solid rgba(110, 72, 36, 0.35);
+  box-shadow:
+    0 18px 40px #00000073,
+    inset 0 0 40px #8c603040;
+  padding: 22px 28px !important;
+  max-width: 520px;
+}
+[id$="__double_image_banner_TFkYnt"] .banner__box * {
+  color: #3a2716;
+}
+html body a.es-silver.es-btn-news,
+html body a.es-silver.es-btn-blog {
+  color: #f3e9d6 !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 235, 200, 0.22) !important;
+  box-shadow:
+    0 10px 24px #00000059,
+    inset 0 1px #ffffff24 !important;
+  background-size: 260% 100% !important;
+}
+html body a.es-silver.es-btn-news {
+  background: linear-gradient(115deg, #3b3e45, #2b2e34 26%, #4a4d55 44%, #7a5e45 60%, #2f3238, #3d4047) !important;
+}
+html body a.es-silver.es-btn-blog {
+  background: linear-gradient(115deg, #3a3e43, #2a2f33 26%, #484e53 44%, #56684e 60%, #2e3337, #3c4146) !important;
+}
+[id$="__dbtfy_featured_image_BkrCNC"] img {
+  content: url(https://cdn.shopify.com/s/files/1/0797/8310/0743/files/es-arche-titel-v3.webp?v=1791065561);
+  object-fit: cover;
+  aspect-ratio: 3 / 2;
+  height: auto;
+}
+.esz-on .shopify-section[id*="footer"] > svg.es-sacred {
+  display: none !important;
+}
+.esz-on [id*="__dbtfy_ugc_carousel_"] .splide {
+  position: relative;
+  z-index: 2;
+}
+/* Header immer ganz oben – nichts darf ihn überdecken */
+.shopify-section-group-header-group,
+.section-header,
+sticky-header,
+.header-wrapper {
+  z-index: 40 !important;
+}
+.esz-on [id*="__video_"].esz-tor-host video,
+.esz-on [id*="__video_"].esz-tor-host .video-section__media,
+.esz-on [id*="__video_"].esz-tor-host deferred-media {
+  display: none !important;
+}
+.esz-tor {
+  position: relative;
+  height: 360vh;
+}
+.esz-tor__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+.esz-tor__frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(680px, 86vw);
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.esz-tor__cv {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  opacity: 0;
+  box-shadow:
+    0 0 0 1px rgba(214, 190, 120, 0.35),
+    0 18px 60px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(255, 210, 140, 0.12);
+  will-change:
+    opacity,
+    -webkit-mask-image;
+  -webkit-mask-image: radial-gradient(
+    ellipse var(--mx, 3%) var(--my, 3%) at 50% 50%,
+    #000 38%,
+    rgba(0, 0, 0, 0.55) 64%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse var(--mx, 3%) var(--my, 3%) at 50% 50%,
+    #000 38%,
+    rgba(0, 0, 0, 0.55) 64%,
+    transparent 100%
+  );
+}
+.esz-vines {
+  position: absolute;
+  left: -3.75%;
+  top: -6.67%;
+  width: 107.5%;
+  height: 113.33%;
+  pointer-events: none;
+  overflow: visible;
+}
+.esz-tor__txt {
+  position: absolute;
+  left: 5vw;
+  right: 5vw;
+  margin: 0;
+  text-align: center;
+  z-index: 2;
+  color: #fbf1dc !important;
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-size: clamp(2rem, 4.8vw, 3.8rem) !important;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.85),
+    0 0 34px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+.esz-tor__txt--1 {
+  bottom: calc(50% + min(680px, 86vw) * 0.28125 + 4vh);
+}
+.esz-tor__txt--2 {
+  top: calc(50% + min(680px, 86vw) * 0.28125 + 4vh);
+}
+.esz-word {
+  display: inline-block;
+  transform-origin: 50% 70%;
+  will-change: transform, opacity;
+}
+html body a.es-btn-news *,
+html body a.es-btn-blog * {
+  color: inherit !important;
+}
+@keyframes esz-breathe {
+  0% {
+    transform: perspective(1600px) rotateX(18deg) rotate(-2.5deg) scale(0.99);
+  }
+  to {
+    transform: perspective(1600px) rotateX(10deg) rotate(2.5deg) scale(1.01);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .esz-flake svg {
+    animation: none !important;
+  }
+}
+
+/* ===== Feinschliff 2.0 ===== */
+
+/* Arche-Baumhausstadt (neue Fassung) */
+img[src*="cianta_a_village_in_the_woods"],
+img[srcset*="cianta_a_village_in_the_woods"] {
+  content: url(https://cdn.shopify.com/s/files/1/0797/8310/0743/files/es-arche-stadt-v2.webp?v=1791065560);
+  object-fit: cover;
+}
+
+/* LIVE ACCESS: „Mehr erfahren“ größer und sichtbarer (Bernstein wie das Bild) */
+[id$="__image_with_text_XiCjQ8"] a.button,
+[id$="__image_with_text_XiCjQ8"] .button {
+  position: relative;
+  overflow: hidden;
+  min-width: 260px;
+  min-height: 64px;
+  padding: 0 40px !important;
+  font-size: 19px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase;
+  color: #fff6e6 !important;
+  border-radius: 999px !important;
+  border: 2px solid rgba(240, 196, 120, 0.85) !important;
+  background: linear-gradient(120deg, #2a160b 0%, #6b3c1f 38%, #b8742f 62%, #e9b86a 82%, #8a5228 100%) !important;
+  background-size: 220% 100% !important;
+  box-shadow:
+    0 12px 34px rgba(186, 116, 47, 0.45),
+    inset 0 1px 0 rgba(255, 240, 210, 0.35) !important;
+  text-shadow: 0 1px 2px rgba(40, 18, 6, 0.6);
+  animation: es-sheen 6s ease-in-out infinite alternate, es2-pulse-amber 3.6s ease-in-out infinite;
+  transition: transform 0.25s;
+}
+[id$="__image_with_text_XiCjQ8"] a.button:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+[id$="__image_with_text_XiCjQ8"] .button:before,
+[id$="__image_with_text_XiCjQ8"] .button:after {
+  display: none !important;
+}
+@keyframes es2-pulse-amber {
+  0%,
+  100% {
+    box-shadow:
+      0 12px 34px rgba(186, 116, 47, 0.35),
+      inset 0 1px 0 rgba(255, 240, 210, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 14px 46px rgba(233, 184, 106, 0.6),
+      inset 0 1px 0 rgba(255, 240, 210, 0.35);
+  }
+}
+
+/* Termine & Events: Karte wie bei News – Rahmen und Karte in Nachtblau und Uhren-Gold */
+[id$="__double_image_banner_Yqp6VQ"] .banner {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 14px auto;
+  width: min(1440px, calc(100% - 24px));
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 20px;
+  border: 12px solid transparent;
+  background: linear-gradient(135deg, #0f2a36, #1e4a5c 24%, #0b1a22 48%, #c9a24a 50%, #12313e 52%, #1e4a5c 76%, #0d222c) border-box;
+  -webkit-mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  box-shadow: inset 0 0 0 1px rgba(233, 201, 119, 0.25);
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner:after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 12px;
+  border: 1.5px solid rgba(201, 162, 74, 0.55);
+  box-shadow: inset 0 0 70px rgba(4, 12, 18, 0.55);
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner__box {
+  background: radial-gradient(ellipse at 50% 30%, rgba(30, 74, 92, 0.94), rgba(17, 38, 48, 0.94) 70%, rgba(10, 22, 30, 0.96)) !important;
+  color: #f1e6c8 !important;
+  border-radius: 14px;
+  border: 1.5px solid rgba(201, 162, 74, 0.75);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 4px rgba(201, 162, 74, 0.12),
+    inset 0 0 40px rgba(0, 0, 0, 0.35);
+  padding: 24px 30px !important;
+  max-width: 520px;
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner__box * {
+  color: #f1e6c8;
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner__box h2,
+[id$="__double_image_banner_Yqp6VQ"] .banner__box .banner__heading {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  background: linear-gradient(100deg, #b8862f, #f3d98e 50%, #c9a24a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner__box .button {
+  border-radius: 999px !important;
+  border: 1.5px solid #c9a24a !important;
+  background: linear-gradient(120deg, #0f2a36, #1e4a5c 50%, #0f2a36) !important;
+  color: #f3d98e !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45) !important;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner__box .button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(201, 162, 74, 0.35) !important;
+}
+[id$="__double_image_banner_Yqp6VQ"] .banner__box .button:before,
+[id$="__double_image_banner_Yqp6VQ"] .banner__box .button:after {
+  display: none !important;
+}
+
+/* Persönliche Begleitung: Überschrift, Text und Knopf im Gesamtdesign */
+[id$="__image_with_text_ECQi89"] h2,
+[id$="__image_with_text_ECQi89"] .image-with-text__heading {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-size: clamp(2.1rem, 4vw, 3.3rem) !important;
+  font-weight: 600 !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  background: linear-gradient(100deg, #e9d6ac 0%, #f6e7c0 35%, #c99a3e 60%, #f3d98e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  text-shadow: none !important;
+}
+[id$="__image_with_text_ECQi89"] .image-with-text__text,
+[id$="__image_with_text_ECQi89"] .image-with-text__text p {
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+  color: rgba(241, 234, 216, 0.9) !important;
+  max-width: 46ch;
+}
+[id$="__image_with_text_ECQi89"] a.button,
+[id$="__image_with_text_ECQi89"] .button {
+  position: relative;
+  overflow: hidden;
+  min-width: 240px;
+  min-height: 60px;
+  padding: 0 38px !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase;
+  color: #fff3d6 !important;
+  border-radius: 999px !important;
+  border: 2px solid rgba(233, 201, 119, 0.8) !important;
+  background: linear-gradient(120deg, #05080c 0%, #1a252a 40%, #654e41 70%, #b09472 100%) !important;
+  background-size: 220% 100% !important;
+  box-shadow:
+    0 10px 32px rgba(176, 148, 114, 0.35),
+    inset 0 1px 0 rgba(255, 240, 210, 0.25) !important;
+  animation: es-sheen 7s ease-in-out infinite alternate;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+[id$="__image_with_text_ECQi89"] a.button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 40px rgba(233, 201, 119, 0.45) !important;
+}
+[id$="__image_with_text_ECQi89"] .button:before,
+[id$="__image_with_text_ECQi89"] .button:after {
+  display: none !important;
+}
+
+/* Team (Elfsight): Knopf unter den Teammitgliedern im selben Stil wie die anderen */
+[class*="elfsight-app-1d0937ed"] a[class*="utton"],
+[class*="elfsight-app-1d0937ed"] button[class*="utton"],
+[class*="elfsight-app-1d0937ed"] [class*="LoadMore"] a,
+[class*="elfsight-app-1d0937ed"] [class*="LoadMore"] button,
+[class*="elfsight-app-1d0937ed"] [class*="load-more"] {
+  min-height: 60px !important;
+  padding: 0 38px !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #f3e9d2 !important;
+  border-radius: 999px !important;
+  border: 2px solid rgba(190, 150, 255, 0.55) !important;
+  background: linear-gradient(135deg, #1a1226 0%, #2a1b40 55%, #3d2a5c 100%) !important;
+  box-shadow: 0 10px 32px rgba(150, 100, 230, 0.25) !important;
+  animation: es2-pulse-violet 4s ease-in-out infinite;
+  transition: transform 0.25s, border-color 0.25s !important;
+}
+[class*="elfsight-app-1d0937ed"] a[class*="utton"]:hover,
+[class*="elfsight-app-1d0937ed"] button[class*="utton"]:hover {
+  transform: translateY(-3px) scale(1.03);
+  border-color: #e8c27a !important;
+}
+@keyframes es2-pulse-violet {
+  0%,
+  100% {
+    box-shadow: 0 10px 32px rgba(150, 100, 230, 0.2);
+  }
+  50% {
+    box-shadow: 0 12px 44px rgba(150, 100, 230, 0.5);
+  }
+}
+
+/* „Du bist Neo“: größer, weiter weg von den YouTube-Videos */
+[id*="__rich_text_gtNpir"] {
+  padding-top: 4vh !important;
+  padding-bottom: 26vh !important;
+}
+[id*="__rich_text_gtNpir"] h1,
+[id*="__rich_text_gtNpir"] h2,
+[id*="__rich_text_gtNpir"] h3,
+[id*="__rich_text_gtNpir"] .title {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-size: clamp(2.8rem, 7.5vw, 5.6rem) !important;
+  font-style: italic;
+  font-weight: 700 !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0.01em !important;
+}
+[id*="__rich_text_gtNpir"] .esz-word {
+  background: linear-gradient(100deg, #b8862f 0%, #f3d98e 45%, #fff4d6 55%, #c99a3e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  padding: 0 0.04em;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+}

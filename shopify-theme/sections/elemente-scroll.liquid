@@ -48,7 +48,7 @@
   data-fx-vines="{{ section.settings.fx_vines }}"
   data-fx-header="{{ section.settings.fx_header }}"
   data-fx-feathers="{{ section.settings.fx_feathers }}"
-  data-art="{{ 'es-fern-a.webp' | asset_url }}|{{ 'es-fern-b.webp' | asset_url }}|{{ 'es-ivy.webp' | asset_url }}|{{ 'es-ivy-b.webp' | asset_url }}|{{ 'es-leaf-0.webp' | asset_url }}|{{ 'es-leaf-1.webp' | asset_url }}|{{ 'es-leaf-2.webp' | asset_url }}|{{ 'es-leaf-3.webp' | asset_url }}"
+  data-art="{{ 'es-fern-a.webp' | file_url }}|{{ 'es-fern-b.webp' | file_url }}|{{ 'es-ivy.webp' | file_url }}|{{ 'es-ivy-b.webp' | file_url }}|{{ 'es-leaf-0.webp' | file_url }}|{{ 'es-leaf-1.webp' | file_url }}|{{ 'es-leaf-2.webp' | file_url }}|{{ 'es-leaf-3.webp' | file_url }}"
   style="--es-len: {{ section.settings.length }}vh; --es-end: {{ section.settings.end_color }};"
 >
   <div class="es__stage">
@@ -189,8 +189,8 @@
   /* goldener Einladungskreis */
   #ES-{{ section.id }} .es__cta {
     position: absolute; left: 50%; top: 50%; z-index: 3;
-    width: min(70vmin, 430px); aspect-ratio: 1;
-    margin: calc(min(70vmin, 430px) / -2) 0 0 calc(min(70vmin, 430px) / -2);
+    width: min(78vmin, 500px); aspect-ratio: 1;
+    margin: calc(min(78vmin, 500px) / -2) 0 0 calc(min(78vmin, 500px) / -2);
     border-radius: 50%; display: grid; place-items: center;
     text-decoration: none; color: #2a2318;
     opacity: 0; pointer-events: none; will-change: transform, opacity;
@@ -217,7 +217,7 @@
     content: ''; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%;
     background: #e9c66e; box-shadow: 0 0 10px 3px rgba(233,198,110,.7);
   }
-  #ES-{{ section.id }} .es__cta-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .55em; max-width: 60%; text-align: center; }
+  #ES-{{ section.id }} .es__cta-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .6em; max-width: 66%; text-align: center; }
   #ES-{{ section.id }} .es__cta-eyebrow { font-size: clamp(.6rem, 1.5vmin, .74rem); font-weight: 700; letter-spacing: .36em; text-transform: uppercase; color: #9a7630; }
   /* Titel: ruhige Serifenschrift, das letzte Wort groß, kursiv und in Gold */
   #ES-{{ section.id }} .es__cta-title {
@@ -233,10 +233,12 @@
   #ES-{{ section.id }} .es__cta-orn::after { content: '✦'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -54%); font-size: .7rem; color: #b8862f; background: #fbf1d8; padding: 0 .4em; line-height: 1; }
   /* Knopf: von dunklem Türkisblau immer heller bis ins Grün – kein Rot, kein Gelb */
   #ES-{{ section.id }} .es__cta-btn, .es-dawn-btn {
-    margin-top: .4em; padding: .8em 1.6em; border-radius: 999px;
-    background: linear-gradient(120deg, #0c3f52 0%, #12667a 30%, #2b8f80 58%, #5fae5a 82%, #8fc25a 100%); color: #fff;
-    font-size: clamp(.82rem, 2vmin, 1rem); font-weight: 700; letter-spacing: .08em; text-shadow: 0 1px 2px rgba(6,30,36,.55);
-    box-shadow: 0 6px 22px rgba(18,102,122,.38), inset 0 1px 0 rgba(255,255,255,.3); transition: transform .3s, box-shadow .3s, filter .3s;
+    margin-top: .5em; padding: 1em 2.1em; border-radius: 999px;
+    background: linear-gradient(120deg, #0a3444 0%, #0f5a6c 30%, #23806f 58%, #4f9a4c 82%, #76ad48 100%); color: #fff;
+    font-size: clamp(1.02rem, 2.7vmin, 1.3rem); font-weight: 800; letter-spacing: .07em; line-height: 1.15; white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(4,22,28,.85), 0 0 10px rgba(4,22,28,.45);
+    border: 2px solid rgba(255,255,255,.55);
+    box-shadow: 0 8px 26px rgba(18,102,122,.45), 0 0 0 4px rgba(18,102,122,.15), inset 0 1px 0 rgba(255,255,255,.35); transition: transform .3s, box-shadow .3s, filter .3s;
   }
   #ES-{{ section.id }} .es__cta:hover .es__cta-btn,
   #ES-{{ section.id }} .es__cta:focus-visible .es__cta-btn { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(18,102,122,.5); filter: brightness(1.08); }
@@ -309,8 +311,8 @@
 </style>
 
 {%- comment -%} Skripte liegen komprimiert unter Inhalte → Dateien (lesbare Quelle: shopify-elemente-scroll/assets) {%- endcomment -%}
-<script src="{{ 'elemente-scroll-v6.js' | file_url }}" defer></script>
-<script src="{{ 'elemente-vulkan-v4.js' | file_url }}" defer></script>
+<script src="{{ 'es2-scroll.js' | file_url }}" defer></script>
+<script src="{{ 'es2-vulkan.js' | file_url }}" defer></script>
 
 {% schema %}
 {

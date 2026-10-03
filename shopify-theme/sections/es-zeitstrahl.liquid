@@ -4,6 +4,8 @@
   Fotos setzen sich von allen Seiten zusammen, dahinter die Landkarte (Umriss, Gebirge, Wälder, Städte),
   der Weg durch den Raum mit einem Tor pro Station, links der große Baum des Lebens – pro Station ein goldenes Blatt.
   Stationen: Daten aus dem Freigeist Archiv (Vereinsgeschichte, Sammlungen) – bitte noch abgleichen.
+  Baum: Station mit "ast" = Hauptast (Meilenstein, Name steht am Ast); Station mit "parent": Nummer = Unterast dieses Hauptasts
+  (Zählung ab 0). Neue Ereignisse einfach als Unterast an den passenden Meilenstein hängen.
 {%- endcomment -%}
 {%- if images['elemente-logo.webp'] -%}{%- assign zs_logo = images['elemente-logo.webp'] | image_url: width: 400 -%}{%- else -%}{%- assign zs_logo = 'elemente-logo.webp' | asset_url -%}{%- endif -%}
 <section id="ZS-{{ section.id }}" class="zs" data-sid="{{ section.id }}" data-logo="{{ zs_logo }}">
@@ -27,28 +29,28 @@
 
 <script type="application/json" id="zs-daten-{{ section.id }}">
 [
-  { "year": "2011", "title": "Der Weg beginnt", "place": "Tirol, Österreich", "iso": "040", "ll": [11.39, 47.27],
+  { "year": "2011", "ast": "Ursprung", "title": "Der Weg beginnt", "place": "Tirol, Österreich", "iso": "040", "ll": [11.39, 47.27],
     "text": "Aus einer persönlichen Suche wird eine Richtung: alte Lebenskünste – QiGong, Kampfkunst, Meditation – im eigenen Leben erforschen.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_20191019_161813.jpg?v=1771767000"] },
-  { "year": "2018", "title": "China – Qing Cheng Shan", "place": "Sichuan, China", "iso": "156", "ll": [103.57, 30.9],
+  { "year": "2018", "ast": "China", "title": "China – Qing Cheng Shan", "place": "Sichuan, China", "iso": "156", "ll": [103.57, 30.9],
     "text": "Internationale Zhineng-QiGong-Lehrerausbildung am Berg Qing Cheng. Lernen an der Quelle – und Freundschaften über Kontinente.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_5741.jpg?v=1707838176", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_5352.jpg?v=1707838176", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_5852.jpg?v=1771882308", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_8087.jpg?v=1771888024"] },
-  { "year": "2019", "title": "Das erste Neo Retreat", "place": "Österreich", "iso": "040", "ll": [11.39, 47.27],
+  { "year": "2019", "ast": "Retreat in Kärnten", "title": "Das erste Neo Retreat", "place": "Österreich", "iso": "040", "ll": [11.39, 47.27],
     "text": "Oktober 2019: Menschen kommen zusammen, um gemeinsam zu üben, zu atmen und zu teilen. Der Funke springt über.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_20191019_153445.jpg?v=1707048733", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_1807.webp?v=1749657880"] },
-  { "year": "2023", "title": "QiGong am Gardasee", "place": "Gardasee, Italien", "iso": "380", "ll": [10.7, 45.6],
+  { "year": "2023", "parent": 2, "title": "QiGong am Gardasee", "place": "Gardasee, Italien", "iso": "380", "ll": [10.7, 45.6],
     "text": "April 2023: Seminar am Wasser – die Praxis wird zum gemeinsamen Erleben.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_1688.webp?v=1749657877"] },
-  { "year": "10.08.2023", "title": "Der Verein entsteht", "place": "Innsbruck, Österreich", "iso": "040", "ll": [11.39, 47.27],
+  { "year": "10.08.2023", "ast": "Entstehung", "title": "Der Verein entsteht", "place": "Innsbruck, Österreich", "iso": "040", "ll": [11.39, 47.27],
     "text": "YOU ARE NEO – Vereinigung zur Förderung holistischer Gesundheit und Ontologie wird errichtet. Gemeinnützig, unabhängig, offen für alle.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_1697.webp?v=1748437574", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20240321-WA0013_c81d1fa7-d6ec-48c9-8609-23818d6d5cc0.jpg?v=1712607276"] },
-  { "year": "Herbst 2023", "title": "Japan – Dojo, Tempel, Gärten", "place": "Japan", "iso": "392", "ll": [139.7, 35.7],
+  { "year": "Herbst 2023", "ast": "Japan", "title": "Japan – Dojo, Tempel, Gärten", "place": "Japan", "iso": "392", "ll": [139.7, 35.7],
     "text": "Studienreise ins Herz der Kampfkünste: Training im Dojo, Stille in Tempeln und Gärten.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20231006-WA0012.jpg?v=1707837977", "https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20231104-WA0003.jpg?v=1707837984"] },
-  { "year": "17.12.2023", "title": "Zweigstelle Zenshinkan Dojo", "place": "Aldrans, Tirol", "iso": "040", "ll": [11.45, 47.25],
+  { "year": "17.12.2023", "parent": 4, "title": "Zweigstelle Zenshinkan Dojo", "place": "Aldrans, Tirol", "iso": "040", "ll": [11.45, 47.25],
     "text": "Der geübte Teil der Arbeit bekommt ein Zuhause. Dazu: Forschungsprojekt „Grenzerfahrungen Mensch“ und das Online-Portal.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG_20191019_161813.jpg?v=1771767000"] },
-  { "year": "2025 – 2026", "title": "AWEN & das goldene Zeitalter", "place": "Tirol, Österreich", "iso": "040", "ll": [11.72, 47.4],
+  { "year": "2025 – 2026", "ast": "The Great Reset", "title": "AWEN & das goldene Zeitalter", "place": "Tirol, Österreich", "iso": "040", "ll": [11.72, 47.4],
     "text": "Projekt AWEN, die Academy, das Freigeist Archiv – und im Dezember 2026 das Retreat „The Great Reset“. Wir begleiten die Welt ins goldene Zeitalter.",
     "img": ["https://cdn.shopify.com/s/files/1/0797/8310/0743/files/IMG-20231104-WA0003.jpg?v=1707837984"] }
 ]
@@ -96,7 +98,7 @@
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js" defer></script>
-<script src="{{ 'elemente-zeitstrahl.js' | file_url }}" defer></script>
+<script src="{{ 'es2-zeitstrahl.js' | file_url }}" defer></script>
 
 {% schema %}
 {

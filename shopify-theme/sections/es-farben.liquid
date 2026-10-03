@@ -3,11 +3,12 @@
   - es-farben-v2.css: Farbschemata, Knöpfe, News-Lederfolio, Arche-Bild, Ein-Bild-Slider, Tor-Szene, Glasschneeflocke
   - es-kopf.css: modernes Header-Design (gepflegt von der zweiten Sitzung)
   - es-zauber.js: untere Startseite – Funke, Tor-Szene, Schmetterlinge, Herzens-Schneeflocke (nur auf „/“ aktiv)
-  Quellen: shopify-elemente-scroll/assets (Inhalte → Dateien). Logo bleibt unverändert.
+  Theme 2.0: alle Skripte/Styles liegen als Shopify-Dateien (es2-*, nur von Theme 2.0 genutzt), lesbare Quelle im Repo unter shopify-theme/assets.
 {%- endcomment -%}
-<link rel="stylesheet" href="{{ 'es-farben-v2.css' | file_url }}">
-<link rel="stylesheet" href="{{ 'es-kopf.css' | file_url }}">
-{%- if request.page_type == 'index' -%}<script src="{{ 'es-zauber.js' | file_url }}" defer></script>{%- endif -%}
+<link rel="stylesheet" href="{{ 'es2-farben.css' | file_url }}">
+<link rel="stylesheet" href="{{ 'es2-kopf.css' | file_url }}">
+<script src="{{ 'es2-kopf.js' | file_url }}" defer></script>
+{%- if request.page_type == 'index' -%}<script src="{{ 'es2-zauber.js' | file_url }}" defer></script>{%- endif -%}
 {% schema %}
 { "name": "Farben (Feinabstimmung)", "tag": "div", "class": "section-es-farben", "settings": [], "presets": [{ "name": "Farben (Feinabstimmung)" }] }
 {% endschema %}

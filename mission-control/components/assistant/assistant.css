@@ -246,7 +246,11 @@
 @media(max-width:767px){.workspace-shell .workspace-mobile-brand{align-items:center;gap:8px;font-size:14px;}.assistant-dock{right:10px;bottom:calc(72px + env(safe-area-inset-bottom));}.assistant-chat-panel,.assistant-panel:not(.assistant-chat-panel){bottom:calc(185px + env(safe-area-inset-bottom));max-height:calc(100dvh - 205px - env(safe-area-inset-bottom));}.companion-presence{z-index:102;right:62px;bottom:auto;top:calc(8px + env(safe-area-inset-top));width:75px}.energy-caption,.energy-customize,.energy-reason{display:none}.energy-stage svg{max-height:86px}.guiding-chat .chat-composer-tools .chat-record-toggle{flex:0 1 auto;}.guiding-chat .chat-composer-tools .chat-send{min-width:90px;}.workspace-atmosphere .atmosphere-rain{width:24px}}
 @media(prefers-reduced-motion:reduce){.energy-companion,.energy-companion *,.workspace-atmosphere *,.workspace-sidebar nav a,.trinity-sun *{animation:none!important;transform:none!important;transition:none!important;}}
 html[data-guiding-motion=false] :is(.workspace-brand,.workspace-mobile-brand) svg *{animation:none!important;}
-html[data-guiding-motion=false] .trinity-sun{animation:none!important;}
-html[data-guiding-motion=false] :is(.workspace-brand,.workspace-mobile-brand) :is(.tl-collapse-dot,.tl-gold,.tl-gold-rays,.tl-shimmer,.tl-glint-a,.tl-glint-b){opacity:0!important;}
+html[data-guiding-motion=false] .trinity-sun,html[data-guiding-motion=false] .trinity-sun *{animation:none!important;}
+html[data-guiding-motion=false] :is(.workspace-brand,.workspace-mobile-brand) :is(.tl-collapse-dot,.tl-sun-stage,.tl-shimmer,.tl-glint-a,.tl-glint-b){opacity:0!important;}
 .energy-companion{--energy:#8353b5;}
 .energy-stage{background:radial-gradient(ellipse at 50% 55%,color-mix(in srgb,var(--theme-bg) 88%,transparent),transparent 72%);}
+
+/* Smaller transparent Trinity launcher; keep the touch target accessible. */
+.assistant-dock{background:transparent;border:0;box-shadow:none;padding:0;gap:2px;}
+.trinity-sun{min-width:44px;min-height:44px;}.trinity-sun img{width:28px;height:28px;}.trinity-sun span{font-size:8px;}

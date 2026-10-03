@@ -39,6 +39,9 @@ export type Shortcut = {
   icon: string;
   category: string;
 };
+export type Place = {name:string; latitude:number; longitude:number};
+export type Attachment = {id:string; kind:"image"|"link"|"embed"; url:string; name:string};
+export type PlanItem = {id:string; sourceKind:"goal"|"note"|"event"|"project"|"task"|"free"; sourceId:string; title:string; date:string; workspace:Workspace; minutes:number; startTime?:string; done:boolean; location?:Place};
 export type SoulGoal = {
   workspace?: Workspace;
   id: string;
@@ -49,6 +52,9 @@ export type SoulGoal = {
   due: string;
   done: boolean;
   projectId: string;
+  minutes?:number;
+  location?:Place;
+  attachments?:Attachment[];
 };
 export type BrainNote = {
   workspace?: Workspace;
@@ -58,12 +64,20 @@ export type BrainNote = {
   area: Area;
   links: string[];
   updatedAt: string;
+  date?:string;
+  color?:string;
+  rotation?:number;
+  minutes?:number;
+  location?:Place;
+  attachments?:Attachment[];
 };
 export type PersonalState = {
   workspace: "private" | "organization";
   aiContext: boolean;
   linkCategories: Record<string, string[]>;
   reasons: Record<string, string[]>;
+  planItems:PlanItem[];
+  years:Record<string,{vision:string;success:string;release:string}>;
   days: Record<string, PlannerDay>;
   weeks: Record<string, PlannerWeek>;
   months: Record<string, PlannerMonth>;
@@ -88,6 +102,8 @@ export const usePersonal = create<PersonalState>()(
       aiContext: false,
       linkCategories: {},
       reasons: {},
+      planItems:[],
+      years:{},
       days: {},
       weeks: {},
       months: {},

@@ -16,6 +16,7 @@ export default function MyApps() {
           <span className="app-status">{app.state === "portal" ? "Buzz-Zugang öffnen" : app.state === "trinity" ? "In guiding.space öffnen" : app.state === "legacy" ? "Bisherige App & Ausblick" : "Ausblick & Stand"} <span aria-hidden="true">↗</span></span>
         </div>
       </Link>)}
+      <a href="https://archiv.youareneo.com" target="_blank" rel="noopener noreferrer" className="app-card"><img src="/apps/archiv.svg" alt="" width={360} height={220} loading="lazy"/><div><p className="app-category">Wissen & Gemeinschaft</p><h2>Archiv der Lebenskünste</h2><p>Dein Vereinsportal mit Räumen, Wissen und Begegnungen.</p><span className="app-status">Archiv öffnen ↗</span></div></a>
     </nav>
     <aside className="apps-account-note"><h2>Eine Anmeldung, persönliche Inhalte</h2>
       <p>Radio-Merkliste, Küchenschatzbuch und Trinity verwenden deinen Trinity-Zugang. Bestehende externe Apps nutzen teilweise noch ihre bisherige Anmeldung. Ihre Konten und Sammlungen sind noch nicht vollständig zusammengeführt.</p>

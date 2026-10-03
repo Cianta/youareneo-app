@@ -5,6 +5,7 @@ import { cn, AGENT_COLORS } from '@/lib/utils';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { Save, Eye, EyeOff, ExternalLink, Monitor, Mouse, Globe, ShieldAlert, Check, ToggleLeft, ToggleRight, Volume2, CalendarDays } from 'lucide-react';
+import {CalendarSources} from '@/components/workspace/CalendarSources';
 import { motion } from 'framer-motion';
 
 // ── Hardware Permission Tri-State ─────────────────────────────────────────────
@@ -54,73 +55,7 @@ function AudioSettings() {
   );
 }
 
-function CalendarSettings() {
-  const { calendars, addCalendar, removeCalendar } = useTemporalStore();
-  const [name, setName] = useState('');
-  const [type, setType] = useState<'private' | 'association'>('private');
-
-  const handleOAuth = (provider: string) => {
-    const urls: Record<string, string> = {
-      google: 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/calendar&response_type=code&access_type=offline',
-      apple:  'https://appleid.apple.com/auth/authorize',
-      infomaniak: 'https://login.infomaniak.com/authorize',
-    };
-    window.open(urls[provider] ?? '#', '_blank', 'width=600,height=700');
-  };
-
-  return (
-    <section>
-      <h2 className="text-xs uppercase tracking-widest text-anth-500 mb-4 flex items-center gap-1.5">
-        <CalendarDays size={12} /> Calendar Integrations
-      </h2>
-      <div className="glass rounded-2xl border border-border p-5 space-y-4">
-        <p className="text-xs text-anth-400">
-          Connect calendar accounts. The global <strong className="text-forest-300">Vereins-Kalender</strong> is active for everyone.
-          Private calendars use OAuth breakout tabs for safe login.
-        </p>
-        {/* OAuth Connect Buttons */}
-        <div className="flex gap-2">
-          {[
-            { id: 'google', label: 'Google Calendar', emoji: '🔴' },
-            { id: 'apple', label: 'Apple Calendar', emoji: '🍎' },
-            { id: 'infomaniak', label: 'Infomaniak', emoji: '🟢' },
-          ].map(p => (
-            <button key={p.id} onClick={() => handleOAuth(p.id)}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl border border-forest-700/40 bg-forest-900/20 text-xs text-forest-300 hover:bg-forest-800/30 hover:border-forest-600/50 transition-all">
-              <span>{p.emoji}</span>
-              Connect {p.label}
-            </button>
-          ))}
-        </div>
-        {/* Existing calendars */}
-        <div className="space-y-1.5">
-          {calendars.map(cal => (
-            <div key={cal.id} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface/60 border border-border/50">
-              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cal.color }} />
-              <span className="text-xs text-forest-200 flex-1 truncate">{cal.name}</span>
-              <span className="text-[9px] text-anth-600 uppercase">{cal.type}</span>
-              {!['assoc-default', 'priv-default'].includes(cal.id) && (
-                <button onClick={() => removeCalendar(cal.id)} className="text-anth-500 hover:text-red-400 transition-colors text-xs">Remove</button>
-              )}
-            </div>
-          ))}
-        </div>
-        {/* Add manual calendar */}
-        <div className="flex gap-2">
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="Calendar name…" className="mc-input py-1.5 text-xs flex-1" />
-          <select value={type} onChange={e => setType(e.target.value as 'private' | 'association')} className="mc-input py-1.5 text-xs w-28">
-            <option value="private">Privat</option>
-            <option value="association">Verein</option>
-          </select>
-          <button onClick={() => { if (!name.trim()) return; addCalendar({ name: name.trim(), url: '', provider: 'local', type, color: type === 'private' ? '#11CAA0' : '#8b5cf6' }); setName(''); }}
-            className="px-4 py-1.5 rounded-xl bg-forest-700/40 border border-forest-600/40 text-forest-300 text-xs hover:bg-forest-600/40 transition-colors">
-            Add
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-}
+function CalendarSettings(){return <CalendarSources year={new Date().getFullYear()}/>;}
 
 export default function SettingsPage() {
   const { agents } = useAgentStore();

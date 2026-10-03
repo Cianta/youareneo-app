@@ -12,15 +12,22 @@ import {
 } from "@/lib/workspace/personal";
 import { useBoard } from "@/lib/workspace/useBoard";
 import { Modal } from "@/components/ui/Modal";
+import {localDate} from "@/lib/workspace/time";
+import {JournalNotes,JournalYear} from "@/components/workspace/JournalNotes";
+import {DayPlan} from "@/components/workspace/DayPlan";
+import {Attachments} from "@/components/workspace/Attachments";
+import {PlaceField} from "@/components/workspace/PlaceField";
+import Link from "next/link";
 import { DailyPlanner } from "@/components/workspace/DailyPlanner";
 import { WorkspaceChoice } from "@/components/workspace/WorkspaceChoice";
 export default function GoalsPage() {
   const s = usePersonal(),
     { board } = useBoard();
+  const [date,setDate]=useState(localDate());
   const [editing, setEditing] = useState<Partial<SoulGoal> | null>(null);
   return (
-    <div className="w-page">
-      <DailyPlanner
+    <div className="w-page journal-page"><div className="journal-main"><div className="journal-label"><span className="w-eyebrow">MEIN JOURNAL · ZIELE & NOTIZEN</span><Link href="/notiz">Sprachnotizen & Hermes →</Link></div><JournalYear date={date}/>
+      <DailyPlanner selectedDate={date} onDateChange={setDate}
         onAddGoal={() => setEditing({})}
         renderGoals={
           <>
@@ -81,6 +88,7 @@ export default function GoalsPage() {
                         )}
                       </small>
                     )}
+                    <button className="w-btn" onClick={()=>window.dispatchEvent(new CustomEvent("neo-plan-add",{detail:{kind:"goal",sourceId:g.id,date}}))}><Plus size={15}/> Zum Tagesplan · {g.minutes||45} min</button>
                     <button
                       className="w-btn"
                       onClick={() =>
@@ -106,6 +114,7 @@ export default function GoalsPage() {
           </>
         }
       />
+      <DayPlan date={date}/></div><JournalNotes date={date} onDateChange={setDate}/>
       <Modal
         open={editing !== null}
         onClose={() => setEditing(null)}
@@ -118,6 +127,7 @@ export default function GoalsPage() {
               e.preventDefault();
               const f = new FormData(e.currentTarget);
               const goal: SoulGoal = {
+                ...editing,
                 id: editing.id ?? crypto.randomUUID(),
                 workspace: String(f.get("workspace")) as Workspace,
                 title: String(f.get("title")).trim(),
@@ -127,6 +137,7 @@ export default function GoalsPage() {
                 due: String(f.get("due")),
                 done: editing.done ?? false,
                 projectId: String(f.get("project")),
+                minutes:Number(f.get("minutes"))||45,
               };
               s.set({
                 goals: editing.id
@@ -198,6 +209,9 @@ export default function GoalsPage() {
                 defaultValue={editing.due}
               />
             </label>
+            <label>Geschätzte Dauer · Minuten<input className="w-input" name="minutes" type="number" min="1" max="1440" defaultValue={editing.minutes??45}/></label>
+            <PlaceField value={editing.location} onChange={location=>setEditing({...editing,location})}/>
+            <Attachments items={editing.attachments} onChange={attachments=>setEditing({...editing,attachments})}/>
             <WorkspaceChoice value={editing.workspace} />
             <button className="w-btn w-btn-primary">Speichern</button>
           </form>

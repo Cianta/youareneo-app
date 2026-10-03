@@ -6,65 +6,30 @@ export type Destination = {
   keywords?: string;
 };
 export const primary: Destination[] = [
-  { id: "home", label: "Übersicht", href: "/dashboard", group: "Arbeiten" },
-  {
-    id: "notes",
-    label: "Notizen",
-    href: "/notiz",
-    group: "Arbeiten",
-    keywords: "sprache mikrofon aufnehmen gedanken hermes",
-  },
-  {
-    id: "tasks",
-    label: "Aufgaben",
-    href: "/dashboard/vision/tasks",
-    group: "Arbeiten",
-    keywords: "kanban trello",
-  },
-  {
-    id: "projects",
-    label: "Projekte",
-    href: "/dashboard/projekte",
-    group: "Arbeiten",
-  },
-  { id: "brain", label: "Gehirn", href: "/gehirn", group: "Arbeiten", keywords: "wissen graph second brain verbindungen" },
-  {
-    id: "notebooks",
-    label: "Notebooks & Ziele",
-    href: "/dashboard/kanban",
-    group: "Arbeiten",
-    keywords: "journal tagebuch fokus",
-  },
-  {id:"ideas",label:"Ideenboard",href:"/dashboard/eden",group:"Arbeiten",keywords:"eden canvas ideen sammeln tabellen formeln"},
-  {id:"planner",label:"Tagesplan & Ziele",href:"/dashboard/goals",group:"Arbeiten",keywords:"wochenplan monat 100 gründe pyramide"},
-  {id:"inbox",label:"Postfach",href:"/dashboard/communication/email",group:"Arbeiten",keywords:"email mail kommunikation"},
-  {id:"calendar",label:"Kalender",href:"/dashboard/calendar",group:"Arbeiten",keywords:"termine heute"},
-  {id:"soul",label:"Astrologie & Human Design",href:"/dashboard/soul",group:"Entdecken",keywords:"himmelskompass mond westlich vedisch chinesisch maya tzolkin keltisch human design"},
-  {id:"meditation",label:"Fokus & Meditation",href:"/dashboard/meditation",group:"Entdecken",keywords:"ruhe visual room musik gong"},
-  { id: "my-apps", label: "Meine Apps", href: "/dashboard/apps", group: "Entdecken", keywords: "buzz chat radio kochbuch kino visual frequency atelier good news living arts" },
-  {
-    id: "lab",
-    label: "Labor",
-    href: "/dashboard/labor",
-    group: "Entdecken",
-    keywords: "tools integrationen",
-  },
-  {
-    id: "settings",
-    label: "Einstellungen",
-    href: "/dashboard/settings",
-    group: "Verwalten",
-  },
+  {id:"home",label:"Übersicht",href:"/dashboard",group:"Mein Raum"},
+  {id:"tasks",label:"Kanban · Aufgaben",href:"/dashboard/kanban",group:"Mein Raum",keywords:"aufgaben trello"},
+  {id:"notes",label:"Ziele & Notizen",href:"/dashboard/goals",group:"Mein Raum",keywords:"journal chancenplaner tagebuch jahresziele wochenplan"},
+  {id:"calendar",label:"Kalender & Plan",href:"/dashboard/calendar",group:"Mein Raum",keywords:"tagesplan termine monat jahr fokus"},
+  {id:"brain",label:"Daten-Gehirn",href:"/gehirn",group:"Mein Raum",keywords:"wissen second brain graph"},
+  {id:"ideas",label:"Ideenboard",href:"/dashboard/eden",group:"Arbeiten",keywords:"eden canvas"},
+  {id:"lab",label:"Daten-Labor",href:"/dashboard/labor",group:"Arbeiten",keywords:"audio video bilder dokumente crm tools integrationen"},
+  {id:"projects",label:"Projekte",href:"/dashboard/projekte",group:"Arbeiten"},
+  {id:"inbox",label:"Postfach",href:"/dashboard/communication/email",group:"Kommunikation",keywords:"email mail"},
+  {id:"meeting",label:"Meeting",href:"/dashboard/communication/meeting",group:"Kommunikation",keywords:"meetingraum videokonferenz telefon anruf kmeet"},
+  {id:"contacts",label:"Kontakte CRM",href:"/dashboard/contacts",group:"Kommunikation",keywords:"menschen beziehungen adressbuch telefon firma"},
+  {id:"soul",label:"Astrologie & Human Design",href:"/dashboard/soul",group:"Entdecken",keywords:"mond westlich vedisch chinesisch maya tzolkin keltisch"},
+  {id:"meditation",label:"Fokus & Meditation",href:"/dashboard/meditation",group:"Entdecken",keywords:"ruhe visual room musik"},
+  {id:"my-apps",label:"Meine Apps",href:"/dashboard/apps",group:"Apps",keywords:"buzz radio archiv kochbuch kino"},
 ];
-export const mobileTabs = [
-  primary[0],
-  primary[1],
-  primary[2],
-  { id: "more", label: "Mehr", href: "/dashboard/labor", group: "Entdecken" },
-];
+export const mobileTabs = [primary[0],primary[2],primary[3],{id:"more",label:"Mehr",href:"/dashboard/labor",group:"Arbeiten"}];
 
 // Existing tools retain their routes and data; experiments live behind Labor.
 export const laboratory: Destination[] = [
+  {id:"documents",label:"Dokumente",href:"/dashboard/media/documents",group:"Labor"},
+  {id:"contacts",label:"Kontakte & Beziehungen",href:"/dashboard/contacts",group:"Labor"},
+  {id:"voice-notes",label:"Sprachnotizen & Hermes",href:"/notiz",group:"Journal",keywords:"sprache mikrofon aufnehmen"},
+  {id:"task-list",label:"Aufgabenliste",href:"/dashboard/vision/tasks",group:"Planung"},
+  {id:"settings",label:"Einstellungen",href:"/dashboard/settings",group:"Verwalten"},
   {id:"voice-chat",label:"Trinity Gespräch",href:"/sprechen",group:"Assistentin",keywords:"reden sprechen stimme prompt widget"},
   {
     id: "legacy-overview",

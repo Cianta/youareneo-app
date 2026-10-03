@@ -12,7 +12,7 @@ const runs = Number(process.env.AUDIT_RUNS || 3);
 assert(Number.isInteger(runs) && runs >= 1 && runs <= 5, 'Use 1–5 runs.');
 const appsSuite = process.env.AUDIT_SUITE === 'apps';
 const output = resolve(process.env.AUDIT_OUTPUT_DIR || (appsSuite ? '/tmp/trinity-apps-audit' : '/tmp/trinity-workspace-audit'));
-const suiteRoutes = appsSuite ? ['/dashboard/apps', '/dashboard/apps/radio', '/dashboard/apps/kochbuch'] : ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban'];
+const suiteRoutes = appsSuite ? ['/dashboard/apps', '/dashboard/apps/radio', '/dashboard/apps/kochbuch'] : ['/login', '/notiz', '/dashboard', '/dashboard/vision/tasks', '/dashboard/kanban', '/dashboard/goals', '/dashboard/calendar', '/dashboard/labor'];
 const routes = process.env.AUDIT_ROUTES ? process.env.AUDIT_ROUTES.split(',') : suiteRoutes;
 assert(routes.length > 0 && routes.every(route => suiteRoutes.includes(route)), 'Select only routes from this audit suite.');
 const userId = '00000000-0000-4000-8000-000000000001';
@@ -79,7 +79,8 @@ try {
       assert.equal(new URL(lhr.finalDisplayedUrl).pathname, route, 'Unexpected redirect.');
       assert.equal(writes, 0, 'An unexpected write was blocked.');
       const scripts = lhr.audits['network-requests'].details.items.filter(item => item.resourceType === 'Script');
-      assert(!scripts.some(item => graphChunks.includes(new URL(item.url).pathname)), 'A core route loaded the 3D renderer.');
+      const loadedGraphChunks = scripts.filter(item => graphChunks.includes(new URL(item.url).pathname)).map(item => new URL(item.url).pathname);
+      if (route !== '/dashboard/calendar') assert.equal(loadedGraphChunks.length, 0, 'A core route loaded the 3D renderer.');
       const entry = { route, run, fixture: true, source: 'local production build',
         fetchTime: lhr.fetchTime, lighthouseVersion: lhr.lighthouseVersion,
         performance: Math.round(lhr.categories.performance.score * 100),
@@ -94,7 +95,8 @@ try {
           .map(([id, value]) => ({ id, title: value.title, score: value.score,
             displayValue: value.displayValue, details: value.details })),
         settings: { throttling: lhr.configSettings.throttling, screenEmulation: lhr.configSettings.screenEmulation },
-        graphChunksNotLoaded: graphChunks,
+        graphChunksNotLoaded: graphChunks.filter(path => !loadedGraphChunks.includes(path)),
+        loadedGraphChunks,
         blockedExternalRequests: external, blockedWrites: writes, warnings: lhr.runWarnings };
       await writeFile(resolve(output, route.slice(1).replaceAll('/', '-') + '-' + run + '.json'), JSON.stringify(entry, null, 2));
       results.push(entry);

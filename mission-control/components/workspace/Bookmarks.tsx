@@ -10,16 +10,7 @@ export function Bookmarks() {
   const [open, setOpen] = useState(false),
     [error, setError] = useState("");
   return (
-    <details
-      className="w-bookmarks"
-      open={s.navOpen.bookmarks ?? false}
-      onToggle={(e) => {
-        const open = e.currentTarget.open;
-        if (open !== (s.navOpen.bookmarks ?? false))
-          s.set({ navOpen: { ...s.navOpen, bookmarks: open } });
-      }}
-    >
-      <summary className="w-nav-caption">FOKUS · LESEZEICHEN</summary>
+    <div className="w-bookmarks">
       <div className="w-bookmark-items">
         {s.bookmarks.map((b) => (
           <div className="w-bookmark-row" key={b.id}>
@@ -111,6 +102,6 @@ export function Bookmarks() {
           </button>
         </form>
       </Modal>
-    </details>
+    </div>
   );
 }

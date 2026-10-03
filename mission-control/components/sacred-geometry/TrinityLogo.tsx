@@ -3,19 +3,11 @@ import {useId} from 'react';
 import { useBrand } from '@/components/voice/BrandProvider';
 
 /**
- * TrinityLogo — Animated yin-yang mark for YOU ARE NEO / TRINITY OS.
- *
- * High-end choreography, one master cycle (20 s):
- *   0–35 %   REST — blue/green yin-yang with purple centre drop, perfectly still
- *  35–55 %   SPIRAL COLLAPSE — the two drops spin up (2 revolutions) and spiral
- *            into the centre, shrinking to a medium indigo/dark-turquoise dot
- *  55–70 %   GOLDEN REBIRTH — golden light blooms, the logo grows back to full
- *            size (slight overshoot) while completing a third revolution
- *  70–82 %   SILVER SHIMMER — a silver gloss sweeps across, tiny sparkles glint
- *  82–100 %  REST again → seamless restart
- *
- * Total stillness per cycle ≈ 6.4 s ("länger stillstehen").
- * Respects prefers-reduced-motion (static logo).
+ * A quiet 20-second cycle: the original yin-yang gathers into a point,
+ * Trinity's violet sun opens with independent plasma/corona motion,
+ * then the mark returns. The photosphere is a real alpha-transparent PNG;
+ * filaments, prominences and active-region light are separate SVG layers.
+ * No canvas, 3D runtime or frame-by-frame React updates. Motion can be disabled.
  */
 
 interface Props {
@@ -82,12 +74,16 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
           <stop offset="100%" stopColor="#312e81" />
         </radialGradient>
 
-        {/* ── Golden light bloom ── */}
-        <radialGradient id={`${prefix}-tl-gold`} cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#fff7d6" />
-          <stop offset="30%"  stopColor="#fcd34d" stopOpacity="0.9" />
-          <stop offset="65%"  stopColor="#f59e0b" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#b45309" stopOpacity="0" />
+        <radialGradient id={`${prefix}-tl-corona`}>
+          <stop offset="48%" stopColor="#c084fc" stopOpacity="0" />
+          <stop offset="65%" stopColor="#e9b9ff" stopOpacity="0.5" />
+          <stop offset="77%" stopColor="#a855f7" stopOpacity="0.24" />
+          <stop offset="100%" stopColor="#7e22ce" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id={`${prefix}-tl-active`}>
+          <stop stopColor="#fff3ff" stopOpacity="0.95" />
+          <stop offset="30%" stopColor="#e9a8ff" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#b15aff" stopOpacity="0" />
         </radialGradient>
 
         {/* ── Silver gloss sweep ── */}
@@ -114,16 +110,6 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
           </feMerge>
         </filter>
 
-        {/* ── Strong bloom filter (golden light) ── */}
-        <filter id={`${prefix}-tl-bloom`} x="-120%" y="-120%" width="340%" height="340%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-
         {/* ── Sparkle filter ── */}
         <filter id={`${prefix}-tl-spark`} x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="blur" />
@@ -135,13 +121,13 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
 
         {/* ═══════════════ Master timeline: 20 s ═══════════════ */}
         <style>{`
-          /* ── Body: still → spiral collapse (2 rev) → golden regrowth (3rd rev) → still ── */
+          /* ── Body: still → spiral collapse (2 rev) → violet regrowth (3rd rev) → still ── */
           @keyframes tl-body {
-            0%, 35%   { transform: rotate(0deg)    scale(1);    }
+            0%, 35%   { transform: rotate(0deg)    scale(1); opacity:1; }
             46%       { transform: rotate(360deg)  scale(0.62); }
-            55%, 57%  { transform: rotate(720deg)  scale(0.20); }
-            67%       { transform: rotate(1074deg) scale(1.06); }
-            70%, 100% { transform: rotate(1080deg) scale(1);    }
+            55%, 57%  { transform: rotate(720deg)  scale(0.20); opacity:0.02; }
+            67%       { transform: rotate(1074deg) scale(1.06); opacity:0.04; }
+            74%, 100% { transform: rotate(1080deg) scale(1); opacity:1; }
           }
 
           /* ── Purple rest-drop: visible at rest, merges away during collapse ── */
@@ -160,17 +146,30 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
             68%, 100% { opacity: 0;   transform: scale(2.6);  }
           }
 
-          /* ── Golden light: blooms while the logo grows back ── */
-          @keyframes tl-gold {
-            0%, 54%   { opacity: 0;    transform: scale(0.2); }
-            60%       { opacity: 0.95; transform: scale(1);   }
-            66%       { opacity: 0.55; transform: scale(1.5); }
-            73%, 100% { opacity: 0;    transform: scale(1.8); }
+          /* Solar emergence belongs to the master cycle; its surface lives independently. */
+          @keyframes tl-sun-stage {
+            0%, 48% { opacity:0; transform:scale(.12); }
+            54% { opacity:.65; transform:scale(.38); }
+            59%, 66% { opacity:1; transform:scale(1); }
+            69% { opacity:.8; transform:scale(1.03); }
+            74%, 100% { opacity:0; transform:scale(.82); }
           }
-          @keyframes tl-gold-rays {
-            0%, 55%   { opacity: 0;   transform: rotate(0deg)  scale(0.3); }
-            61%       { opacity: 0.7; transform: rotate(24deg) scale(1);   }
-            70%, 100% { opacity: 0;   transform: rotate(48deg) scale(1.35);}
+          @keyframes tl-sun-surface {
+            0%, 48% { transform:rotate(-14deg); }
+            74%, 100% { transform:rotate(14deg); }
+          }
+          @keyframes tl-corona-breathe {
+            0%,100% { opacity:.38; transform:scale(.94); }
+            50% { opacity:.78; transform:scale(1.08); }
+          }
+          @keyframes tl-plasma-flow { to { stroke-dashoffset:-70; } }
+          @keyframes tl-prominence {
+            0%,100% { opacity:.15; transform:scaleY(.75); }
+            50% { opacity:.72; transform:scaleY(1.12); }
+          }
+          @keyframes tl-active-pulse {
+            0%,100% { opacity:.2; transform:scale(.6); }
+            45% { opacity:.85; transform:scale(1.08); }
           }
 
           /* ── Silver shimmer: gloss sweeps across once at the end ── */
@@ -191,7 +190,7 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
             78%                    { opacity: 1; transform: scale(1);   }
           }
 
-          /* ── Ambient ring: breathes softly with the golden bloom ── */
+          /* ── Ambient ring: breathes softly with the violet bloom ── */
           @keyframes tl-ring {
             0%, 100%  { opacity: 0.14; }
             50%, 56%  { opacity: 0.05; }
@@ -211,14 +210,12 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
             animation: tl-collapse-dot 20s cubic-bezier(0.45, 0.05, 0.45, 0.95) infinite;
             transform-origin: 50px 50px;
           }
-          .tl-gold {
-            animation: tl-gold 20s ease-out infinite;
-            transform-origin: 50px 50px;
-          }
-          .tl-gold-rays {
-            animation: tl-gold-rays 20s ease-out infinite;
-            transform-origin: 50px 50px;
-          }
+          .tl-sun-stage { animation:tl-sun-stage 20s cubic-bezier(.22,.7,.25,1) infinite; transform-origin:50px 50px; }
+          .tl-sun-surface { animation:tl-sun-surface 20s ease-in-out infinite; transform-origin:50px 50px; }
+          .tl-sun-corona { animation:tl-corona-breathe 5s ease-in-out infinite; transform-origin:50px 50px; }
+          .tl-sun-filament { animation:tl-plasma-flow 9s linear infinite; stroke-dasharray:12 23; }
+          .tl-sun-prominence { animation:tl-prominence 5.5s ease-in-out infinite; transform-origin:50px 17px; }
+          .tl-sun-active { animation:tl-active-pulse 4.5s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
           .tl-shimmer {
             animation: tl-shimmer 20s cubic-bezier(0.3, 0, 0.4, 1) infinite;
           }
@@ -233,9 +230,9 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
           .tl-ring { animation: tl-ring 20s ease-in-out infinite; }
 
           @media (prefers-reduced-motion: reduce) {
-            .tl-body, .tl-purple, .tl-collapse-dot, .tl-gold, .tl-gold-rays,
+            .tl-body, .tl-purple, .tl-collapse-dot, .tl-sun-stage, .tl-sun-stage *,
             .tl-shimmer, .tl-glint-a, .tl-glint-b, .tl-ring { animation: none; }
-            .tl-collapse-dot, .tl-gold, .tl-gold-rays, .tl-shimmer,
+            .tl-collapse-dot, .tl-sun-stage, .tl-sun-stage *, .tl-shimmer,
             .tl-glint-a, .tl-glint-b { opacity: 0; }
           }
         `}</style>
@@ -302,17 +299,22 @@ export function TrinityLogo({ size = 36, className = '' }: Props) {
         <circle cx="46" cy="45.5" r="3" fill="#cffafe" opacity="0.5" />
       </g>
 
-      {/* ── GOLDEN LIGHT — bloom + rays while the logo regrows ── */}
-      <g className="tl-gold-rays">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <rect key={i} x="49.3" y="8" width="1.4" height="24" rx="0.7"
-            fill="#fcd34d" opacity="0.8"
-            transform={`rotate(${i * 45} 50 50)`}
-          />
-        ))}
+      {/* Transparent photosphere + independently moving solar plasma, not a logo card. */}
+      <g className="tl-sun-stage" data-trinity-sun="layered" aria-hidden="true">
+        <circle className="tl-sun-corona" cx="50" cy="50" r="48" fill={`url(#${prefix}-tl-corona)`}/>
+        <g className="tl-sun-surface">
+          <image href="/_next/image?url=%2Fpwa%2Ftrinity-sun-transparent.png&w=96&q=75" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>
+          <g fill="none" stroke="#efb8ff" strokeWidth="0.55" strokeLinecap="round">
+            {[0,60,125,195,255,310].map((angle,i)=><g key={angle} transform={`rotate(${angle} 50 50)`}>
+              <path className="tl-sun-prominence" style={{animationDelay:`${-i*.75}s`}} d="M 43,18 C 39,7 51,4 57,17 C 54,12 45,11 43,18"/>
+            </g>)}
+            <path className="tl-sun-filament" d="M 23,48 C 28,34 40,40 39,27 C 43,18 55,31 55,40 C 56,52 75,43 77,55" opacity=".65"/>
+            <path className="tl-sun-filament" style={{animationDelay:'-4s'}} d="M 33,69 C 46,80 47,59 55,66 C 63,74 74,67 69,55" opacity=".5"/>
+          </g>
+          <circle className="tl-sun-active" cx="63" cy="43" r="8" fill={`url(#${prefix}-tl-active)`}/>
+          <circle className="tl-sun-active" style={{animationDelay:'-2.4s'}} cx="30" cy="53" r="5" fill={`url(#${prefix}-tl-active)`}/>
+        </g>
       </g>
-      <circle cx="50" cy="50" r="34" fill={`url(#${prefix}-tl-gold)`}
-        className="tl-gold" filter={`url(#${prefix}-tl-bloom)`} />
 
       {/* ── SILVER SHIMMER — gloss sweep + sparkles, clipped to the orb ── */}
       <g clipPath={`url(#${prefix}-tl-clip)`}>

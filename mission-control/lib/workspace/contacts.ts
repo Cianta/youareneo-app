@@ -7,6 +7,7 @@ export type Contact = {
   name: string;
   email: string;
   company: string;
+  phone?: string;
   workspace: Workspace;
   source: "local" | "hubspot";
   updatedAt: string;

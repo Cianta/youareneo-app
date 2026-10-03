@@ -1,0 +1,25 @@
+{
+  "applicationCommit": "1ab4b499f920fb0e8253fc1eb49cfc241b82e109",
+  "pr": "https://github.com/Cianta/youareneo-app/pull/23",
+  "instances": [
+    {
+      "url": "https://trinity-stg.youareneo.com",
+      "httpChecksPassed": 65,
+      "nextAssets": 24
+    },
+    {
+      "url": "https://trinity.youareneo.com",
+      "httpChecksPassed": 65,
+      "nextAssets": 24
+    }
+  ],
+  "verifiedApplicationSourceFiles": 72,
+  "configurationAndSecretsUnchanged": true,
+  "deploymentCommand": "docker compose up -d --build",
+  "realAccountMicrophoneAIAndCallAcceptance": "Deferred at user request",
+  "remainingPerformanceTarget": {
+    "route": "/dashboard",
+    "lastMeasuredPerformance": 86,
+    "target": 90
+  }
+}

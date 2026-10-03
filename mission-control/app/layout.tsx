@@ -9,6 +9,7 @@ import { VoiceLauncher } from '@/components/voice/VoiceLauncher';
 import { AppFrame } from '@/components/workspace/AppFrame';
 import { AssistantPreferencesProvider } from '@/components/assistant/Preferences';
 import '@/components/workspace/restored.css';
+import '@/components/workspace/journal.css';
 import '@/components/assistant/assistant.css';
 
 const inter = Inter({

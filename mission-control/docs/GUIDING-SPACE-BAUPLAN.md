@@ -97,3 +97,7 @@ Für dieses Paket sind **keine neuen Env-Variablen oder Schlüssel** nötig. Die
 - Der neue öffentliche Wetter-Leseendpunkt und die selbstprüfenden privaten Routen sind in der Übergabe dokumentiert. Die abweichenden Original-Übergabedokumente auf dem Server wurden bewusst nicht überschrieben; maßgeblicher neuer Vertrag steht in diesem PR.
 
 Das Paket ist veröffentlicht; die oben ausdrücklich offenen Abnahmen und Integrationen bleiben offen. Insbesondere bedeutet ein bestandenes lokales Audio-Fixture nicht, dass das physische Mikrofon im Browser des Nutzers bereits abgenommen ist.
+
+## Folgepaket · Journal, Kalender und Fokus (03.10.2026)
+
+Der Folgebranch `codex/guiding-journal-focus` verbindet die bisherige Tagesplanung mit einem Journal, Kalender und globalem Fokusplan. Header und Navigation folgen dem neuen Auftrag; Archiv liegt bei Meine Apps, Astro-Anzeige und früheres Ideenboard bleiben erhalten. Die Logoanimation verwendet die lila Trinity-Sonne. Umgesetzte Funktionen, Bedienung, Kalendergrenzen und neue additive Schnittstelle stehen in [GUIDING-JOURNAL-FOKUS.md](GUIDING-JOURNAL-FOKUS.md). Die älteren Performance- und Deploymentwerte oben gehören weiterhin zu PR #22; neue Messergebnisse werden im Folgepaket separat dokumentiert.

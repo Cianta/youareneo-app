@@ -72,3 +72,5 @@ Journal, Kalender, Notizen und Login erreichen das Performance-Ziel ≥ 90. Die 
 Endgültige Werte: [GUIDING-JOURNAL-LIGHTHOUSE.json](GUIDING-JOURNAL-LIGHTHOUSE.json). Reproduzierbar mit `scripts/audit-workspace-local.mjs`.
 
 Zusätzliche Live-Korrektur: Der Gast-Header verwendet jetzt ein zugänglich als „Anmelden“ beschriftetes Login-Symbol. Der zuvor überlappende Textknopf entfällt auf schmalen Bildschirmen. Die Browserprüfung kontrolliert zusätzlich die tatsächlichen Abstände aller Headeraktionen bei 320 und 390 px, auch ohne Anmeldung. Ein lokaler Fehler im generierten Next-Font-Cache wurde durch erneutes Erzeugen ausschließlich des Buildverzeichnisses behoben; Quellcode und Nutzerdaten blieben erhalten. Die Lighthouse-Tabelle wurde vor diesem kleinen Gast-Header-Fix auf Commit `137072e` gemessen.
+
+Der bisherige Hinweis auf überfällige Ziele folgt dem neuen Einstieg „Ziele & Notizen“. Auch dieser Navigationshinweis wird im Browser anhand einer überfälligen Fixture-Priorität geprüft.

@@ -144,14 +144,9 @@ export default function BrainWorkspace({
   useEffect(() => {
     const el = viewport.current;
     if (!el) return;
-    const ro = new ResizeObserver(() =>
-      setSize({
-        width: Math.max(280, el.clientWidth),
-        height: Math.max(360, Math.min(640, innerHeight * 0.63)),
-      }),
-    );
-    ro.observe(el);
-    return () => ro.disconnect();
+    const resize=()=>{if(innerWidth>=1150)el.style.height=Math.max(280,Math.min(670,innerHeight-el.getBoundingClientRect().top-48))+'px';else el.style.height='';const height=Math.max(280,el.clientHeight);el.closest<HTMLElement>('.brain-body')?.style.setProperty('--brain-panel-height',height+'px');setSize({width:Math.max(280,el.clientWidth),height});};
+    const ro=new ResizeObserver(resize);resize();ro.observe(el);window.addEventListener('resize',resize);
+    return()=>{ro.disconnect();window.removeEventListener('resize',resize);};
   }, [busy, graph, mode]);
   const filtered = useMemo(
     () => (graph ? filterGraph(graph, types, since) : null),
@@ -182,7 +177,7 @@ export default function BrainWorkspace({
     );
   }, []);
   return (
-    <section className="brain-workspace">
+    <section className="brain-workspace" data-view={mode}>
       <header>
         <div>
           <Link href="/dashboard">← Übersicht</Link>
@@ -375,8 +370,8 @@ export default function BrainWorkspace({
                 <p>Keine Treffer. Ändere Suchbegriff oder Filter.</p>
               )}
             </aside>
+            <BrainInsights graph={filtered!} nodes={hits} onSearch={setQuery}/>
           </div>
-          <BrainInsights graph={filtered!} nodes={hits} onSearch={setQuery}/>
         </>
       )}
     </section>

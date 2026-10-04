@@ -33,20 +33,22 @@ const nice = (date: string, options: Intl.DateTimeFormatOptions) =>
 export function DailyPlanner({
   onAddGoal,
   renderGoals,
-  selectedDate, onDateChange,
+  selectedDate, onDateChange, selectedView, onViewChange,
 }: {
   onAddGoal: () => void;
   renderGoals: React.ReactNode;
-  selectedDate?:string; onDateChange?:(date:string)=>void;
+  selectedDate?:string; onDateChange?:(date:string)=>void; selectedView?:string; onViewChange?:(view:string)=>void;
 }) {
   const s = usePersonal();
   const today = localDate(new Date());
   const [ownDate, setOwnDate] = useState(today),
-    [view, setView] = useState("Woche"),
+    [ownView, setOwnView] = useState("Woche"),
     [detail, setDetail] = useState<string | null>(null),
     [reasonGoal, setReasonGoal] = useState(""),
     [reason, setReason] = useState(""),
     [reasonSearch, setReasonSearch] = useState("");
+  const view=selectedView??ownView;
+  function setView(v:string){setOwnView(v);onViewChange?.(v);}
   const date=selectedDate??ownDate;
   function setDate(value:string){setOwnDate(value);onDateChange?.(value);}
   const dates = weekDates(date),

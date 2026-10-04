@@ -224,6 +224,8 @@ try {
     path: "/tmp/trinity-part2-mobile.png",
     fullPage: false,
   });
+  // The former notebook page remains reachable after restoring the real Kanban.
+  await page.goto(base + '/dashboard/journal-legacy', {waitUntil:'networkidle0'});
   await page.$eval('[aria-label="Neues Ziel"]', e => { e.focus(); });
   assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Neues Ziel');
   await page.locator('::-p-text(Journal)').click();

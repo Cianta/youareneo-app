@@ -7,6 +7,8 @@ export type PlannerDay = {
   goal: string;
   completed?: boolean[];
   energy?: number;
+  balance?: Record<string,number>;
+  habits?: Record<string,boolean>;
 };
 export type PlannerWeek = { intention: string; win: string; release: string };
 export type PlannerMonth = {
@@ -84,3 +86,7 @@ export function monthStats(
     gratitude: active.filter((d) => d.gratitude.trim()).length,
   };
 }
+
+export interface PlannerTrip {id:string;title:string;from:string;to:string;destination:string;notes:string;budget:string;packing:string;location?:import("./personal").Place;attachments?:import("./personal").Attachment[];}
+export interface PlannerYear {vision:string;success:string;release:string;fields?:Record<string,string>;trips?:PlannerTrip[];media?:Record<string,import("./personal").Attachment[]>;habits?:{id:string;title:string}[];}
+export const JOURNAL_VIEWS=[{id:'Woche',label:'Woche & Chancen'},{id:'year',label:'Jahresplan'},{id:'month',label:'Monatsplan'},{id:'Monatsrückblick',label:'Monatsrückblick'},{id:'Kompass',label:'Ziele & Warum'},{id:'travel',label:'Reiseplan'},{id:'identity',label:'Lebensbild & Mission'},{id:'discovery',label:'Selbsterkenntnis'},{id:'vision',label:'Vision & Träume'},{id:'strategy',label:'Strategie & Schritte'},{id:'growth',label:'Entwicklung & Blockaden'},{id:'rituals',label:'Rituale & Dankbarkeit'},{id:'roadmap',label:'Mein Weg'},{id:'notepad',label:'Ideen & Notizen'}] as const;

@@ -1,7 +1,7 @@
 "use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { PlannerDay, PlannerWeek, PlannerMonth } from "./planner";
+import type { PlannerDay, PlannerWeek, PlannerMonth, PlannerYear } from "./planner";
 export type Workspace = "private" | "organization" | "both";
 export const inWorkspace = (
   item: { workspace?: Workspace },
@@ -77,7 +77,7 @@ export type PersonalState = {
   linkCategories: Record<string, string[]>;
   reasons: Record<string, string[]>;
   planItems:PlanItem[];
-  years:Record<string,{vision:string;success:string;release:string}>;
+  years:Record<string,PlannerYear>;
   days: Record<string, PlannerDay>;
   weeks: Record<string, PlannerWeek>;
   months: Record<string, PlannerMonth>;

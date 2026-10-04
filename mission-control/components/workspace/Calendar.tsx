@@ -27,6 +27,7 @@ const Modal = dynamic(() => import("@/components/ui/Modal").then((m) => m.Modal)
 export function Calendar() {
   const store = useTemporalStore(),personal=usePersonal();
   const [date, setDate] = useState(localDate());
+  useEffect(()=>{const d=new URLSearchParams(window.location.search).get('date');if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!Number.isNaN(new Date(d+'T12:00:00').getTime()))setDate(d);},[]);
   const [view,setView]=useState<"month"|"year"|"week">("month");
   const [now, setNow] = useState(new Date());
   useEffect(() => {

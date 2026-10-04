@@ -138,3 +138,10 @@ Additive UI-Route `/dashboard/communication/meeting`: lokale eigene Raumlinks im
 Additiv: `GET/POST /api/crm/contacts`, `POST /api/crm/sync` und `POST /api/meeting/invite`. Alle prüfen die Supabase-Sitzung selbst; Schreiboperationen zusätzlich aktiven App-/Förderzugang, gleiche Herkunft und die erwartete `userId` (409 beim Kontowechsel). Import-/SMTP-Tokens werden ausschließlich aus der Server-`.env` gelesen und einer expliziten Besitzer-UUID zugeordnet. CRM-Daten im eigenen vorhandenen Datenvolume, keine neue Supabase-Tabelle. Manuelle Importvorschau, kein Rückschreiben an HubSpot/GHL. SMTP-Einladungen ausschließlich nach bewusstem Klick; Supabase-SMTP für Login-Mails bleibt unverändert. Neue Env-Namen und vollständige Request-/Response-Formate: [GUIDING-WORKSPACE-STUDIO.md](GUIDING-WORKSPACE-STUDIO.md).
 
 Auth-/Provisioning-Endpunkte, deren Formate, Cookie-Name und `.youareneo.com`-Domain, `neo_profiles` und `neo_access` bleiben unverändert. Keine Portal-/Make-/n8n-/FuseBase-Konfiguration verändert. Lokale Speicher und bisherige Inhalte werden erhalten. Neue UI: manuell einklappbare Navigation, rechte Journal-Notizschublade, Kalender-Tabs mit dauerhaft sichtbarer Erde, kompakte Laborbereiche, Projekt-Observatorium, CRM und Wissensauswertungen.
+
+
+### Änderungen durch Codex · Planer und Seitenwelten (4. Oktober 2026)
+
+Auth-/Provision-Endpunkte, Cookie-Namen und Supabase-Tabellen bleiben gleich. Additive UI-Routen: `/dashboard/journal-legacy` erhält die früher unter `/dashboard/kanban` gezeigten Ziele/Journale; `/dashboard/kanban` zeigt wieder das vorhandene Kanban. `/dashboard/calendar?date=YYYY-MM-DD` öffnet den Tag aus dem Headerkalender. Blog-/Website-Link-Sammlungen verwenden `/dashboard/social/marketing?collection=blogs` bzw. `collection=websites`.
+
+Der lokale Speicher `trinity-personal-v1` wird innerhalb vorhandener Tages- und Jahresdokumente ergänzt (`days.balance`, `days.habits`, `years.fields`, `years.trips`, `years.media`, `years.habits`). Das Sicherungsformat bleibt Version 1. Kalender-/Kanban-Speicher und Cloud-Schnittstellen ändern sich nicht. Details und Fotoabdeckung: `GUIDING-PLANER-ABDECKUNG.md`.

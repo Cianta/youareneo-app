@@ -281,7 +281,7 @@ function SortableProject({
 // ══════════════════════════════════════════════════════════════════════════════
 function SortableColumn({
   col, cards, activeCardId, canDelete,
-  onAddCard, onDeleteCol, onRenameCol,
+  onAddCard, onDeleteCol, onRenameCol, onMoveCard,
   onDeleteCard, onUpdateCard,
   connectMode, pendingFromId, onConnectCardClick,
   groupMode, pendingGroupCards, onGroupCardToggle,
@@ -292,6 +292,7 @@ function SortableColumn({
   activeCardId: string | null;
   canDelete: boolean;
   onAddCard: () => void;
+  onMoveCard: (id:string,columnId:string)=>void;
   onDeleteCol: () => void;
   onRenameCol: (label: string) => void;
   onDeleteCard: (id: string) => void;
@@ -342,6 +343,7 @@ function SortableColumn({
   return (
     <div
       ref={setNodeRef}
+      data-column-id={col.id}
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
@@ -477,6 +479,7 @@ function SortableColumn({
                     onGroupToggle={onGroupCardToggle}
                     groupColor={cardGroup?.color}
                   />
+                  <select className="kanban-card-move" aria-label={'Karte '+card.title+' verschieben'} value={col.id} onChange={e=>onMoveCard(card.id,e.target.value)}>{(allColumns??[]).map(c=><option key={c.id} value={c.id}>{c.label}</option>)}</select>
                 </motion.div>
               );
             })}
@@ -1313,6 +1316,7 @@ export function KanbanBoard() {
                     activeCardId={activeType === 'card' ? activeId : null}
                     canDelete={activeProject.columns.length > 1}
                     onAddCard={() => { setTargetColId(col.id); setCardModal(true); }}
+                    onMoveCard={(id,columnId)=>update(st=>{const p=st.projects.find(p=>p.id===activeProject.id);if(!p?.columns.some(c=>c.id===columnId)||!p.columns.some(c=>c.cardIds.includes(id)))return st;return {...st,projects:st.projects.map(p=>p.id!==activeProject.id?p:{...p,columns:p.columns.map(c=>({...c,cardIds:c.id===columnId?[...c.cardIds.filter(x=>x!==id),id]:c.cardIds.filter(x=>x!==id)}))})};})}
                     onDeleteCol={() => deleteColumn(col.id)}
                     onRenameCol={label => renameColumn(col.id, label)}
                     onDeleteCard={deleteCard}

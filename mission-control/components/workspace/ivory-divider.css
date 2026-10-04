@@ -1,0 +1,36 @@
+/* Header anchoring keeps the inlay aligned when the sidebar is collapsed. */
+.workspace-topbar { position: relative; }
+.ivory-divider {
+  position: absolute;
+  left: -1px;
+  top: calc(100% - 1px);
+  width: 0;
+  height: 0;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+}
+.ivory-divider svg {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(1px 1px 1px #34313d25);
+}
+.ivory-divider-stem {
+  left: -32px;
+  top: -60px;
+  width: 64px;
+  height: max(150px, calc(33dvh - 8px));
+}
+.ivory-divider-bough {
+  left: -3px;
+  top: -28px;
+  width: 260px;
+  height: 72px;
+}
+@media (max-width: 767px) {
+  .ivory-divider { display: none; }
+}
+@media (forced-colors: active) {
+  .ivory-divider { display: none; }
+}

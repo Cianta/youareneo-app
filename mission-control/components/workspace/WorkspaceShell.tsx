@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { HeaderBookmarks, HeaderFocus, HeaderSettings, HeaderCalendar } from "./HeaderTools";
 import {WorkspaceArtwork} from "./WorkspaceArtwork";
+import { IvoryBranchDivider } from "./IvoryBranchDivider";
 import { Atmosphere } from "./Atmosphere";
 import { useNavAttention } from "./NavAttention";
 import {
@@ -277,6 +278,7 @@ export function WorkspaceShell({
       <div className="workspace-body">
         <Atmosphere />
         <header className="workspace-topbar">
+          <IvoryBranchDivider />
           <Link href="/dashboard" className="workspace-mobile-brand">
             <TrinityLogo size={28} />
             <span>{appName}</span>

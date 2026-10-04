@@ -1,0 +1,140 @@
+{%- comment -%}
+  Team (ersetzt das Elfsight-Team-Widget, 1:1 gleiche Inhalte, eigenes Design).
+  Wird von es-farben.liquid nur auf der Startseite geladen und ersetzt dort den alten Elfsight-Platzhalter.
+  Mitglieder bearbeiten: einfach den Block <article> kopieren/ändern; Fotos liegen unter Inhalte → Dateien (es-team-*).
+  Das Logo der Scroll-Animation macht über den Karten einen Halt (.es-team__spot) und leuchtet einmal auf.
+{%- endcomment -%}
+<template id="es-team-tpl">
+  <section class="es-team" aria-labelledby="es-team-h">
+    <div class="es-team__spot" aria-hidden="true"></div>
+    <p class="es-team__kicker">Das Team</p>
+    <h2 class="es-team__h" id="es-team-h">YOU ARE NEO</h2>
+    <p class="es-team__cap">Vereinigung für holistische Gesundheit und Ontologie</p>
+    <div class="es-team__grid">
+      <article class="es-team__card" style="--i:0">
+        <button class="es-team__open" type="button" aria-haspopup="dialog" aria-controls="es-team-0">
+          <span class="es-team__ring"><img src="{{ 'es-team-florian-gersdorf.webp' | file_img_url: '600x600' }}" alt="Florian Gersdorf" width="600" height="600" loading="lazy"></span>
+          <span class="es-team__name">Florian Gersdorf</span>
+          <span class="es-team__pos">Präsident</span>
+          <span class="es-team__more">mehr</span>
+        </button>
+        <div class="es-team__pop" id="es-team-0" role="dialog" aria-modal="true" aria-label="Florian Gersdorf" hidden>
+          <div class="es-team__box">
+            <button class="es-team__x" type="button" aria-label="Schließen">&times;</button>
+            <img src="{{ 'es-team-florian-gersdorf.webp' | file_img_url: '400x400' }}" alt="" width="400" height="400" loading="lazy">
+            <h3>Florian Gersdorf</h3>
+            <p class="es-team__pos">Präsident</p>
+            <div class="es-team__bio"><p>Florian Gersdorf macht am liebsten Qi-Gong, trainiert Kampfkünste oder verliert sich beim Erstellen von neuartigen Sounds und Musik-Videos.</p><p>Er möchte für seine Kinder eine Welt erschaffen, in der jeder respektvoll behandelt wird. Die Welt, in der alle Menschen in Fülle leben, gemeinsam mit dem Planeten und der Natur.</p><p>"Die Projekte von YOU ARE NEO sollen dazu beitragen, die Schwingung auf der Erde langfristig zu erhöhen."</p></div>
+            <blockquote>„Die Gedanken erschaffen die Realität“</blockquote>
+          </div>
+        </div>
+      </article>
+      <article class="es-team__card" style="--i:1">
+        <button class="es-team__open" type="button" aria-haspopup="dialog" aria-controls="es-team-1">
+          <span class="es-team__ring"><img src="{{ 'es-team-florian-silly.jpg' | file_img_url: '600x600' }}" alt="Florian Silly" width="600" height="600" loading="lazy"></span>
+          <span class="es-team__name">Florian Silly</span>
+          <span class="es-team__pos">Präsident</span>
+          <span class="es-team__more">mehr</span>
+        </button>
+        <div class="es-team__pop" id="es-team-1" role="dialog" aria-modal="true" aria-label="Florian Silly" hidden>
+          <div class="es-team__box">
+            <button class="es-team__x" type="button" aria-label="Schließen">&times;</button>
+            <img src="{{ 'es-team-florian-silly.jpg' | file_img_url: '400x400' }}" alt="" width="400" height="400" loading="lazy">
+            <h3>Florian Silly</h3>
+            <p class="es-team__pos">Präsident</p>
+            <div class="es-team__bio"><p>Florian Silly ist ein engagierter Masseur, Qi Gong-Lehrer, Humanenergetiker sowie Achtsamkeits- und Herzentrainer, der seine Leidenschaft für Bewegung und Kampfkunst als Weg betrachtet, um Wissen und Weisheit weiterzugeben und zu lehren. Seine Arbeit geht über die reine Praxis hinaus und zielt darauf ab, persönliche Durchbrüche und ein tieferes Verständnis für das Leben selbst zu fördern. Florians Faszination gilt der Erforschung von Bewusstsein und Identität, sowie der unermüdlichen Bewunderung für die Wunder der Natur und das Leben in all seinen Facetten.</p><p>Mit einer tiefen Liebe zu Menschen und der Natur schafft Florian einen Raum für Heilung und persönliches Wachstum, der jeden dazu einlädt, seine innere Stärke zu entdecken und zu schätzen. Sein Ansatz ist geprägt von der Überzeugung, dass das Leben eine Reise voller Lernmöglichkeiten und Selbstentdeckung ist, und dass jeder Moment eine Gelegenheit bietet, die Verbindung zu allem, was ist, zu vertiefen.</p></div>
+            <blockquote>„Es gibt zwei Arten sein Leben zu leben: entweder so, als wäre nichts ein Wunder, oder so, als wäre alles eines. Ich glaube an Letzteres.“ - Albert Einstein</blockquote>
+          </div>
+        </div>
+      </article>
+      <article class="es-team__card" style="--i:2">
+        <button class="es-team__open" type="button" aria-haspopup="dialog" aria-controls="es-team-2">
+          <span class="es-team__ring"><img src="{{ 'es-team-gabriel-elmar-bene.jpg' | file_img_url: '600x600' }}" alt="Gabriel Elmar Bene" width="600" height="600" loading="lazy"></span>
+          <span class="es-team__name">Gabriel Elmar Bene</span>
+          <span class="es-team__pos">Präsident</span>
+          <span class="es-team__more">mehr</span>
+        </button>
+        <div class="es-team__pop" id="es-team-2" role="dialog" aria-modal="true" aria-label="Gabriel Elmar Bene" hidden>
+          <div class="es-team__box">
+            <button class="es-team__x" type="button" aria-label="Schließen">&times;</button>
+            <img src="{{ 'es-team-gabriel-elmar-bene.jpg' | file_img_url: '400x400' }}" alt="" width="400" height="400" loading="lazy">
+            <h3>Gabriel Elmar Bene</h3>
+            <p class="es-team__pos">Präsident</p>
+            <div class="es-team__bio"><p>Gabriel Elmar Bene ist seit seinem 20. Lebensjahr fasziniert von traditionellen japanischen Heil- und Kampfkünsten, sowie dem Energiesystem des Menschen allgemein.</p><p>Durch intensives Training der verschiedensten Künste und dem Studium diverser Lehren konnte er einige Fähigkeiten und Wissen gewinnen, die er dem Verein und seinen Mitmenschen zur Verfügung stellt. Sowohl japanische Ninja- und Samuraikünste, als auch energetische Praktiken wie das "Holistic Pulsing", sowie auch diverse schamanische Riten und Praktiken zählen zu seinem Repertoire, welches er am liebsten in der Gemeinschaft teilt, um seine Mitmenschen zu begleiten und jedem etwas Neues zu ermöglichen.</p><p>Seit seiner 3-monatigen Lehrerausbildung in China 2018 ist vor allem die Anwendung und Weitergabe des Zhineng Qigongs eine besondere Herzensangelegenheit.</p><p>Dabei treffen Methoden der TCM, der modernen Medizin und wissenschaftliche Erkenntnisse wie die Quantentheorie auf die alte Weisheit der Selbstheilung durch Bewegung, Meditation, Visualisierung und Bewusstsein.</p><p>Auch die Musik und Frequenzforschung, alleine, mit Partnern oder in Bands, mit akustischen als auch elektronischen Klangerzeugern ist eine inspirierende Leidenschaft, die sich nicht nur als kreativer Selbstausdruck, sondern auch als Forschung der heiligen Geometrie und des Universums und dessen berührenden Kräfte bemerkbar macht.</p></div>
+            <blockquote>„Der einzige Unterschied zwischen einem Anfänger und einem Meister ist der, dass der Meister öfter gescheitert ist, als der Anfänger es überhaupt versucht hat“</blockquote>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="es-team__cta">
+      <p>Nimm Kontakt mit uns auf ;)</p>
+      <a class="es-team__btn" href="/pages/kontakt">Kontakt Seite</a>
+    </div>
+  </section>
+</template>
+<style>
+  .es-team { position: relative; max-width: 1180px; margin: 0 auto; padding: clamp(70px, 9vw, 120px) 20px clamp(50px, 7vw, 90px); text-align: center; color: #ece4d2; font-family: Manrope, system-ui, sans-serif; }
+  .es-team__spot { height: clamp(90px, 11vw, 130px); }
+  .es-team__kicker { margin: 0 0 8px; font-size: .78rem; font-weight: 700; letter-spacing: .38em; text-transform: uppercase; color: #9fd3cf; }
+  .es-team__h { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 600; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05;
+    background: linear-gradient(100deg, #b8862f, #f4dfb0 45%, #ddb771 60%, #a8782c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .es-team__cap { margin: 12px auto 0; max-width: 34ch; font-size: clamp(1rem, 1.6vw, 1.15rem); color: rgba(236,228,210,.82); }
+  .es-team__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(22px, 3vw, 40px); margin-top: clamp(36px, 5vw, 56px); }
+  .es-team__card { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--i) * .14s); }
+  .es-team.is-in .es-team__card { opacity: 1; transform: none; }
+  .es-team__open { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; padding: 28px 18px 26px; border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015)); box-shadow: inset 0 0 0 1px rgba(221,183,113,.18); transition: transform .35s, box-shadow .35s; }
+  .es-team__open:hover, .es-team__open:focus-visible { transform: translateY(-6px); box-shadow: inset 0 0 0 1px rgba(221,183,113,.55), 0 18px 40px rgba(0,0,0,.35), 0 0 40px rgba(221,183,113,.12); }
+  .es-team__ring { position: relative; width: min(210px, 62vw); aspect-ratio: 1; border-radius: 50%; padding: 4px; margin-bottom: 14px;
+    background: conic-gradient(from 210deg, #f6e7b8, #b8862f, #fff3cf, #8a6418, #f6e7b8); box-shadow: 0 0 0 6px rgba(221,183,113,.08), 0 14px 34px rgba(0,0,0,.4); }
+  .es-team__ring img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; filter: saturate(.92); transition: transform .6s, filter .6s; }
+  .es-team__open:hover .es-team__ring img { transform: scale(1.04); filter: saturate(1.05); }
+  .es-team__name { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: clamp(1.45rem, 2.2vw, 1.75rem); color: #fff7e6; }
+  .es-team__pos { font-size: .78rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #ddb771; }
+  .es-team__more { margin-top: 14px; padding: 9px 26px; border-radius: 999px; font-size: .82rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #f3e9d2;
+    background: linear-gradient(135deg, #0e1f1b, #12332b); border: 1.5px solid rgba(110,230,190,.5); box-shadow: 0 8px 22px rgba(70,200,160,.18); transition: border-color .3s, box-shadow .3s; }
+  .es-team__open:hover .es-team__more { border-color: #e8c27a; box-shadow: 0 10px 28px rgba(70,200,160,.35); }
+  .es-team__pop { position: fixed; inset: 0; z-index: 2147483100; display: grid; place-items: center; padding: 20px; background: rgba(8,9,14,.72); backdrop-filter: blur(6px); }
+  .es-team__pop[hidden] { display: none; }
+  .es-team__box { position: relative; width: min(640px, 100%); max-height: 86vh; overflow: auto; padding: 38px clamp(22px, 4vw, 44px) 34px; border-radius: 24px; text-align: center; color: #ece4d2;
+    background: radial-gradient(ellipse at 50% 0%, #2c3550 0%, #1c2130 55%, #151924 100%); box-shadow: inset 0 0 0 1px rgba(221,183,113,.35), 0 30px 80px rgba(0,0,0,.6); animation: es-team-in .45s cubic-bezier(.2,.7,.2,1); }
+  @keyframes es-team-in { from { opacity: 0; transform: translateY(18px) scale(.97); } }
+  .es-team__box img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 3px #ddb771, 0 0 30px rgba(221,183,113,.35); }
+  .es-team__box h3 { margin: 14px 0 4px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; font-weight: 600; color: #fff7e6; }
+  .es-team__bio { margin-top: 18px; text-align: left; font-size: 1.02rem; line-height: 1.75; color: rgba(236,228,210,.92); }
+  .es-team__bio p { margin: 0 0 1em; }
+  .es-team__box blockquote { margin: 22px 0 0; padding: 18px 10px 0; border-top: 1px solid rgba(221,183,113,.3); font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 1.3rem; line-height: 1.45; color: #ddb771; }
+  .es-team__x { all: unset; cursor: pointer; position: absolute; top: 12px; right: 18px; font-size: 2rem; line-height: 1; color: #ddb771; }
+  .es-team__cta { margin-top: clamp(40px, 6vw, 64px); }
+  .es-team__cta p { margin: 0 0 16px; font-size: 1.1rem; color: rgba(236,228,210,.85); }
+  .es-team__btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; min-width: 260px; min-height: 64px; padding: 0 40px; border-radius: 999px; text-decoration: none;
+    font-size: 19px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: #f3e9d2; background: linear-gradient(135deg, #0e1f1b, #12332b); border: 2px solid rgba(110,230,190,.5);
+    box-shadow: 0 10px 32px rgba(70,200,160,.22); animation: es-team-pulse 4s ease-in-out infinite; transition: transform .25s, border-color .25s; }
+  .es-team__btn:hover { transform: translateY(-4px) scale(1.04); border-color: #e8c27a; }
+  @keyframes es-team-pulse { 50% { box-shadow: 0 12px 44px rgba(70,200,160,.45); } }
+  @media (prefers-reduced-motion: reduce) { .es-team__card { opacity: 1; transform: none; transition: none; } .es-team__btn { animation: none; } }
+</style>
+<script>
+  (function () {
+    function put() {
+      var old = document.querySelector('[class*="elfsight-app-1d0937ed"]'), tpl = document.getElementById('es-team-tpl');
+      if (!old || !tpl || document.querySelector('.es-team')) return;
+      var node = tpl.content.firstElementChild.cloneNode(true);
+      old.replaceWith(node);
+      var io = new IntersectionObserver(function (e) { e[0].isIntersecting && (node.classList.add('is-in'), io.disconnect()); }, { threshold: 0.15 });
+      io.observe(node);
+      var last = null;
+      function close(p) { p.hidden = true; document.documentElement.style.overflow = ''; last && last.focus(); }
+      node.querySelectorAll('.es-team__open').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var p = document.getElementById(b.getAttribute('aria-controls'));
+          last = b; document.body.appendChild(p); p.hidden = false; document.documentElement.style.overflow = 'hidden'; p.querySelector('.es-team__x').focus();
+          p.onclick = function (ev) { (ev.target === p || ev.target.closest('.es-team__x')) && close(p); };
+          p.onkeydown = function (ev) { ev.key === 'Escape' && close(p); };
+        });
+      });
+      window.dispatchEvent(new Event('resize'));
+    }
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', put) : put();
+  })();
+</script>

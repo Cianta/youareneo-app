@@ -2328,6 +2328,15 @@
         const b = T.getBoundingClientRect();
         o({ x: b.left + b.width / 2, y: b.bottom + r * 0.9 + scrollY }, 1, { sz: 0.95 });
       }
+      const tm = document.querySelector(".es-team__spot");
+      if (tm) {
+        const b = tm.getBoundingClientRect();
+        if (b.width > 0) {
+          const pt = { x: b.left + b.width / 2, y: b.top + b.height * 0.55 + scrollY, op: 1, shine: 1, sz: 1.4 },
+            ix = t.findIndex((q) => q.y > pt.y);
+          ix < 0 ? t.push(pt) : t.splice(ix, 0, pt);
+        }
+      }
       const k = e ? e.getBoundingClientRect().top + scrollY : X.getBoundingClientRect().top + scrollY,
         m = innerHeight,
         h = t.filter((b) => b.y < k);

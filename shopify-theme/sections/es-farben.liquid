@@ -2,13 +2,19 @@
   Feinschliff für alle Seiten (sitzt unsichtbar im Header, lädt vor dem Inhalt):
   - es-farben-v2.css: Farbschemata, Knöpfe, News-Lederfolio, Arche-Bild, Ein-Bild-Slider, Tor-Szene, Glasschneeflocke
   - es-kopf.css: modernes Header-Design (gepflegt von der zweiten Sitzung)
+  - es-team (Snippet): Team-Karten statt Elfsight, nur auf der Startseite
   - es-zauber.js: untere Startseite – Funke, Tor-Szene, Schmetterlinge, Herzens-Schneeflocke (nur auf „/“ aktiv)
   Theme 2.0: alle Skripte/Styles liegen als Shopify-Dateien (es2-*, nur von Theme 2.0 genutzt), lesbare Quelle im Repo unter shopify-theme/assets.
 {%- endcomment -%}
 <link rel="stylesheet" href="{{ 'es2-farben.css' | file_url }}">
 <link rel="stylesheet" href="{{ 'es2-kopf.css' | file_url }}">
 <script src="{{ 'es2-kopf.js' | file_url }}" defer></script>
-{%- if request.page_type == 'index' -%}<script src="{{ 'es2-zauber.js' | file_url }}" defer></script>{%- endif -%}
+{%- if request.page_type == 'index' -%}<script src="{{ 'es2-zauber.js' | file_url }}" defer></script>{% render 'es-team' %}{%- endif -%}
+<style>
+  /* Wunschliste: Herz und Zähler im Header im selben hellen Grün */
+  :root { --dbtfy-wishlist-color-default: #8fcf7f; --dbtfy-wishlist-color-active: #8fcf7f; }
+  .header__icon .wishlist-count-bubble.dbtfy-bubble, .wishlist-count-bubble.dbtfy-bubble { background: #8fcf7f !important; color: #16251a !important; }
+</style>
 {% schema %}
 { "name": "Farben (Feinabstimmung)", "tag": "div", "class": "section-es-farben", "settings": [], "presets": [{ "name": "Farben (Feinabstimmung)" }] }
 {% endschema %}

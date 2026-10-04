@@ -30,7 +30,10 @@ export function Calendar() {
   useEffect(()=>{const d=new URLSearchParams(window.location.search).get('date');if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!Number.isNaN(new Date(d+'T12:00:00').getTime()))setDate(d);},[]);
   const [view,setView]=useState<"month"|"year"|"week">("month");
   const [now, setNow] = useState(new Date());
+  const [clockReady, setClockReady] = useState(false);
   useEffect(() => {
+    setNow(new Date());
+    setClockReady(true);
     const timer = setInterval(() => setNow(new Date()), 30_000);
     return () => clearInterval(timer);
   }, []);
@@ -286,10 +289,10 @@ export function Calendar() {
             <div className="w-section-head">
               <span className="w-eyebrow">DEIN LIVEPLAN</span>
               <time className="w-tag">
-                {now.toLocaleTimeString("de-AT", {
+                {clockReady ? now.toLocaleTimeString("de-AT", {
                   hour: "2-digit",
                   minute: "2-digit",
-                })}
+                }) : "--:--"}
               </time>
             </div>
             {date === localDate(now) && (

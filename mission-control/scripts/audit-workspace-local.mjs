@@ -86,12 +86,13 @@ try {
       const scripts = lhr.audits['network-requests'].details.items.filter(item => item.resourceType === 'Script');
       const loadedGraphChunks = scripts.filter(item => graphChunks.includes(new URL(item.url).pathname)).map(item => new URL(item.url).pathname);
       const loadedMotionChunks = scripts.filter(item => motionChunks.includes(new URL(item.url).pathname)).map(item => new URL(item.url).pathname);
-      if (['/dashboard/labor','/dashboard/calendar','/dashboard/projekte','/dashboard/communication/meeting','/dashboard/contacts'].includes(route)) assert.equal(loadedMotionChunks.length,0,'Closed dialogs must not load their animation runtime.');
+      if (['/dashboard/labor','/dashboard/calendar','/dashboard/kanban','/dashboard/projekte','/dashboard/communication/meeting','/dashboard/contacts'].includes(route)) assert.equal(loadedMotionChunks.length,0,'Closed dialogs must not load their animation runtime.');
       if (!['/dashboard/calendar','/gehirn'].includes(route)) assert.equal(loadedGraphChunks.length, 0, 'A core route loaded the 3D renderer.');
       const entry = { route, run, fixture: true, source: 'local production build',
         fetchTime: lhr.fetchTime, lighthouseVersion: lhr.lighthouseVersion,
         performance: Math.round(lhr.categories.performance.score * 100),
         accessibility: Math.round(lhr.categories.accessibility.score * 100),
+        bestPractices: Math.round(lhr.categories['best-practices'].score * 100),
         metrics: Object.fromEntries(['largest-contentful-paint', 'total-blocking-time',
           'cumulative-layout-shift', 'speed-index'].map(key => [key, lhr.audits[key].numericValue])),
         console: lhr.audits['errors-in-console'].details?.items || [],
@@ -117,6 +118,7 @@ try {
     const entries = results.filter(entry => entry.route === route);
     return { route, runs, performance: median(entries.map(entry => entry.performance)),
       accessibility: median(entries.map(entry => entry.accessibility)),
+      bestPractices: median(entries.map(entry => entry.bestPractices)),
       lcp: median(entries.map(entry => entry.metrics['largest-contentful-paint'])),
       cls: median(entries.map(entry => entry.metrics['cumulative-layout-shift'])),
       tbt: median(entries.map(entry => entry.metrics['total-blocking-time'])),

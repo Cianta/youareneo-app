@@ -62,7 +62,7 @@ Zusätzlich gibt es den ausdrücklich gewünschten Reiseplan: mehrere Reisen, Da
 
 ## Bildmotive
 
-Vier einzelne Bilder wurden mit dem eingebauten Imagegen erzeugt und als WebP in `public/images/world-*-v1.webp` optimiert. Der Tempel der Übersicht und das Arbeitszimmer der Projektseite bleiben erhalten. Die übrigen Hauptseiten verwenden unterschiedlich hohe Panoramen oder zwei Motive nebeneinander; Labor und Gehirn bekommen kurze Banner, damit die Werkzeuge Platz behalten.
+Vier einzelne Bilder wurden mit dem eingebauten Imagegen erzeugt und als WebP in `public/images/world-*-v1.webp` optimiert. Die Web-Ausgaben sind auf die tatsächlich verwendeten Panoramen zugeschnitten (1200 × 240 px, zusammen rund 164 KiB); die hochauflösenden Originale bleiben lokal erhalten. Das erste Kopfbild wird im HTML vorgeladen und mit der konfigurierten Bildqualität 60 angefordert. Der Tempel der Übersicht und das Arbeitszimmer der Projektseite bleiben erhalten. Die übrigen Hauptseiten verwenden unterschiedlich hohe Panoramen oder zwei Motive nebeneinander; Labor und Gehirn bekommen kurze Banner, damit die Werkzeuge Platz behalten.
 
 Gemeinsamer Prompt: „Single photorealistic premium editorial photograph, panoramic 16:9 landscape, exceptionally refined Victorian scholar meets calm organic future, pale ivory and pale blue, dark teal and plum accents, realistic materials, subtle violet light, no text, logos, people or collage, no dominant green wash. Centered composition suitable for short website banner.“
 

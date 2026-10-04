@@ -15,14 +15,14 @@ import {
   Plus, Check, X, Pencil, Trash2, FolderKanban, GripVertical, GripHorizontal,
   Paintbrush, Link2, Layers, ArrowRight,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { cn, PRIORITY_COLORS, TASK_TYPE_ICONS } from '@/lib/utils';
 import { useAuthStore } from '@/lib/store';
 import { SharePicker } from '@/components/shared/SharePicker';
 import { newComment, TRINITY_SYNC_EVENT } from '@/lib/crossPublish';
 import { Bot } from 'lucide-react';
 import { useT } from '@/lib/i18n';
-import { Modal } from '@/components/ui/Modal';
+const Modal = dynamic(() => import('@/components/ui/Modal').then(m => m.Modal), {ssr:false});
 import { Button } from '@/components/ui/Button';
 import { TaskCard } from './TaskCard';
 
@@ -414,21 +414,16 @@ function SortableColumn({
           : { background: 'rgba(0,0,0,0.18)', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.28)' }}
       >
         <SortableContext items={col.cardIds} strategy={verticalListSortingStrategy}>
-          <AnimatePresence>
+          <>
             {cards.map(card => {
               const cardGroup   = cardGroupMap[card.id];
               const isGroupFirst = cardGroup && groupFirstInCol[cardGroup.id] === card.id;
               const isGroupSelected = groupMode && (pendingGroupCards?.has(card.id) ?? false);
 
               return (
-                <motion.div
+                <div
                   key={card.id}
-                  layout
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className="mb-2"
+                  className="mb-2 kanban-card-entry"
                 >
                   {/* Group header label above first card in this column */}
                   {isGroupFirst && cardGroup && (
@@ -480,10 +475,10 @@ function SortableColumn({
                     groupColor={cardGroup?.color}
                   />
                   <select className="kanban-card-move" aria-label={'Karte '+card.title+' verschieben'} value={col.id} onChange={e=>onMoveCard(card.id,e.target.value)}>{(allColumns??[]).map(c=><option key={c.id} value={c.id}>{c.label}</option>)}</select>
-                </motion.div>
+                </div>
               );
             })}
-          </AnimatePresence>
+          </>
         </SortableContext>
 
         {cards.length === 0 && !activeCardId && (
@@ -1390,7 +1385,7 @@ export function KanbanBoard() {
       {/* ══════════════════════════════════════════════════════════════════════
           MODAL: New Task Card
       ══════════════════════════════════════════════════════════════════════ */}
-      <Modal open={cardModal} onClose={() => { setCardModal(false); setEditCardId(null); }} title={editCardId ? t('Aufgabe bearbeiten') : t('Neue Aufgabe erstellen')} size="md">
+      {cardModal && <Modal open={cardModal} onClose={() => { setCardModal(false); setEditCardId(null); }} title={editCardId ? t('Aufgabe bearbeiten') : t('Neue Aufgabe erstellen')} size="md">
         <div className="space-y-4">
           <div>
             <label className="text-xs text-anth-400 mb-1.5 block">{t('Titel *')}</label>
@@ -1444,7 +1439,7 @@ export function KanbanBoard() {
             <Button variant="ghost" onClick={() => { setCardModal(false); setEditCardId(null); }}>{t('Abbrechen')}</Button>
           </div>
         </div>
-      </Modal>
+      </Modal>}
     </div>
   );
 }

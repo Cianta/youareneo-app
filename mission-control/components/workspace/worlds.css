@@ -31,3 +31,10 @@
 @media(min-width:1150px){.workspace-shell .brain-workspace>header h1{font-size:28px;margin:4px 0}.workspace-shell .brain-workspace>header p{font-size:11px;margin:4px 0}.workspace-shell .brain-insight-grid details{font-size:10px;color:var(--theme-muted)}.workspace-shell .brain-insight-grid details p{margin:6px 0}.workspace-shell .brain-insight-grid summary{cursor:pointer}}
 @media(max-width:767px){.workspace-shell .workspace-topbar{justify-content:flex-start;gap:3px}.workspace-shell .workspace-topbar>.header-spacer{display:none!important}.workspace-shell .workspace-topbar>button,.workspace-shell .workspace-topbar>.header-icon{margin:0!important}.workspace-shell .workspace-topbar>.workspace-search-trigger{width:27px!important;min-width:27px!important;max-width:27px!important;flex:0 0 27px!important}.workspace-shell .workspace-topbar>.focus-mini{width:32px!important;min-width:32px!important;max-width:32px!important;flex:0 0 32px!important}.workspace-shell .workspace-topbar>.workspace-mobile-brand{margin-bottom:3px}}
 @media(max-width:767px){.workspace-shell .workspace-topbar{display:flex}}
+
+@keyframes kanban-card-appear{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.kanban-card-entry{animation:kanban-card-appear .15s ease-out}
+@media(prefers-reduced-motion:reduce){.kanban-card-entry{animation:none}}
+html[data-guiding-motion="false"] .kanban-card-entry{animation:none}
+
+@media(min-width:768px){.workspace-shell .lab-compact .lab-preview.tool-tiles a{height:54px;min-height:54px}.workspace-shell .lab-compact .lab-preview strong{line-height:1.2}}

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Video,
-  Phone,
   Copy,
   ExternalLink,
   Trash2,
@@ -19,7 +18,6 @@ export function MeetingSpace() {
     [ready, setReady] = useState(false),
     [status, setStatus] = useState(""),
     [selected, setSelected] = useState(""),
-    [phone, setPhone] = useState(""),
     [query, setQuery] = useState(""),
     [recipient, setRecipient] = useState(""),
     [subject, setSubject] = useState("Einladung in meinen Meeting-Raum"),
@@ -36,7 +34,6 @@ export function MeetingSpace() {
         directoryOwner.current !== directory.userId
       ) {
         setRecipient("");
-        setPhone("");
         setStatus(
           "Das Konto hat gewechselt. Bitte Empfänger und Einladung neu wählen.",
         );
@@ -62,7 +59,6 @@ export function MeetingSpace() {
       .toLowerCase()
       .includes(query.toLowerCase()),
   );
-  const number = phone.replace(/[^+0-9]/g, "");
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient);
   async function send() {
     if (!room || !validEmail || sending) return;
@@ -109,37 +105,6 @@ export function MeetingSpace() {
           Deine Räume, deine Menschen. Ein Gespräch beginnt mit einer Einladung.
         </p>
       </header>
-      <section className="studio-widget meeting-phone" data-color="teal">
-        <div>
-          <Phone size={22} />
-          <h2>Ein guter Draht.</h2>
-          <small>Telefonprogramm deines Geräts</small>
-        </div>
-        <label>
-          Telefonnummer
-          <input
-            className="w-input"
-            type="tel"
-            autoComplete="tel"
-            value={phone}
-            maxLength={40}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="+43 …"
-          />
-        </label>
-        {/^\+?\d{3,20}$/.test(number) ? (
-          <a className="w-btn" href={"tel:" + number}>
-            <Phone size={15} /> Anrufen
-          </a>
-        ) : (
-          <span className="w-muted">
-            Nummer eingeben oder unten einen Kontakt wählen.
-          </span>
-        )}
-        <Link className="w-btn" href="/dashboard/contacts">
-          Kontakte öffnen
-        </Link>
-      </section>
       <div className="meeting-studio-columns">
         <div className="meeting-studio-main">
           <section className="studio-widget meeting-invite" data-color="rose">
@@ -174,7 +139,6 @@ export function MeetingSpace() {
                     const c = choices.find((c) => c.id === e.target.value);
                     if (c) {
                       setRecipient(c.email);
-                      if (c.phone) setPhone(c.phone);
                     }
                   }}
                 >

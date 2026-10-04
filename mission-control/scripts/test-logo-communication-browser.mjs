@@ -25,8 +25,9 @@ async function go(path){await page.goto(base+path,{waitUntil:'networkidle0'});aw
 try{
   await page.setViewport({width:1440,height:1000});await go('/notiz');
   assert.deepEqual(await page.$$eval('.workspace-nav-section',nodes=>nodes.map(n=>({group:n.querySelector('.workspace-nav-group')?.textContent,items:[...n.querySelectorAll('a')].map(a=>a.dataset.navId)})).filter(n=>['Arbeiten','Kommunikation'].includes(n.group))),[
-    {group:'Arbeiten',items:['ideas','lab','projects']},{group:'Kommunikation',items:['inbox','meeting','contacts']}
+    {group:'Arbeiten',items:['ideas','lab','projects']}
   ]);
+  assert.deepEqual(await page.$$eval('.sidebar-communication a',nodes=>nodes.map(n=>n.dataset.navId)),['inbox','meeting','contacts','phone']);
   assert(await page.$eval('[data-nav-id="projects"]',e=>parseFloat(getComputedStyle(e).marginTop)>=10));
   assert.equal(await page.$$('.tl-sun-stage .tl-sun-prominence').then(n=>n.length),12); // desktop + mobile marks
   assert.equal(await page.$$('.tl-gold,.tl-gold-rays').then(n=>n.length),0);
@@ -61,6 +62,7 @@ try{
   assert.equal(await page.$$eval('.meeting-rooms a[target="_blank"]',es=>es.length),1);
   await page.$eval('input[name="url"]',e=>{e.value='https://person:secret@example.test/raum';});await page.click('button[type="submit"]');await page.waitForFunction(()=>document.body.innerText.includes('ohne Zugangsdaten'));
   assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('trinity-personal-v1')).state.customLinks.length),1);
+  await go('/dashboard/communication/phone');await page.waitForSelector('.phone-space');
   await page.type('input[type="tel"]','+43 (1) 234 567');assert.equal(await page.$eval('a[href^="tel:"]',e=>e.getAttribute('href')),'tel:+431234567');
   await go('/dashboard/communication/meeting');assert.equal(await page.$$eval('.meeting-rooms a[target="_blank"]',es=>es.length),1);
   await page.screenshot({path:'/tmp/guiding-communication-desktop.png'});

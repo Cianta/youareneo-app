@@ -2,18 +2,18 @@
   Team (ersetzt das Elfsight-Team-Widget, 1:1 gleiche Inhalte, eigenes Design).
   Wird von es-farben.liquid nur auf der Startseite geladen und ersetzt dort den alten Elfsight-Platzhalter.
   Mitglieder bearbeiten: einfach den Block <article> kopieren/ändern; Fotos liegen unter Inhalte → Dateien (es-team-*).
-  Das Logo der Scroll-Animation macht über den Karten einen Halt (.es-team__spot) und leuchtet einmal auf.
+  Der Funke der unteren Startseite zeigt das Logo groß über der Überschrift (#es-team-h), es leuchtet einmal auf und wird wieder zum Funken.
 {%- endcomment -%}
 <template id="es-team-tpl">
   <section class="es-team" aria-labelledby="es-team-h">
     <div class="es-team__spot" aria-hidden="true"></div>
-    <p class="es-team__kicker">Das Team</p>
     <h2 class="es-team__h" id="es-team-h">YOU ARE NEO</h2>
+    <p class="es-team__kicker">Das Team</p>
     <p class="es-team__cap">Vereinigung für holistische Gesundheit und Ontologie</p>
     <div class="es-team__grid">
       <article class="es-team__card" style="--i:0">
         <button class="es-team__open" type="button" aria-haspopup="dialog" aria-controls="es-team-0">
-          <span class="es-team__ring"><img src="{{ 'es-team-florian-gersdorf.webp' | file_img_url: '600x600' }}" alt="Florian Gersdorf" width="600" height="600" loading="lazy"></span>
+          <span class="es-team__ring"><img src="{{ 'es-team-florian-gersdorf-2.jpg' | file_img_url: '600x600' }}" alt="Florian Gersdorf" width="600" height="600" loading="lazy"></span>
           <span class="es-team__name">Florian Gersdorf</span>
           <span class="es-team__pos">Präsident</span>
           <span class="es-team__more">mehr</span>
@@ -21,7 +21,7 @@
         <div class="es-team__pop" id="es-team-0" role="dialog" aria-modal="true" aria-label="Florian Gersdorf" hidden>
           <div class="es-team__box">
             <button class="es-team__x" type="button" aria-label="Schließen">&times;</button>
-            <img src="{{ 'es-team-florian-gersdorf.webp' | file_img_url: '400x400' }}" alt="" width="400" height="400" loading="lazy">
+            <img src="{{ 'es-team-florian-gersdorf-2.jpg' | file_img_url: '400x400' }}" alt="" width="400" height="400" loading="lazy">
             <h3>Florian Gersdorf</h3>
             <p class="es-team__pos">Präsident</p>
             <div class="es-team__bio"><p>Florian Gersdorf macht am liebsten Qi-Gong, trainiert Kampfkünste oder verliert sich beim Erstellen von neuartigen Sounds und Musik-Videos.</p><p>Er möchte für seine Kinder eine Welt erschaffen, in der jeder respektvoll behandelt wird. Die Welt, in der alle Menschen in Fülle leben, gemeinsam mit dem Planeten und der Natur.</p><p>"Die Projekte von YOU ARE NEO sollen dazu beitragen, die Schwingung auf der Erde langfristig zu erhöhen."</p></div>
@@ -74,11 +74,11 @@
 </template>
 <style>
   .es-team { position: relative; max-width: 1180px; margin: 0 auto; padding: clamp(70px, 9vw, 120px) 20px clamp(50px, 7vw, 90px); text-align: center; color: #ece4d2; font-family: Manrope, system-ui, sans-serif; }
-  .es-team__spot { height: clamp(90px, 11vw, 130px); }
-  .es-team__kicker { margin: 0 0 8px; font-size: .78rem; font-weight: 700; letter-spacing: .38em; text-transform: uppercase; color: #9fd3cf; }
-  .es-team__h { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 600; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05;
+  .es-team__spot { height: clamp(120px, 12vw, 160px); }
+  .es-team__kicker { margin: 14px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .38em; text-transform: uppercase; color: #9fd3cf; }
+  .es-team__h { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 600; font-size: clamp(35px, 5vw, 54px); line-height: 1.05;
     background: linear-gradient(100deg, #b8862f, #f4dfb0 45%, #ddb771 60%, #a8782c); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .es-team__cap { margin: 12px auto 0; max-width: 34ch; font-size: clamp(1rem, 1.6vw, 1.15rem); color: rgba(236,228,210,.82); }
+  .es-team__cap { margin: 12px auto 0 !important; max-width: 34ch; font-size: clamp(17px, 1.6vw, 19px) !important; color: rgba(236,228,210,.86) !important; }
   .es-team__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(22px, 3vw, 40px); margin-top: clamp(36px, 5vw, 56px); }
   .es-team__card { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--i) * .14s); }
   .es-team.is-in .es-team__card { opacity: 1; transform: none; }
@@ -89,24 +89,30 @@
     background: conic-gradient(from 210deg, #f6e7b8, #b8862f, #fff3cf, #8a6418, #f6e7b8); box-shadow: 0 0 0 6px rgba(221,183,113,.08), 0 14px 34px rgba(0,0,0,.4); }
   .es-team__ring img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; filter: saturate(.92); transition: transform .6s, filter .6s; }
   .es-team__open:hover .es-team__ring img { transform: scale(1.04); filter: saturate(1.05); }
-  .es-team__name { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: clamp(1.45rem, 2.2vw, 1.75rem); color: #fff7e6; }
-  .es-team__pos { font-size: .78rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #ddb771; }
-  .es-team__more { margin-top: 14px; padding: 9px 26px; border-radius: 999px; font-size: .82rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #f3e9d2;
-    background: linear-gradient(135deg, #0e1f1b, #12332b); border: 1.5px solid rgba(110,230,190,.5); box-shadow: 0 8px 22px rgba(70,200,160,.18); transition: border-color .3s, box-shadow .3s; }
-  .es-team__open:hover .es-team__more { border-color: #e8c27a; box-shadow: 0 10px 28px rgba(70,200,160,.35); }
+  .es-team__name { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: clamp(23px, 2.2vw, 28px); color: #fff7e6; }
+  .es-team__pos { font-size: 12px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #ddb771; }
+  .es-team__card { --b1: #0f2a17; --b2: #22502d; --bd: rgba(140,225,150,.65); --gl: 110,210,130; }
+  .es-team__card:nth-child(2) { --b1: #2a1a0b; --b2: #5a3816; --bd: rgba(245,190,110,.7); --gl: 235,170,80; }
+  .es-team__card:nth-child(3) { --b1: #1a1226; --b2: #3f2b60; --bd: rgba(195,155,255,.7); --gl: 160,110,240; }
+  .es-team__more { margin-top: 18px; min-width: 190px; padding: 15px 38px; border-radius: 999px; font-size: 17px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #fbf3e2;
+    background: linear-gradient(135deg, var(--b1), var(--b2)); border: 2px solid var(--bd); box-shadow: 0 10px 28px rgba(var(--gl),.28);
+    animation: es-team-glow 4s ease-in-out infinite; animation-delay: calc(var(--i) * 1.2s); transition: border-color .3s, transform .3s; }
+  .es-team__open:hover .es-team__more { border-color: #e8c27a; transform: scale(1.05); }
+  @keyframes es-team-glow { 50% { box-shadow: 0 12px 40px rgba(var(--gl),.55); } }
   .es-team__pop { position: fixed; inset: 0; z-index: 2147483100; display: grid; place-items: center; padding: 20px; background: rgba(8,9,14,.72); backdrop-filter: blur(6px); }
   .es-team__pop[hidden] { display: none; }
-  .es-team__box { position: relative; width: min(640px, 100%); max-height: 86vh; overflow: auto; padding: 38px clamp(22px, 4vw, 44px) 34px; border-radius: 24px; text-align: center; color: #ece4d2;
-    background: radial-gradient(ellipse at 50% 0%, #2c3550 0%, #1c2130 55%, #151924 100%); box-shadow: inset 0 0 0 1px rgba(221,183,113,.35), 0 30px 80px rgba(0,0,0,.6); animation: es-team-in .45s cubic-bezier(.2,.7,.2,1); }
+  .es-team__box { position: relative; width: min(760px, 100%); max-height: 88vh; overflow: auto; padding: 44px clamp(24px, 5vw, 56px) 40px; border-radius: 26px; text-align: center; color: #241d14;
+    background: linear-gradient(180deg, #fbf5e8 0%, #f3e8d0 100%); box-shadow: inset 0 0 0 2px rgba(184,134,47,.55), 0 30px 80px rgba(0,0,0,.6); animation: es-team-in .45s cubic-bezier(.2,.7,.2,1); }
   @keyframes es-team-in { from { opacity: 0; transform: translateY(18px) scale(.97); } }
-  .es-team__box img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 3px #ddb771, 0 0 30px rgba(221,183,113,.35); }
-  .es-team__box h3 { margin: 14px 0 4px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; font-weight: 600; color: #fff7e6; }
-  .es-team__bio { margin-top: 18px; text-align: left; font-size: 1.02rem; line-height: 1.75; color: rgba(236,228,210,.92); }
-  .es-team__bio p { margin: 0 0 1em; }
-  .es-team__box blockquote { margin: 22px 0 0; padding: 18px 10px 0; border-top: 1px solid rgba(221,183,113,.3); font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 1.3rem; line-height: 1.45; color: #ddb771; }
-  .es-team__x { all: unset; cursor: pointer; position: absolute; top: 12px; right: 18px; font-size: 2rem; line-height: 1; color: #ddb771; }
+  .es-team__box img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 4px #c99a3e, 0 10px 30px rgba(120,80,20,.35); }
+  .es-team__box h3 { margin: 16px 0 6px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(34px, 4vw, 42px); font-weight: 700; color: #1d160d; }
+  .es-team__box .es-team__pos { color: #8a5f1a; font-size: 14px; }
+  .es-team__bio { margin-top: 22px; text-align: left; font-size: clamp(18px, 1.6vw, 20px) !important; line-height: 1.8; color: #2b231a; }
+  .es-team__bio p, .es-team__box .es-team__bio p { margin: 0 0 1em !important; font-size: inherit !important; line-height: inherit !important; letter-spacing: normal !important; color: inherit !important; }
+  .es-team__box blockquote { margin: 24px 0 0 !important; padding: 20px 10px 0 !important; border: 0 !important; background: none !important; border-top: 1px solid rgba(160,110,30,.4) !important; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 600; font-size: clamp(23px, 2.4vw, 28px); line-height: 1.4; color: #7a4f12; letter-spacing: normal; }
+  .es-team__x { all: unset; cursor: pointer; position: absolute; top: 14px; right: 20px; font-size: 38px; line-height: 1; color: #8a5f1a; }
   .es-team__cta { margin-top: clamp(40px, 6vw, 64px); }
-  .es-team__cta p { margin: 0 0 16px; font-size: 1.1rem; color: rgba(236,228,210,.85); }
+  .es-team__cta p { margin: 0 0 16px !important; font-size: 18px !important; color: rgba(236,228,210,.9) !important; }
   .es-team__btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; min-width: 260px; min-height: 64px; padding: 0 40px; border-radius: 999px; text-decoration: none;
     font-size: 19px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: #f3e9d2; background: linear-gradient(135deg, #0e1f1b, #12332b); border: 2px solid rgba(110,230,190,.5);
     box-shadow: 0 10px 32px rgba(70,200,160,.22); animation: es-team-pulse 4s ease-in-out infinite; transition: transform .25s, border-color .25s; }

@@ -227,7 +227,10 @@
     }
     function W(n, o, e, s) {
       o.forEach((t, l) => {
-        const p = t.getTotalLength ? t.getTotalLength() : 600;
+        let p = 600;
+        try {
+          p = t.getTotalLength() || 600;
+        } catch {}
         ((t.style.strokeDasharray = p),
           (t.style.strokeDashoffset = _ ? 0 : p),
           (t.style.transition = _

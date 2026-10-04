@@ -31,3 +31,10 @@ shopify theme push --store <shop>.myshopify.com --theme <ID> --only sections/es-
 - Neue Skripte/Styles heißen `es2-*` und liegen in Shopify unter Inhalte → Dateien. Die Sektionen laden sie mit `file_url`.
 - Minifizieren: `terser datei.js -c -m -o es2-….js`, CSS: `csso datei.css --no-restructure -o es2-….css`.
 - Scroll-Logik: gemeinsamer Höchststand-Zähler `window.ESHW` (in `es2-scroll.js` und `es2-zauber.js`) – beim Hochscrollen fliegt das Logo zurück in den Header, alles bleibt stehen, bis man wieder an der alten Stelle ist.
+
+## Theme 2.1 (04.10.26)
+
+- Theme 2.0 ist live. Änderungen laufen in **„YOU ARE NEO THEME 2.1“** (ID 201886892359), neue Dateien heißen `es21-*`,
+  damit das Live-Theme unberührt bleibt, bis 2.1 veröffentlicht wird.
+- Team selbst gebaut (`snippets/es-team.liquid`), Dornenrahmen als Foto-PNG (`es21-dornen.webp`), neue Funken-Route unten
+  (Team-Logo → Kontakt → Testimonials → Tor → Videos → Garantie 1-2-3 → „Die Plattform …“ → Schneeflocke → Menü/„Übersicht“ → Mitte).

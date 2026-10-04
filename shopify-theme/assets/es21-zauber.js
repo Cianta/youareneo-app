@@ -185,6 +185,14 @@
       sv._t = [...sv.querySelectorAll(".esz-thorn, .esz-leaf")].map((pp) => ({ el: pp, u: +pp.dataset.u }));
     }
     function Vg(sv, g) {
+      if (sv && sv.tagName === "IMG") {
+        // wächst von der Mitte oben/unten nach außen
+        if (sv._g !== undefined && Math.abs(sv._g - g) < 0.002) return;
+        sv._g = g;
+        const q = (50 - 50 * F(g * 1.05)).toFixed(2);
+        ((sv.style.clipPath = `inset(0 ${q}% 0 ${q}%)`), (sv.style.opacity = F(g * 3).toFixed(3)));
+        return;
+      }
       if (!sv || !sv._v) return;
       if (sv._g !== undefined && Math.abs(sv._g - g) < 0.002) return;
       sv._g = g;
@@ -206,16 +214,15 @@
         r = H("rich_text_VRCUCT"),
         n = o && o.querySelector("h1, h2, h3, h4, .title"),
         s = (n && n.textContent.trim()) || "Gehe jetzt durch die T\xFCr, die wir f\xFCr dich \xF6ffnen",
-        h = "Du hast es in der Hand und im Herz.";
+        h = "Du hast es in der Hand.";
       [o, r].forEach((f) => {
         f && (f.style.display = "none");
       });
       const c = document.createElement("div");
       ((c.className = "esz-tor"),
-        (c.innerHTML = `<div class="esz-tor__stage"><div class="esz-tor__frame"><canvas class="esz-tor__cv" aria-label="Ein Mensch geht durch ein Tor aus Licht"></canvas><svg class="esz-vines" viewBox="-60 -60 1720 1020" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+        (c.innerHTML = `<div class="esz-tor__stage"><div class="esz-tor__frame"><canvas class="esz-tor__cv" aria-label="Ein Mensch geht durch ein Tor aus Licht"></canvas><img class="esz-vines esz-vines--png" src="${jt}es21-dornen.webp" alt="" aria-hidden="true" decoding="async"></div>
       <h2 class="esz-tor__txt esz-tor__txt--1"></h2><h2 class="esz-tor__txt esz-tor__txt--2"></h2></div>`),
-        e.appendChild(c),
-        Vn(c.querySelector(".esz-vines")));
+        e.appendChild(c));
       const p = c.querySelector(".esz-tor__txt--1"),
         g = c.querySelector(".esz-tor__txt--2");
       ((p.textContent = s), (g.textContent = h));
@@ -235,8 +242,8 @@
         },
         { rootMargin: "150% 0px" },
       ).observe(c),
-        (E = { wrap: c, tcv: y, tg: a, sheets: i, N: 92, last: -1, w1: ft(p, 301), w2: ft(g, 517), vines: c.querySelector(".esz-vines") }));
-    } else (pt("rich_text_XUxRzP"), pt("rich_text_VRCUCT", "Du hast es in der Hand und im Herz."));
+        (E = { wrap: c, tcv: y, tg: a, sheets: i, N: 92, last: -1, w1: ft(p, 301), w2: ft(g, 517), t2: g, vines: c.querySelector(".esz-vines") }));
+    } else (pt("rich_text_XUxRzP"), pt("rich_text_VRCUCT", "Du hast es in der Hand."));
     pt("rich_text_gtNpir");
     function Wt(e) {
       if (!E) return;
@@ -264,7 +271,8 @@
         o.style.setProperty("--my", (N(3, 62, i) + 2 * Math.cos(a * 0.9) * i + 70 * m).toFixed(1) + "%"),
         Vg(E.vines, Q(C(e, 0.05, 0.2)) * (1 - C(e, 0.9, 0.98))),
         ut(E.w1, C(e, 0.2, 0.34), C(e, 0.55, 0.64)),
-        ut(E.w2, C(e, 0.64, 0.77), C(e, 0.9, 0.97)));
+        ut(E.w2, C(e, 0.64, 0.77), C(e, 0.9, 0.97)),
+        E.t2.style.setProperty("--orn", (C(e, 0.72, 0.8) * (1 - C(e, 0.9, 0.96))).toFixed(3)));
     }
     const vt = document.querySelector('.shopify-section[id*="footer"]'),
       X = H("dbtfy_ugc_carousel_");
@@ -272,26 +280,22 @@
     function Ot() {
       if (!vt) return;
       const e = I(vt),
-        o = X ? I(X.querySelector(".splide") || X) : null,
-        r = w / 2,
-        gE = H("dbtfy_guarantee_"),
-        gB = gE ? I(gE) : null;
-      let n = e.t + Math.min(e.h * 0.5, 420),
-        s = Math.max(220, o ? n - (o.t + o.h * 0.45) : e.h * 0.9);
-      if (o && gB) {
-        const tipY = gB.t + Math.min(70, gB.h * 0.2);
-        ((n = o.t - Math.min(_ * 0.3, 280)), (s = F(tipY - n, 240, Math.max(300, w * 0.62))), (n = tipY - s));
-      }
-      const h = [w, n, s, e.b].map(Math.round).join("|");
+        fz = [...document.querySelectorAll('.shopify-section[id*="footer"]')].pop() || vt,
+        eb = I(fz).b;
+      // Schneeflocke unten links: hinter „Gemeinnütziger Verein“ und „Wir haben uns auf Bildung …“, links/unten angeschnitten
+      const s = F(w * 0.3, 240, 470),
+        n = eb - s * 0.55,
+        r = Math.max(s * 0.32, w * 0.12);
+      const h = [w, n, s, eb, r].map(Math.round).join("|");
       if (z && z.key === h) return;
       z && z.box.remove();
       const c = document.createElement("div");
       c.className = "esz-flake";
       const p = n - s * 1.08,
-        g = Math.max(50, Math.min(s * 2.16, Math.max(e.b, n + s * 1.08) - p - 2));
+        g = Math.max(50, Math.min(s * 2.16, eb - p - 2));
       c.style.cssText = `position:absolute;left:0;top:${p}px;width:100%;height:${g}px;overflow:hidden;pointer-events:none;z-index:1`;
       const y = document.createElementNS(Nt, "svg");
-      (y.setAttribute("viewBox", `${-w / 2} ${-s * 1.08} ${w} ${s * 2.16}`),
+      (y.setAttribute("viewBox", `${-r} ${-s * 1.08} ${w} ${s * 2.16}`),
         y.setAttribute("width", "100%"),
         y.setAttribute("height", s * 2.16),
         (y.style.cssText = "position:absolute;left:0;top:0"),
@@ -405,12 +409,15 @@
         <g class="esz-current2" opacity="0">${xt.map((l) => `<path d="${l}" stroke="#ffffff" stroke-width="1.2"/>`).join("")}</g>
       </g>`),
         (y.style.cssText +=
-          ";transform-origin:50% " + a(s * 1.08) + "px;animation:esz-breathe 22s ease-in-out infinite alternate"),
+          ";transform-origin:" + a(r) + "px " + a(s * 1.08) + "px;animation:esz-breathe 22s ease-in-out infinite alternate"),
         c.appendChild(y),
         document.body.appendChild(c));
       const Et = [...y.querySelectorAll(".esz-current path, .esz-current2 path")];
       (Et.forEach((l) => {
-        const d = l.getTotalLength();
+        let d = 400;
+        try {
+          d = l.getTotalLength() || 400;
+        } catch {}
         ((l.style.strokeDasharray = `${d * 0.18} ${d}`), (l.dataset.l = d));
       }),
         (z = {
@@ -437,12 +444,26 @@
       const r = () => {
           ((o = []), e.push(o));
         },
-        n = (i, m, f = 1, M, u) => o.push(Object.assign({ x: i, y: m, op: f, s: M === void 0 ? m - gt() : M }, u)),
-        s = H("dbtfy_testimonials_");
+        n = (i, m, f = 1, M, u) => o.push(Object.assign({ x: i, y: m, op: f, s: M === void 0 ? m - gt() : M }, u));
+      // Team: Logo erscheint groß über der Überschrift, leuchtet, wird zum Funken und fällt unter „Kontakt Seite“
+      const tH = document.getElementById("es-team-h"),
+        tB = document.querySelector(".es-team__btn");
+      if (tH && tH.getBoundingClientRect().width > 0) {
+        r();
+        const i = I(tH),
+          lw = Math.max(90, Math.min(150, Jt().w * 1.75)),
+          ly = i.t - lw * 0.62;
+        n(w / 2, ly, 0, ly - gt(), { logo: 1, lw });
+        if (tB) {
+          const q = I(tB);
+          n(q.cx, q.b + 46, 1);
+        }
+      }
+      const s = H("dbtfy_testimonials_");
       if (s) {
         r();
         const i = I(s);
-        n(i.l + Math.min(60, w * 0.06), i.t + 30, 0);
+        n(i.l + Math.min(60, w * 0.06), i.t + 30, 1);
         const f = [...s.querySelectorAll("h3, h4, h5, h6, strong, .h4, .h5")].filter((M) => {
           const u = M.textContent.trim(),
             S = M.getBoundingClientRect();
@@ -452,20 +473,6 @@
           const M = I(f);
           n(Math.min(w - 30, M.r + 34), M.cy, 1);
         } else n(i.cx, i.cy, 1);
-      }
-      const h = H("dbtfy_guarantee_");
-      if (h) {
-        r();
-        const i = [...h.querySelectorAll(".heading--icon, .material-icon")].map(I).filter((f) => f.w > 0),
-          m = [...h.querySelectorAll("h5, .title")].map(I).filter((f) => f.w > 0);
-        if (i.length && m.length) {
-          const f = i.filter((P) => Math.abs(P.t - i[0].t) < 40),
-            M = Math.max(...f.map((P) => P.b)),
-            u = Math.min(...m.filter((P) => P.t > M - 5).map((P) => P.t), M + 40),
-            S = (M + u) / 2,
-            b = I(h);
-          (n(b.l + w * 0.04, S, 1), n(b.r - w * 0.04, S, 1));
-        }
       }
       const c = H("rich_text_XUxRzP");
       if (c && c.offsetParent) {
@@ -502,30 +509,40 @@
           n(i.cx + Math.cos(b) * m, i.cy + Math.sin(b) * f, 1, M + (u * S) / 16);
         }
       }
-      if (
-        (e
-          .filter((i) => i.length)
-          .sort((i, m) => i[0].s - m[0].s)
-          .forEach((i) => x.push(...i)),
-        x[0] && (x[0].op = 0),
-        x.slice(1).forEach((i) => {
-          i.op === 0 && (i.op = 1);
-        }),
-        z)
-      ) {
-        o = x;
-        const i = document.documentElement.scrollHeight - _;
-        n(z.cx + z.tipB[0], z.cy + z.tipB[1], 1, Math.min(z.cy + z.tipB[1] - gt(), i - 30), { flake: 1 });
+      e.filter((i) => i.length)
+        .sort((i, m) => i[0].s - m[0].s)
+        .forEach((i) => x.push(...i));
+      x[0] && (x[0].op = 0);
+      for (let i = 1; i < x.length; i++) x[i].s = Math.max(x[i].s, x[i - 1].s + 12);
+      // Schluss: Garantie 1-2-3 → neben „Die Plattform ist ein Projekt …“ (groß) → Mitte der Schneeflocke
+      o = x;
+      const yMax = document.documentElement.scrollHeight - _ - 30,
+        lastS = x.length ? x[x.length - 1].s : 0,
+        hG = H("dbtfy_guarantee_"),
+        ic = hG ? [...hG.querySelectorAll(".heading--icon")].map(I).filter((f) => f.w > 0).sort((a, b) => a.cx - b.cx) : [],
+        foot = H("dbtfy-footer") || vt,
+        pe = foot && [...foot.querySelectorAll("p, div, span")].filter((q) => /Die Plattform ist ein Projekt/i.test(q.textContent)).pop(),
+        tail = [];
+      ic.slice(0, 3).forEach((q) => tail.push([q.cx, q.cy, {}]));
+      if (pe) {
+        const q = I(pe);
+        tail.push([q.l > w * 0.35 ? Math.max(30, q.l - 46) : Math.min(w - 30, q.r + 46), q.cy, { big: 1 }]);
       }
-      for (let i = 1; i < x.length; i++) x[i].s = Math.max(x[i].s, x[i - 1].s + 60);
-      const y = document.documentElement.scrollHeight - _ - 30,
-        a = x[x.length - 1];
-      if (x.length > 1 && a.s > y) {
-        const i = x[0].s,
-          m = (y - i) / Math.max(1, a.s - i);
-        x.forEach((f) => {
-          f.s = i + (f.s - i) * m;
-        });
+      z && tail.push([z.cx, z.cy, { flake: 1 }]);
+      if (tail.length) {
+        const s0 = Math.max(lastS + 80, Math.min(tail[0][1] - gt(), yMax - 120 * tail.length)),
+          st0 = Math.max(70, (yMax - s0) / Math.max(1, tail.length - 1));
+        tail.forEach(([tx, ty, ex], k) => n(tx, ty, 1, k === tail.length - 1 ? Math.max(s0 + k * 70, yMax) : s0 + k * st0, ex));
+      }
+      for (let i = 1; i < x.length; i++) x[i].s = Math.max(x[i].s, x[i - 1].s + 12);
+      // Sicherheitsnetz: alles muss vor dem Seitenende erreichbar sein (nur das letzte Stück stauchen)
+      if (x.length > 1 && x[x.length - 1].s > yMax) {
+        let j0 = x.findIndex((q) => q.s > yMax - 900);
+        j0 = Math.max(1, j0);
+        const a0 = Math.min(x[j0 - 1].s + 12, yMax - 200),
+          b0 = x[x.length - 1].s,
+          f0 = x[j0].s;
+        for (let i = j0; i < x.length; i++) x[i].s = a0 + ((x[i].s - f0) / Math.max(1, b0 - f0)) * (yMax - a0);
       }
     }
     const St = (e, o, r, n, s) =>
@@ -709,7 +726,7 @@
         n = z.cy - o,
         s = e - G;
       ((window.ESZ.e = s),
-        s < 0.6 && st(r + z.tipB[0], n + z.tipB[1], 30 + 160 * Q(s / 0.6), 0.9 * (1 - s / 0.6)),
+        s < 0.6 && st(r, n, 30 + 160 * Q(s / 0.6), 0.9 * (1 - s / 0.6)),
         s > 0.15 && s < 1.1 && st(r, n, 40 + 220 * Q(F((s - 0.15) / 0.9)), 0.55 * Math.sin(Math.PI * F((s - 0.15) / 0.95))));
       const h = F((s - 0.25) / 1.6);
       (z.g1.setAttribute("opacity", (Math.sin(Math.PI * h) * 0.95).toFixed(3)),
@@ -751,18 +768,65 @@
         }
         t.restore();
       }
-      const a = Ht(F((s - 2.3) / 1));
-      if ((s > 2.2 && a < 1 && zt(N(p, c.x, a), N(g, c.y, a), 1, 1.2 - 0.4 * a, e), a >= 1)) {
-        const i = F((s - 3.3) / 0.9);
-        (i < 1 &&
-          ((t.strokeStyle = `rgba(240,200,110,${1 - i})`),
-          (t.lineWidth = 2 * (1 - i) + 0.5),
-          t.beginPath(),
-          t.arc(c.x, c.y, c.w * (0.55 + i * 1.4), 0, O),
-          t.stroke(),
-          st(c.x, c.y, c.w * 1.6, 0.6 * (1 - i))),
-          window.ESZ.arrived || ((window.ESZ.arrived = 1), dispatchEvent(new CustomEvent("esz:angekommen"))));
+      const a = Ht(F((s - 2.3) / 1)),
+        ub = (() => {
+          const el = [...document.querySelectorAll("header a, .header a")].find((q) => /^\s*übersicht\s*$/i.test(q.textContent)),
+            rr = el && el.getBoundingClientRect();
+          return rr && rr.width > 0 && rr.bottom > 0 ? { x: rr.left + rr.width / 2, y: rr.top + rr.height * 0.15 } : null;
+        })(),
+        tA = ub ? 4.5 : 3.3;
+      if (s > 2.2 && a < 1) zt(N(p, c.x, a), N(g, c.y, a), 1, 1.2 - 0.4 * a, e);
+      else if (a >= 1) {
+        const hp = F((s - 3.3) / 1.2);
+        if (ub && hp > 0 && hp < 1) {
+          // einmal über „Übersicht“ hüpfen und zurück in die Mitte
+          const q = hp < 0.5 ? Ht(hp * 2) : Ht((1 - hp) * 2),
+            lift = Math.sin(Math.PI * (hp < 0.5 ? hp * 2 : (hp - 0.5) * 2)) * 30;
+          zt(N(c.x, ub.x, q), N(c.y, ub.y, q) - lift, 1, 0.85, e);
+        } else if (s >= tA) {
+          const i = F((s - tA) / 0.9),
+            pu = 0.5 + 0.5 * Math.sin(e * 2.1);
+          (i < 1 &&
+            ((t.strokeStyle = `rgba(240,200,110,${1 - i})`),
+            (t.lineWidth = 2 * (1 - i) + 0.5),
+            t.beginPath(),
+            t.arc(c.x, c.y, c.w * (0.55 + i * 1.4), 0, O),
+            t.stroke(),
+            st(c.x, c.y, c.w * 1.6, 0.6 * (1 - i))),
+            // bleibt in der Mitte und leuchtet ruhig weiter
+            st(c.x, c.y, c.w * (0.95 + 0.12 * pu), (0.2 + 0.12 * pu) * F((s - tA) / 0.6)),
+            window.ESZ.arrived || ((window.ESZ.arrived = 1), dispatchEvent(new CustomEvent("esz:angekommen"))));
+        } else zt(c.x, c.y, 1, 0.85, e);
       }
+    }
+    // Team-Logo: erscheint groß über der Überschrift und leuchtet einmal auf
+    let LGt = -1,
+      LGim = null;
+    function Lg(P, la, o, ry) {
+      LGim || (LGim = document.querySelector('.header__heading-logo, header .logo img, header [class*="logo"] img'));
+      const X0 = P.x,
+        Y0 = P.y - ry,
+        W0 = P.lw * (0.72 + 0.28 * Q(la)),
+        ar = LGim && LGim.naturalWidth ? LGim.naturalHeight / LGim.naturalWidth : 1;
+      la > 0.82 && LGt < 0 && (LGt = o);
+      const k = LGt < 0 ? 0 : F((o - LGt) / 1.6),
+        gl = LGt < 0 || k >= 1 ? 0 : Math.sin(Math.PI * k);
+      st(X0, Y0, W0 * (1.05 + 0.1 * Math.sin(o * 2)), 0.32 * la);
+      if (gl > 0.01) {
+        st(X0, Y0, W0 * (0.8 + 1.7 * Q(k)), 0.85 * gl);
+        ((t.strokeStyle = `rgba(240,200,110,${(0.9 * (1 - k)).toFixed(3)})`),
+          (t.lineWidth = 2.2 * (1 - k) + 0.4),
+          t.beginPath(),
+          t.arc(X0, Y0, W0 * (0.56 + k * 0.9), 0, O),
+          t.stroke());
+      }
+      if (LGim && LGim.complete && LGim.naturalWidth)
+        (t.save(),
+          (t.globalAlpha = F(la)),
+          (t.shadowColor = "rgba(255,214,140,.85)"),
+          (t.shadowBlur = 16 + 26 * gl),
+          t.drawImage(LGim, X0 - W0 / 2, Y0 - (W0 * ar) / 2, W0, W0 * ar),
+          t.restore());
     }
     let Ct = performance.now();
     const et = () => {
@@ -800,6 +864,9 @@
       (mt.length || tt.length) && Xt(o, r);
       let h = $t ? null : Gt(n);
       h && (h.y += n - ry);
+      const LP = x.length && x[0].logo ? x[0] : null;
+      let la = 0;
+      LP && !Hw.back && !$t && ((la = F(1 - Math.abs(n - LP.s) / 230)), la < 0.04 && n < LP.s - 300 && (LGt = -1), la > 0.01 && Lg(LP, la, o, ry));
       if (h && Hw.back) {
         Bk || (Bk = { t0: o, x: Lx.x || h.x, y: Lx.y || h.y });
         const u = Ht(F((o - Bk.t0) / 0.45)),
@@ -809,10 +876,10 @@
         if (Bk) ((Rt0 = o), (Bk = null));
       }
       if (h) {
-        let c = h.op,
+        let c = h.op * (1 - la),
           p = h.x,
           g = h.y,
-          y = 1;
+          y = 1 + 1.3 * ((h.b && h.b.big ? 1 - h.u : 0) + (h.c && h.c.big ? h.u : 0));
         if (E && s > 0 && s < 1) {
           const i = C(s, 0, 0.1),
             m = C(s, 0.88, 1);

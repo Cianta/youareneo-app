@@ -4,12 +4,12 @@
   - es-kopf.css: modernes Header-Design (gepflegt von der zweiten Sitzung)
   - es-team (Snippet): Team-Karten statt Elfsight, nur auf der Startseite
   - es-zauber.js: untere Startseite – Funke, Tor-Szene, Schmetterlinge, Herzens-Schneeflocke (nur auf „/“ aktiv)
-  Theme 2.0: alle Skripte/Styles liegen als Shopify-Dateien (es2-*, nur von Theme 2.0 genutzt), lesbare Quelle im Repo unter shopify-theme/assets.
+  Theme 2.0: alle Skripte/Styles liegen als Shopify-Dateien (es2-* bzw. es21-* in Theme 2.1), lesbare Quelle im Repo unter shopify-theme/assets.
 {%- endcomment -%}
-<link rel="stylesheet" href="{{ 'es2-farben.css' | file_url }}">
+<link rel="stylesheet" href="{{ 'es21-farben.css' | file_url }}">
 <link rel="stylesheet" href="{{ 'es2-kopf.css' | file_url }}">
 <script src="{{ 'es2-kopf.js' | file_url }}" defer></script>
-{%- if request.page_type == 'index' -%}<script src="{{ 'es2-zauber.js' | file_url }}" defer></script>{% render 'es-team' %}{%- endif -%}
+{%- if request.page_type == 'index' -%}<script src="{{ 'es21-zauber.js' | file_url }}" defer></script>{% render 'es-team' %}{%- endif -%}
 <style>
   /* Wunschliste: Herz und Zähler im Header im selben hellen Grün */
   :root { --dbtfy-wishlist-color-default: #8fcf7f; --dbtfy-wishlist-color-active: #8fcf7f; }

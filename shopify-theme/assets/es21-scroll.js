@@ -2328,15 +2328,6 @@
         const b = T.getBoundingClientRect();
         o({ x: b.left + b.width / 2, y: b.bottom + r * 0.9 + scrollY }, 1, { sz: 0.95 });
       }
-      const tm = document.querySelector(".es-team__spot");
-      if (tm) {
-        const b = tm.getBoundingClientRect();
-        if (b.width > 0) {
-          const pt = { x: b.left + b.width / 2, y: b.top + b.height * 0.55 + scrollY, op: 1, shine: 1, sz: 1.4 },
-            ix = t.findIndex((q) => q.y > pt.y);
-          ix < 0 ? t.push(pt) : t.splice(ix, 0, pt);
-        }
-      }
       const k = e ? e.getBoundingClientRect().top + scrollY : X.getBoundingClientRect().top + scrollY,
         m = innerHeight,
         h = t.filter((b) => b.y < k);
@@ -2389,14 +2380,25 @@
         HW.eff >= u && (r = P + 1);
       }),
         N.init || ((N.init = !0), (N.cur = r), (N.arr = e - 5)));
-      const d = le(N.cur, t, o, l),
-        s = d.flower && !N.h && !at.done && r > N.cur,
-        p = !N.h && d.heart && e - N.arr < (Math.abs(r - N.cur) > 1 ? 0.25 : 0.7);
+      const d = le(N.cur, t, o, l);
+      // Blume nicht warten lassen: scrollt man weiter, spielt sie ca. 3x schneller zu Ende
+      d.flower && !N.h && !at.done && at.t0 >= 0 && r > N.cur && (at.t0 -= Math.min(0.1, e - (N.ft || e)) * 2.2);
+      N.ft = e;
+      const s = d.flower && !N.h && !at.done && r > N.cur,
+        p = !N.h && d.heart && r === N.cur + 1 && e - N.arr < 0.35;
       if (!N.h && r !== N.cur && !s && !p) {
-        const u = N.cur + Math.sign(r - N.cur),
-          P = le(N.cur, t, o, l),
-          T = le(u, t, o, l),
-          k = Math.hypot(T.x - P.x, T.y - P.y);
+        let u = N.cur + Math.sign(r - N.cur);
+        // Stationen, die schon aus dem Bild gescrollt sind, nicht im Eiltempo abfliegen
+        if (r > N.cur)
+          for (; u < r && u < a - 1; u++) {
+            const q = yt.pts[u - 1],
+              qy = q ? q.y - scrollY : 0;
+            if (!q || q.flower || (qy > t.y + t.w * 0.6 && qy < innerHeight)) break;
+          }
+        const P = le(N.cur, t, o, l),
+          T = le(u, t, o, l);
+        N.sx !== undefined && !P.hdr && !P.orb && ((P.x = N.sx), (P.y = N.sy - scrollY));
+        const k = Math.hypot(T.x - P.x, T.y - P.y);
         ((N.h = {
           k: u,
           fx: P.x,
@@ -2405,7 +2407,7 @@
           fop: P.op,
           hdr: !!P.hdr || !!P.flower || N.cur === a - 1,
           t0: e,
-          dur: tt(0.45 + k / 2800, 0.5, 0.95) * (Math.abs(r - N.cur) > 2 ? 0.42 : Math.abs(r - N.cur) > 1 ? 0.62 : 1),
+          dur: tt(0.42 + k / 3000, 0.48, 0.85) * (Math.abs(r - u) > 0 ? 0.75 : 1),
           side: u % 2 ? 1 : -1,
         }),
           ($t.length = 0));
@@ -2442,6 +2444,8 @@
           P >= 1 &&
             ((N.cur = u.k),
             (N.h = null),
+            (N.sx = T.x),
+            (N.sy = T.y + scrollY),
             (N.arr = e),
             (N.twT = e + c(1.6, 2.6)),
             T.flower ? at.done || (at.t0 = e) : jo(u.k, e, T.shine ? 2 : T.orb ? 2.4 : T.hdr ? 1.4 : 1),
@@ -2463,11 +2467,20 @@
       if (i.orb) return ((f.x = i.x), (f.y = i.y), (f.dot = 1), f);
       const v = Fa(tt(y / 0.62)),
         M = i.shine ? Math.exp(-(((y - 0.3) / 0.32) ** 2)) : 0;
-      ((f.x = i.x),
-        (f.y = i.y + Math.sin(e * 1.6 + N.cur) * 1.6),
+      // weich nachführen: Neuberechnungen und Header-Grenze lassen das Logo nicht mehr springen
+      const dtS = Math.min(0.1, Math.max(0, e - (N.st || e)));
+      N.st = e;
+      const rq = yt.pts[N.cur - 1],
+        clp = rq && !rq.stay && rq.y - scrollY < i.y - 0.5,
+        ty = i.y + scrollY;
+      N.sx === undefined || y < 0.03
+        ? ((N.sx = i.x), (N.sy = ty))
+        : ((N.sx += (i.x - N.sx) * Math.min(1, dtS * 9)), (N.sy = clp ? ty : N.sy + (ty - N.sy) * Math.min(1, dtS * 9)));
+      ((f.x = N.sx),
+        (f.y = N.sy - scrollY + Math.sin(e * 1.6 + N.cur) * 1.6),
         (f.w = t.w * i.sz * Math.max(0.02, v)),
         (f.op = i.op * tt(y / 0.16)),
-        (f.rot = Math.sin(y * 12) * Math.exp(-y * 5.5) * 8));
+        (f.rot = Math.sin(y * 10) * Math.exp(-y * 6) * 3));
       const n = Math.exp(-y * 3.2) * 0.7 + M * 1.4;
       return (
         (f.filter =
@@ -3314,7 +3327,7 @@
           }),
         Kt("fxImages") &&
           document.querySelectorAll("main img, #MainContent img").forEach((t) => {
-            if (Lt.has(t) || Xo(t)) return;
+            if (Lt.has(t) || Xo(t) || t.closest(".esz-tor, .es-team")) return;
             const o = t.getBoundingClientRect();
             if (o.width < 200 || o.height < 140) return;
             const l = e[(Lt.size + 1) % 4],
@@ -3352,7 +3365,13 @@
           (Math.abs(d - a.w) > 1 &&
             ((a.w = d),
             a.path.setAttribute("d", `M0 0 C ${d * 0.28} -5, ${d * 0.52} 6, ${d * 0.76} -1 S ${d * 0.95} -3, ${d} 1`),
-            (a.len = a.path.getTotalLength()),
+            (a.len = (() => {
+              try {
+                return a.path.getTotalLength() || 300;
+              } catch {
+                return 300;
+              }
+            })()),
             (a.path.style.strokeDasharray = a.len)),
             a.g.setAttribute("transform", `translate(${r.left + (r.width - d) / 2} ${s})`),
             a.drawn < 0 && r.top < innerHeight * 0.85 && (a.drawn = t));

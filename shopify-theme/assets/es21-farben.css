@@ -514,7 +514,18 @@ sticky-header,
 }
 .esz-tor {
   position: relative;
-  height: 360vh;
+  height: 230vh;
+  /* direkt unter den Testimonials: weniger Luft oben und unten */
+  margin: -24vh 0 -20vh;
+  pointer-events: none;
+}
+.esz-on [id*="__video_"].esz-tor-host,
+.esz-on [id*="__video_"].esz-tor-host > section,
+.esz-on [id*="__video_"].esz-tor-host .page-width {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 .esz-tor__stage {
   position: sticky;
@@ -522,6 +533,7 @@ sticky-header,
   height: 100vh;
   height: 100svh;
   overflow: hidden;
+  pointer-events: none;
 }
 .esz-tor__frame {
   position: absolute;
@@ -568,6 +580,19 @@ sticky-header,
   pointer-events: none;
   overflow: visible;
 }
+/* fotorealistische braune Dornenranken (PNG), wachsen von der Mitte nach außen */
+.esz-vines--png {
+  left: -13.3%;
+  top: -16.7%;
+  width: 126.6%;
+  height: 133.4%;
+  max-width: none;
+  object-fit: fill;
+  opacity: 0;
+  clip-path: inset(0 50% 0 50%);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55)) saturate(1.05);
+  will-change: clip-path, opacity;
+}
 .esz-tor__txt {
   position: absolute;
   left: 5vw;
@@ -577,7 +602,7 @@ sticky-header,
   z-index: 2;
   color: #fbf1dc !important;
   font-family: "Cormorant Garamond", Georgia, serif !important;
-  font-size: clamp(2rem, 4.8vw, 3.8rem) !important;
+  font-size: clamp(32px, 4.8vw, 62px) !important;
   font-weight: 700;
   line-height: 1.12;
   letter-spacing: 0.01em;
@@ -587,10 +612,46 @@ sticky-header,
   pointer-events: none;
 }
 .esz-tor__txt--1 {
-  bottom: calc(50% + min(680px, 86vw) * 0.28125 + 4vh);
+  bottom: calc(50% + min(680px, 86vw) * 0.28125 * 1.334 + 2vh);
 }
 .esz-tor__txt--2 {
-  top: calc(50% + min(680px, 86vw) * 0.28125 + 4vh);
+  top: calc(50% + min(680px, 86vw) * 0.28125 * 1.334 + 1.5vh);
+}
+/* „Du hast es in der Hand.“ – groß, goldglänzend, mit Ornament */
+.esz-tor__txt--2 {
+  font-size: clamp(44px, 6.6vw, 96px) !important;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  line-height: 1.05;
+  text-shadow: none !important;
+}
+.esz-tor__txt--2 .esz-word {
+  padding: 0 0.04em 0.08em;
+  color: transparent !important;
+  background: linear-gradient(100deg, #8a5a1c 0%, #d9a94f 22%, #fff1c4 40%, #e8bf68 55%, #b07a2a 72%, #f6d98c 88%, #9c6a22 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 14px rgba(255, 200, 110, 0.45)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
+  animation: esz-gold 5s ease-in-out infinite alternate;
+}
+.esz-tor__txt--2::after {
+  content: "✦  ✦  ✦";
+  display: block;
+  margin-top: 0.35em;
+  font-size: 0.22em;
+  font-style: normal;
+  letter-spacing: 0.6em;
+  color: #e8c27a;
+  text-shadow: 0 0 12px rgba(255, 200, 110, 0.8);
+  opacity: var(--orn, 0);
+}
+@keyframes esz-gold {
+  to {
+    background-position: 100% 0;
+  }
 }
 .esz-word {
   display: inline-block;
@@ -856,4 +917,14 @@ img[srcset*="cianta_a_village_in_the_woods"] {
   color: transparent !important;
   padding: 0 0.04em;
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+}
+
+/* Tor-Szene: alter Video-Kasten ohne Rahmen/Hintergrund */
+.esz-on [id*="__video_"].esz-tor-host .video-section,
+.esz-on [id*="__video_"].esz-tor-host .video-section.page-width,
+.esz-on [id*="__video_"].esz-tor-host dbtfy-video-section {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }

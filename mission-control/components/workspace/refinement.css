@@ -42,3 +42,5 @@
 
 html[data-guiding-motion=false] .workspace-shell .drawer-sticky,html[data-guiding-motion=false] .workspace-shell .journal-sticky{transform:none}
 
+
+.workspace-shell .drawer-notes:empty{display:none}

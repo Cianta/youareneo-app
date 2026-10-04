@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Check, Trash2, Pencil } from "lucide-react";
 import {
   usePersonal,
@@ -11,7 +11,12 @@ import {
   type Area,
 } from "@/lib/workspace/personal";
 import { useBoard } from "@/lib/workspace/useBoard";
-import { Modal } from "@/components/ui/Modal";
+import dynamic from "next/dynamic";
+const Modal=dynamic(()=>import("@/components/ui/Modal").then(m=>m.Modal),{ssr:false});
+import {PlannerExtras} from "@/components/workspace/PlannerExtras";
+import {LifeWheel} from "@/components/workspace/LifeWheel";
+import {JOURNAL_VIEWS} from "@/lib/workspace/planner";
+import {JournalNavigator,JournalPages} from "@/components/workspace/JournalPages";
 import {localDate} from "@/lib/workspace/time";
 import {JournalNotes,JournalYear} from "@/components/workspace/JournalNotes";
 import {DayPlan} from "@/components/workspace/DayPlan";
@@ -23,11 +28,13 @@ import { WorkspaceChoice } from "@/components/workspace/WorkspaceChoice";
 export default function GoalsPage() {
   const s = usePersonal(),
     { board } = useBoard();
-  const [date,setDate]=useState(localDate());
+  const [date,setDate]=useState(localDate()),[view,setView]=useState("Woche");
+  useEffect(()=>{const change=(e:Event)=>setView((e as CustomEvent<string>).detail);window.addEventListener("neo-journal-view",change);return()=>window.removeEventListener("neo-journal-view",change);},[]);
   const [editing, setEditing] = useState<Partial<SoulGoal> | null>(null);
   return (
-    <div className="w-page journal-page"><div className="journal-main"><div className="journal-label"><span className="w-eyebrow">MEIN JOURNAL · ZIELE & NOTIZEN</span><Link href="/notiz">Sprachnotizen & Hermes →</Link></div><JournalYear date={date}/>
-      <DailyPlanner selectedDate={date} onDateChange={setDate}
+    <div className="w-page journal-page"><div className="journal-main"><div className="journal-label"><span className="w-eyebrow">MEIN JOURNAL · ZIELE & NOTIZEN</span><Link href="/notiz">Sprachnotizen & Hermes →</Link><select className="journal-view-select w-input" aria-label="Planerseite wählen" value={view} onChange={e=>setView(e.target.value)}>{JOURNAL_VIEWS.map(v=><option key={v.id} value={v.id}>{v.label}</option>)}</select></div><LifeWheel date={date} onDateChange={setDate}/><JournalYear date={date}/>
+      {["Woche","Monatsrückblick","Kompass"].includes(view)?<>
+      <DailyPlanner selectedDate={date} onDateChange={setDate} selectedView={view} onViewChange={setView}
         onAddGoal={() => setEditing({})}
         renderGoals={
           <>
@@ -114,8 +121,8 @@ export default function GoalsPage() {
           </>
         }
       />
-      <DayPlan date={date}/></div><JournalNotes date={date} onDateChange={setDate}/>
-      <Modal
+      <PlannerExtras date={date} view={view}/><DayPlan date={date}/></>:<><JournalPages view={view} date={date} setDate={setDate}/><PlannerExtras date={date} view={view}/></>}</div><div className="journal-side-stack"><JournalNavigator date={date} setDate={setDate} view={view} setView={setView}/><JournalNotes date={date} onDateChange={setDate}/></div>
+      {editing!==null&&<Modal
         open={editing !== null}
         onClose={() => setEditing(null)}
         title={editing?.id ? "Ziel weiterentwickeln" : "Ein neues Ziel"}
@@ -216,7 +223,7 @@ export default function GoalsPage() {
             <button className="w-btn w-btn-primary">Speichern</button>
           </form>
         )}
-      </Modal>
+      </Modal>}
     </div>
   );
 }

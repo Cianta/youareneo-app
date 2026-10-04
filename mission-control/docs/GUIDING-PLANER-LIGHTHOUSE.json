@@ -1,0 +1,67 @@
+{
+  "appCommit": "a72d10b22589a67dacf6f4aebb03051e9b1ba2c5",
+  "source": "local production build with isolated fixtures",
+  "lighthouseVersion": "13.5.0",
+  "summary": [
+    {
+      "route": "/dashboard/labor",
+      "runs": 3,
+      "performance": 90,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "lcp": 3535.2399999999993,
+      "cls": 0,
+      "tbt": 12.5,
+      "consoleErrors": 0,
+      "jsBytes": 744730
+    },
+    {
+      "route": "/dashboard/goals",
+      "runs": 3,
+      "performance": 90,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "lcp": 3597.854,
+      "cls": 0,
+      "tbt": 35.5,
+      "consoleErrors": 0,
+      "jsBytes": 803627
+    },
+    {
+      "route": "/dashboard/kanban",
+      "runs": 3,
+      "performance": 90,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "lcp": 3590.4835000000003,
+      "cls": 0,
+      "tbt": 11,
+      "consoleErrors": 0,
+      "jsBytes": 929240
+    },
+    {
+      "route": "/gehirn",
+      "runs": 3,
+      "performance": 92,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "lcp": 3299.8785,
+      "cls": 0,
+      "tbt": 25.5,
+      "consoleErrors": 0,
+      "jsBytes": 936963
+    },
+    {
+      "route": "/dashboard/calendar",
+      "runs": 3,
+      "performance": 95,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "lcp": 2935.6177500000003,
+      "cls": 0,
+      "tbt": 32.5,
+      "consoleErrors": 0,
+      "jsBytes": 794977
+    }
+  ]
+}

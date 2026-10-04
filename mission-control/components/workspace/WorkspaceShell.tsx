@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import { HeaderBookmarks, HeaderFocus, HeaderSettings } from "./HeaderTools";
+import { HeaderBookmarks, HeaderFocus, HeaderSettings, HeaderCalendar } from "./HeaderTools";
+import {WorkspaceArtwork} from "./WorkspaceArtwork";
 import { Atmosphere } from "./Atmosphere";
 import { useNavAttention } from "./NavAttention";
 import {
@@ -180,6 +181,15 @@ export function WorkspaceShell({
         Zum Inhalt
       </a>
       <aside className="workspace-sidebar">
+        <Link href="/dashboard" className="workspace-brand">
+          <TrinityLogo size={36} />
+          <span>{appName}</span>
+        </Link>
+        <p className="workspace-user">
+          {identity?.name || user?.name || "Dein Raum"}
+        </p>
+        <CosmosMenu />
+        <div className="sidebar-collapse-row">
         <button
           className="sidebar-collapse"
           aria-label={collapsed ? "Menü ausklappen" : "Menü einklappen"}
@@ -195,14 +205,7 @@ export function WorkspaceShell({
             <PanelLeftClose size={18} />
           )}
         </button>
-        <Link href="/dashboard" className="workspace-brand">
-          <TrinityLogo size={36} />
-          <span>{appName}</span>
-        </Link>
-        <p className="workspace-user">
-          {identity?.name || user?.name || "Dein Raum"}
-        </p>
-        <CosmosMenu />
+        </div>
         <nav id="workspace-navigation" aria-label="Hauptnavigation">
           {["Mein Raum", "Arbeiten", "Kommunikation", "Entdecken", "Apps"].map(
             (group) => {
@@ -290,6 +293,7 @@ export function WorkspaceShell({
           </button>
           <span className="header-spacer" />
           <HeaderFocus />
+          <HeaderCalendar />
           <button
             aria-label="Tagesnotizbuch öffnen"
             aria-expanded={notebook}
@@ -346,6 +350,7 @@ export function WorkspaceShell({
                   {agentError} Deine Inhalte bleiben verfügbar.
                 </p>
               )}
+              <WorkspaceArtwork path={path}/>
               {children}
             </>
           )}

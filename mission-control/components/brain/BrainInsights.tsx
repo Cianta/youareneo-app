@@ -190,10 +190,7 @@ export function BrainInsights({
           {!data.unlinked.length && (
             <p>Alle angezeigten Gedanken haben bereits Verbindungen.</p>
           )}
-          <p>
-            Ordne eine Notiz einem Projekt zu oder ergänze ein #Thema, um
-            Zusammenhänge sichtbar zu machen.
-          </p>
+          <details><summary>Verbindungen herstellen</summary><p>Ordne eine Notiz einem Projekt zu oder ergänze ein #Thema, um Zusammenhänge sichtbar zu machen.</p></details>
           <div className="studio-actions">
             <Link className="w-btn" href="/notiz?new=1">
               Gedanken festhalten

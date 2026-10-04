@@ -7,10 +7,11 @@ import {
   toolCatalog,
   toolCategory,
   toolLogo,
+  TOOL_GROUPS, inToolGroup,
 } from "@/lib/workspace/tool-categories";
 import type { Destination } from "@/lib/workspace/navigation";
 import { Dialog } from "./Dialog";
-function Tool({ tool }: { tool: Destination }) {
+function Tool({ tool, index=0 }: { tool: Destination; index?:number }) {
   const logo = toolLogo(tool.href);
   const initials = tool.label
     .split(/[ /]/)
@@ -24,6 +25,7 @@ function Tool({ tool }: { tool: Destination }) {
       href={tool.href}
       title={tool.label}
       aria-label={logo ? tool.label : `${initials} · ${tool.label}`}
+      style={{'--tile-shade':`${8+(index%5)*4}%`,'--tile-turn':`${(index%5-2)*12}deg`} as React.CSSProperties}
     >
       <span className="tool-logo" aria-hidden="true" role="presentation">
         {logo ? (
@@ -52,12 +54,13 @@ export function ToolLaboratory() {
   const [selected, setSelected] = useState<string | null>(null),
     [query, setQuery] = useState("");
   const category = TOOL_CATEGORIES.find((c) => c.id === selected);
+  const group = TOOL_GROUPS.find((c) => c.id === selected);
   const matches = (p: Destination) =>
     `${p.label} ${p.keywords ?? ""}`
       .toLocaleLowerCase("de")
       .includes(query.toLocaleLowerCase("de").trim());
   const entries = selected
-    ? toolCatalog.filter((p) => toolCategory(p) === selected && matches(p))
+    ? toolCatalog.filter((p) => (group?inToolGroup(p,group.id):toolCategory(p) === selected) && matches(p))
     : [];
   return (
     <section className="w-page tool-laboratory lab-compact">
@@ -78,6 +81,9 @@ export function ToolLaboratory() {
           />
         </label>
       </header>
+      <div className="lab-groups" aria-label="Werkzeuggruppen">
+        {TOOL_GROUPS.map(g=><button key={g.id} onClick={()=>setSelected(g.id)} style={{'--tool-color':g.color} as React.CSSProperties}><strong>{g.name}</strong><small>{g.description}</small><span>{toolCatalog.filter(p=>inToolGroup(p,g.id)&&matches(p)).length} Werkzeuge ↗</span></button>)}
+      </div>
       <div className="lab-category-grid">
         {TOOL_CATEGORIES.map((c) => {
           const all = toolCatalog.filter((p) => toolCategory(p) === c.id),
@@ -105,8 +111,8 @@ export function ToolLaboratory() {
                 <Expand size={13} />
               </button>
               <div className="lab-preview tool-tiles">
-                {tools.slice(0, 9).map((p) => (
-                  <Tool key={p.id} tool={p} />
+                {tools.slice(0, 6).map((p,i) => (
+                  <Tool key={p.id} tool={p} index={i}/>
                 ))}
               </div>
               {!tools.length && (
@@ -115,8 +121,8 @@ export function ToolLaboratory() {
                 </p>
               )}
               <button className="lab-more" onClick={() => setSelected(c.id)}>
-                {tools.length > 9
-                  ? `+ ${tools.length - 9} weitere entdecken`
+                {tools.length > 6
+                  ? `+ ${tools.length - 6} weitere entdecken`
                   : "Bereich öffnen"}{" "}
                 <span aria-hidden="true">↗</span>
               </button>
@@ -128,17 +134,17 @@ export function ToolLaboratory() {
         Wähle eine Bereichskarte für die große Ansicht. Externe Werkzeuge können
         eine eigene Anmeldung benötigen.
       </p>
-      {category && (
-        <Dialog title={category.name} onClose={() => setSelected(null)}>
+      {(category||group) && (
+        <Dialog title={(category||group)!.name} onClose={() => setSelected(null)}>
           <p>
             {entries.length} Werkzeuge{query && " für deine Suche"}
           </p>
           <div
             className="tool-tiles lab-expanded"
-            style={{ "--tool-color": category.color } as React.CSSProperties}
+            style={{ "--tool-color": (category||group)!.color } as React.CSSProperties}
           >
-            {entries.map((p) => (
-              <Tool key={p.id} tool={p} />
+            {entries.map((p,i) => (
+              <Tool key={p.id} tool={p} index={i}/>
             ))}
           </div>
           {!entries.length && (

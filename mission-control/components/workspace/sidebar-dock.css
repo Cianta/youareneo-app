@@ -1,0 +1,46 @@
+.workspace-sidebar > #workspace-navigation { min-height: 0; }
+.sidebar-dock { flex-shrink: 0; display: grid; gap: 2cm; padding-top: 10px; }
+.workspace-sidebar .sidebar-communication {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; overflow: visible; flex: none;
+}
+.workspace-sidebar .sidebar-communication a {
+  --dock-color: #377e8b;
+  position: relative; display: flex; flex-direction: column; justify-content: center; gap: 5px;
+  min-width: 0; min-height: 52px; padding: 6px 2px; border-radius: 13px;
+  color: color-mix(in srgb, var(--dock-color) 65%, var(--theme-text));
+  border: 1px solid color-mix(in srgb, var(--dock-color) 28%, var(--theme-border));
+  background: linear-gradient(145deg, color-mix(in srgb, var(--dock-color) 12%, var(--theme-surface)), var(--theme-surface));
+  transition: background .15s, border-color .15s;
+}
+.workspace-sidebar .sidebar-communication a[data-nav-id="meeting"] { --dock-color: #8264a3; }
+.workspace-sidebar .sidebar-communication a[data-nav-id="contacts"] { --dock-color: #a26686; }
+.workspace-sidebar .sidebar-communication a[data-nav-id="phone"] { --dock-color: #968049; }
+.workspace-sidebar .sidebar-communication a:is(:hover, [aria-current="page"], [data-attention="true"]) {
+  color: var(--theme-text); border-color: var(--dock-color);
+  background: color-mix(in srgb, var(--dock-color) 17%, var(--theme-surface));
+}
+.sidebar-communication svg { width: 22px; height: 22px; flex-shrink: 0; }
+.sidebar-dock-label { font-size: 8px; line-height: 1.2; }
+.workspace-sidebar .sidebar-communication .nav-attention {
+  position: absolute; right: -3px; top: -4px; min-width: 15px; font-size: 9px; padding: 1px 4px;
+}
+.sidebar-dock-bottom { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.sidebar-apps { display: flex; align-items: center; gap: 9px; min-height: 36px; padding: 5px 7px; border-radius: 10px; font-size: 12px; color: var(--theme-muted); }
+.sidebar-apps svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--theme-purple); }
+.sidebar-apps:is(:hover, [aria-current="page"]) { color: var(--theme-text); background: var(--theme-active); }
+.workspace-shell .sidebar-dock .sidebar-help {
+  display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; min-height: 32px;
+  padding: 4px; border: 0; border-radius: 50%; color: var(--theme-muted); background: transparent;
+}
+.sidebar-dock .sidebar-help svg { width: 20px; height: 20px; }
+.workspace-shell .sidebar-dock .sidebar-help:hover { color: var(--theme-purple); background: var(--theme-active); }
+.workspace-shell[data-sidebar-collapsed="true"] .sidebar-communication { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.workspace-shell[data-sidebar-collapsed="true"] .workspace-sidebar .sidebar-communication a { min-height: 30px; padding: 4px; border-radius: 9px; }
+.workspace-shell[data-sidebar-collapsed="true"] .sidebar-communication svg { width: 17px; height: 17px; }
+.workspace-shell[data-sidebar-collapsed="true"] .sidebar-apps { justify-content: center; width: 28px; padding: 4px; min-height: 30px; }
+.workspace-shell[data-sidebar-collapsed="true"] .sidebar-apps > span { display: none; }
+.workspace-shell[data-sidebar-collapsed="true"] .sidebar-apps svg { width: 17px; height: 17px; }
+.workspace-shell[data-sidebar-collapsed="true"] .sidebar-dock .sidebar-help { flex-basis: 28px; width: 28px; height: 30px; min-height: 30px; }
+.workspace-shell[data-sidebar-collapsed="true"] .sidebar-help svg { width: 17px; height: 17px; }
+@media (max-height: 680px) { .sidebar-dock { gap: 24px; } }
+@media (prefers-reduced-motion: reduce) { .sidebar-communication a { transition: none; } }

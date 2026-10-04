@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { HeaderBookmarks, HeaderFocus, HeaderSettings, HeaderCalendar } from "./HeaderTools";
 import {WorkspaceArtwork} from "./WorkspaceArtwork";
 import { IvoryBranchDivider } from "./IvoryBranchDivider";
+import { SidebarDock } from "./SidebarDock";
 import { Atmosphere } from "./Atmosphere";
 import { useNavAttention } from "./NavAttention";
 import {
@@ -31,7 +32,6 @@ import {
   Notebook as NotebookIcon,
   PanelLeftClose,
   PanelLeftOpen,
-  HelpCircle,
 } from "lucide-react";
 import { TrinityLogo } from "@/components/sacred-geometry/TrinityLogo";
 import { primary } from "@/lib/workspace/navigation";
@@ -208,7 +208,7 @@ export function WorkspaceShell({
         </button>
         </div>
         <nav id="workspace-navigation" aria-label="Hauptnavigation">
-          {["Mein Raum", "Arbeiten", "Kommunikation", "Entdecken", "Apps"].map(
+          {["Mein Raum", "Arbeiten", "Entdecken"].map(
             (group) => {
               const links = primary.filter((p) => p.group === group);
               const render = links.map((p) => {
@@ -265,15 +265,7 @@ export function WorkspaceShell({
             },
           )}
         </nav>
-        <button
-          className="workspace-button sidebar-help"
-          aria-label="Hilfe & Tastenkürzel"
-          title="Hilfe & Tastenkürzel"
-          onClick={() => window.dispatchEvent(new Event("neo-open-help"))}
-        >
-          <HelpCircle size={19} />
-          <span>Hilfe & Tastenkürzel</span>
-        </button>
+        <SidebarDock path={path} unread={attention.inbox} />
       </aside>
       <div className="workspace-body">
         <Atmosphere />

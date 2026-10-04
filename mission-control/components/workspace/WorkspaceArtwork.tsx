@@ -9,6 +9,7 @@ const art:Record<string,{image:string;second?:string;kind:string;caption:string}
  '/dashboard/labor':{image:'labor',kind:'compact',caption:'Dein Atelier für Mensch, Natur und Technik.'},
  '/dashboard/communication/email':{image:'courtyard',kind:'panorama',caption:'Im Austausch bleiben.'},
  '/dashboard/communication/meeting':{image:'courtyard',kind:'slim',caption:'Raum für echte Begegnung.'},
+ '/dashboard/communication/phone':{image:'courtyard',kind:'slim',caption:'Ein guter Draht zu deinen Menschen.'},
  '/dashboard/contacts':{image:'courtyard',second:'journal',kind:'duo',caption:'Beziehungen sind ein lebendiges Netz.'},
  '/dashboard/soul':{image:'brain',kind:'journal',caption:'Die Sterne als Einladung zum Entdecken.'},
  '/dashboard/meditation':{image:'courtyard',kind:'journal',caption:'Ein Atemzug. Ein neuer Anfang.'},

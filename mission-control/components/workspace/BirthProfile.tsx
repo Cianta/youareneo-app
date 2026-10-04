@@ -1,8 +1,9 @@
 "use client";
+import "./chart-refinement.css";
 import { useState, useRef, useEffect } from "react";
 import { useNinjasStore, useAuthStore } from "@/lib/store";
 import type { BirthResult } from "@/lib/workspace/birth";
-import {HumanDesignDetails} from "./HumanDesignDetails";
+import {BirthChartPanels} from "./BirthChartPanels";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 export type SavedBirth = {
@@ -53,6 +54,7 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
       lng: saved?.lng,
       timezone: saved?.timezone ?? member?.birthTimezone ?? "Europe/Vienna",
     });
+  useEffect(()=>{setResult(saved?.result??null);if(saved){setPlaceQuery(saved.city);setLocation({lat:saved.lat,lng:saved.lng,timezone:saved.timezone});}},[saved?.result,personId]);
   const searchRequest = useRef<AbortController | null>(null);
   useEffect(() => () => searchRequest.current?.abort(), []);
   async function searchPlaces() {
@@ -87,12 +89,13 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
     }
   }
   return (
-    <div className="s-stack">
-      <section className="w-card">
+    <div className="s-stack birth-profile-space">
+      <div className="birth-intro-grid"><section className="birth-blueprint w-card"><span className="w-eyebrow">DEINE LANDKARTE ZUR SELBSTREFLEXION</span><h2>Dein Soul Blueprint.</h2><p>Eine Geburt. Sechs Blickwinkel. Beginne mit deinem Profil und entdecke unten jedes System in seinem eigenen Raum.</p>{result?<div className="birth-quick-results">{[["Sonne",result.western.name],["Mond",result.moon.name],["Chinesisch",result.chinese.name],["Maya",result.maya.name],["Baum",result.celtic.name],["Human Design",result.hd?.type??"Uhrzeit ergänzen"]].map(([label,value])=><div key={label}><small>{label}</small><strong>{value}</strong></div>)}</div>:<div className="birth-first-steps"><span>01 · Geburtsdaten eingeben</span><span>02 · Profil berechnen & speichern</span><span>03 · Dein Chart in sechs Systemen erkunden</span></div>}</section>
+      <section className="w-card birth-profile-form">
         <span className="w-eyebrow">
           DEIN URSPRUNG · {member?.name ?? user?.name ?? "DU"}
         </span>
-        <h2>Eine Geburt. Viele Perspektiven.</h2>
+        <h2>Dein Geburtsprofil</h2>
         <p className="w-muted">
           Die Daten bleiben auf diesem Gerät gespeichert. Die Berechnung läuft
           auf dem Guiding-Space-Server; es wird kein externer Horoskopdienst
@@ -114,7 +117,6 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
               };
             setBusy(true);
             setError("");
-            setResult(null);
             try {
               const r = await fetch("/api/birth-chart", {
                   signal: AbortSignal.timeout(20000),
@@ -227,7 +229,7 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
               }
             />
           </label>
-          <label>
+          <details className="birth-coordinates s-wide"><summary>Koordinaten & Hinweise · für den Aszendenten</summary><div>          <label>
             Breitengrad · automatisch oder manuell
             <input
               className="w-input"
@@ -269,6 +271,7 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
             Ortssuche läuft in einem lokalen Städteverzeichnis; es werden keine
             Geburtsdaten an Kartendienste gesendet.
           </p>
+</div></details>
           <button className="w-btn w-btn-primary" disabled={busy}>
             {busy ? "Wird berechnet …" : "Profil berechnen & speichern"}
           </button>
@@ -279,59 +282,8 @@ export function BirthProfile({ personId = "self" }: { personId?: string }) {
           )}
         </form>
       </section>
-      {result && (
-        <>
-          <div className="s-grid">
-            {[
-              [
-                "Westlich",
-                `${result.western.icon} ${result.western.name}`,
-                `Sonne · ${result.western.element} · Mond: ${result.moon.name}${result.ascendant ? ` · Aszendent: ${result.ascendant.name}` : ""}`,
-              ],
-              [
-                "Vedisch · Lahiri",
-                `${result.vedic.icon} ${result.vedic.name}`,
-                `Sonne · Mond: ${result.vedicMoon.name}`,
-              ],
-              [
-                "Chinesisch",
-                `${result.chinese.icon} ${result.chinese.name}`,
-                "Tierzeichen des chinesischen Mondjahres",
-              ],
-              [
-                "Maya · Dreamspell",
-                result.maya.name,
-                `Ton ${result.maya.tone} · moderne Dreamspell-Tradition`,
-              ],
-              [
-                "Keltischer Baum",
-                `♧ ${result.celtic.name}`,
-                "Moderner Kalender mit 13 Bäumen",
-              ],
-              [
-                "Human Design",
-                result.hd?.type ?? "Geburtszeit fehlt",
-                result.hd
-                  ? `Profil ${result.hd.profile} · Autorität ${result.hd.authority}`
-                  : "Für eine Berechnung bitte die Uhrzeit ergänzen.",
-              ],
-            ].map(([label, value, detail]) => (
-              <section className="w-card s-result" key={label}>
-                <span className="w-eyebrow">{label}</span>
-                <h2>{value}</h2>
-                <p className="w-muted">{detail}</p>
-              </section>
-            ))}
-          </div>
-          {result.hd && <HumanDesignDetails hd={result.hd}/>}
-          <p className="w-muted">
-            Symbolische Selbstreflexion, keine wissenschaftliche
-            Persönlichkeitsdiagnose. Human Design: rechnerische Näherung mit
-            free-human-design 1.0.1; Grenzfälle mit einem Referenzchart
-            vergleichen. Dreamspell ist nicht der traditionelle Maya-Tzolk’in.
-          </p>
-        </>
-      )}
+      </div>
+      {result && <BirthChartPanels result={result}/>}
     </div>
   );
 }

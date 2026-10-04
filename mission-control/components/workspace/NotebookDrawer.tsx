@@ -42,6 +42,7 @@ export function NotebookDrawer({
     [attachments, setAttachments] = useState<Attachment[]>([]),
     [message, setMessage] = useState("");
   const search = useRef<HTMLInputElement>(null);
+  const capture = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     if (!open) return;
     const before = document.activeElement as HTMLElement | null;
@@ -63,8 +64,10 @@ export function NotebookDrawer({
     setTitle("");
     setBody("");
     setAttachments([]);
+    if(capture.current){capture.current.open=false;capture.current.querySelector("summary")?.focus();}
   };
   const choose = (note: BrainNote) => {
+    if(capture.current)capture.current.open=true;
     setEditing(note.id);
     setTitle(note.title);
     setBody(note.body);
@@ -88,7 +91,7 @@ export function NotebookDrawer({
       aria-label="Notizschublade"
       hidden={!open}
     >
-      <header>
+      <span className="notebook-binding" aria-hidden="true"/><header>
         <div>
           <span className="w-eyebrow">DEINE GEDANKEN · GRIFFBEREIT</span>
           <h2>Notizbuch</h2>
@@ -113,7 +116,7 @@ export function NotebookDrawer({
             onChange={(e) => setQuery(e.target.value)}
           />
         </label>
-        <form
+        <details className="drawer-capture" ref={capture}><summary>+ Einen neuen Gedanken festhalten</summary><form
           className="s-form drawer-note-form"
           onSubmit={(e) => {
             e.preventDefault();
@@ -198,10 +201,10 @@ export function NotebookDrawer({
               </button>
             )}
           </div>
-        </form>
+        </form></details>
         {message && <p role="status">{message}</p>}
         <div className="drawer-notes">
-          {notes.map((n) => (
+          {notes.map((n,i) => (
             <button
               key={n.id}
               className="drawer-sticky"
@@ -210,7 +213,7 @@ export function NotebookDrawer({
                 {
                   "--paper": n.color || "#f1dfab",
                   "--paper-ink": paperInk(n.color || "#f1dfab"),
-                  "--tilt": ((n.rotation ?? 0) % 5) + "deg",
+                  "--tilt": ((n.rotation ?? (i%2?1.4:-1.2)) % 5) + "deg",
                 } as React.CSSProperties
               }
             >

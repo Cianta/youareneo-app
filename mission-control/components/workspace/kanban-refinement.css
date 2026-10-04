@@ -1,0 +1,11 @@
+
+
+.workspace-shell .kanban-view-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0;margin:12px 0 17px;background:none;border:none}
+.workspace-shell .kanban-view-tab{--tab-color:#a1885f;display:flex;gap:10px;align-items:center;justify-content:center;min-height:48px;padding:9px;border:1px solid color-mix(in srgb,var(--tab-color) 35%,var(--theme-border));border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--tab-color) 9%,var(--theme-surface)),var(--theme-surface));font-size:12px;color:var(--theme-text);transition:box-shadow .18s,transform .18s}
+.workspace-shell .kanban-view-tab[data-tab=trello]{--tab-color:#62889d}
+.workspace-shell .kanban-view-tab[data-tab=archiv]{--tab-color:#9a779d}
+.workspace-shell .kanban-view-tab[aria-pressed=true]{border-color:var(--tab-color);box-shadow:inset 0 -3px color-mix(in srgb,var(--tab-color) 65%,transparent),0 5px 13px #2422360a}
+.workspace-shell .kanban-view-tab>span:first-child{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:color-mix(in srgb,var(--tab-color) 12%,var(--theme-surface));font-size:16px}
+@media(max-width:767px){
+ .workspace-shell .kanban-view-tabs{gap:6px}.workspace-shell .kanban-view-tab{font-size:10px;gap:5px;padding:7px 4px}.workspace-shell .kanban-view-tab>span:first-child{width:23px;height:25px;font-size:14px}.workspace-shell .kanban-view-tab>span:nth-child(3){display:none}
+}

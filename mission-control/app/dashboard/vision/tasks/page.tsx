@@ -148,18 +148,14 @@ export default function TasksPage() {
       <p className="workspace-muted">Bisherige Boards auf diesem Gerät · <a className="underline" href="/notiz?type=aufgabe">Eigene gespeicherte Aufgaben öffnen</a></p>
 
       {/* ── Sub-Navigation Tab Bar ── */}
-      <div className="shrink-0 flex items-center gap-1 mb-3 p-1 rounded-2xl bg-anth-900/60 border border-anth-700/30 backdrop-blur-sm"
-        style={{ boxShadow: '0 0 20px rgba(17,202,160,0.06)' }}>
+      <div className="kanban-view-tabs" aria-label="Aufgabenbereiche">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-300',
-              activeTab === tab.id
-                ? 'bg-forest-800/70 border border-forest-600/50 text-forest-100 shadow-[0_0_18px_rgba(17,202,160,0.18)]'
-                : 'text-anth-400 hover:text-anth-200 hover:bg-anth-800/40 border border-transparent'
-            )}
+            className="kanban-view-tab"
+            data-tab={tab.id}
+            aria-pressed={activeTab === tab.id}
           >
             <span className="text-base leading-none">{tab.emoji}</span>
             <span>{t(tab.label)}</span>

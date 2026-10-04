@@ -18,7 +18,7 @@ export const primary: Destination[] = [
   {id:"meeting",label:"Meeting",href:"/dashboard/communication/meeting",group:"Kommunikation",keywords:"meetingraum videokonferenz kmeet"},
   {id:"contacts",label:"Kontakte CRM",href:"/dashboard/contacts",group:"Kommunikation",keywords:"menschen beziehungen adressbuch telefon firma"},
   {id:"phone",label:"Telefon",href:"/dashboard/communication/phone",group:"Kommunikation",keywords:"anruf telefonieren nummer wählen"},
-  {id:"soul",label:"Astrologie & Human Design",href:"/dashboard/soul",group:"Entdecken",keywords:"mond westlich vedisch chinesisch maya tzolkin keltisch"},
+  {id:"soul",label:"Dein Chart",href:"/dashboard/soul",group:"Entdecken",keywords:"astrologie human design soul blueprint mond westlich vedisch chinesisch maya tzolkin keltisch"},
   {id:"meditation",label:"Fokus & Meditation",href:"/dashboard/meditation",group:"Entdecken",keywords:"ruhe visual room musik"},
   {id:"my-apps",label:"Meine Apps",href:"/dashboard/apps",group:"Apps",keywords:"buzz radio archiv kochbuch kino"},
 ];

@@ -1,0 +1,20 @@
+
+
+.workspace-shell .lab-five-columns{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:start}
+.lab-column{display:grid;gap:10px;min-width:0}
+.workspace-shell .lab-five-columns .lab-category-card{padding:10px;min-width:0}
+.workspace-shell .lab-five-columns .lab-category-open strong{font-size:10px;line-height:1.4}
+.workspace-shell .lab-five-columns .lab-category-symbol{font-size:20px;min-width:17px}
+.workspace-shell .lab-five-columns .lab-category-open{gap:5px}
+.workspace-shell .lab-five-columns .lab-preview.tool-tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.workspace-shell .lab-five-columns .lab-preview a{height:51px;min-height:51px;padding:4px 2px}
+.workspace-shell .lab-five-columns .lab-preview strong{font-size:8px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;max-width:100%;white-space:nowrap}
+.workspace-shell .lab-compact .studio-search input{min-height:24px!important;padding:0!important}
+@media(max-width:1199px){
+ .workspace-shell .lab-five-columns{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.workspace-shell .lab-five-columns .lab-category-card{padding:7px}.workspace-shell .lab-five-columns .lab-preview.tool-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-shell .lab-five-columns .lab-preview a:nth-child(n+5){display:none}
+}
+@media(max-width:767px){
+ .workspace-shell .lab-five-columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.lab-column{display:contents}.workspace-shell .lab-five-columns .lab-category-card{padding:6px}.workspace-shell .lab-five-columns .lab-category-open{min-height:32px;height:32px}.workspace-shell .lab-five-columns .lab-preview.tool-tiles{grid-template-columns:repeat(3,minmax(0,1fr));margin:3px 0 0}.workspace-shell .lab-five-columns .lab-preview a{height:24px;min-height:24px}.workspace-shell .lab-five-columns .lab-more{min-height:14px;height:14px;padding:1px 2px}.workspace-shell .lab-five-columns .lab-preview a:nth-child(n+4){display:none}.workspace-shell .lab-five-columns .lab-category-open strong{font-size:10px}.workspace-shell .lab-five-columns .lab-preview strong{display:none}
+}
+
+@media(max-width:767px){.workspace-shell .lab-five-columns .lab-more{display:none}}

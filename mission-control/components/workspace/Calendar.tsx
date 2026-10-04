@@ -1,9 +1,11 @@
 "use client";
+import "./calendar-refinement.css";
 import dynamic from "next/dynamic";
 import {CalendarOverview} from "./CalendarOverview";
+import {PlanArrangement} from "./PlanArrangement";
 import {CalendarSources} from "./CalendarSources";
 import {DayPlan} from "./DayPlan";
-import {DailyPlanner} from "./DailyPlanner";
+const DailyPlanner=dynamic(()=>import("./DailyPlanner").then(m=>m.DailyPlanner));
 import {PlaceField} from "./PlaceField";
 import {Attachments} from "./Attachments";
 import {usePersonal,inWorkspace} from "@/lib/workspace/personal";
@@ -29,6 +31,7 @@ export function Calendar() {
   const [date, setDate] = useState(localDate());
   useEffect(()=>{const d=new URLSearchParams(window.location.search).get('date');if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!Number.isNaN(new Date(d+'T12:00:00').getTime()))setDate(d);},[]);
   const [view,setView]=useState<"month"|"year"|"week">("month");
+  const [plannerOpen,setPlannerOpen]=useState(false);
   const [now, setNow] = useState(new Date());
   const [clockReady, setClockReady] = useState(false);
   useEffect(() => {
@@ -129,7 +132,7 @@ export function Calendar() {
     }
   }
   return (
-    <div className="w-page">
+    <div className="w-page calendar-refined">
       <div className="w-page-heading">
         <div>
           <span className="w-eyebrow">ZEIT FÜR DAS WESENTLICHE</span>
@@ -144,7 +147,7 @@ export function Calendar() {
         </button>
       </div>
       <div className="w-calendar-layout calendar-studio-layout">
-        <div className="calendar-tab-column"><div className="calendar-view-tabs" role="tablist" aria-label="Kalenderansicht">{([['month','Monat'],['year','Jahr'],['week','Woche & Tag']] as const).map(([key,label],i)=><button key={key} id={'calendar-tab-'+key} role="tab" aria-selected={view===key} aria-controls={'calendar-panel-'+key} tabIndex={view===key?0:-1} onClick={()=>setView(key)} onKeyDown={e=>{const keys=['month','year','week'] as const;const next=e.key==='ArrowRight'?(i+1)%3:e.key==='ArrowLeft'?(i+2)%3:e.key==='Home'?0:e.key==='End'?2:-1;if(next>=0){e.preventDefault();setView(keys[next]);document.getElementById('calendar-tab-'+keys[next])?.focus();}}}>{label}</button>)}</div>
+        <div className="calendar-tab-column"><header className="calendar-view-bar"><div className="calendar-view-tabs" role="tablist" aria-label="Kalenderansicht">{([['month','Monat'],['year','Jahr'],['week','Woche & Tag']] as const).map(([key,label],i)=><button key={key} id={'calendar-tab-'+key} role="tab" aria-selected={view===key} aria-controls={'calendar-panel-'+key} tabIndex={view===key?0:-1} onClick={()=>setView(key)} onKeyDown={e=>{const keys=['month','year','week'] as const;const next=e.key==='ArrowRight'?(i+1)%3:e.key==='ArrowLeft'?(i+2)%3:e.key==='Home'?0:e.key==='End'?2:-1;if(next>=0){e.preventDefault();setView(keys[next]);document.getElementById('calendar-tab-'+keys[next])?.focus();}}}>{label}</button>)}</div><CalendarSources compact year={Number(date.slice(0,4))}/></header>
         {view!=="week"&&<div id={'calendar-panel-'+view} role="tabpanel" aria-labelledby={'calendar-tab-'+view}><CalendarOverview view={view==="year"?"year":"month"} onDay={()=>setView("week")} onMonth={()=>setView("month")} date={date} setDate={setDate} onNew={showNew} onEvent={ev=>{setEditingId(ev.id);setTitle(ev.title);setStart(ev.startTime||"");setEnd(ev.endTime||"");setCalendarId(ev.calendarId);setNotes(ev.notes||"");setPlace(ev.location);setGlobePlace(ev.location);setAttachments(ev.attachments??[]);setOpen(true);}}/></div>}
         <section className="w-card calendar-week-panel" role="tabpanel" id="calendar-panel-week" aria-labelledby="calendar-tab-week" hidden={view!=="week"}>
           <div className="w-calendar-toolbar">
@@ -283,9 +286,9 @@ export function Calendar() {
             )}
           </div>
         </section>
-        <section className="calendar-planner"><DailyPlanner selectedDate={date} onDateChange={setDate} onAddGoal={()=>window.location.assign("/dashboard/goals")} renderGoals={<Link className="w-btn" href="/dashboard/goals">Ziele & Journal öffnen →</Link>}/></section></div>
-        <aside className="w-calendar-aside"><PlanGlobe place={globePlace}/><CalendarSources year={Number(date.slice(0,4))}/><DayPlan date={date} onPlace={setGlobePlace}/>
-          <section className="w-card">
+</div>
+        <aside className="w-calendar-aside"><PlanGlobe place={globePlace}/><PlanArrangement date={date}/><DayPlan date={date} onPlace={setGlobePlace}/>
+          <section className="w-card calendar-liveplan">
             <div className="w-section-head">
               <span className="w-eyebrow">DEIN LIVEPLAN</span>
               <time className="w-tag">
@@ -347,6 +350,7 @@ export function Calendar() {
               Fokus jetzt starten
             </button>
           </section>
+          <details className="calendar-planner w-card" onToggle={e=>setPlannerOpen(e.currentTarget.open)}><summary>Chancen, Woche & Rückblick</summary>{plannerOpen&&<DailyPlanner selectedDate={date} onDateChange={setDate} onAddGoal={()=>window.location.assign("/dashboard/goals")} renderGoals={<Link className="w-btn" href="/dashboard/goals">Ziele & Journal öffnen →</Link>}/>}</details>
         </aside>
       </div>
       {open && <Modal

@@ -1,4 +1,5 @@
 "use client";
+import "./labor-refinement.css";
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Search, Expand } from "lucide-react";
@@ -7,7 +8,7 @@ import {
   toolCatalog,
   toolCategory,
   toolLogo,
-  TOOL_GROUPS, inToolGroup,
+  TOOL_GROUPS, inToolGroup, TOOL_COLUMNS,
 } from "@/lib/workspace/tool-categories";
 import type { Destination } from "@/lib/workspace/navigation";
 import { Dialog } from "./Dialog";
@@ -84,8 +85,9 @@ export function ToolLaboratory() {
       <div className="lab-groups" aria-label="Werkzeuggruppen">
         {TOOL_GROUPS.map(g=><button key={g.id} onClick={()=>setSelected(g.id)} style={{'--tool-color':g.color} as React.CSSProperties}><strong>{g.name}</strong><small>{g.description}</small><span>{toolCatalog.filter(p=>inToolGroup(p,g.id)&&matches(p)).length} Werkzeuge ↗</span></button>)}
       </div>
-      <div className="lab-category-grid">
-        {TOOL_CATEGORIES.map((c) => {
+      <div className="lab-category-grid lab-five-columns">
+        {TOOL_COLUMNS.map((column,index)=><div className="lab-column" key={index} data-column={index+1}>
+        {column.map(id=>TOOL_CATEGORIES.find(c=>c.id===id)!).map((c) => {
           const all = toolCatalog.filter((p) => toolCategory(p) === c.id),
             tools = all.filter(matches);
           return (
@@ -128,7 +130,7 @@ export function ToolLaboratory() {
               </button>
             </section>
           );
-        })}
+        })}</div>)}
       </div>
       <p className="w-storage-note">
         Wähle eine Bereichskarte für die große Ansicht. Externe Werkzeuge können

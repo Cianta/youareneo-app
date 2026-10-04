@@ -1,0 +1,46 @@
+/* Scoped refinements preserve theme brightness and the existing workspace shell. */
+
+.workspace-shell .notebook-drawer{border:8px solid color-mix(in srgb,#685045 70%,var(--theme-surface));border-left-width:14px;border-radius:11px 24px 24px 11px;background:linear-gradient(90deg,#42382b25,transparent 32px),repeating-linear-gradient(0deg,transparent 0 27px,color-mix(in srgb,#c3ae8e 14%,var(--theme-surface)) 27px 28px),color-mix(in srgb,#dbcaac 10%,var(--theme-surface));box-shadow:inset -3px 0 0 #c7b393,inset -7px 0 0 #ded1bc,-15px 16px 55px #34233535}
+
+.notebook-binding{position:absolute;top:35px;bottom:26px;left:-12px;width:24px;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 54px,#382f25 54px 56px,#efebe5 56px 59px,#8d857b 59px 63px,#eae8e3 63px 65px,#40372e 65px 67px,transparent 67px 98px);filter:drop-shadow(2px 2px 2px #0004);border-radius:5px;z-index:1}
+
+.workspace-shell .notebook-drawer>header{padding-left:25px;padding-right:20px;background:linear-gradient(110deg,color-mix(in srgb,#c7ad87 15%,var(--theme-surface)),transparent)}
+
+.workspace-shell .notebook-drawer-scroll{padding-left:25px;padding-right:20px}
+
+.drawer-capture>summary{cursor:pointer;font-size:12px;padding:12px;border:1px solid var(--theme-border);border-radius:9px;background:var(--theme-surface);list-style:none}
+
+.drawer-capture>summary::-webkit-details-marker{display:none}
+
+.drawer-capture[open]>summary{margin-bottom:12px}
+
+.workspace-shell .drawer-note-form{padding:13px;border:1px solid color-mix(in srgb,#ac916d 40%,var(--theme-border));border-radius:5px 5px 14px 5px;background:linear-gradient(90deg,color-mix(in srgb,#bd7b75 15%,var(--theme-surface)) 0 1px,transparent 1px) 12px 0/100% 100% no-repeat,color-mix(in srgb,#d4c4a6 5%,var(--theme-surface));box-shadow:2px 3px 6px #342a2210}
+
+@media(max-width:767px){
+ .workspace-shell .notebook-drawer{border-width:6px;border-left-width:11px}.workspace-shell .notebook-drawer-scroll{padding-left:21px;padding-right:15px;padding-bottom:100px}
+}
+
+.workspace-shell .drawer-notes,.workspace-shell .journal-stickies{padding:15px 13px 22px;border:1px solid color-mix(in srgb,#9ba6a6 35%,var(--theme-border));border-radius:15px;background:linear-gradient(100deg,color-mix(in srgb,#adb5b7 10%,var(--theme-surface)),color-mix(in srgb,#d2d8d8 20%,var(--theme-surface)),color-mix(in srgb,#919c9e 12%,var(--theme-surface)));box-shadow:inset 0 2px 5px #232a2c13;gap:21px}
+
+.workspace-shell .drawer-sticky,.workspace-shell .journal-sticky{position:relative;border-radius:1px 2px 9px 2px;border:0;border-top:1px solid #fff7;padding:25px 14px 15px;background:linear-gradient(160deg,#fff2,transparent 45%,#61431c12),var(--paper);box-shadow:1px 1px 1px #6e553021,2px 5px 8px #3025182b,4px 10px 14px #27221b0e;transform:rotate(var(--tilt,-1deg));overflow:visible;color:var(--paper-ink,#241e19)}
+
+.workspace-shell .drawer-sticky:before,.workspace-shell .journal-sticky:before{content:'';position:absolute;top:6px;left:calc(50% - 6px);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 27%,#ffffffe6,#a9aab8 36%,#666e7e 73%,#3c4353);box-shadow:0 1px 1px #fff8,1px 3px 4px #40352350;z-index:1}
+
+.workspace-shell .drawer-sticky:nth-child(3n):before,.workspace-shell .journal-sticky:nth-child(3n):before{background:radial-gradient(circle at 35% 27%,#fff5ed,#d19aac 35%,#8b5e78 73%,#5d4358)}
+
+.workspace-shell .drawer-sticky:after,.workspace-shell .journal-sticky:after{content:'';position:absolute;right:0;bottom:0;width:18px;height:18px;pointer-events:none;background:linear-gradient(135deg,transparent 48%,color-mix(in srgb,var(--paper) 75%,#fff) 50%);border-radius:0 0 9px 0;filter:drop-shadow(-2px -2px 1px #50361a15)}
+
+.workspace-shell .journal-sticky .sticky-tape{display:none}
+
+.workspace-shell .drawer-sticky small,.workspace-shell .journal-sticky small{color:inherit;opacity:.7}
+
+.workspace-shell .journal-sticky h3{font-size:24px}
+
+.workspace-shell .journal-sticky p{color:inherit}
+
+@media(prefers-reduced-motion:reduce){.workspace-shell .drawer-sticky,.workspace-shell .journal-sticky{transform:none}}
+
+html[data-guiding-motion=false] .workspace-shell .drawer-sticky,html[data-guiding-motion=false] .workspace-shell .journal-sticky{transform:none}
+
+
+.workspace-shell .drawer-notes:empty{display:none}

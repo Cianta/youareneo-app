@@ -12,6 +12,8 @@ export type PlannerDay = {
 };
 export type PlannerWeek = { intention: string; win: string; release: string };
 export type PlannerMonth = {
+  mainGoalId?: string;
+  goalIds?: string[];
   wins: string;
   lesson: string;
   release: string;

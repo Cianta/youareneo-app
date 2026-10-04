@@ -1,4 +1,5 @@
 "use client";
+import "@/components/workspace/journal-refinement.css";
 import { useState, useEffect } from "react";
 import { Plus, Check, Trash2, Pencil } from "lucide-react";
 import {
@@ -14,6 +15,7 @@ import { useBoard } from "@/lib/workspace/useBoard";
 import dynamic from "next/dynamic";
 const Modal=dynamic(()=>import("@/components/ui/Modal").then(m=>m.Modal),{ssr:false});
 import {PlannerExtras} from "@/components/workspace/PlannerExtras";
+import {JournalCompass} from "@/components/workspace/JournalCompass";
 import {LifeWheel} from "@/components/workspace/LifeWheel";
 import {JOURNAL_VIEWS} from "@/lib/workspace/planner";
 import {JournalNavigator,JournalPages} from "@/components/workspace/JournalPages";
@@ -32,7 +34,7 @@ export default function GoalsPage() {
   useEffect(()=>{const change=(e:Event)=>setView((e as CustomEvent<string>).detail);window.addEventListener("neo-journal-view",change);return()=>window.removeEventListener("neo-journal-view",change);},[]);
   const [editing, setEditing] = useState<Partial<SoulGoal> | null>(null);
   return (
-    <div className="w-page journal-page"><div className="journal-main"><div className="journal-label"><span className="w-eyebrow">MEIN JOURNAL · ZIELE & NOTIZEN</span><Link href="/notiz">Sprachnotizen & Hermes →</Link><select className="journal-view-select w-input" aria-label="Planerseite wählen" value={view} onChange={e=>setView(e.target.value)}>{JOURNAL_VIEWS.map(v=><option key={v.id} value={v.id}>{v.label}</option>)}</select></div><LifeWheel date={date} onDateChange={setDate}/><JournalYear date={date}/>
+    <div className="w-page journal-page journal-refined"><div className="journal-label"><span className="w-eyebrow">MEIN JOURNAL · ZIELE & NOTIZEN</span><Link href="/notiz">Sprachnotizen & Hermes →</Link><select className="journal-view-select w-input" aria-label="Planerseite wählen" value={view} onChange={e=>setView(e.target.value)}>{JOURNAL_VIEWS.map(v=><option key={v.id} value={v.id}>{v.label}</option>)}</select></div><div className="journal-top"><LifeWheel date={date} onDateChange={setDate}/><JournalCompass date={date} onAddGoal={()=>setEditing({})} onViewChange={setView}/></div><div className="journal-main"><JournalYear date={date}/>
       {["Woche","Monatsrückblick","Kompass"].includes(view)?<>
       <DailyPlanner selectedDate={date} onDateChange={setDate} selectedView={view} onViewChange={setView}
         onAddGoal={() => setEditing({})}

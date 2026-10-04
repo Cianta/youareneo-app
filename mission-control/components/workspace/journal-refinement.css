@@ -1,0 +1,49 @@
+
+
+.workspace-shell .journal-refined{gap:20px;grid-template-columns:minmax(0,1fr) 230px}
+.workspace-shell .journal-refined>.journal-label{grid-column:1/-1;margin:0;min-height:32px}
+.journal-top{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.workspace-shell .journal-top .life-wheel{grid-template-columns:minmax(100px,.62fr) minmax(190px,1.1fr);padding:17px!important;gap:7px;border-color:color-mix(in srgb,#aa8a67 28%,var(--theme-border));background:radial-gradient(ellipse at 80% 50%,color-mix(in srgb,#987699 8%,var(--theme-surface)),color-mix(in srgb,#c5a47b 5%,var(--theme-surface)))}
+.workspace-shell .journal-top .life-wheel h2{font-size:27px;margin:8px 0}
+.workspace-shell .journal-top .life-wheel-graph{max-height:300px;overflow:visible}
+.journal-compass{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start;min-width:0}
+.journal-compass>section{min-width:0;padding:13px;border:1px solid color-mix(in srgb,var(--compass-color) 25%,var(--theme-border));border-radius:15px;background:linear-gradient(135deg,color-mix(in srgb,var(--compass-color) 9%,var(--theme-surface)),var(--theme-surface))}
+.journal-compass h3{font-family:var(--font-cormorant),serif;font-size:22px;margin:0 0 7px;overflow-wrap:anywhere}
+.journal-compass header{display:flex;justify-content:space-between;gap:7px;margin-bottom:7px;align-items:center}
+.journal-compass .w-eyebrow{font-size:8px;line-height:1.5}
+.journal-compass button{font-size:9px;min-height:28px;color:var(--theme-muted);text-align:left}
+.compass-note{--compass-color:#a48668;grid-column:1/-1}
+.compass-note p{font-size:11px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--theme-muted);white-space:pre-wrap}
+.compass-main{--compass-color:#987395;grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:5px 10px;align-items:center}
+.compass-main .w-eyebrow{grid-column:1/-1}
+.compass-month{--compass-color:#ad8a4c}
+.compass-day{--compass-color:#598894}
+.journal-compass label{display:flex;gap:6px;align-items:center;margin-top:6px;min-width:0}
+.journal-compass label>span{font-size:10px;color:var(--theme-muted)}
+.workspace-shell .journal-compass input,.workspace-shell .journal-compass select{width:100%;min-width:0;padding:7px 8px;min-height:31px;border:1px solid var(--theme-border);border-radius:9px;background:var(--theme-surface);font-size:10px;color:var(--theme-text)}
+.workspace-shell .journal-refined .p-heading{margin:15px 0 10px;gap:10px;align-items:center}
+.workspace-shell .journal-refined .p-heading h1{font-size:26px;margin:3px 0}
+.workspace-shell .journal-refined .p-heading p{font-size:11px}
+.workspace-shell .journal-refined .p-toolbar{margin-bottom:12px;gap:7px}
+.workspace-shell .journal-refined .p-week{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.workspace-shell .journal-refined .p-day{background:linear-gradient(135deg,color-mix(in srgb,#b3906b 7%,var(--theme-surface)),var(--theme-surface));min-width:0}
+.workspace-shell .journal-refined .p-day:nth-child(3n+2){background:color-mix(in srgb,#8e719c 6%,var(--theme-surface))}
+.workspace-shell .journal-refined .p-day:nth-child(3n){background:color-mix(in srgb,#608d97 6%,var(--theme-surface))}
+.workspace-shell .journal-refined .p-day:nth-child(7){grid-column:3/5}
+.workspace-shell .journal-refined .p-bottom{gap:12px;margin-top:13px}
+.workspace-shell .journal-refined .p-bottom>section{background:color-mix(in srgb,#a58969 6%,var(--theme-surface))}
+.workspace-shell .journal-refined .p-intention{background:color-mix(in srgb,#a48668 7%,var(--theme-surface));margin-bottom:12px}
+.workspace-shell .journal-refined .s-goal{background:color-mix(in srgb,#b39773 4%,var(--theme-surface))}
+@media(max-width:1199px){
+ .workspace-shell .journal-top .life-wheel{grid-template-columns:1fr}.life-wheel-intro label{max-width:170px}.workspace-shell .journal-top .life-wheel-graph{max-height:230px}
+ .workspace-shell .journal-refined .p-week{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace-shell .journal-refined .p-day:nth-child(7){grid-column:auto}
+}
+@media(max-width:1000px){
+ .workspace-shell .journal-refined{grid-template-columns:minmax(0,1fr) 210px}.journal-top{grid-template-columns:1fr}.workspace-shell .journal-top .life-wheel{grid-template-columns:160px 1fr}
+}
+@media(max-width:767px){
+ .workspace-shell .journal-refined{display:grid;grid-template-columns:1fr;gap:16px}.journal-top{gap:13px}.workspace-shell .journal-top .life-wheel{grid-template-columns:1fr;padding:16px!important}.workspace-shell .journal-top .life-wheel-graph{max-height:290px}
+ .journal-compass{gap:8px}.journal-compass h3{font-size:21px}.journal-compass>section{padding:12px}.compass-main{grid-template-columns:1fr}.compass-main button{justify-self:start}
+ .workspace-shell .journal-refined .p-heading h1{font-size:24px}.workspace-shell .journal-refined .p-week{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-shell .journal-refined .p-day:nth-child(7){grid-column:1/-1}
+}
+

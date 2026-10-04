@@ -18,3 +18,6 @@ export function inToolGroup(p:Destination,group:string){
 
 const BRANDS:Record<string,string>={elevenlabs:'elevenlabs',telegram:'telegram',whatsapp:'whatsapp',miro:'miro','gai-studio':'google',gemma:'google',shopify:'shopify',n8n:'n8n',immich:'immich',kchat:'infomaniak',kmeet:'infomaniak','cloud-drives':'googledrive'};
 export function toolLogo(href:string){return BRANDS[href.split('/').pop()??''];}
+
+/** Vertical order requested for the five-column laboratory; data tools stay visible. */
+export const TOOL_COLUMNS = [["video","images"],["audio"],["documents"],["crm","communication","marketing"],["system","self","data"]] as const;

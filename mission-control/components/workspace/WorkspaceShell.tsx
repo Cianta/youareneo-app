@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { HeaderBookmarks, HeaderFocus, HeaderSettings, HeaderCalendar } from "./HeaderTools";
 import {WorkspaceArtwork} from "./WorkspaceArtwork";
 import { IvoryBranchDivider } from "./IvoryBranchDivider";
+import { IvoryWordmark } from "./IvoryWordmark";
 import { SidebarDock } from "./SidebarDock";
 import { Atmosphere } from "./Atmosphere";
 import { useNavAttention } from "./NavAttention";
@@ -30,8 +31,6 @@ import {
   LogOut,
   LogIn,
   Notebook as NotebookIcon,
-  PanelLeftClose,
-  PanelLeftOpen,
 } from "lucide-react";
 import { TrinityLogo } from "@/components/sacred-geometry/TrinityLogo";
 import { primary } from "@/lib/workspace/navigation";
@@ -182,31 +181,14 @@ export function WorkspaceShell({
         Zum Inhalt
       </a>
       <aside className="workspace-sidebar">
-        <Link href="/dashboard" className="workspace-brand">
+        <Link href="/dashboard" className="workspace-brand" aria-label={appName}>
           <TrinityLogo size={36} />
-          <span>{appName}</span>
+          <IvoryWordmark name={appName} />
         </Link>
         <p className="workspace-user">
           {identity?.name || user?.name || "Dein Raum"}
         </p>
-        <CosmosMenu />
-        <div className="sidebar-collapse-row">
-        <button
-          className="sidebar-collapse"
-          aria-label={collapsed ? "Menü ausklappen" : "Menü einklappen"}
-          aria-expanded={!collapsed}
-          onClick={() => {
-            const p = usePersonal.getState();
-            p.set({ navOpen: { ...p.navOpen, sidebar: collapsed } });
-          }}
-        >
-          {collapsed ? (
-            <PanelLeftOpen size={18} />
-          ) : (
-            <PanelLeftClose size={18} />
-          )}
-        </button>
-        </div>
+        <div className="sidebar-cosmos"><CosmosMenu /></div>
         <nav id="workspace-navigation" aria-label="Hauptnavigation">
           {["Mein Raum", "Arbeiten", "Entdecken"].map(
             (group) => {
@@ -265,15 +247,19 @@ export function WorkspaceShell({
             },
           )}
         </nav>
-        <SidebarDock path={path} unread={attention.inbox} />
+        <SidebarDock path={path} unread={attention.inbox} collapsed={collapsed}
+          onToggle={() => {
+            const p = usePersonal.getState();
+            p.set({ navOpen: { ...p.navOpen, sidebar: collapsed } });
+          }} />
       </aside>
       <div className="workspace-body">
         <Atmosphere />
         <header className="workspace-topbar">
           <IvoryBranchDivider />
-          <Link href="/dashboard" className="workspace-mobile-brand">
+          <Link href="/dashboard" className="workspace-mobile-brand" aria-label={appName}>
             <TrinityLogo size={28} />
-            <span>{appName}</span>
+            <IvoryWordmark name={appName} />
           </Link>
           <HeaderBookmarks />
           <button

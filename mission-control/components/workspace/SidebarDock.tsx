@@ -1,11 +1,16 @@
 import Link from "next/link";
-import { ContactRound, Grid2X2, HelpCircle, Mail, Phone, Video } from "lucide-react";
+import { ContactRound, Grid2X2, HelpCircle, Mail, Phone, Video, ChevronLeft, ChevronRight } from "lucide-react";
 import { primary } from "@/lib/workspace/navigation";
 import "./sidebar-dock.css";
 
 const icons: Record<string, typeof Mail> = { inbox: Mail, meeting: Video, contacts: ContactRound, phone: Phone };
 
-export function SidebarDock({ path, unread }: { path: string; unread: { count: number; label: string } }) {
+export function SidebarDock({ path, unread, collapsed, onToggle }: {
+  path: string;
+  unread: { count: number; label: string };
+  collapsed: boolean;
+  onToggle: () => void;
+}) {
   return (
     <div className="sidebar-dock">
       <nav className="sidebar-communication" aria-label="Kommunikation">
@@ -31,6 +36,11 @@ export function SidebarDock({ path, unread }: { path: string; unread: { count: n
         <button className="sidebar-help" aria-label="Hilfe & Tastenkürzel" title="Hilfe & Tastenkürzel"
           onClick={() => window.dispatchEvent(new Event("neo-open-help"))}>
           <HelpCircle aria-hidden="true" />
+        </button>
+        <button className="sidebar-collapse" aria-label={collapsed ? "Menü ausklappen" : "Menü einklappen"}
+          title={collapsed ? "Menü ausklappen" : "Menü einklappen"}
+          aria-expanded={!collapsed} aria-controls="workspace-navigation" onClick={onToggle}>
+          {collapsed ? <ChevronRight aria-hidden="true" /> : <ChevronLeft aria-hidden="true" />}
         </button>
       </div>
     </div>

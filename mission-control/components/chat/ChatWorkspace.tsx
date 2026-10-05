@@ -17,9 +17,11 @@ type Turn = ChatMessage & {
 export default function ChatWorkspace({
   providerLabel,
   embedded = false,
+  opening = "",
 }: {
   providerLabel: string;
   embedded?: boolean;
+  opening?: string;
 }) {
   const { assistantName } = useBrand();
   const {preferences, update} = useAssistantPreferences();
@@ -124,6 +126,7 @@ export default function ChatWorkspace({
         setVoices(d.voices || []);
         const chosen =
           d.voices?.find((v: SpeechVoice) => v.id === d.selected) ||
+          d.voices?.find((v: SpeechVoice) => v.id === d.defaultVoice) ||
           d.voices?.find((v: SpeechVoice) =>
             v.languages.some((l) => l.startsWith("de")),
           ) ||
@@ -667,7 +670,13 @@ export default function ChatWorkspace({
         </p>
       </section>
       <section className="chat-conversation" aria-label="Gespräch">
-        {!turns.length && (
+        {!turns.length && opening && (
+          <article data-role="assistant" className="chat-opening">
+            <strong>{assistantName}</strong>
+            <p>{opening}</p>
+          </article>
+        )}
+        {!turns.length && !opening && (
           <p>
             Stelle eine Frage oder sammle deine Gedanken. {assistantName} kann
             beraten; externe Aktionen und Hermes-Freigaben erfolgen hier nicht.

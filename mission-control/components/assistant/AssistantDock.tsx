@@ -10,6 +10,7 @@ import { useBrand } from "@/components/voice/BrandProvider";
 import { emptyDraft, NOTE_TYPES, type NoteDraft } from "@/lib/voice/contracts";
 import { isCaptureShortcut } from "@/lib/assistant/preferences";
 import { useAssistantPreferences } from "./Preferences";
+import { useProactive } from "./useProactive";
 const Chat = dynamic(() => import("@/components/chat/ChatWorkspace"), {ssr:false, loading:() => <p role="status">Sprachchat wird geöffnet …</p>});
 type Config = {userId:string; canSave:boolean; transcriptionReady:boolean; classificationReady:boolean; provider:string};
 const typeLabels = {notiz:"Notiz", aufgabe:"Aufgabe", idee:"Idee", termin:"Termin"};
@@ -27,9 +28,12 @@ export default function AssistantDock() {
   const [ruleProject,setRuleProject] = useState(""), [rules,setRules] = useState(""), [ruleLoading,setRuleLoading] = useState(false);
   const [browserVoices,setBrowserVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [voiceCatalog,setVoiceCatalog] = useState<{ready:boolean; voices:{id:string; name:string}[]}>({ready:false,voices:[]});
+  const [opening,setOpening] = useState(""), [draftSince,setDraftSince] = useState<number|null>(null);
   const [chatPulse,setChatPulse] = useState<{state:AvatarState; level:number}>({state:"idle",level:0});
   const intent = useRef(false), owner = useRef(""), controller = useRef<AbortController|null>(null), version = useRef(0), mounted = useRef(true);
   const currentDraft = useRef(draft); currentDraft.current = draft;
+  const hasDraft = draft !== null;
+  useEffect(()=>{setDraftSince(hasDraft ? Date.now() : null);},[hasDraft]);
   const state = useRef({phase,preferences}); state.current = {phase,preferences};
   const receiveAudio = useRef<(blob:Blob)=>void>(()=>{});
   const mic = useChatMicrophone({onAudio:blob=>receiveAudio.current(blob),onSpeechStart:()=>{
@@ -157,14 +161,16 @@ export default function AssistantDock() {
     catch(e){if(!abort.signal.aborted)setError(e instanceof Error ? e.message : "Einordnung nicht möglich.");}
     finally{if(token===version.current){setPhase("");controller.current=null;}}
   }
-  function close() {setPanel(null);cancel();window.dispatchEvent(new Event("neo-stop-chat"));}
+  function close() {setPanel(null);setOpening("");cancel();window.dispatchEvent(new Event("neo-stop-chat"));}
   const active=mic.state==="recording" || mic.state==="requesting";
+  const proactive=useProactive({preferences,name:assistantName,path,busy:!!panel||!!phase||active,draftSince});
+  const acceptNudge=()=>{const s=proactive.accept();if(!s)return;setError("");setNotice("");setOpening(s.opening);setPanel(s.kind==="draft"&&draft ? "capture" : "chat");};
   const avatarState:AvatarState=active ? "listening" : phase ? "thinking" : chatPulse.state;
   return <>
     {panel && <aside className="assistant-panel" role="dialog" aria-label={panel==="settings" ? "Trinity Einstellungen" : panel==="chat" ? "Trinity Sprachchat" : "Trinity Einordnung"}>
       <header className="assistant-panel-heading"><h2>{panel==="settings" ? "Stimme & Erscheinungsbild" : panel==="chat" ? `Mit ${assistantName} sprechen` : `${assistantName} · Gedanke einordnen`}</h2><button aria-label="Trinity schließen" onClick={close}><X size={20}/></button></header>
       <div className="assistant-panel-body">
-        {panel==="chat" ? <Chat embedded providerLabel="Infomaniak, Schweiz"/> : <>
+        {panel==="chat" ? <Chat embedded providerLabel="Infomaniak, Schweiz" opening={opening}/> : <>
           {phase && <p role="status">{phase}</p>}{notice && <p role="status">{notice}</p>}{(error||mic.error)&&<p role="alert">{error||mic.error} {!config&&<Link href="/login">Anmelden</Link>}</p>}
           {panel==="capture" && <>
             <p>Halte das Mikrofon oder <kbd>Ctrl+Shift+Leertaste</kbd>. Nach dem Loslassen kommt dein Vorschlag. Nichts wird ungeprüft gespeichert.</p>
@@ -187,6 +193,7 @@ export default function AssistantDock() {
             <label><input type="checkbox" checked={preferences.microphone} onChange={e=>update({microphone:e.target.checked})}/>Mikrofon aktivieren</label>
             <label><input type="checkbox" checked={preferences.sound} onChange={e=>update({sound:e.target.checked})}/>Sprachausgabe aktivieren</label>
             <label>Lautstärke<input aria-label="Lautstärke" type="range" min={0} max={1} step={.01} value={preferences.volume} onChange={e=>update({volume:Number(e.target.value)})}/></label>
+            <label>{assistantName} meldet sich von selbst<select value={preferences.proactive} onChange={e=>update({proactive:e.target.value as typeof preferences.proactive})}><option value="off">Nie</option><option value="gentle">Selten (höchstens 2 Mal am Tag)</option><option value="active">Aufmerksam (höchstens 5 Mal am Tag)</option></select></label>
             <label>Sprachausgabe<select value={preferences.provider} onChange={e=>update({provider:e.target.value as typeof preferences.provider})}><option value="browser">Browser-Stimme</option><option value="vocallab" disabled={!voiceCatalog.ready}>VocalLab{!voiceCatalog.ready ? " (noch nicht bereit)" : ""}</option><option value="off">Nur Text</option></select></label>
             {preferences.provider==="browser" && <>
               <label>Browser-Stimme<select value={preferences.browserVoice} onChange={e=>update({browserVoice:e.target.value})}><option value="">Standard</option>{browserVoices.map(v=><option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</option>)}</select></label>
@@ -206,6 +213,14 @@ export default function AssistantDock() {
         </>}
       </div>
     </aside>}
+    {proactive.suggestion && !panel && <div className="assistant-nudge" role="status" aria-live="polite">
+      <p><strong>{assistantName}</strong> {proactive.suggestion.text}</p>
+      <div>
+        <button className="assistant-nudge-yes" onClick={acceptNudge}>Ja, gern</button>
+        <button onClick={proactive.later}>Später</button>
+        <button onClick={proactive.snoozeToday}>Heute nicht mehr</button>
+      </div>
+    </div>}
     <div className="assistant-dock" aria-label="Trinity Steuerung">
       <button title="Gedrückt halten zum Sprechen · Ctrl+Shift+Leertaste" aria-label="Sprachnotiz aufnehmen: gedrückt halten" aria-pressed={active} className={active ? "is-listening" : ""}
         onPointerDown={e=>{if(e.button!==0)return;e.preventDefault();e.currentTarget.setPointerCapture(e.pointerId);void startRef.current();}}

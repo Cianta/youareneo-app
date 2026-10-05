@@ -14,6 +14,7 @@ import {widgetShortcut} from "@/lib/assistant/widget";
 import { isCaptureShortcut } from "@/lib/assistant/preferences";
 import {EnergyCompanion} from "./EnergyCompanion";
 import { useAssistantPreferences } from "./Preferences";
+import { useProactive } from "./useProactive";
 const Chat = dynamic(() => import("@/components/chat/ChatWorkspace"), {ssr:false, loading:() => <p role="status">Sprachchat wird geöffnet …</p>});
 const MicrophoneSettings = dynamic(() => import("./MicrophoneSettings").then(m=>m.MicrophoneSettings));
 const AppearanceSettings = dynamic(() => import("./AppearanceSettings").then(m=>m.AppearanceSettings));
@@ -35,6 +36,7 @@ export default function AssistantDock() {
   const receiveControls=useCallback((controls:ChatControls|null)=>{chatControls.current=controls;if(controls && pendingPrompt.current){controls.prefill(pendingPrompt.current);pendingPrompt.current=null;}if(controls && focusPrompt.current){controls.focus();focusPrompt.current=false;}if(controls && pendingDictation.current?.held)void controls.start(pendingDictation.current.append);},[]);
   const openChat=()=>{setChatMounted(true);setPanel("chat");focusPrompt.current=true;requestAnimationFrame(()=>{chatControls.current?.focus();if(chatControls.current)focusPrompt.current=false;});};
   const [draft, setDraft] = useState<NoteDraft|null>(null), [projects,setProjects] = useState<string[]>([]);
+  const [opening,setOpening] = useState(""), [draftSince,setDraftSince] = useState<number|null>(null);
   const [config,setConfig] = useState<Config|null>(null), [phase,setPhase] = useState(""), [error,setError] = useState(""), [notice,setNotice] = useState("");
   const [ruleProject,setRuleProject] = useState(""), [rules,setRules] = useState(""), [ruleLoading,setRuleLoading] = useState(false);
   const [browserVoices,setBrowserVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -42,6 +44,8 @@ export default function AssistantDock() {
   const [chatPulse,setChatPulse] = useState<{state:AvatarState; level:number}>({state:"idle",level:0});
   const intent = useRef(false), owner = useRef(""), controller = useRef<AbortController|null>(null), version = useRef(0), mounted = useRef(true);
   const currentDraft = useRef(draft); currentDraft.current = draft;
+  const hasDraft = draft !== null;
+  useEffect(()=>{setDraftSince(hasDraft ? Date.now() : null);},[hasDraft]);
   const state = useRef({phase,preferences}); state.current = {phase,preferences};
   const openChatRef=useRef(openChat);openChatRef.current=openChat;
   useEffect(()=>{
@@ -196,12 +200,14 @@ export default function AssistantDock() {
   }
   const settingsAction=useRef(openSettings);settingsAction.current=openSettings;
   useEffect(()=>{const open=(e:Event)=>{const tab=(e as CustomEvent).detail;settingsAction.current(["microphone","companion","appearance","sync"].includes(tab)?tab:"microphone");};window.addEventListener("neo-assistant-settings",open);return()=>window.removeEventListener("neo-assistant-settings",open);},[]);
-  function close() {if(pendingDictation.current)pendingDictation.current.held=false;chatControls.current?.cancel();setPanel(null);cancel();window.dispatchEvent(new Event("neo-stop-chat"));}
+  function close() {if(pendingDictation.current)pendingDictation.current.held=false;chatControls.current?.cancel();setPanel(null);setOpening("");cancel();window.dispatchEvent(new Event("neo-stop-chat"));}
   const active=mic.state==="recording" || mic.state==="requesting";
   const avatarState:AvatarState=active ? "listening" : phase ? "thinking" : chatPulse.state;
+  const proactive=useProactive({preferences,name:assistantName,path,busy:!!panel||!!phase||active,draftSince});
+  const acceptNudge=()=>{const s=proactive.accept();if(!s)return;setError("");setNotice("");setOpening(s.opening);if(s.kind==="draft"&&draft)setPanel("capture");else openChat();};
   return <>
     <div className="companion-presence" hidden={panel!=="chat"}><EnergyCompanion state={avatarState} level={active ? mic.level : chatPulse.level} onSettings={()=>openSettings("companion")}/></div>
-    {chatMounted && <aside id="assistant-chat-panel" className="assistant-panel assistant-chat-panel" hidden={panel!=="chat"} role="dialog" aria-label={`${assistantName} · Guiding Space`}><header className="assistant-panel-heading"><div><span className="assistant-wordmark">{appName}</span><h2>{assistantName}</h2></div><button aria-label="Trinity schließen" onClick={close}><X size={20}/></button></header><div className="assistant-panel-body"><Chat embedded providerLabel="Infomaniak, Schweiz" onControlsReady={receiveControls}/></div></aside>}
+    {chatMounted && <aside id="assistant-chat-panel" className="assistant-panel assistant-chat-panel" hidden={panel!=="chat"} role="dialog" aria-label={`${assistantName} · Guiding Space`}><header className="assistant-panel-heading"><div><span className="assistant-wordmark">{appName}</span><h2>{assistantName}</h2></div><button aria-label="Trinity schließen" onClick={close}><X size={20}/></button></header><div className="assistant-panel-body"><Chat embedded providerLabel="Infomaniak, Schweiz" opening={opening} onControlsReady={receiveControls}/></div></aside>}
     {panel && panel!=="chat" && <aside className="assistant-panel" role="dialog" aria-label={panel==="settings" ? "Trinity Einstellungen" : "Trinity Einordnung"}>
       <header className="assistant-panel-heading"><h2>{panel==="settings" ? "Deine Trinity" : `${assistantName} · Gedanke einordnen`}</h2><button aria-label="Trinity schließen" onClick={close}><X size={20}/></button></header>
       <div className="assistant-panel-body">
@@ -236,6 +242,7 @@ export default function AssistantDock() {
             <p>Dein Begleiter feiert Schritte und erinnert nach längerer Aktivität an Ruhe. Es gibt keinen Leistungsdruck. E-Mail-Reaktionen beziehen sich nur auf ein verbundenes persönliches Postfach. Ohne Verbindung bleiben sie aus.</p>
             <label><input type="checkbox" checked={preferences.sound} onChange={e=>update({sound:e.target.checked})}/>Sprachausgabe aktivieren</label>
             <label>Lautstärke<input aria-label="Lautstärke" type="range" min={0} max={1} step={.01} value={preferences.volume} onChange={e=>update({volume:Number(e.target.value)})}/></label>
+            <label>{assistantName} meldet sich von selbst<select value={preferences.proactive} onChange={e=>update({proactive:e.target.value as typeof preferences.proactive})}><option value="off">Nie</option><option value="gentle">Selten (höchstens 2 Mal am Tag)</option><option value="active">Aufmerksam (höchstens 5 Mal am Tag)</option></select></label>
             <label>Sprachausgabe<select value={preferences.provider} onChange={e=>update({provider:e.target.value as typeof preferences.provider})}><option value="browser">Browser-Stimme</option><option value="vocallab" disabled={!voiceCatalog.ready}>VocalLab{!voiceCatalog.ready ? " (noch nicht bereit)" : ""}</option><option value="off">Nur Text</option></select></label>
             {preferences.provider==="browser" && <>
               <label>Browser-Stimme<select value={preferences.browserVoice} onChange={e=>update({browserVoice:e.target.value})}><option value="">Standard</option>{browserVoices.map(v=><option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</option>)}</select></label>
@@ -256,6 +263,14 @@ export default function AssistantDock() {
         </>
       </div>
     </aside>}
+    {proactive.suggestion && !panel && <div className="assistant-nudge" role="status" aria-live="polite">
+      <p><strong>{assistantName}</strong> {proactive.suggestion.text}</p>
+      <div>
+        <button className="assistant-nudge-yes" onClick={acceptNudge}>Ja, gern</button>
+        <button onClick={proactive.later}>Später</button>
+        <button onClick={proactive.snoozeToday}>Heute nicht mehr</button>
+      </div>
+    </div>}
     <div data-surface={path==="/login" || path.startsWith("/auth/") ? "auth" : "workspace"} className="assistant-dock" aria-label="Trinity Steuerung">
       <button title="Gedrückt halten zum Sprechen · Ctrl+Shift+Leertaste" aria-label="Sprachnotiz aufnehmen: gedrückt halten" aria-pressed={active} className={active ? "is-listening" : ""}
         onPointerDown={e=>{if(e.button!==0)return;e.preventDefault();e.currentTarget.setPointerCapture(e.pointerId);void startRef.current();}}

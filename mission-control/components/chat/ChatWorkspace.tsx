@@ -22,10 +22,12 @@ export default function ChatWorkspace({
   providerLabel,
   embedded = false,
   onControlsReady,
+  opening = "",
 }: {
   providerLabel: string;
   embedded?: boolean;
   onControlsReady?:(controls:ChatControls|null)=>void;
+  opening?: string;
 }) {
   const { assistantName } = useBrand();
   const {preferences, update} = useAssistantPreferences();
@@ -136,6 +138,7 @@ export default function ChatWorkspace({
         setVoices(d.voices || []);
         const chosen =
           d.voices?.find((v: SpeechVoice) => v.id === d.selected) ||
+          d.voices?.find((v: SpeechVoice) => v.id === d.defaultVoice) ||
           d.voices?.find((v: SpeechVoice) =>
             v.languages.some((l) => l.startsWith("de")),
           ) ||
@@ -529,7 +532,8 @@ export default function ChatWorkspace({
   return <section className="chat-workspace guiding-chat" data-embedded={embedded || undefined}>
     {!embedded && <header><Link href="/dashboard">← Dein Guiding Space</Link><h1>{assistantName}</h1><span>Deine hauseigene Assistentin</span></header>}
     <section className="chat-conversation" aria-label="Gespräch" aria-live="polite" aria-relevant="additions text">
-      {!turns.length && <div className="chat-welcome"><Sparkles size={25}/><h2>Was bewegt dich?</h2><p>Ein Gedanke, eine Frage, ein nächster Schritt.</p><div className="chat-suggestions">{["Hilf mir, meinen Tag zu ordnen.","Lass uns eine Idee weiterdenken."].map(t=><button key={t} onClick={()=>{setText(t);textarea.current?.focus()}}>{t}</button>)}</div></div>}
+      {!turns.length && opening && <article data-role="assistant" className="chat-opening"><strong>{assistantName}</strong><p>{opening}</p></article>}
+      {!turns.length && !opening && <div className="chat-welcome"><Sparkles size={25}/><h2>Was bewegt dich?</h2><p>Ein Gedanke, eine Frage, ein nächster Schritt.</p><div className="chat-suggestions">{["Hilf mir, meinen Tag zu ordnen.","Lass uns eine Idee weiterdenken."].map(t=><button key={t} onClick={()=>{setText(t);textarea.current?.focus()}}>{t}</button>)}</div></div>}
       {turns.map(t=><article key={t.id} data-role={t.role}><strong>{t.role==="user" ? "Du" : assistantName}</strong><p>{t.content || (t.complete ? "Keine Textantwort." : "Trinity denkt …")}</p>{!t.complete && t.content && <small>Antwort läuft oder wurde unterbrochen.</small>}{!!t.sources?.length && <details><summary>Eigene Notizen im Kontext</summary>{t.sources.map(n=><Link key={n.id} href={"/notiz?note="+encodeURIComponent(n.id)}>{n.title}<ArrowUpRight size={12}/></Link>)}</details>}</article>)}<div ref={bottom}/>
     </section>
     <div className="chat-feedback"><p role="status">{mic.state==="requesting" ? "Mikrofon wird angefragt …" : recording ? "Ich höre zu. Loslassen übernimmt den Text." : status}</p>{(error||mic.error)&&<p role="alert">{error||mic.error} {mic.error&&<button type="button" onClick={openMicrophoneSettings}>Mikrofon einrichten</button>} <button onClick={()=>setRetry(n=>n+1)}>Erneut prüfen</button></p>}{notice&&<p role="status">{notice}</p>}{!authenticated&&<p><Link href="/login">Anmelden</Link> für KI und Transkription. Deinen Prompt kannst du bereits schreiben.</p>}</div>

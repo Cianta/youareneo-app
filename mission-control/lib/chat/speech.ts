@@ -76,13 +76,24 @@ async function boundedJson(response: Response) {
   }
   return JSON.parse(Buffer.concat(parts).toString("utf8"));
 }
+// Eigene, vom Betreiber festgelegte Stimme (z. B. mit VocalLab entworfen). Nur genau diese
+// eine Konto-Stimme wird freigegeben; andere Klone/Entwürfe des Kontos bleiben verborgen.
+export function trinityVoice(): SpeechVoice | null {
+  const id = process.env.TRINITY_VOICE_ID?.trim();
+  if (!id || !/^[A-Za-z0-9_-]{1,200}$/.test(id)) return null;
+  const name = process.env.TRINITY_VOICE_NAME?.trim().slice(0, 60) || "Trinity";
+  return { id, name, languages: ["de"] };
+}
 let catalog: { expires: number; voices: SpeechVoice[] } | undefined;
 export class VocalLabSpeech implements SpeechProvider {
   name = "vocallab";
   constructor(private cached = true) {}
   async voices(signal?: AbortSignal) {
+    const own = trinityVoice();
+    const withOwn = (list: SpeechVoice[]) =>
+      own ? [own, ...list.filter((v) => v.id !== own.id)] : list;
     if (this.cached && catalog && catalog.expires > Date.now())
-      return catalog.voices;
+      return withOwn(catalog.voices);
     const data = await boundedJson(
       await providerRequest(
         "/voices?type=preset&limit=500",
@@ -112,7 +123,7 @@ export class VocalLabSpeech implements SpeechProvider {
           .slice(0, 20),
       }));
     if (this.cached) catalog = { expires: Date.now() + 600000, voices };
-    return voices;
+    return withOwn(voices);
   }
   async synthesize(text: string, voice: string, signal?: AbortSignal) {
     if (!text.trim() || text.length > 2000)

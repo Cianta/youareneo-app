@@ -25,7 +25,8 @@
     "test:chat:browser": "node scripts/test-chat-browser.mjs",
     "test:apps": "tsx --test tests/apps.test.ts",
     "test:apps:browser": "node scripts/test-apps-browser.mjs",
-    "audit:apps:local": "node scripts/audit-apps-local.mjs"
+    "audit:apps:local": "node scripts/audit-apps-local.mjs",
+    "test:proactive": "tsx --test tests/proactive.test.ts"
   },
   "build": {
     "appId": "com.youareneo.mission-control",

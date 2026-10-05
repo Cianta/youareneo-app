@@ -1,12 +1,15 @@
+import { PROACTIVE_MODES, type ProactiveMode } from "./proactive";
 export type AssistantPreferences = {
   brightness: number; sound: boolean; microphone: boolean;
   volume: number; rate: number; pitch: number;
   provider: "browser" | "vocallab" | "off";
   browserVoice: string; voice: string;
+  proactive: ProactiveMode;
 };
 export const defaultPreferences: AssistantPreferences = {
   brightness: 0, sound: true, microphone: true, volume: .8,
   rate: 1, pitch: 1, provider: "browser", browserVoice: "", voice: "",
+  proactive: "gentle",
 };
 const bounded = (v: unknown, min: number, max: number, fallback: number) =>
   typeof v === "number" && Number.isFinite(v) ? Math.max(min, Math.min(max, v)) : fallback;
@@ -18,6 +21,7 @@ export function preferencesOf(value: unknown): AssistantPreferences {
     provider: ["browser", "vocallab", "off"].includes(p.provider || "") ? p.provider! : "browser",
     browserVoice: typeof p.browserVoice === "string" ? p.browserVoice.slice(0, 300) : "",
     voice: typeof p.voice === "string" ? p.voice.slice(0, 200) : "",
+    proactive: PROACTIVE_MODES.includes(p.proactive as ProactiveMode) ? p.proactive! : "gentle",
   };
 }
 export function themePalette(brightness: number) {

@@ -75,3 +75,12 @@
   .workspace-shell .voice-heading h1 { font-size:38px; }
 }
 @media(prefers-reduced-motion:reduce) {.assistant-dock *, .assistant-panel * {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+.assistant-nudge { position:fixed; z-index:102; right:18px; bottom:84px; width:min(360px, calc(100vw - 28px)); padding:14px 16px; background:var(--theme-surface); color:var(--theme-text); border:1px solid var(--theme-accent); border-radius:18px; box-shadow:0 12px 44px #0005; animation:assistant-nudge-in .35s ease-out; }
+.assistant-nudge p { margin:0 0 10px; line-height:1.45; }
+.assistant-nudge > div { display:flex; flex-wrap:wrap; gap:8px; }
+.assistant-nudge button { min-height:44px; padding:0 14px; border-radius:22px; color:var(--theme-text); background:transparent; border:1px solid var(--theme-border); }
+.assistant-nudge .assistant-nudge-yes { background:var(--theme-active); border-color:var(--theme-accent); font-weight:650; }
+.assistant-nudge button:focus-visible { outline:2px solid var(--theme-accent); outline-offset:2px; }
+.chat-opening { border-left:3px solid var(--theme-accent); padding-left:10px; }
+@keyframes assistant-nudge-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) { .assistant-nudge { animation:none; } }

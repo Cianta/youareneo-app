@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { TopBar } from '@/components/layout/TopBar';
 import { NotebookPanel } from '@/components/layout/NotebookPanel';
 import { FloatingAgentWidget } from '@/components/layout/FloatingAgentWidget';
+import { SiteReader } from '@/components/layout/SiteReader';
 import { GlobalAudioPlayer } from '@/components/layout/GlobalAudioPlayer';
 import { CompletionDialog } from '@/components/layout/CompletionDialog';
 import { FlowerBackground } from '@/components/sacred-geometry/FlowerOfLife';
@@ -79,6 +80,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Persistent floating agent — renders above everything */}
       <FloatingAgentWidget />
+
+      {/* Vorlese-Player — Lautsprecher über dem Chat-Symbol, Alt+A/S/D */}
+      <SiteReader />
 
       {/* Global audio player — persists across all routes */}
       <GlobalAudioPlayer />

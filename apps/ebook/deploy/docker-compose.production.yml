@@ -1,0 +1,27 @@
+# Muster wie mission-control (Traefik + Let's Encrypt). Erst starten, wenn
+# ebook.youareneo.com bei GoDaddy auf 76.13.137.234 zeigt.
+# Netzwerk/Entrypoint-Namen bitte mit /docker/mission-control/docker-compose.yml abgleichen.
+services:
+  ebook:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: ebook:latest
+    pull_policy: never
+    restart: unless-stopped
+    expose:
+    - '3000'
+    env_file:
+    - /docker/ebook/.env
+    labels:
+    - traefik.enable=true
+    - traefik.http.routers.ebook.rule=Host(`ebook.youareneo.com`)
+    - traefik.http.routers.ebook.entrypoints=websecure
+    - traefik.http.routers.ebook.tls.certresolver=letsencrypt
+    - traefik.http.routers.ebook.tls=true
+    - traefik.http.services.ebook.loadbalancer.server.port=3000
+    - traefik.http.routers.ebook-http.rule=Host(`ebook.youareneo.com`)
+    - traefik.http.routers.ebook-http.entrypoints=web
+    - traefik.http.routers.ebook-http.middlewares=ebook-redirect
+    - traefik.http.middlewares.ebook-redirect.redirectscheme.scheme=https
+    - traefik.http.middlewares.ebook-redirect.redirectscheme.permanent=true

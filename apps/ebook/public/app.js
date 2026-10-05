@@ -1,85 +1,64 @@
 (() => {
 'use strict';
-const C = window.NEO_CONFIG;
 const $ = (id) => document.getElementById(id);
 const qs = new URLSearchParams(location.search);
 if (qs.get('embed')) document.body.classList.add('embed');
 let view = qs.get('view') || 'all';
-const sb = window.supabase.createClient(C.supabaseUrl, C.supabaseKey, { auth: { persistSession: true, detectSessionInUrl: true } });
-let user = null, owned = new Set(), progress = {};
+let user = null, books = [];
 
 const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* privater Modus */ } };
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fileUrl = (b, f, dl) => `/api/file?product=${encodeURIComponent(b.product)}&file=${encodeURIComponent(f)}${dl ? '&dl=1' : ''}`;
 
-/* ---------- Auth ---------- */
-async function init() {
-  const { data } = await sb.auth.getSession();
-  user = data.session?.user || null;
-  sb.auth.onAuthStateChange((_e, s) => { const u = s?.user || null; if ((u?.id) !== (user?.id)) { user = u; render(); } });
-  render();
-}
+/* ---------- Sitzung + Bibliothek (Server liest das gemeinsame Supabase-Cookie) ---------- */
 async function render() {
+  const r = await fetch('/api/library', { credentials: 'same-origin' });
+  if (r.status === 401) {
+    const j = await r.json().catch(() => ({}));
+    user = null; $('help').href = j.loginHelpUrl || '#';
+  } else if (r.ok) {
+    const j = await r.json(); user = j.email; books = j.books;
+  }
   $('login').hidden = !!user; $('lib').hidden = !user; $('logout').hidden = !user;
-  $('who').textContent = user?.email || '';
-  if (!user) return;
-  const { data } = await sb.from('neo_access').select('product').is('revoked_at', null);
-  owned = new Set((data || []).map((r) => r.product));
-  const pr = await sb.from('book_progress').select('product,kind,percent,position');
-  progress = {};
-  (pr.data || []).forEach((r) => { progress[r.product + ':' + r.kind] = r; });
-  drawGrid();
+  $('who').textContent = user || '';
+  if (user) drawGrid();
 }
 const setMsg = (t) => { $('msg').textContent = t; };
 $('doLogin').onclick = async () => {
   setMsg('Einen Moment …');
-  const { error } = await sb.auth.signInWithPassword({ email: $('em').value.trim(), password: $('pw').value });
-  setMsg(error ? 'Anmeldung fehlgeschlagen. Prüfe E-Mail und Passwort.' : '');
+  const r = await fetch('/api/login', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: $('em').value, password: $('pw').value }) });
+  if (r.ok) { setMsg(''); render(); } else setMsg('Anmeldung fehlgeschlagen. Prüfe E-Mail und Passwort.');
 };
-$('doMagic').onclick = async () => {
-  const email = $('em').value.trim();
-  if (!email) return setMsg('Bitte E-Mail eingeben.');
-  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + location.pathname } });
-  setMsg(error ? 'Link konnte nicht gesendet werden.' : 'Link gesendet – bitte Postfach prüfen.');
-};
-$('logout').onclick = () => sb.auth.signOut();
+$('logout').onclick = async () => { await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' }); user = null; render(); };
 document.querySelectorAll('#tabs button').forEach((b) => {
   b.onclick = () => { view = b.dataset.v; document.querySelectorAll('#tabs button').forEach((x) => x.classList.toggle('on', x === b)); drawGrid(); };
 });
 
-/* ---------- Bibliothek ---------- */
 function drawGrid() {
-  const list = C.books.filter((b) => view === 'all' || b.kind === view);
+  const list = books.filter((b) => view === 'all' || b.kind === view);
   $('grid').innerHTML = list.length ? '' : '<p class="lead">Hier erscheint bald etwas Neues.</p>';
   list.forEach((b) => {
-    const has = owned.has(b.product);
-    const pg = progress[b.product + ':' + b.kind];
-    const pct = Math.round(pg?.percent || 0);
+    const pct = Math.round(b.progress?.percent || 0);
     const el = document.createElement('div');
-    el.className = 'card' + (has ? '' : ' lock');
-    el.innerHTML = `<div class="cover" data-cover="${esc(b.product)}">${esc(b.title)}</div>
+    el.className = 'card' + (b.owned ? '' : ' lock');
+    el.innerHTML = `<div class="cover">${esc(b.title)}</div>
       <div class="meta"><span class="badge">${b.kind === 'ebook' ? 'E-Book' : 'Hörbuch'}</span>
       <h3>${esc(b.title)}</h3><p>${esc(b.author)}</p>
-      ${has ? `<div class="bar"><i style="width:${pct}%"></i></div>` : ''}
-      <div class="act">${has
+      ${b.owned ? `<div class="bar"><i style="width:${pct}%"></i></div>` : ''}
+      <div class="act">${b.owned
         ? `<button class="primary" data-open>${b.kind === 'ebook' ? 'Lesen' : 'Hören'}</button><button data-dl>Download</button>`
         : `<a href="${esc(b.buy)}" target="_top" rel="noopener"><button class="primary">Im Shop kaufen</button></a>`}</div></div>`;
     $('grid').appendChild(el);
-    if (has && b.cover) signedUrl(b, b.cover).then((u) => { if (u) { const c = el.querySelector('.cover'); c.style.backgroundImage = `url(${u})`; c.textContent = ''; } });
-    if (has) {
+    if (b.owned && b.hasCover) {
+      const img = new Image(); img.onload = () => { const c = el.querySelector('.cover'); c.style.backgroundImage = `url(${img.src})`; c.textContent = ''; };
+      img.src = fileUrl(b, 'cover.jpg');
+    }
+    if (b.owned) {
       el.querySelector('[data-open]').onclick = () => (b.kind === 'ebook' ? openBook(b) : openAudio(b));
-      el.querySelector('[data-dl]').onclick = () => download(b);
+      el.querySelector('[data-dl]').onclick = () => { location.href = fileUrl(b, b.files[0], true); };
     }
   });
-}
-async function signedUrl(b, file, dl) {
-  const { data, error } = await sb.storage.from(C.bucket).createSignedUrl(`${b.product}/${file}`, 3600, dl ? { download: file } : undefined);
-  return error ? null : data.signedUrl;
-}
-async function download(b) {
-  const f = b.kind === 'ebook' ? b.file : b.files[0];
-  const u = await signedUrl(b, f, true);
-  if (u) location.href = u; else alert('Download gerade nicht möglich.');
 }
 
 /* ---------- Fortschritt ---------- */
@@ -88,14 +67,11 @@ function saveProgress(b, position, percent) {
   lsSet('neo.pos.' + b.product, JSON.stringify({ position, percent }));
   clearTimeout(saveT);
   saveT = setTimeout(() => {
-    if (!user) return;
-    sb.from('book_progress').upsert({ user_id: user.id, product: b.product, kind: b.kind, position: String(position), percent, updated_at: new Date().toISOString() })
-      .then(() => {}, () => {});
+    fetch('/api/progress', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product: b.product, kind: b.kind, position, percent }) }).catch(() => {});
   }, 1500);
 }
 function loadProgress(b) {
-  const remote = progress[b.product + ':' + b.kind];
-  if (remote?.position) return { position: remote.position, percent: remote.percent };
+  if (b.progress?.position) return { position: b.progress.position, percent: b.progress.percent };
   try { return JSON.parse(lsGet('neo.pos.' + b.product) || 'null'); } catch { return null; }
 }
 
@@ -115,9 +91,9 @@ async function openBook(b, buffer) {
   curBook = b;
   $('reader').hidden = false; $('rtitle').textContent = b.title; $('toc').hidden = true;
   if (!buffer) {
-    const u = await signedUrl(b, b.file);
-    if (!u) { alert('E-Book konnte nicht geladen werden.'); $('reader').hidden = true; return; }
-    buffer = await (await fetch(u)).arrayBuffer();
+    const r = await fetch(fileUrl(b, b.file), { credentials: 'same-origin' });
+    if (!r.ok) { alert('E-Book konnte nicht geladen werden.'); $('reader').hidden = true; return; }
+    buffer = await r.arrayBuffer();
   }
   book = ePub(buffer);
   $('viewer').innerHTML = '';
@@ -143,7 +119,7 @@ $('tocBtn').onclick = () => { $('toc').hidden = !$('toc').hidden; };
 $('fPlus').onclick = () => { fontPct = Math.min(200, fontPct + 10); applyTheme(); };
 $('fMinus').onclick = () => { fontPct = Math.max(70, fontPct - 10); applyTheme(); };
 document.querySelectorAll('.themes button').forEach((b) => { b.onclick = () => { theme = b.dataset.t; applyTheme(); }; });
-$('rclose').onclick = () => { $('reader').hidden = true; try { rendition?.destroy(); book?.destroy(); } catch { /* egal */ } rendition = book = null; drawGrid(); };
+$('rclose').onclick = () => { $('reader').hidden = true; try { rendition?.destroy(); book?.destroy(); } catch { /* egal */ } rendition = book = null; render(); };
 
 /* ---------- Hörbuch-Player ---------- */
 const au = new Audio(); au.preload = 'metadata';
@@ -151,9 +127,7 @@ let aBook, aIdx = 0, speeds = [1, 1.15, 1.3, 1.5, 0.85], sp = 0, sleepT;
 const fmt = (s) => { s = Math.floor(s || 0); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 async function loadTrack(i, startAt) {
   aIdx = i;
-  const u = await signedUrl(aBook, aBook.files[i]);
-  if (!u) { alert('Audio konnte nicht geladen werden.'); return; }
-  au.src = u; au.playbackRate = speeds[sp];
+  au.src = fileUrl(aBook, aBook.files[i]); au.playbackRate = speeds[sp];
   if (startAt) au.addEventListener('loadedmetadata', () => { au.currentTime = startAt; }, { once: true });
   $('a-title').textContent = `${aBook.title} · Teil ${i + 1}/${aBook.files.length}`;
 }
@@ -195,5 +169,5 @@ if (qs.get('dev')) {
   window.__neoOpen = openBook;
 }
 
-init();
+render();
 })();

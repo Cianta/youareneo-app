@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bibliothek · YOU ARE NEO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="top">
+  <h1>YOU ARE NEO · BIBLIOTHEK</h1><span class="sp"></span>
+  <small id="who"></small>
+  <button id="logout" hidden>Abmelden</button>
+</div>
+
+<main id="login" class="login" hidden>
+  <h2>Anmelden</h2>
+  <p class="lead" style="text-align:center;margin:0">Mit dem Konto, das du beim Kauf erhalten hast.</p>
+  <input id="em" type="email" placeholder="E-Mail" autocomplete="email">
+  <input id="pw" type="password" placeholder="Passwort" autocomplete="current-password">
+  <button class="primary" id="doLogin">Anmelden</button>
+  <button id="doMagic">Login-Link per E-Mail senden</button>
+  <div class="msg" id="msg" role="status"></div>
+</main>
+
+<main id="lib" class="wrap" hidden>
+  <h2>Deine Bibliothek</h2>
+  <p class="lead">E-Books und Hörbücher — am Gerät lesen, hören oder herunterladen.</p>
+  <div class="tabs" id="tabs">
+    <button data-v="all" class="on">Alle</button><button data-v="ebook">E-Books</button><button data-v="audio">Hörbücher</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<div id="reader" class="reader" hidden>
+  <header>
+    <button id="tocBtn" aria-label="Inhaltsverzeichnis">☰</button>
+    <b id="rtitle"></b>
+    <span class="themes"><button data-t="night">Nacht</button><button data-t="sepia">Sepia</button><button data-t="light">Hell</button></span>
+    <button id="fMinus" aria-label="Schrift kleiner">A−</button><button id="fPlus" aria-label="Schrift größer">A+</button>
+    <button id="rclose">Schließen</button>
+  </header>
+  <div class="rbody">
+    <nav class="toc" id="toc" hidden></nav>
+    <button class="nav" id="prev" aria-label="Zurück">‹</button>
+    <div id="viewer"></div>
+    <button class="nav" id="next" aria-label="Weiter">›</button>
+  </div>
+  <footer><span id="pct">0 %</span><div class="bar"><i id="pbar" style="width:0"></i></div></footer>
+</div>
+
+<div id="audio" class="audio" hidden>
+  <div class="ctl"><button id="a-b" aria-label="15 Sekunden zurück">⏪ 15</button><button id="a-pp" class="primary">▶</button><button id="a-f" aria-label="30 Sekunden vor">30 ⏩</button></div>
+  <div class="t"><b id="a-title"></b><input id="a-seek" type="range" min="0" max="1000" value="0"><small id="a-time">0:00</small></div>
+  <div class="ctl"><button id="a-prev">⏮</button><button id="a-next">⏭</button><button id="a-speed">1×</button><button id="a-sleep">Schlaf</button><button id="a-close">✕</button></div>
+</div>
+
+<script src="vendor/jszip.min.js"></script>
+<script src="vendor/epub.min.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

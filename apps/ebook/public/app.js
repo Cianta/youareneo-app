@@ -104,9 +104,10 @@ async function openBook(b, buffer) {
   $('toc').querySelectorAll('a').forEach((a) => { a.onclick = () => { rendition.display(nav.toc[a.dataset.i].href); $('toc').hidden = true; }; });
   const pos = loadProgress(b);
   await rendition.display(pos?.position && pos.position.startsWith('epubcfi') ? pos.position : undefined);
-  book.ready.then(() => book.locations.generate(1200)).then(() => { /* Prozent verfügbar */ });
   rendition.on('relocated', (loc) => {
-    const pct = book.locations.length() ? Math.round(book.locations.percentageFromCfi(loc.start.cfi) * 100) : Math.round((loc.start.percentage || 0) * 100);
+    // Fortschritt aus Kapitelnummer + Seite im Kapitel (kein Vorab-Scan aller Kapitel – das hat große Bücher blockiert)
+    const n = book.spine.length || 1, d = loc.start.displayed || { page: 1, total: 1 };
+    const pct = Math.min(100, Math.round(((loc.start.index + (d.page - 1) / Math.max(1, d.total)) / n) * 100));
     $('pct').textContent = pct + ' %'; $('pbar').style.width = pct + '%';
     saveProgress(b, loc.start.cfi, pct);
   });

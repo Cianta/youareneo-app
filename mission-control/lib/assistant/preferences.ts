@@ -1,4 +1,5 @@
 import type {WeatherPlace} from "./ambience";
+import { PROACTIVE_MODES, type ProactiveMode } from "./proactive";
 export type AssistantPreferences = {
   brightness: number; sound: boolean; microphone: boolean;
   volume: number; rate: number; pitch: number;
@@ -6,11 +7,13 @@ export type AssistantPreferences = {
   browserVoice: string; voice: string; microphoneDeviceId: string;
   companion: "dragon" | "human" | "tree" | "off"; energyColor: "violet" | "teal" | "rose";
   companionMotion: boolean; adaptiveMood: boolean; daylight: boolean; atmosphere: number; weatherEnabled:boolean; weatherPlace:WeatherPlace|null;
+  proactive: ProactiveMode;
 };
 export const defaultPreferences: AssistantPreferences = {
   brightness: 100, sound: true, microphone: true, volume: .8,
   rate: 1, pitch: 1, provider: "browser", browserVoice: "", voice: "", microphoneDeviceId: "",
   companion: "dragon", energyColor: "violet", companionMotion: true, adaptiveMood: true, daylight:true, atmosphere:7, weatherEnabled:false, weatherPlace:null,
+  proactive: "gentle",
 };
 const bounded = (v: unknown, min: number, max: number, fallback: number) =>
   typeof v === "number" && Number.isFinite(v) ? Math.max(min, Math.min(max, v)) : fallback;
@@ -28,6 +31,7 @@ export function preferencesOf(value: unknown): AssistantPreferences {
     provider: ["browser", "vocallab", "off"].includes(p.provider || "") ? p.provider! : "browser",
     browserVoice: typeof p.browserVoice === "string" ? p.browserVoice.slice(0, 300) : "",
     voice: typeof p.voice === "string" ? p.voice.slice(0, 200) : "",
+    proactive: PROACTIVE_MODES.includes(p.proactive as ProactiveMode) ? p.proactive! : "gentle",
   };
 }
 export function themePalette(brightness: number) {

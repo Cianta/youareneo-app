@@ -34,7 +34,8 @@
     "test:journal:browser": "node scripts/test-journal-browser.mjs",
     "test:logo-communication:browser": "node scripts/test-logo-communication-browser.mjs",
     "test:studio": "tsx --test tests/studio.test.ts",
-    "test:studio:browser": "node scripts/test-studio-browser.mjs"
+    "test:studio:browser": "node scripts/test-studio-browser.mjs",
+    "test:proactive": "tsx --test tests/proactive.test.ts"
   },
   "build": {
     "appId": "com.youareneo.mission-control",

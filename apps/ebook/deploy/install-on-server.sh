@@ -30,7 +30,9 @@ grep -q '^SUPABASE_SERVICE_ROLE_KEY=.\+' "$TARGET/.env" || { echo "SUPABASE_SERV
 # Traefik-Netz von mission-control übernehmen, damit der Router den Container erreicht
 NET=$(docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}' "$(docker ps -qf name=traefik | head -1)" 2>/dev/null | awk '{print $1}')
 cd "$TARGET/app/deploy"
-if [ -n "${NET:-}" ]; then
+rm -f docker-compose.override.yml
+# Traefik im Host-Netz erreicht Container direkt über ihre Bridge-IP, dann kein extra Netz nötig
+if [ -n "${NET:-}" ] && [ "$NET" != "host" ] && [ "$NET" != "bridge" ]; then
   cat > docker-compose.override.yml <<EOF
 services:
   ebook:
